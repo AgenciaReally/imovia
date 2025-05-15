@@ -1,0 +1,3900 @@
+[
+  {
+    "id": "51800",
+    "name": "Metrocasa Vila das Belezas II - Residencial",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 476800,
+    "min_bedrooms": 1,
+    "max_bedrooms": 1,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 99.76,
+    "max_area": 99.76,
+    "price_per_private_square_meter": 4779,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 11,
+    "number_of_floors": 28,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Academia externa",
+      "Bicicletário",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Espaço gourmet",
+      "Fire place",
+      "Lavanderia",
+      "Pet place",
+      "Playground",
+      "Portaria",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Bicicletário"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Fire place"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Academia externa"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 1,
+    "finality": "Residencial",
+    "updated_at": "10/05/2025 07:21:15",
+    "orulo_url": "https://www.orulo.com.br/buildings/51800",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "publisher": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "João Calixto",
+      "number": 40,
+      "area": "Vila das Belezas",
+      "city": "São Paulo",
+      "latitude": -23.639742,
+      "longitude": -46.741757,
+      "state": "SP",
+      "zip_code": "05731-360"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1630627",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1630627.jpg?1702656525",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1630627.jpg?1702656525",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1630627.jpg?1702656525",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1630627.jpg?1702656525"
+    }
+  },
+  {
+    "id": "51814",
+    "name": "Metrocasa Capão Redondo - NR",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 192038.4,
+    "min_bedrooms": 1,
+    "max_bedrooms": 1,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 16.59,
+    "max_area": 29.04,
+    "price_per_private_square_meter": 11520,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 17,
+    "number_of_floors": 5,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Academia externa",
+      "Bicicletário",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Espaço gourmet",
+      "Fire place",
+      "Lavanderia",
+      "Pet place",
+      "Playground",
+      "Portaria",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Bicicletário"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Fire place"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Academia externa"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 14,
+    "finality": "Residencial",
+    "updated_at": "10/05/2025 07:21:09",
+    "orulo_url": "https://www.orulo.com.br/buildings/51814",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "publisher": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Professor Antônio Austregésilo",
+      "number": 245,
+      "area": "Jardim Boa Esperança",
+      "city": "São Paulo",
+      "latitude": -23.673127,
+      "longitude": -46.770965,
+      "state": "SP",
+      "zip_code": "05867-000"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": true,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1630878",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1630878.jpg?1702669569",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1630878.jpg?1702669569",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1630878.jpg?1702669569",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1630878.jpg?1702669569"
+    }
+  },
+  {
+    "id": "1743",
+    "name": "Sense Botanic",
+    "description": "Um empreendimento com tudo o que você e sua família precisam a poucos metros do Shopping Jardim Sul. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 879000,
+    "min_bedrooms": 2,
+    "max_bedrooms": 3,
+    "min_suites": 1,
+    "max_suites": 1,
+    "min_parking": 1,
+    "max_parking": 2,
+    "min_bathrooms": 3,
+    "max_bathrooms": 3,
+    "min_area": 117.28,
+    "max_area": 152.69,
+    "price_per_private_square_meter": 7495,
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 9,
+    "number_of_floors": 25,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Circuito de TV",
+      "Coworking",
+      "Elevador de serviço",
+      "Elevador social",
+      "Espaço gourmet",
+      "Gerador",
+      "Lounge",
+      "Pet place",
+      "Piscina com raia",
+      "Piscina infantil",
+      "Piscina térmica",
+      "Portaria 24 horas",
+      "Praça",
+      "Quadra poliesportiva",
+      "Sauna",
+      "Segurança",
+      "Solarium",
+      "Terraço coletivo",
+      "Vestiários"
+    ],
+    "building_features": [
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Circuito de TV"
+      },
+      {
+        "name": "Elevador de serviço"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Gerador"
+      },
+      {
+        "name": "Lounge"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Piscina com raia"
+      },
+      {
+        "name": "Piscina térmica"
+      },
+      {
+        "name": "Portaria 24 horas"
+      },
+      {
+        "name": "Praça"
+      },
+      {
+        "name": "Quadra poliesportiva"
+      },
+      {
+        "name": "Sauna"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Solarium"
+      },
+      {
+        "name": "Terraço coletivo"
+      },
+      {
+        "name": "Vestiários"
+      }
+    ],
+    "unit_features": [],
+    "stock": 2,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 20:45:29",
+    "orulo_url": "https://www.orulo.com.br/buildings/1743",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "638",
+      "name": "Exto"
+    },
+    "publisher": {
+      "id": "638",
+      "name": "Exto"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Nelson Gama de Oliveira",
+      "number": 1361,
+      "area": "Morumbi",
+      "city": "São Paulo",
+      "latitude": -23.6292,
+      "longitude": -46.7435,
+      "state": "SP",
+      "zip_code": "05734-150"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "115258",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/115258.jpg?1532172726",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/115258.jpg?1532172726",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/115258.jpg?1532172726",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/115258.jpg?1532172726"
+    }
+  },
+  {
+    "id": "20617",
+    "name": "Mondo Morumbi",
+    "description": "Apartamentos de 65 e 82 m², com plantas inteligentes e lazer para toda a família, em terreno com mais de 4.700 m². Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 660042.1,
+    "min_bedrooms": 2,
+    "max_bedrooms": 3,
+    "min_suites": 1,
+    "max_suites": 2,
+    "min_parking": 1,
+    "max_parking": 2,
+    "min_bathrooms": 2,
+    "max_bathrooms": 3,
+    "min_area": 65,
+    "max_area": 137.75,
+    "price_per_private_square_meter": 10131,
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 10,
+    "number_of_floors": 25,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Coworking",
+      "Deck molhado",
+      "Elevador de serviço",
+      "Elevador social",
+      "Jardim",
+      "Pet place",
+      "Piscina adulto",
+      "Piscina com raia",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Quadra poliesportiva",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança",
+      "Solarium",
+      "Spa",
+      "Terraço coletivo"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Deck molhado"
+      },
+      {
+        "name": "Elevador de serviço"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Jardim"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Piscina com raia"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Quadra poliesportiva"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Solarium"
+      },
+      {
+        "name": "Spa"
+      },
+      {
+        "name": "Terraço coletivo"
+      }
+    ],
+    "unit_features": [],
+    "stock": 68,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 20:42:47",
+    "orulo_url": "https://www.orulo.com.br/buildings/20617",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "638",
+      "name": "Exto"
+    },
+    "publisher": {
+      "id": "638",
+      "name": "Exto"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Carvalho de Freitas",
+      "number": 285,
+      "area": "Vila Andrade",
+      "city": "São Paulo",
+      "latitude": -23.631147,
+      "longitude": -46.739925,
+      "state": "SP",
+      "zip_code": "05728-030"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "650464",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/650464.jpg?1623918781",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/650464.jpg?1623918781",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/650464.jpg?1623918781",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/650464.jpg?1623918781"
+    }
+  },
+  {
+    "id": "1850",
+    "name": "Provenance Morumbi",
+    "description": "Localizado ao lado dos Shoppings Jardim Sul e Morumbi Town, o empreendimento apresenta um projeto que irá surpreender você e a sua família. Uma nova categoria de apartamentos de alto padrão. Bem-vindo ao seu futuro. Deixe seu legado. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 1347253.27,
+    "min_bedrooms": 3,
+    "max_bedrooms": 4,
+    "min_suites": 3,
+    "max_suites": 4,
+    "min_parking": 3,
+    "max_parking": 4,
+    "min_bathrooms": 5,
+    "max_bathrooms": 5,
+    "min_area": 128.8,
+    "max_area": 247.39,
+    "price_per_private_square_meter": 10460,
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 4,
+    "number_of_floors": 18,
+    "features": [
+      "Academia",
+      "Academia externa",
+      "Depósito",
+      "Espaço gourmet",
+      "Gerador",
+      "Pet place",
+      "Playground",
+      "Portaria",
+      "Praça",
+      "Quadra poliesportiva",
+      "Salão de festas",
+      "Segurança",
+      "Trilhas e bosque"
+    ],
+    "building_features": [
+      {
+        "name": "Depósito"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Academia externa"
+      },
+      {
+        "name": "Gerador"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Praça"
+      },
+      {
+        "name": "Quadra poliesportiva"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Trilhas e bosque"
+      }
+    ],
+    "unit_features": [],
+    "stock": 4,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 20:29:20",
+    "orulo_url": "https://www.orulo.com.br/buildings/1850",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "638",
+      "name": "Exto"
+    },
+    "publisher": {
+      "id": "638",
+      "name": "Exto"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Carvalho de Freitas",
+      "number": 420,
+      "area": "Morumbi",
+      "city": "São Paulo",
+      "latitude": -23.6313,
+      "longitude": -46.740002,
+      "state": "SP",
+      "zip_code": "05728-030"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "120072",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/120072.jpg?1532194367",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/120072.jpg?1532194367",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/120072.jpg?1532194367",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/120072.jpg?1532194367"
+    }
+  },
+  {
+    "id": "1740",
+    "name": "Ext Praça Morumbi",
+    "description": "Em uma rua privilegiada, rodeada de muito verde e a poucos metros dos Shoppings Jardim Sul e Morumbi Town, o empreendimento traz tranquilidade e todas as opções de lazer que você precisa. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 616928.75,
+    "min_bedrooms": 2,
+    "max_bedrooms": 2,
+    "min_suites": 1,
+    "max_suites": 1,
+    "min_parking": 1,
+    "max_parking": 2,
+    "min_bathrooms": 2,
+    "max_bathrooms": 2,
+    "min_area": 58.11,
+    "max_area": 96.17,
+    "price_per_private_square_meter": 10617,
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 8,
+    "number_of_floors": 21,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Circuito de TV",
+      "Espaço gourmet",
+      "Gerador",
+      "Pet place",
+      "Piscina com raia",
+      "Piscina infantil",
+      "Piscina térmica",
+      "Playground",
+      "Portaria",
+      "Praça",
+      "Quadra poliesportiva",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Circuito de TV"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Gerador"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Piscina com raia"
+      },
+      {
+        "name": "Piscina térmica"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Praça"
+      },
+      {
+        "name": "Quadra poliesportiva"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 5,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 20:16:58",
+    "orulo_url": "https://www.orulo.com.br/buildings/1740",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "638",
+      "name": "Exto"
+    },
+    "publisher": {
+      "id": "638",
+      "name": "Exto"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Francisco José Da Silva",
+      "number": 438,
+      "area": "Morumbi",
+      "city": "São Paulo",
+      "latitude": -23.626101,
+      "longitude": -46.740799,
+      "state": "SP",
+      "zip_code": "05726-100"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "115167",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/115167.jpg?1532171602",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/115167.jpg?1532171602",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/115167.jpg?1532171602",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/115167.jpg?1532171602"
+    }
+  },
+  {
+    "id": "21512",
+    "name": "Metrocasa Vila das Belezas - NR",
+    "description": "Se você quer conforto, facilidade e comodidade, o Metrocasa Vila das Belezas é perfeito! Ao lado do metrô Vila das Belezas, próximo do Shopping Campo Limpo, Bancos, Carrefour, Sesc Campo Limpo, hospitais, escolas e muito mais, o Metrocasa Vila das Belezas tem tudo que precisa, com distâncias a pé para não gastar nada de carro e ter rapidez para ir e vir. Sua vida vai ficar muito mais fácil para tudo! Além disso, tem uma super área de lazer com Academia, Churrasqueiras, Salão de Jogos, Espaço Gourmet, Espaço Kids, Bicicletário, Lounge, Quadra Recreativa, Espaço Crossfit, Petplace e muito mais! Escolha entre as unidades Studio, 1 e 2 Dorms. e venha para o Metrocasa Vila das Belezas. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 317842.8,
+    "min_bedrooms": 1,
+    "max_bedrooms": 1,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 31,
+    "max_area": 72,
+    "price_per_private_square_meter": 10253,
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 12,
+    "number_of_floors": 9,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Academia externa",
+      "Bicicletário",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Elevador social",
+      "Espaço gourmet",
+      "Lavanderia",
+      "Lounge",
+      "Pet place",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Salão de festas",
+      "Segurança",
+      "Solarium",
+      "Terraço coletivo"
+    ],
+    "building_features": [
+      {
+        "name": "Bicicletário"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Academia externa"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Lounge"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Solarium"
+      },
+      {
+        "name": "Terraço coletivo"
+      }
+    ],
+    "unit_features": [],
+    "stock": 5,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 15:28:31",
+    "orulo_url": "https://www.orulo.com.br/buildings/21512",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "publisher": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "address": {
+      "street_type": "Avenida",
+      "street": "das Belezas",
+      "number": 605,
+      "area": "Vila das Belezas",
+      "city": "São Paulo",
+      "latitude": -23.641817,
+      "longitude": -46.743637,
+      "state": "SP",
+      "zip_code": "05731-250"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": true,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "706436",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/706436.jpg?1627495773",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/706436.jpg?1627495773",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/706436.jpg?1627495773",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/706436.jpg?1627495773"
+    }
+  },
+  {
+    "id": "38276",
+    "name": "Metrocasa Panamby - Residencial",
+    "description": "Localizado em uma das regiões mais elegantes de São Paulo, chegou o novo Metrocasa Panamby ideal para quem deseja um estilo de vida moderno. Com uma localização impecável e tudo que você precisa do seu lado! Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 599000,
+    "min_bedrooms": 1,
+    "max_bedrooms": 1,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 66,
+    "max_area": 84,
+    "price_per_private_square_meter": 9076,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 13,
+    "number_of_floors": 16,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Bicicletário",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Espaço gourmet",
+      "Lavanderia",
+      "Pet place",
+      "Portaria",
+      "Sala de jogos",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Bicicletário"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 4,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 14:57:21",
+    "orulo_url": "https://www.orulo.com.br/buildings/38276",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "publisher": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Alexandre Benois",
+      "number": 17,
+      "area": "Panamby",
+      "city": "São Paulo",
+      "latitude": -23.633149,
+      "longitude": -46.738124,
+      "state": "SP",
+      "zip_code": "05729-090"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1229615",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1229615.jpg?1674653555",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1229615.jpg?1674653555",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1229615.jpg?1674653555",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1229615.jpg?1674653555"
+    }
+  },
+  {
+    "id": "51801",
+    "name": "Metrocasa Vila das Belezas II - NR",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 400800,
+    "min_bedrooms": 1,
+    "max_bedrooms": 1,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 41.75,
+    "max_area": 41.75,
+    "price_per_private_square_meter": 9600,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 11,
+    "number_of_floors": 6,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Bicicletário",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Fire place",
+      "Lavanderia",
+      "Lounge",
+      "Pet place",
+      "Playground",
+      "Portaria",
+      "Sala de jogos",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Bicicletário"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Fire place"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Lounge"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 1,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 14:15:29",
+    "orulo_url": "https://www.orulo.com.br/buildings/51801",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "publisher": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "João Calixto",
+      "number": 40,
+      "area": "Vila das Belezas",
+      "city": "São Paulo",
+      "latitude": -23.639742,
+      "longitude": -46.741757,
+      "state": "SP",
+      "zip_code": "05731-360"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": true,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1630663",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1630663.jpg?1702657067",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1630663.jpg?1702657067",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1630663.jpg?1702657067",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1630663.jpg?1702657067"
+    }
+  },
+  {
+    "id": "51813",
+    "name": "Metrocasa Capão Redondo - Residencial",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 246400,
+    "min_bedrooms": 1,
+    "max_bedrooms": 1,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 30.8,
+    "max_area": 67.1,
+    "price_per_private_square_meter": 8000,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 17,
+    "number_of_floors": 16,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Academia externa",
+      "Bicicletário",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Espaço gourmet",
+      "Fire place",
+      "Lavanderia",
+      "Pet place",
+      "Playground",
+      "Portaria",
+      "Sala de jogos",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Bicicletário"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Fire place"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Academia externa"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 13,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 14:12:07",
+    "orulo_url": "https://www.orulo.com.br/buildings/51813",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "publisher": {
+      "id": "1105",
+      "name": "Metrocasa"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Professor Antônio Austregésilo",
+      "number": 245,
+      "area": "Jardim Boa Esperança",
+      "city": "São Paulo",
+      "latitude": -23.673127,
+      "longitude": -46.770965,
+      "state": "SP",
+      "zip_code": "05867-000"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1630842",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1630842.jpg?1702668569",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1630842.jpg?1702668569",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1630842.jpg?1702668569",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1630842.jpg?1702668569"
+    }
+  },
+  {
+    "id": "56377",
+    "name": "Griffe Campo Limpo - Fase 1",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 236854.34,
+    "min_bedrooms": 2,
+    "max_bedrooms": 2,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 34.79,
+    "max_area": 40.79,
+    "price_per_private_square_meter": 6808,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 13,
+    "number_of_floors": 19,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Lavanderia",
+      "Lounge",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Portaria",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Lounge"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 133,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 10:44:50",
+    "orulo_url": "https://www.orulo.com.br/buildings/56377",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "1161",
+      "name": "EPH"
+    },
+    "publisher": {
+      "id": "1161",
+      "name": "EPH"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Diogo Martins",
+      "number": 485,
+      "area": "Jardim Ana Maria",
+      "city": "São Paulo",
+      "latitude": -23.627208,
+      "longitude": -46.755748,
+      "state": "SP",
+      "zip_code": "05757-120"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1773750",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1773750.jpg?1715867051",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1773750.jpg?1715867051",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1773750.jpg?1715867051",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1773750.jpg?1715867051"
+    }
+  },
+  {
+    "id": "43769",
+    "name": "Griffe Club Vila Real",
+    "description": "Invista nos seus sonhos e realize o seu desejo de ter uma casa própria. Conheça o Vila real, um empreendimento moderno e com um preço diferenciado. Muito bem localizado no Jardim Iae e irá contar com lazer completo: piscina, churrasqueira, fitness, salão de festas, playground, brinquedoteca e muito mais. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 255010.26,
+    "min_bedrooms": 2,
+    "max_bedrooms": 2,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 38.11,
+    "max_area": 57.12,
+    "price_per_private_square_meter": 6618,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 12,
+    "number_of_floors": 14,
+    "number_of_towers": 3,
+    "features": [
+      "Academia",
+      "Bicicletário",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Espaço gourmet",
+      "Fire place",
+      "Lavanderia",
+      "Pet place",
+      "Piscina adulto",
+      "Playground",
+      "Portaria",
+      "Quadra poliesportiva",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Bicicletário"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Fire place"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Quadra poliesportiva"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 6,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 08:45:32",
+    "orulo_url": "https://www.orulo.com.br/buildings/43769",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "1161",
+      "name": "EPH"
+    },
+    "publisher": {
+      "id": "1161",
+      "name": "EPH"
+    },
+    "address": {
+      "street_type": "Avenida",
+      "street": "Felipe Carrilo Puerto",
+      "number": 555,
+      "area": "Jardim Iae",
+      "city": "São Paulo",
+      "latitude": -23.666997,
+      "longitude": -46.788384,
+      "state": "SP",
+      "zip_code": "05890-000"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": true,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1386601",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1386601.jpg?1684961266",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1386601.jpg?1684961266",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1386601.jpg?1684961266",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1386601.jpg?1684961266"
+    }
+  },
+  {
+    "id": "52285",
+    "name": "Sphera Panamby Park",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 281530.1,
+    "min_bedrooms": 2,
+    "max_bedrooms": 3,
+    "min_suites": 0,
+    "max_suites": 1,
+    "min_parking": 0,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 2,
+    "min_area": 35.12,
+    "max_area": 67.85,
+    "price_per_private_square_meter": 8016,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 14,
+    "number_of_floors": 16,
+    "number_of_towers": 3,
+    "features": [
+      "Academia",
+      "Bar",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Elevador social",
+      "Pet place",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Salão de festas",
+      "Segurança",
+      "Spa"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Bar"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Spa"
+      }
+    ],
+    "unit_features": [],
+    "stock": 174,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 02:48:14",
+    "orulo_url": "https://www.orulo.com.br/buildings/52285",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "674",
+      "name": "Plano&Plano SP"
+    },
+    "publisher": {
+      "id": "674",
+      "name": "Plano&Plano SP"
+    },
+    "address": {
+      "street_type": "Avenida",
+      "street": "Giovanni Gronchi",
+      "number": 7020,
+      "area": "Panamby",
+      "city": "São Paulo",
+      "latitude": -23.640612,
+      "longitude": -46.737496,
+      "state": "SP",
+      "zip_code": "05724-006"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1645176",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1645176.jpg?1704475499",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1645176.jpg?1704475499",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1645176.jpg?1704475499",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1645176.jpg?1704475499"
+    }
+  },
+  {
+    "id": "52286",
+    "name": "Sphera Panamby Club",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 356063.17,
+    "min_bedrooms": 2,
+    "max_bedrooms": 3,
+    "min_suites": 0,
+    "max_suites": 1,
+    "min_parking": 0,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 2,
+    "min_area": 43.35,
+    "max_area": 67.85,
+    "price_per_private_square_meter": 7948,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 14,
+    "number_of_floors": 16,
+    "number_of_towers": 3,
+    "features": [
+      "Academia",
+      "Bar",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Elevador social",
+      "Pet place",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Salão de festas",
+      "Segurança",
+      "Solarium",
+      "Spa"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Bar"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Solarium"
+      },
+      {
+        "name": "Spa"
+      }
+    ],
+    "unit_features": [],
+    "stock": 107,
+    "finality": "Residencial",
+    "updated_at": "09/05/2025 02:37:09",
+    "orulo_url": "https://www.orulo.com.br/buildings/52286",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "674",
+      "name": "Plano&Plano SP"
+    },
+    "publisher": {
+      "id": "674",
+      "name": "Plano&Plano SP"
+    },
+    "address": {
+      "street_type": "Avenida",
+      "street": "Giovanni Gronchi",
+      "number": 7020,
+      "area": "Panamby",
+      "city": "São Paulo",
+      "latitude": -23.640612,
+      "longitude": -46.737496,
+      "state": "SP",
+      "zip_code": "05724-006"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1645215",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1645215.jpg?1704477282",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1645215.jpg?1704477282",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1645215.jpg?1704477282",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1645215.jpg?1704477282"
+    }
+  },
+  {
+    "id": "19290",
+    "name": "First Class Mbigucci Vip",
+    "description": "Vip MBigucci serão apartamentos de 2 dormitórios (sendo 2 suítes) + lavabo em condomínio clube com lazer completo, em uma das regiões mais cobiçadas da cidade. Mais que um dos locais mais desejados e valorizados da cidade, o Morumbi é um estilo de vida. Referência de exclusividade e status, o Morumbi é um lugar único e diferenciado, cercado de sofisticados restaurantes, charmosos pontos de encontro e as mais variadas lojas. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 574000,
+    "min_bedrooms": 2,
+    "max_bedrooms": 2,
+    "min_suites": 2,
+    "max_suites": 2,
+    "min_parking": 1,
+    "max_parking": 1,
+    "min_bathrooms": 3,
+    "max_bathrooms": 3,
+    "min_area": 64.15,
+    "max_area": 64.15,
+    "price_per_private_square_meter": 8948,
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 4,
+    "number_of_floors": 8,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Espaço gourmet",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Praça",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança",
+      "Solarium"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Praça"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Solarium"
+      }
+    ],
+    "unit_features": [],
+    "stock": 1,
+    "finality": "Residencial",
+    "updated_at": "08/05/2025 21:54:07",
+    "orulo_url": "https://www.orulo.com.br/buildings/19290",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "683",
+      "name": "Mbigucci"
+    },
+    "publisher": {
+      "id": "683",
+      "name": "Mbigucci"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Ascencional",
+      "number": 237,
+      "area": "Morumbi",
+      "city": "São Paulo",
+      "latitude": -23.624208,
+      "longitude": -46.73201,
+      "state": "SP",
+      "zip_code": "05713-430"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "590579",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/590579.jpg?1618416619",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/590579.jpg?1618416619",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/590579.jpg?1618416619",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/590579.jpg?1618416619"
+    }
+  },
+  {
+    "id": "34457",
+    "name": "First Class Mbigucci Premium",
+    "description": "Mais que um dos locais mais desejados e valorizados da cidade, o Morumbi é um estilo de vida. Referência de exclusividade e status, o Morumbi é um lugar único e diferenciado, cercado de sofisticados restaurantes, charmosos pontos de encontro e as mais variadas lojas. Acrescente ainda a facilidade de acesso a todas as regiões da cidade através de vias de trânsito rápido. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 553000,
+    "min_bedrooms": 2,
+    "max_bedrooms": 2,
+    "min_suites": 2,
+    "max_suites": 2,
+    "min_parking": 1,
+    "max_parking": 2,
+    "min_bathrooms": 3,
+    "max_bathrooms": 3,
+    "min_area": 64.15,
+    "max_area": 64.15,
+    "price_per_private_square_meter": 8620,
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 4,
+    "number_of_floors": 8,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Espaço gourmet",
+      "Jardim",
+      "Lounge",
+      "Piscina com raia",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Praça",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança",
+      "Solarium",
+      "Vestiários"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Jardim"
+      },
+      {
+        "name": "Lounge"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Piscina com raia"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Praça"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Solarium"
+      },
+      {
+        "name": "Vestiários"
+      }
+    ],
+    "unit_features": [],
+    "stock": 2,
+    "finality": "Residencial",
+    "updated_at": "08/05/2025 20:47:56",
+    "orulo_url": "https://www.orulo.com.br/buildings/34457",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "683",
+      "name": "Mbigucci"
+    },
+    "publisher": {
+      "id": "683",
+      "name": "Mbigucci"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Ascencional",
+      "number": 237,
+      "area": "Morumbi",
+      "city": "São Paulo",
+      "latitude": -23.624082,
+      "longitude": -46.732085,
+      "state": "SP",
+      "zip_code": "05713-430"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1127919",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1127919.jpg?1663943942",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1127919.jpg?1663943942",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1127919.jpg?1663943942",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1127919.jpg?1663943942"
+    }
+  },
+  {
+    "id": "44669",
+    "name": "Rev Home Club Vila das Belezas - Residencial",
+    "description": "O Rev Home Club foi pensado pra você e sua família! Um Condomínio-Clube inédito na Vila das Belezas, com lazer incrível, bosque preservado, apartamentos inteligentes e bem desenhados e um preço justo que você pode pagar. Que beleza vai ser morar aqui! Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 252600,
+    "min_bedrooms": 1,
+    "max_bedrooms": 2,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 28.85,
+    "max_area": 36.17,
+    "price_per_private_square_meter": 8756,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 12,
+    "number_of_floors": 16,
+    "number_of_towers": 2,
+    "features": [
+      "Academia",
+      "Academia externa",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Elevador social",
+      "Jardim",
+      "Lavanderia",
+      "Pet place",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Quadra poliesportiva",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Academia externa"
+      },
+      {
+        "name": "Jardim"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Quadra poliesportiva"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 152,
+    "finality": "Residencial",
+    "updated_at": "08/05/2025 12:14:51",
+    "orulo_url": "https://www.orulo.com.br/buildings/44669",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "3273",
+      "name": "REV3 Incorporadora"
+    },
+    "publisher": {
+      "id": "3273",
+      "name": "REV3 Incorporadora"
+    },
+    "address": {
+      "street_type": "Estrada",
+      "street": "de Itapecerica",
+      "number": 1185,
+      "area": "Vila das Belezas",
+      "city": "São Paulo",
+      "latitude": -23.645635,
+      "longitude": -46.746159,
+      "state": "SP",
+      "zip_code": "05835-003"
+    },
+    "opportunity": {
+      "broker": true,
+      "client": true,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": true,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1414785",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1414785.png?1686928170",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1414785.png?1686928170",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1414785.png?1686928170",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1414785.png?1686928170"
+    }
+  },
+  {
+    "id": "49832",
+    "name": "Rev Home Club Vila das Belezas - NR",
+    "description": "O Rev Home Club foi pensado pra você e sua família! Um Condomínio-Clube inédito na Vila das Belezas, com lazer incrível, bosque preservado, apartamentos inteligentes e bem desenhados e um preço justo que você pode pagar. Que beleza vai ser morar aqui! Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 212400,
+    "min_bedrooms": 1,
+    "max_bedrooms": 1,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 19.01,
+    "max_area": 29.5,
+    "price_per_private_square_meter": 10870,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 16,
+    "number_of_floors": 1,
+    "number_of_towers": 1,
+    "features": [
+      "Elevador social",
+      "Lavanderia",
+      "Portaria",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 15,
+    "finality": "Residencial",
+    "updated_at": "08/05/2025 12:14:37",
+    "orulo_url": "https://www.orulo.com.br/buildings/49832",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "3273",
+      "name": "REV3 Incorporadora"
+    },
+    "publisher": {
+      "id": "3273",
+      "name": "REV3 Incorporadora"
+    },
+    "address": {
+      "street_type": "Estrada",
+      "street": "de Itapecerica",
+      "number": 1185,
+      "area": "Vila das Belezas",
+      "city": "São Paulo",
+      "latitude": -23.645635,
+      "longitude": -46.746159,
+      "state": "SP",
+      "zip_code": "05835-003"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": true,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1571872",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1571872.jpg?1698842023",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1571872.jpg?1698842023",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1571872.jpg?1698842023",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1571872.jpg?1698842023"
+    }
+  },
+  {
+    "id": "49834",
+    "name": "Rev Home Club Vila das Belezas - Lojas",
+    "description": "O Rev Home Club foi pensado pra você e sua família! Um Condomínio-Clube inédito na Vila das Belezas, com lazer incrível, bosque preservado, apartamentos inteligentes e bem desenhados e um preço justo que você pode pagar. Que beleza vai ser morar aqui! Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 3230400,
+    "min_bedrooms": 0,
+    "max_bedrooms": 0,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 0,
+    "max_bathrooms": 0,
+    "min_area": 329.46,
+    "max_area": 329.46,
+    "price_per_private_square_meter": 9805,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 1,
+    "number_of_floors": 1,
+    "number_of_towers": 1,
+    "features": [],
+    "building_features": [],
+    "unit_features": [],
+    "stock": 1,
+    "finality": "Comercial",
+    "updated_at": "08/05/2025 11:54:35",
+    "orulo_url": "https://www.orulo.com.br/buildings/49834",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "3273",
+      "name": "REV3 Incorporadora"
+    },
+    "publisher": {
+      "id": "3273",
+      "name": "REV3 Incorporadora"
+    },
+    "address": {
+      "street_type": "Estrada",
+      "street": "de Itapecerica",
+      "number": 1185,
+      "area": "Vila das Belezas",
+      "city": "São Paulo",
+      "latitude": -23.645635,
+      "longitude": -46.746159,
+      "state": "SP",
+      "zip_code": "05835-003"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1571895",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1571895.jpg?1698844482",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1571895.jpg?1698844482",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1571895.jpg?1698844482",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1571895.jpg?1698844482"
+    }
+  },
+  {
+    "id": "38328",
+    "name": "Lift Vila das Belezas - NR",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 231900,
+    "min_bedrooms": 1,
+    "max_bedrooms": 1,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 24.04,
+    "max_area": 24.04,
+    "price_per_private_square_meter": 9646,
+    "min_condominium_value": 250,
+    "min_condominium_ref": "24",
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 18,
+    "number_of_floors": 3,
+    "number_of_towers": 1,
+    "features": [
+      "Elevador social",
+      "Lavanderia",
+      "Portaria",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 7,
+    "finality": "Residencial",
+    "updated_at": "06/05/2025 02:13:45",
+    "orulo_url": "https://www.orulo.com.br/buildings/38328",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "3534",
+      "name": "Vitta Residencial SP"
+    },
+    "publisher": {
+      "id": "3534",
+      "name": "Vitta Residencial SP"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Aristódemo Gazzotti",
+      "number": 128,
+      "area": "Vila das Belezas",
+      "city": "São Paulo",
+      "latitude": -23.643444,
+      "longitude": -46.739888,
+      "state": "SP",
+      "zip_code": "05840-020"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": true,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1230817",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1230817.jpg?1674852134",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1230817.jpg?1674852134",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1230817.jpg?1674852134",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1230817.jpg?1674852134"
+    }
+  },
+  {
+    "id": "38327",
+    "name": "Lift Vila das Belezas - Residencial",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 222100,
+    "min_bedrooms": 1,
+    "max_bedrooms": 2,
+    "min_suites": 0,
+    "max_suites": 1,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 24,
+    "max_area": 33.19,
+    "price_per_private_square_meter": 9254,
+    "min_condominium_value": 250,
+    "min_condominium_ref": "33,11",
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 18,
+    "number_of_floors": 16,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Bar",
+      "Bicicletário",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Elevador social",
+      "Fire place",
+      "Lavanderia",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Bicicletário"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Fire place"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Bar"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 9,
+    "finality": "Residencial",
+    "updated_at": "05/05/2025 18:36:02",
+    "orulo_url": "https://www.orulo.com.br/buildings/38327",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "3534",
+      "name": "Vitta Residencial SP"
+    },
+    "publisher": {
+      "id": "3534",
+      "name": "Vitta Residencial SP"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Aristódemo Gazzotti",
+      "number": 128,
+      "area": "Vila das Belezas",
+      "city": "São Paulo",
+      "latitude": -23.643444,
+      "longitude": -46.739888,
+      "state": "SP",
+      "zip_code": "05840-020"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": true,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1230795",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1230795.jpg?1674851768",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1230795.jpg?1674851768",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1230795.jpg?1674851768",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1230795.jpg?1674851768"
+    }
+  },
+  {
+    "id": "51327",
+    "name": "Torino Morumbi",
+    "description": "O melhor apartamento de 1 ou 2 dormitórios da região, localizado no coração do Morumbi, é o pronto para morar que mudará a sua vida! Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 382000,
+    "min_bedrooms": 1,
+    "max_bedrooms": 2,
+    "min_suites": 1,
+    "max_suites": 1,
+    "min_parking": 1,
+    "max_parking": 2,
+    "min_bathrooms": 1,
+    "max_bathrooms": 2,
+    "min_area": 38.6,
+    "max_area": 55.6,
+    "price_per_private_square_meter": 9896,
+    "min_condominium_value": 485.32,
+    "min_condominium_ref": "115A",
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 8,
+    "number_of_floors": 18,
+    "number_of_towers": 2,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Elevador social",
+      "Espaço gourmet",
+      "Pet place",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Quadra poliesportiva",
+      "Salão de festas",
+      "Sauna",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Quadra poliesportiva"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sauna"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 15,
+    "finality": "Residencial",
+    "updated_at": "05/05/2025 16:59:52",
+    "orulo_url": "https://www.orulo.com.br/buildings/51327",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "5497",
+      "name": "Copava"
+    },
+    "publisher": {
+      "id": "5497",
+      "name": "Copava"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Olavo Leite",
+      "number": 250,
+      "area": "Morumbi",
+      "city": "São Paulo",
+      "latitude": -23.635394,
+      "longitude": -46.735723,
+      "state": "SP",
+      "zip_code": "05718-320"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1616672",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1616672.jpg?1701349264",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1616672.jpg?1701349264",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1616672.jpg?1701349264",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1616672.jpg?1701349264"
+    }
+  },
+  {
+    "id": "56211",
+    "name": "Auge Morumbi - Residencial",
+    "description": "O Auge da sua vida está aqui! Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 312200,
+    "min_bedrooms": 2,
+    "max_bedrooms": 3,
+    "min_suites": 0,
+    "max_suites": 1,
+    "min_parking": 0,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 2,
+    "min_area": 33,
+    "max_area": 57,
+    "price_per_private_square_meter": 9461,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 14,
+    "number_of_floors": 20,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Fire place",
+      "Lavanderia",
+      "Pet place",
+      "Piscina adulto",
+      "Playground",
+      "Portaria",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Fire place"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Lavanderia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 56,
+    "finality": "Residencial",
+    "updated_at": "05/05/2025 16:07:39",
+    "orulo_url": "https://www.orulo.com.br/buildings/56211",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "3534",
+      "name": "Vitta Residencial SP"
+    },
+    "publisher": {
+      "id": "3534",
+      "name": "Vitta Residencial SP"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Francisco José da Silva",
+      "number": 410,
+      "area": "Vila Andrade",
+      "city": "São Paulo",
+      "latitude": -23.627093,
+      "longitude": -46.743033,
+      "state": "SP",
+      "zip_code": "05726-100"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": true,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1769165",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1769165.jpg?1715342443",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1769165.jpg?1715342443",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1769165.jpg?1715342443",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1769165.jpg?1715342443"
+    }
+  },
+  {
+    "id": "56490",
+    "name": "Auge Morumbi - Lojas",
+    "description": "O Auge da sua vida está aqui! Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 2055600,
+    "min_bedrooms": 0,
+    "max_bedrooms": 0,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 1,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 237.23,
+    "max_area": 267.59,
+    "price_per_private_square_meter": 8665,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 3,
+    "number_of_floors": 1,
+    "number_of_towers": 1,
+    "features": [],
+    "building_features": [],
+    "unit_features": [],
+    "stock": 3,
+    "finality": "Comercial",
+    "updated_at": "05/05/2025 14:35:37",
+    "orulo_url": "https://www.orulo.com.br/buildings/56490",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "3534",
+      "name": "Vitta Residencial SP"
+    },
+    "publisher": {
+      "id": "3534",
+      "name": "Vitta Residencial SP"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Francisco José da Silva",
+      "number": 410,
+      "area": "Morumbi",
+      "city": "São Paulo",
+      "latitude": -23.627093,
+      "longitude": -46.743033,
+      "state": "SP",
+      "zip_code": "05726-100"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1777097",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1777097.jpg?1716322831",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1777097.jpg?1716322831",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1777097.jpg?1716322831",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1777097.jpg?1716322831"
+    }
+  },
+  {
+    "id": "6213",
+    "name": "Living Wish Panamby",
+    "description": "O empreendimento certo para quem busca conforto, qualidade de vida e segurança em um só lugar. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 925524.52,
+    "min_bedrooms": 3,
+    "max_bedrooms": 4,
+    "min_suites": 1,
+    "max_suites": 4,
+    "min_parking": 2,
+    "max_parking": 2,
+    "min_bathrooms": 2,
+    "max_bathrooms": 7,
+    "min_area": 84,
+    "max_area": 201,
+    "price_per_private_square_meter": 11018,
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 8,
+    "number_of_floors": 17,
+    "number_of_towers": 2,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Elevador de serviço",
+      "Elevador social",
+      "Piscina adulto",
+      "Playground",
+      "Praça",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador de serviço"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Praça"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 8,
+    "finality": "Residencial",
+    "updated_at": "30/04/2025 18:43:46",
+    "orulo_url": "https://www.orulo.com.br/buildings/6213",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "649",
+      "name": "Living SP"
+    },
+    "publisher": {
+      "id": "649",
+      "name": "Living SP"
+    },
+    "address": {
+      "street_type": "Avenida",
+      "street": "Alberto Augusto Alves",
+      "number": 180,
+      "area": "Panamby",
+      "city": "São Paulo",
+      "latitude": -23.641371,
+      "longitude": -46.735802,
+      "state": "SP",
+      "zip_code": "05724-030"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "256504",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/256504.jpg?1581601105",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/256504.jpg?1581601105",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/256504.jpg?1581601105",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/256504.jpg?1581601105"
+    }
+  },
+  {
+    "id": "65466",
+    "name": "Vibra João Dias",
+    "description": "Morar no Vibra João Dias é unir praticidade e lazer em um só lugar. Localizado a apenas 7 minutos do Terminal João Dias e da estação Giovanni Gronchi, você tem fácil acesso a tudo o que precisa. Com uma estrutura de lazer completa, que inclui piscina, academia, pet place e muito mais, o Vibra João Dias oferece o conforto de um verdadeiro clube para você e sua família. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 233500,
+    "min_bedrooms": 1,
+    "max_bedrooms": 2,
+    "min_suites": 0,
+    "max_suites": 1,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 26.39,
+    "max_area": 40.79,
+    "price_per_private_square_meter": 8719,
+    "status": "Em construção",
+    "stage": "Lançamento",
+    "apts_per_floor": 16,
+    "number_of_floors": 22,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Academia externa",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Espaço gourmet",
+      "Pet place",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança",
+      "Solarium",
+      "Spa"
+    ],
+    "building_features": [
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Academia externa"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Solarium"
+      },
+      {
+        "name": "Spa"
+      }
+    ],
+    "unit_features": [],
+    "stock": 187,
+    "finality": "Residencial",
+    "updated_at": "15/04/2025 19:51:12",
+    "orulo_url": "https://www.orulo.com.br/buildings/65466",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "773",
+      "name": "Vibra"
+    },
+    "publisher": {
+      "id": "773",
+      "name": "Vibra"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Amâncio Klein",
+      "number": 28,
+      "area": "Vila das Belezas",
+      "city": "São Paulo",
+      "latitude": -23.645258,
+      "longitude": -46.744049,
+      "state": "SP",
+      "zip_code": "05841-090"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": true,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "2078083",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/2078083.jpg?1736535081",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/2078083.jpg?1736535081",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/2078083.jpg?1736535081",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/2078083.jpg?1736535081"
+    }
+  },
+  {
+    "id": "29674",
+    "name": "Enter Morumbi",
+    "description": "Planejado para surpreender, Enter Morumbi é a combinação perfeita entre sofisticação e qualidade de vida. Aliando o bem-estar com a mobilidade, o imóvel está situado em uma das melhores regiões da zona sul, com escolas, farmácias, mercados e tudo o que você precisa para viver bem. Apartamentos projetados para trazer mais praticidade e conforto para você e sua família, o Enter vai garantir uma vida tranquila e cheia de cuidado e segurança. E quando falamos em diversão e lazer, o condomínio proporciona espaços incríveis, com uma área de lazer completa. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 321900,
+    "min_bedrooms": 2,
+    "max_bedrooms": 2,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 1,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 37.48,
+    "max_area": 37.48,
+    "price_per_private_square_meter": 8589,
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 8,
+    "number_of_floors": 16,
+    "number_of_towers": 2,
+    "features": [
+      "Academia",
+      "Bicicletário",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Deck molhado",
+      "Elevador social",
+      "Jardim",
+      "Pet place",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Bicicletário"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Deck molhado"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Jardim"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 3,
+    "finality": "Residencial",
+    "updated_at": "14/04/2025 14:22:37",
+    "orulo_url": "https://www.orulo.com.br/buildings/29674",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "704",
+      "name": "Econ Construtora"
+    },
+    "publisher": {
+      "id": "704",
+      "name": "Econ Construtora"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "17 de Janeiro",
+      "number": 20,
+      "area": "Vila Andrade",
+      "city": "São Paulo",
+      "latitude": -23.619105,
+      "longitude": -46.72199,
+      "state": "SP",
+      "zip_code": "05706-305"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "977086",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/977086.jpeg?1655759752",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/977086.jpeg?1655759752",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/977086.jpeg?1655759752",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/977086.jpeg?1655759752"
+    }
+  },
+  {
+    "id": "37984",
+    "name": "Hm Smart Capão Redondo",
+    "description": "More com conforto e praticidade no HM Smart Capão Redondo. Ganhe mais conforto e qualidade de vida ao viver em uma região estratégica, cercado de conveniências, e com lazer no condomínio. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 289840,
+    "min_bedrooms": 2,
+    "max_bedrooms": 2,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 0,
+    "max_parking": 0,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 37.9,
+    "max_area": 39.56,
+    "price_per_private_square_meter": 7647,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 12,
+    "number_of_floors": 21,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Brinquedoteca",
+      "Elevador social",
+      "Piscina adulto",
+      "Playground",
+      "Portaria",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 20,
+    "finality": "Residencial",
+    "updated_at": "09/04/2025 22:16:21",
+    "orulo_url": "https://www.orulo.com.br/buildings/37984",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "4585",
+      "name": "HM Engenharia SP"
+    },
+    "publisher": {
+      "id": "4585",
+      "name": "HM Engenharia SP"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "João Zeltner",
+      "number": 155,
+      "area": "Capão Redondo",
+      "city": "São Paulo",
+      "latitude": -23.662479,
+      "longitude": -46.767614,
+      "state": "SP",
+      "zip_code": "05855-280"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1221912",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1221912.jpg?1673551995",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1221912.jpg?1673551995",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1221912.jpg?1673551995",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1221912.jpg?1673551995"
+    }
+  },
+  {
+    "id": "54490",
+    "name": "Sphera Panamby Urban",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 368582.44,
+    "min_bedrooms": 2,
+    "max_bedrooms": 3,
+    "min_suites": 0,
+    "max_suites": 1,
+    "min_parking": 0,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 2,
+    "min_area": 43.35,
+    "max_area": 66.93,
+    "price_per_private_square_meter": 8502,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 14,
+    "number_of_floors": 16,
+    "number_of_towers": 2,
+    "features": [
+      "Academia",
+      "Bar",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Elevador social",
+      "Pet place",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Portaria",
+      "Sala de jogos",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Bar"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 15,
+    "finality": "Residencial",
+    "updated_at": "08/04/2025 19:59:04",
+    "orulo_url": "https://www.orulo.com.br/buildings/54490",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "962",
+      "name": "CasaViva"
+    },
+    "publisher": {
+      "id": "962",
+      "name": "CasaViva"
+    },
+    "address": {
+      "street_type": "Avenida",
+      "street": "Giovanni Gronchi",
+      "number": 7020,
+      "area": "Panamby",
+      "city": "São Paulo",
+      "latitude": -23.640612,
+      "longitude": -46.737496,
+      "state": "SP",
+      "zip_code": "05724-006"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": true,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1842923",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1842923.png?1722265462",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1842923.png?1722265462",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1842923.png?1722265462",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1842923.png?1722265462"
+    }
+  },
+  {
+    "id": "35446",
+    "name": "ROC Panamby",
+    "description": "Um empreendimento completo com toda segurança, conforto e lazer que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 541600,
+    "min_bedrooms": 2,
+    "max_bedrooms": 3,
+    "min_suites": 1,
+    "max_suites": 1,
+    "min_parking": 1,
+    "max_parking": 1,
+    "min_bathrooms": 2,
+    "max_bathrooms": 3,
+    "min_area": 55,
+    "max_area": 99,
+    "price_per_private_square_meter": 9847,
+    "status": "Em construção",
+    "stage": "Em construção",
+    "apts_per_floor": 12,
+    "number_of_floors": 12,
+    "number_of_towers": 2,
+    "features": [
+      "Academia",
+      "Bar",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Coworking",
+      "Elevador social",
+      "Espaço gourmet",
+      "Fire place",
+      "Piscina adulto",
+      "Piscina infantil",
+      "Playground",
+      "Ponto para carro elétrico",
+      "Portaria",
+      "Quadra poliesportiva",
+      "Sala de reuniões",
+      "Salão de festas",
+      "Segurança",
+      "Solarium",
+      "Spa",
+      "Terraço coletivo"
+    ],
+    "building_features": [
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Coworking"
+      },
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Piscina infantil"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Bar"
+      },
+      {
+        "name": "Quadra poliesportiva"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de reuniões"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Solarium"
+      },
+      {
+        "name": "Spa"
+      },
+      {
+        "name": "Terraço coletivo"
+      },
+      {
+        "name": "Ponto para carro elétrico"
+      },
+      {
+        "name": "Fire place"
+      }
+    ],
+    "unit_features": [],
+    "stock": 26,
+    "finality": "Residencial",
+    "updated_at": "04/04/2025 15:05:03",
+    "orulo_url": "https://www.orulo.com.br/buildings/35446",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "5286",
+      "name": "Vaster"
+    },
+    "publisher": {
+      "id": "5286",
+      "name": "Vaster"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Itatupa",
+      "number": 212,
+      "area": "Vila Andrade",
+      "city": "São Paulo",
+      "latitude": -23.630809,
+      "longitude": -46.732551,
+      "state": "SP",
+      "zip_code": "05715-040"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1211836",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1211836.jpg?1671740173",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1211836.jpg?1671740173",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1211836.jpg?1671740173",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1211836.jpg?1671740173"
+    }
+  },
+  {
+    "id": "2927",
+    "name": "Cores Campo Limpo",
+    "description": "Nesse empreendimento tudo combina com você. Este projeto foi idealizado para oferecer tudo o que você precisa para ter conforto e praticidade. Com apartamentos de 2 dormitórios e lazer completo, o empreendimento está localizado no Campo Limpo, bairro com excelente potencial de valorização e conhecido por seu fácil acesso às principais vias de São Paulo. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 340000,
+    "min_bedrooms": 2,
+    "max_bedrooms": 2,
+    "min_suites": 0,
+    "max_suites": 0,
+    "min_parking": 1,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 49.14,
+    "max_area": 49.62,
+    "price_per_private_square_meter": 6919,
+    "min_condominium_value": 673.19,
+    "min_condominium_ref": "042-A",
+    "status": "Pronto novo",
+    "stage": "Pronto novo",
+    "apts_per_floor": 8,
+    "number_of_floors": 9,
+    "number_of_towers": 2,
+    "features": [
+      "Academia",
+      "Academia externa",
+      "Bar",
+      "Brinquedoteca",
+      "Churrasqueira condominial",
+      "Circuito de TV",
+      "Deck molhado",
+      "Depósito",
+      "Espaço gourmet",
+      "Pet place",
+      "Piscina adulto",
+      "Playground",
+      "Portaria",
+      "Praça",
+      "Sala de jogos",
+      "Sala de reuniões",
+      "Salão de festas",
+      "Segurança",
+      "Solarium",
+      "Spa",
+      "Terraço coletivo",
+      "Trilhas e bosque"
+    ],
+    "building_features": [
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Circuito de TV"
+      },
+      {
+        "name": "Deck molhado"
+      },
+      {
+        "name": "Depósito"
+      },
+      {
+        "name": "Espaço gourmet"
+      },
+      {
+        "name": "Brinquedoteca"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Academia externa"
+      },
+      {
+        "name": "Pet place"
+      },
+      {
+        "name": "Piscina adulto"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Praça"
+      },
+      {
+        "name": "Bar"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Sala de jogos"
+      },
+      {
+        "name": "Sala de reuniões"
+      },
+      {
+        "name": "Segurança"
+      },
+      {
+        "name": "Solarium"
+      },
+      {
+        "name": "Spa"
+      },
+      {
+        "name": "Terraço coletivo"
+      },
+      {
+        "name": "Trilhas e bosque"
+      }
+    ],
+    "unit_features": [],
+    "stock": 3,
+    "finality": "Residencial",
+    "updated_at": "03/04/2025 20:39:38",
+    "orulo_url": "https://www.orulo.com.br/buildings/2927",
+    "building_permit": "Instituição de Condomínio: R.02 e Av. 04 na matrícula 432.112 do 11º ORI de São Paulo/SP, em 05/09/2017 e 04/10/2017, respectivamente.",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "781",
+      "name": "Tibério"
+    },
+    "publisher": {
+      "id": "781",
+      "name": "Tibério"
+    },
+    "address": {
+      "street_type": "Estrada",
+      "street": "dos Mirandas",
+      "number": 223,
+      "area": "Campo Limpo",
+      "city": "São Paulo",
+      "latitude": -23.61614,
+      "longitude": -46.75462,
+      "state": "SP",
+      "zip_code": "05752-001"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "172017",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/172017.jpg?1544554889",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/172017.jpg?1544554889",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/172017.jpg?1544554889",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/172017.jpg?1544554889"
+    }
+  },
+  {
+    "id": "38705",
+    "name": "Costa Iluminada Panamby - Breve Lançamento",
+    "description": "Localizado na região nobre do Morumbi, o edifício Costa Iluminada chega para oferecer a experiência única de morar em um dos pontos mais modernos, arborizados e bem localizados de São Paulo. Uma vizinhança com toda a conveniência que você merece. Preço e disponibilidade do imóvel sujeitos a alteração sem aviso prévio.",
+    "min_price": 0.1,
+    "min_bedrooms": 1,
+    "max_bedrooms": 2,
+    "min_suites": 0,
+    "max_suites": 1,
+    "min_parking": 1,
+    "max_parking": 1,
+    "min_bathrooms": 1,
+    "max_bathrooms": 1,
+    "min_area": 42,
+    "max_area": 59,
+    "price_per_private_square_meter": 0,
+    "status": "Em construção",
+    "stage": "Lançamento",
+    "apts_per_floor": 8,
+    "number_of_floors": 9,
+    "number_of_towers": 1,
+    "features": [
+      "Academia",
+      "Churrasqueira condominial",
+      "Elevador social",
+      "Horta coletiva",
+      "Playground",
+      "Portaria",
+      "Salão de festas",
+      "Segurança"
+    ],
+    "building_features": [
+      {
+        "name": "Churrasqueira condominial"
+      },
+      {
+        "name": "Elevador social"
+      },
+      {
+        "name": "Academia"
+      },
+      {
+        "name": "Horta coletiva"
+      },
+      {
+        "name": "Playground"
+      },
+      {
+        "name": "Portaria"
+      },
+      {
+        "name": "Salão de festas"
+      },
+      {
+        "name": "Segurança"
+      }
+    ],
+    "unit_features": [],
+    "stock": 78,
+    "finality": "Residencial",
+    "updated_at": "20/01/2025 10:32:55",
+    "orulo_url": "https://www.orulo.com.br/buildings/38705",
+    "portfolio": [
+      "Lançamento"
+    ],
+    "developer": {
+      "id": "3207",
+      "name": "Lumy"
+    },
+    "publisher": {
+      "id": "3207",
+      "name": "Lumy"
+    },
+    "address": {
+      "street_type": "Rua",
+      "street": "Antônio Aggio",
+      "number": 300,
+      "area": "Panambi",
+      "city": "São Paulo",
+      "latitude": -23.629481,
+      "longitude": -46.730423,
+      "state": "SP",
+      "zip_code": "05713-420"
+    },
+    "opportunity": {
+      "broker": false,
+      "client": false,
+      "exchange_units": false,
+      "tenanted_investment_property": false,
+      "social_housing_program": false,
+      "featured_building": false
+    },
+    "default_image": {
+      "id": "1240961",
+      "description": "Fachada",
+      "200x140": "https://static.orulo.com.br/images/properties/thumb/1240961.jpg?1676402622",
+      "520x280": "https://static.orulo.com.br/images/properties/featured_modern_without_watermark/1240961.jpg?1676402622",
+      "1024x1024": "https://static.orulo.com.br/images/properties/large/1240961.jpg?1676402622",
+      "2280x1800": "https://static.orulo.com.br/images/properties/xlarge/1240961.jpg?1676402622"
+    }
+  }
+]

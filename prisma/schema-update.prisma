@@ -1,0 +1,11 @@
+// Modelo para mensagens de contato (FAQ/Suporte)
+model MensagemContato {
+  id            String    @id @default(cuid())
+  texto         String
+  resposta      String?
+  usuarioNome   String
+  usuarioEmail  String
+  status        String    // "AGUARDANDO", "RESPONDIDA", "ARQUIVADA"
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}

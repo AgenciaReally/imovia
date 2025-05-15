@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Animação de pulso mais lenta para o botão de matches */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+@layer utilities {
+  .animate-ping-slow {
+    animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  .animate-fade-in {
+    animation: fade-in 0.8s cubic-bezier(0.4,0,0.2,1) both;
+  }
+  .animate-wiggle {
+    animation: wiggle 2s infinite cubic-bezier(0.4,0,0.2,1);
+  }
+}
+
+@keyframes fade-in {
+  0% { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(15deg); }
+  60% { transform: rotate(-15deg); }
+}
+
+
+/* Variáveis CSS para o tema Imovia */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 7%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 7%;
+  --primary: 17 99% 55%; /* #FE4F18 - Laranja Imovia */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 14% 98%;
+  --secondary-foreground: 0 0% 7%;
+  --muted: 0 0% 97%;
+  --muted-foreground: 0 0% 40%;
+  --accent: 17 99% 55%; /* #FE4F18 */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 90%;
+  --input: 0 0% 90%;
+  --ring: 17 99% 55%; /* #FE4F18 */
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 0 0% 7%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 10%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 10%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 17 99% 55%; /* #FE4F18 */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 65%;
+  --accent: 17 99% 55%; /* #FE4F18 */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 63% 45%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 20%;
+  --input: 0 0% 20%;
+  --ring: 17 99% 55%; /* #FE4F18 */
+}
+
+/* Base styles */
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: #ffffff;
+  color: #111111;
+  font-feature-settings: "rlig" 1, "calt" 1;
+}
+
+.dark body {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+/* Estilos personalizados para o Imovia */
+.gradient-imovia {
+  background: linear-gradient(135deg, #FE4F18 0%, #FE4F18 100%);
+}
