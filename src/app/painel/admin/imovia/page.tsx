@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BrainCircuit, MessageSquare, History as HistoryIcon, Loader2, CheckCircle, AlertCircle } from "lucide-react"
+import { BrainCircuit, MessageSquare, History as HistoryIcon, Loader2, CheckCircle, AlertCircle, FileSpreadsheet, Mic } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -18,6 +18,9 @@ const Chat = () => {
   const [message, setMessage] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [isCreating, setIsCreating] = useState(false)
+  const [isListening, setIsListening] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [requestTimeout, setRequestTimeout] = useState<NodeJS.Timeout | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -58,7 +61,119 @@ const Chat = () => {
     }
   }
 
-  // Efeito para rolar para o final da conversa quando nova mensagem é adicionada
+  // Funções para lidar com upload de arquivos
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    
+    try {
+      // Lógica para ler o conteúdo do arquivo
+      const fileContents = await readFileAsText(file);
+      
+      // Enviar o conteúdo como mensagem para a IA processar
+      const fileMessage = `Quero importar os seguintes imóveis da minha planilha:\n${fileContents.substring(0, 1000)}${fileContents.length > 1000 ? '...' : ''}`;
+      setMessage(fileMessage);
+      
+      // Avisar o usuário
+      toast.success('Planilha carregada', {
+        description: 'Revise os dados e clique em Enviar para começar a importação.'
+      });
+    } catch (error) {
+      console.error('Erro ao processar arquivo:', error);
+      toast.error('Erro ao processar arquivo', {
+        description: 'Verifique se o formato está correto (CSV, XLS ou XLSX).'
+      });
+    } finally {
+      setIsUploading(false);
+      // Limpar o input de arquivo para permitir selecionar o mesmo arquivo novamente
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  // Função para ler arquivo como texto
+  const readFileAsText = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => resolve(event.target?.result as string);
+      reader.onerror = (error) => reject(error);
+      reader.readAsText(file);
+    });
+  };
+  
+  // Função para lidar com o microfone
+  const handleMicrophoneToggle = () => {
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  };
+  
+  // Iniciar gravação de áudio
+  const startListening = async () => {
+    try {
+      setIsListening(true);
+      
+      // Verificar se a API de reconhecimento de fala está disponível no navegador
+      // @ts-ignore - TypeScript não reconhece a API SpeechRecognition por padrão
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        
+        recognition.lang = 'pt-BR';
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        
+        recognition.onresult = (event: any) => {
+          const transcript = Array.from(event.results)
+            .map((result: any) => result[0])
+            .map((result: any) => result.transcript)
+            .join('');
+            
+          setMessage(transcript);
+        };
+        
+        recognition.onend = () => {
+          setIsListening(false);
+        };
+        
+        recognition.start();
+        
+        // Guardar referência para poder parar depois
+        (window as any).recognition = recognition;
+      } else {
+        toast.error('Reconhecimento de fala não suportado', {
+          description: 'Seu navegador não suporta a API de reconhecimento de fala.'
+        });
+        setIsListening(false);
+      }
+    } catch (error) {
+      console.error('Erro ao iniciar reconhecimento de fala:', error);
+      toast.error('Erro ao iniciar gravação de áudio', {
+        description: 'Verifique as permissões do microfone.'
+      });
+      setIsListening(false);
+    }
+  };
+  
+  // Parar gravação de áudio
+  const stopListening = () => {
+    try {
+      if ((window as any).recognition) {
+        (window as any).recognition.stop();
+        delete (window as any).recognition;
+      }
+      setIsListening(false);
+    } catch (error) {
+      console.error('Erro ao parar reconhecimento de fala:', error);
+    }
+  };
+  
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
@@ -295,6 +410,33 @@ const Chat = () => {
               disabled={isLoading}
               className="flex-1"
             />
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              accept=".csv,.xlsx,.xls"
+              onChange={handleFileUpload}
+              disabled={isLoading}
+            />
+            <Button 
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isLoading || isUploading}
+              variant="outline"
+              size="icon"
+              title="Importar imóveis de planilha"
+            >
+              {isUploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileSpreadsheet className="h-4 w-4" />}
+            </Button>
+            <Button 
+              onClick={handleMicrophoneToggle}
+              disabled={isLoading}
+              variant="outline"
+              size="icon"
+              title="Enviar áudio"
+              className={isListening ? "bg-red-100" : ""}
+            >
+              {isListening ? <Loader2 className="h-4 w-4 animate-spin text-red-500" /> : <Mic className="h-4 w-4" />}
+            </Button>
             <Button 
               onClick={handleSendMessage} 
               disabled={isLoading}
@@ -309,15 +451,32 @@ const Chat = () => {
               Criando imóvel no banco de dados. Isso pode levar alguns instantes...
             </p>
           )}
+          {isListening && (
+            <p className="text-xs text-green-600 mt-2">
+              Gravando áudio... Fale e depois clique novamente no ícone do microfone para parar.
+            </p>
+          )}
         </div>
       </CardFooter>
     </Card>
   )
 }
 
+// Interface para o registro de histórico de ações
+interface AIActionHistoryItem {
+  id: string;
+  tipo: 'imovel' | 'construtora' | 'cliente' | 'pergunta';
+  acao: 'criar' | 'editar' | 'excluir' | 'consultar' | 'vincular';
+  entidade: string;
+  idEntidade?: string;
+  timestamp: string;
+  status: 'success' | 'error';
+  detalhes?: string;
+}
+
 // Componente de Histórico
 const HistoryPanel = () => {
-  const [historicos, setHistoricos] = useState<any[]>([])
+  const [historicos, setHistoricos] = useState<AIActionHistoryItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   
   useEffect(() => {

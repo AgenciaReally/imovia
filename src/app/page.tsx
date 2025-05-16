@@ -407,7 +407,7 @@ export default function Home() {
         {/* Fundo estático simples - NUNCA MOSTRAR O MAPA NA PÁGINA PRINCIPAL */}
         <div className="absolute inset-0 w-full h-full overflow-hidden -z-10">
           {/* Apenas um gradiente estático */}
-          <div className="w-full h-full bg-gradient-to-br from-gray-50 to-gray-100"></div>
+          <div className="w-full h-full bg-white"></div>
         </div>
         
         {/* Layout principal */}

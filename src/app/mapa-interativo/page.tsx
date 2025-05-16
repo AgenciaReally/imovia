@@ -318,7 +318,7 @@ function MapaInterativoContent() {
                         className="w-full text-sm font-medium bg-[#fe4f17] text-white hover:bg-[#fe4f17]/90 gap-1.5 shadow-sm"
                       >
                         <Phone className="h-3.5 w-3.5" />
-                        Contato
+                        Atendimento direto
                       </Button>
                     </div>
                   </Card>
