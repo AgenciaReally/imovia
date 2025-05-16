@@ -31,12 +31,14 @@ export interface ImovelDisplay {
   latitude: number
   longitude: number
   imagens: string[]
+  fotoPrincipal?: string  // URL da foto principal
   construtora: string
   construtoraId: string
   status: string
   dataAtualizacao: string
   caracteristicas: string[]
   ativo?: boolean
+  destaque?: boolean
 }
 
 // Importando nossa implementação OAuth2 da Orulo

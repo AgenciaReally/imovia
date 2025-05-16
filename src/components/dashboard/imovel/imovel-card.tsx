@@ -50,14 +50,18 @@ export function ImovelCard({ imovel, className, onDelete, onToggleStatus }: Imov
   const [modalAberto, setModalAberto] = useState(false)
   const [modalEdicaoAberto, setModalEdicaoAberto] = useState(false)
   
-  // Define a imagem para exibição (ou placeholder se não houver nenhuma)
-  const imageSrc = imovel.imagens && 
-    imovel.imagens.length > 0 && 
-    imovel.imagens[currentImage] && 
-    typeof imovel.imagens[currentImage] === 'string' && 
-    imovel.imagens[currentImage].trim() !== ''
-      ? imovel.imagens[currentImage]
-      : `https://picsum.photos/seed/${imovel.id}/800/600`
+  // Define a imagem para exibição: Usar a foto principal primeiro
+  // Se não houver foto principal, usar a primeira da galeria
+  // Se não houver nenhuma, usar um placeholder
+  const imageSrc = imovel.fotoPrincipal && imovel.fotoPrincipal.trim() !== ''
+    ? imovel.fotoPrincipal
+    : (imovel.imagens && 
+       imovel.imagens.length > 0 && 
+       imovel.imagens[currentImage] && 
+       typeof imovel.imagens[currentImage] === 'string' && 
+       imovel.imagens[currentImage].trim() !== ''
+       ? imovel.imagens[currentImage]
+       : `https://picsum.photos/seed/${imovel.id}/800/600`)
 
   // Indicadores de status com cores
   const statusColors: Record<string, string> = {
