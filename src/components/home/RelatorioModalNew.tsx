@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Dialog,
   DialogContent,
@@ -8,32 +9,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, Loader2, Phone } from "lucide-react";
+import { Download, Loader2, ArrowRight, MessageSquare, AlertCircle, ChevronDown, MapPin, Phone } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { IconCheck, IconMap, IconBed, IconBath, IconRuler, IconCar } from "@tabler/icons-react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useToast } from "@/components/ui/use-toast";
-
-// Hook para copiar para a área de transferência
-const useClipboard = () => {
-  const [error, setError] = useState<Error | null>(null);
-
-  const copy = useCallback(async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch (err) {
-      console.error('Erro ao copiar texto:', err);
-      setError(err instanceof Error ? err : new Error(String(err)));
-      return false;
-    }
-  }, []);
-
-  return { copy, error };
-};
-
 
 // Interface para os imóveis recomendados
 interface Imovel {
@@ -62,301 +45,184 @@ interface RelatorioModalProps {
   imoveis?: Imovel[];
 }
 
-// Mapeamento SUPER DIRETO e SIMPLIFICADO para tratar todas as variações possíveis
-const MAPEAMENTO_PERGUNTAS: Record<string, string> = {
-  // ===== AVALIAÇÃO DE CRÉDITO =====
-  "AVALIACAOCREDITO10": "Renda mensal",
-  "A V A L I A C A O C R E D I T O 10": "Renda mensal",
-  "AVALIACAOCREDITO-10": "Renda mensal",
-  "A V A L I A C A O C R E D I T O-10": "Renda mensal",
-  "Seed-AVALIACAOCREDITO-10": "Renda mensal",
+// Mapeamento organizado de categorias de perguntas
+type Categoria = {
+  titulo: string;
+  descricao?: string;
+  icon?: React.ReactNode;
+  prefixos: string[];
+};
+
+// Categorias organizadas por área
+const CATEGORIAS: Categoria[] = [
+  {
+    titulo: "Simulação Inicial",
+    descricao: "Informações básicas da simulação",
+    prefixos: ["Simulacao_Inicial", "Simulacao", "simulacaoInicial", "Fluxo"]
+  },
+  {
+    titulo: "Avaliação de Crédito",
+    descricao: "Dados financeiros e aprovação de crédito",
+    prefixos: ["AVALIACAO_CREDITO", "AVALIACAOCREDITO", "Seed-AVALIACAOCREDITO", "Seed- A V A L I A C A O C R E D I T O"]
+  },
+  {
+    titulo: "Informações Complementares",
+    descricao: "Detalhes adicionais para análise",
+    prefixos: ["INFO_COMPLEMENTARES", "INFOCOMPLEMENTARES", "Seed-INFOCOMPLEMENTARES", "Seed- I N F O C O M P L E M E N T A R E S"]
+  },
+  {
+    titulo: "Preferências",
+    descricao: "Preferências de localização",
+    prefixos: ["PREFERENCIAS", "Seed-PREFERENCIAS", "Seed- P R E F E R E N C I A S"]
+  },
+  {
+    titulo: "Características do Empreendimento",
+    descricao: "Características desejadas no imóvel",
+    prefixos: ["EMPREENDIMENTO", "Seed-EMPREENDIMENTO", "Seed- E M P R E E N D I M E N T O"]
+  },
+  {
+    titulo: "Proximidades",
+    descricao: "Características do entorno",
+    prefixos: ["PROXIMIDADES", "Seed-PROXIMIDADES", "Seed- P R O X I M I D A D E S"]
+  }
+];
+
+// Mapeamento de IDs de perguntas para textos legíveis
+const PERGUNTAS_MAPEAMENTO: Record<string, string> = {
+  // Avaliação de Crédito
   "Seed- A V A L I A C A O C R E D I T O-10": "Renda mensal",
-  "AVALIACAOCREDITO11": "Possui restrição de crédito",
-  "A V A L I A C A O C R E D I T O 11": "Possui restrição de crédito",
-  "AVALIACAOCREDITO-11": "Possui restrição de crédito",
-  "A V A L I A C A O C R E D I T O-11": "Possui restrição de crédito",
-  "Seed-AVALIACAOCREDITO-11": "Possui restrição de crédito",
+  "Seed- A V A L I A C A O  C R E D I T O-10": "Renda mensal",
   "Seed- A V A L I A C A O C R E D I T O-11": "Possui restrição de crédito",
-  "AVALIACAOCREDITO12": "Data de nascimento",
-  "A V A L I A C A O C R E D I T O 12": "Data de nascimento",
-  "AVALIACAOCREDITO-12": "Data de nascimento",
-  "A V A L I A C A O C R E D I T O-12": "Data de nascimento",
-  "Seed-AVALIACAOCREDITO-12": "Data de nascimento",
   "Seed- A V A L I A C A O C R E D I T O-12": "Data de nascimento",
   
-  // ===== INFORMAÇÕES COMPLEMENTARES =====
-  "INFOCOMPLEMENTARES1": "Valor do imóvel",
-  "I N F O C O M P L E M E N T A R E S 1": "Valor do imóvel",
-  "INFOCOMPLEMENTARES-1": "Valor do imóvel",
-  "I N F O C O M P L E M E N T A R E S-1": "Valor do imóvel",
-  "Seed-INFOCOMPLEMENTARES-1": "Valor do imóvel",
+  // Informações Complementares
   "Seed- I N F O C O M P L E M E N T A R E S-1": "Valor do imóvel",
-  
-  "INFOCOMPLEMENTARES2": "Valor parcela máxima",
-  "I N F O C O M P L E M E N T A R E S 2": "Valor parcela máxima",
-  "INFOCOMPLEMENTARES-2": "Valor parcela máxima",
-  "I N F O C O M P L E M E N T A R E S-2": "Valor parcela máxima",
-  "Seed-INFOCOMPLEMENTARES-2": "Valor parcela máxima",
   "Seed- I N F O C O M P L E M E N T A R E S-2": "Valor parcela máxima",
-  
-  "INFOCOMPLEMENTARES3": "Prazo do financiamento",
-  "I N F O C O M P L E M E N T A R E S 3": "Prazo do financiamento",
-  "INFOCOMPLEMENTARES-3": "Prazo do financiamento",
-  "I N F O C O M P L E M E N T A R E S-3": "Prazo do financiamento",
-  "Seed-INFOCOMPLEMENTARES-3": "Prazo do financiamento",
   "Seed- I N F O C O M P L E M E N T A R E S-3": "Prazo do financiamento",
-  
-  "INFOCOMPLEMENTARES4": "Entrada disponível",
-  "I N F O C O M P L E M E N T A R E S 4": "Entrada disponível",
-  "INFOCOMPLEMENTARES-4": "Entrada disponível",
-  "I N F O C O M P L E M E N T A R E S-4": "Entrada disponível",
-  "Seed-INFOCOMPLEMENTARES-4": "Entrada disponível",
   "Seed- I N F O C O M P L E M E N T A R E S-4": "Entrada disponível",
-  
-  "INFOCOMPLEMENTARES5": "Valor do financiamento",
-  "I N F O C O M P L E M E N T A R E S 5": "Valor do financiamento",
-  "INFOCOMPLEMENTARES-5": "Valor do financiamento",
-  "I N F O C O M P L E M E N T A R E S-5": "Valor do financiamento",
-  "Seed-INFOCOMPLEMENTARES-5": "Valor do financiamento",
   "Seed- I N F O C O M P L E M E N T A R E S-5": "Valor do financiamento",
   
-  // ===== PREFERÊNCIAS =====
-  "Seed-PREFERENCIAS-1": "Código da cidade",
+  // Preferências
   "Seed- P R E F E R E N C I A S-1": "Código da cidade",
-  "Seed-PREFERENCIAS-2": "Bairros Selecionados",
   "Seed- P R E F E R E N C I A S-2": "Bairros Selecionados",
-  "Seed-PREFERENCIAS-3": "Local de trabalho",
-  "Seed- P R E F E R E N C I A S-3": "Local de trabalho",
-  "Seed-PREFERENCIAS-4": "Local da escola",
+  "Seed- P R E F E R E N C I A S-3": "Local Trabalho",
   "Seed- P R E F E R E N C I A S-4": "Local da escola",
   
-  // ===== EMPREENDIMENTO =====
-  "Seed-EMPREENDIMENTO-1": "Importância do piso nos quartos",
+  // Empreendimento
   "Seed- E M P R E E N D I M E N T O-1": "Importância do piso nos quartos",
-  "Seed-EMPREENDIMENTO-2": "Importância da academia",
   "Seed- E M P R E E N D I M E N T O-2": "Importância da academia",
-  "Seed-EMPREENDIMENTO-3": "Importância da piscina",
   "Seed- E M P R E E N D I M E N T O-3": "Importância da piscina",
-  "Seed-EMPREENDIMENTO-4": "Tipo de portaria preferido",
   "Seed- E M P R E E N D I M E N T O-4": "Tipo de portaria preferido",
-  "Seed-EMPREENDIMENTO-5": "Importância do salão de festas",
   "Seed- E M P R E E N D I M E N T O-5": "Importância do salão de festas",
-  "Seed-EMPREENDIMENTO-6": "Importância do playground",
   "Seed- E M P R E E N D I M E N T O-6": "Importância do playground",
-  "Seed-EMPREENDIMENTO-7": "Importância do espaço pet",
   "Seed- E M P R E E N D I M E N T O-7": "Importância do espaço pet",
   
-  // ===== PROXIMIDADES =====
-  "Seed-PROXIMIDADES-1": "Importância de parques próximos",
+  // Proximidades
   "Seed- P R O X I M I D A D E S-1": "Importância de parques próximos",
-  "Seed-PROXIMIDADES-2": "Importância de shoppings próximos",
   "Seed- P R O X I M I D A D E S-2": "Importância de shoppings próximos",
-  "Seed-PROXIMIDADES-3": "Importância de restaurantes próximos",
   "Seed- P R O X I M I D A D E S-3": "Importância de restaurantes próximos",
-  "Seed-PROXIMIDADES-4": "Importância da caminhabilidade",
   "Seed- P R O X I M I D A D E S-4": "Importância da caminhabilidade",
-  "Seed-PROXIMIDADES-5": "Possui pet",
   "Seed- P R O X I M I D A D E S-5": "Possui pet",
-  "Seed-PROXIMIDADES-6": "Importância de escolas próximas",
   "Seed- P R O X I M I D A D E S-6": "Importância de escolas próximas",
-  "Seed-PROXIMIDADES-7": "Importância de transporte público próximo",
   "Seed- P R O X I M I D A D E S-7": "Importância de transporte público próximo",
   
-  // ===== IMÓVEL IDEAL =====
-  "seed-IMOVEL_IDEAL-1": "Prazo de mudança",
-  "seed-IMOVEL_IDEAL-2": "Tipo de imóvel",
-  "seed-IMOVEL_IDEAL-3": "Quantidade de quartos",
-  "seed-IMOVEL_IDEAL-4": "Quantidade de suítes",
-  "seed-IMOVEL_IDEAL-5": "Quantidade de vagas",
-  "seed-IMOVEL_IDEAL-6": "Metragem desejada",
-  "seed-IMOVEL_IDEAL-7": "Importância de churrasqueira",
-  "seed-IMOVEL_IDEAL-8": "Deseja ar condicionado",
-  "seed-IMOVEL_IDEAL-9": "Importância de varanda",
-  "seed-IMOVEL_IDEAL-10": "Importância de silêncio",
-  "seed-IMOVEL_IDEAL-11": "Face solar preferida",
-  
-  // Campos diretos comuns
-  "Fluxo": "Fluxo de perguntas",
-  "fluxo": "Fluxo de perguntas",
-  "fluxoAtual": "Fluxo atual",
-  "PREFERENCIAS": "Preferências",
-  
-  // Valores de campo
+  // Campos gerais
   "rendaMensal": "Renda mensal",
   "valorImovel": "Valor do imóvel",
   "entradaDisponivel": "Entrada disponível",
   "valorParcelaMaxima": "Valor máximo da parcela",
-  "valorFinanciamento": "Valor do financiamento",
   "temOutrosEmprestimos": "Possui outros empréstimos",
   "aprovado": "Pré-aprovado",
-  "score": "Score de crédito",
-  "nomeCidade": "Cidade",
+  "score": "Score de avaliação",
   "codCidade": "Código da cidade",
+  "nomeCidade": "Cidade",
   "bairros": "Bairros de interesse",
   "localTrabalho": "Local de trabalho",
-  "localEscola": "Local da escola",
-  "tipoImovel": "Tipo de imóvel",
-  "tipoPortaria": "Tipo de portaria",
-  "prazoFinanciamento": "Prazo de financiamento",
   "quartos": "Número de quartos",
-  "suites": "Número de suítes",
   "banheiros": "Número de banheiros",
-  "metragem": "Metragem desejada",
   "valorMaximoImovel": "Valor máximo do imóvel",
   "fgts": "Valor do FGTS",
-  
-  // Importâncias específicas  
-  "importanciaPlayground": "Importância do playground",
-  "importanciaEspacoPet": "Importância do espaço pet",
-  "importanciaSalaoFestas": "Importância do salão de festas",
-  "importanciaPisoQuartos": "Importância do piso nos quartos",
-  "importanciaAcademia": "Importância da academia",
-  "importanciaPiscina": "Importância da piscina",
-  "importanciaParques": "Importância de parques próximos",
-  "importanciaShoppings": "Importância de shoppings próximos",
-  "importanciaRestaurantes": "Importância de restaurantes próximos",
-  "importanciaCaminhabilidade": "Importância da caminhabilidade",
-  "importanciaEscolas": "Importância de escolas próximas",
-  "importanciaTransporte": "Importância de transporte próximo",
-  "importanciaEspacos": "Importância de espaços",
-  "temPet": "Possui pet",
-  "importanciaChurrasqueira": "Importância de churrasqueira",
-  "importanciaVaranda": "Importância de varanda",
-  "importanciaSilencio": "Importância de silêncio",
-  "arCondicionado": "Deseja ar condicionado",
-  "faceSolar": "Face solar preferida"
+  "proximidades": "Proximidades desejadas",
+  "tipoImovel": "Tipo de imóvel",
+  "prazoFinanciamento": "Prazo de financiamento",
+  "tipoPortaria": "Tipo de portaria",
+  "localizacao": "Localização",
+  "caracteristicas": "Características"
 };
 
-// Hook useClipboard já está definido no início do arquivo
-
-// Categorias para agrupar as perguntas
-const CATEGORIAS = [
-  {
-    titulo: "Dados Financeiros",
-    prefixos: ["AVALIACAOCREDITO", "rendaMensal", "valorImovel", "entradaDisponivel", "score"]
-  },
-  {
-    titulo: "Localização",
-    prefixos: ["PREFERENCIAS", "cidade", "bairros", "localTrabalho", "localEscola"]
-  },
-  {
-    titulo: "Características do Imóvel",
-    prefixos: ["IMOVEL_IDEAL", "tipoImovel", "quartos", "suites", "banheiros", "metragem", "vagas"]
-  },
-  {
-    titulo: "Características do Condomínio",
-    prefixos: ["EMPREENDIMENTO", "portaria", "academia", "piscina", "salao"]
-  },
-  {
-    titulo: "Proximidades Desejadas",
-    prefixos: ["PROXIMIDADES", "parques", "shoppings", "restaurantes", "transporte", "escolas"]
-  },
-  {
-    titulo: "Financiamento",
-    prefixos: ["INFOCOMPLEMENTARES", "prazo", "parcela", "fgts", "financiamento"]
-  }
-];
+// Hooks para copiar conteúdo
+const useCopyToClipboard = () => {
+  const copy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (error) {
+      console.error('Falha ao copiar texto:', error);
+      return false;
+    }
+  };
+  
+  return { copy };
+};
 
 export function NewRelatorioModal({ isOpen, onClose, respostas, isLoading = false, imoveis = [] }: RelatorioModalProps) {
   const [activeTab, setActiveTab] = useState("respostas");
   const relatorioPdfRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const [downloadIniciado, setDownloadIniciado] = useState(false);
-  const { copy } = useClipboard();
+  const { copy } = useCopyToClipboard();
   const [copiado, setCopiado] = useState(false);
-  
-  // Função para normalizar keys para comparação
-  const normalizarChave = (chave: string): string => {
-    return chave
-      .replace(/\s+/g, '') // Remove todos os espaços
-      .replace(/-/g, '') // Remove todos os hífens
-      .toUpperCase(); // Converte para maiúsculas
-  };
-  
-  // Função especial para tratar as chaves com espaços entre letras
-  const obterTextoParaChave = (chave: string): string => {
-    // Verifica se temos um mapeamento direto primeiro
-    if (MAPEAMENTO_PERGUNTAS[chave]) {
-      return MAPEAMENTO_PERGUNTAS[chave];
-    }
-    
-    // Trata casos especiais - formatos com espaços entre letras
-    if (chave.includes('A V A L I A C A O C R E D I T O')) {
-      const numeroMatch = chave.match(/(\d+)\s*$/); // Pega o número no final
-      if (numeroMatch) {
-        const numeroChave = numeroMatch[1];
-        const chaveNormalizada = `AVALIACAOCREDITO${numeroChave}`;
-        return MAPEAMENTO_PERGUNTAS[chaveNormalizada] || chave;
-      }
-    }
-    
-    if (chave.includes('I N F O C O M P L E M E N T A R E S')) {
-      const numeroMatch = chave.match(/(\d+)\s*$/); // Pega o número no final
-      if (numeroMatch) {
-        const numeroChave = numeroMatch[1];
-        const chaveNormalizada = `INFOCOMPLEMENTARES${numeroChave}`;
-        return MAPEAMENTO_PERGUNTAS[chaveNormalizada] || chave;
-      }
-    }
-    
-    // Se não encontrou, tenta normalizar
-    const chaveNormalizada = normalizarChave(chave);
-    return MAPEAMENTO_PERGUNTAS[chaveNormalizada] || chave;
-  };
-  
-  // Função para obter nome legível da pergunta
-  const getNomePergunta = (chave: string): string => {
-    // Tenta a função especial para chaves com espaços entre letras primeiro
-    const resultado = obterTextoParaChave(chave);
-    
-    // Se a função retornou a própria chave, significa que não encontrou um mapeamento
-    // Nesse caso, tentamos realizar uma formatação básica da chave
-    if (resultado === chave) {
-      return chave
-        .replace(/([A-Z])/g, ' $1') // Adiciona espaço antes de maiúsculas
-        .replace(/^./, (str) => str.toUpperCase()) // Primeira letra maiúscula
-        .replace(/[_-]/g, ' ') // Substitui underscore e hífen por espaço
-        .replace(/seed/i, '') // Remove 'seed'
-        .trim();
-    }
-    
-    return resultado;
-  };
   
   // Função para agrupar respostas por categoria
   const agruparRespostas = () => {
+    // Inicializar grupos vazios
     const grupos: Record<string, Record<string, any>> = {};
-    
-    // Inicializar todas as categorias
     CATEGORIAS.forEach(cat => {
       grupos[cat.titulo] = {};
     });
+    
+    // Grupo para itens não categorizados
     grupos["Outros"] = {};
     
     // Processar todas as respostas
     Object.entries(respostas || {}).forEach(([chave, valor]) => {
-      // Ignorar campos vazios, null, undefined
-      if (valor === undefined || valor === null || chave === 'userId' || chave === 'fluxoAtual') {
+      // Ignorar campos internos e metadados
+      if (chave.startsWith('_') || chave === 'userId' || chave === 'fluxoAtual' || valor === undefined || valor === null) {
         return;
       }
       
-      // Normalizar a chave para comparação
-      const chaveNormalizada = normalizarChave(chave);
+      // Verificar se existe no mapeamento direto
       let categoriaEncontrada = false;
       
-      // Verificar em cada categoria se a chave pertence
-      for (const categoria of CATEGORIAS) {
-        for (const prefixo of categoria.prefixos) {
-          if (chaveNormalizada.includes(normalizarChave(prefixo))) {
-            grupos[categoria.titulo][chave] = valor;
-            categoriaEncontrada = true;
-            break;
+      // Caso especial para chaves com prefixo Seed
+      if (chave.startsWith('Seed-')) {
+        for (const categoria of CATEGORIAS) {
+          for (const prefixo of categoria.prefixos) {
+            if (chave.includes(prefixo.replace(/\s+/g, ''))) {
+              grupos[categoria.titulo][chave] = valor;
+              categoriaEncontrada = true;
+              break;
+            }
           }
+          if (categoriaEncontrada) break;
         }
-        if (categoriaEncontrada) break;
       }
       
-      // Se não encontrou categoria específica, vai para "Outros"
+      // Se não encontrou ainda, procurar nas categorias por prefixos
+      if (!categoriaEncontrada) {
+        for (const categoria of CATEGORIAS) {
+          for (const prefixo of categoria.prefixos) {
+            if (chave.startsWith(prefixo) || chave.includes(prefixo)) {
+              grupos[categoria.titulo][chave] = valor;
+              categoriaEncontrada = true;
+              break;
+            }
+          }
+          if (categoriaEncontrada) break;
+        }
+      }
+      
+      // Se ainda não encontrou, coloca em "Outros"
       if (!categoriaEncontrada) {
         grupos["Outros"][chave] = valor;
       }
@@ -368,21 +234,58 @@ export function NewRelatorioModal({ isOpen, onClose, respostas, isLoading = fals
     );
   };
   
-  // Formatar valores para exibição
+  // Função para obter nome legível da pergunta
+  const getNomePergunta = (chave: string): string => {
+    // Verificar se há mapeamento direto
+    if (PERGUNTAS_MAPEAMENTO[chave]) {
+      return PERGUNTAS_MAPEAMENTO[chave];
+    }
+    
+    // Remover prefixos e caracteres especiais para chaves do tipo Seed-
+    if (chave.startsWith('Seed-')) {
+      // Extrair o número da pergunta (ex: Seed- P R E F E R E N C I A S-2 -> 2)
+      const numeroPergunta = chave.split('-').pop();
+      
+      // Extrair nome da categoria
+      let categoriaNome = "";
+      if (chave.includes('A V A L I A C A O C R E D I T O')) {
+        categoriaNome = "Avaliação de Crédito";
+      } else if (chave.includes('I N F O C O M P L E M E N T A R E S')) {
+        categoriaNome = "Informações Complementares";
+      } else if (chave.includes('P R E F E R E N C I A S')) {
+        categoriaNome = "Preferências";
+      } else if (chave.includes('E M P R E E N D I M E N T O')) {
+        categoriaNome = "Características do Empreendimento";
+      } else if (chave.includes('P R O X I M I D A D E S')) {
+        categoriaNome = "Proximidades";
+      }
+      
+      // Se tiver categoria e número, retornar "Pergunta X da categoria Y"
+      if (categoriaNome && numeroPergunta) {
+        return `Pergunta ${numeroPergunta} de ${categoriaNome}`;
+      }
+    }
+    
+    // Tentar formatar chave para ficar mais legível
+    return chave
+      .replace(/([A-Z])/g, ' $1') // adicionar espaço antes de letras maiúsculas
+      .replace(/^./, str => str.toUpperCase()) // primeira letra maiúscula
+      .replace(/[_-]/g, ' ') // substituir underscores e hífens por espaços
+      .trim();
+  };
+  
+  // Formatar o valor para exibição
   const formatarValor = (valor: any): string => {
     if (valor === null || valor === undefined) return "";
     
-    // Booleanos
     if (typeof valor === 'boolean') {
       return valor ? "Sim" : "Não";
     }
     
-    // Datas
     if (valor instanceof Date) {
       return valor.toLocaleDateString('pt-BR');
     }
     
-    // Strings que parecem datas
     if (typeof valor === 'string' && valor.match(/^\d{4}-\d{2}-\d{2}/)) {
       try {
         return new Date(valor).toLocaleDateString('pt-BR');
@@ -391,26 +294,14 @@ export function NewRelatorioModal({ isOpen, onClose, respostas, isLoading = fals
       }
     }
     
-    // Valores que parecem com dinheiro
-    if (typeof valor === 'number' && 
-        (getNomePergunta(valor.toString()).toLowerCase().includes('valor') || 
-         getNomePergunta(valor.toString()).toLowerCase().includes('renda'))) {
-      return new Intl.NumberFormat('pt-BR', { 
-        style: 'currency', 
-        currency: 'BRL' 
-      }).format(valor);
-    }
-    
-    // Arrays
     if (Array.isArray(valor)) {
       return valor.join(', ');
     }
     
-    // Geral (strings e outros tipos)
     return String(valor);
   };
   
-  // Gerar PDF do relatório
+  // Gerar PDF com o relatório
   const gerarPDF = async () => {
     setDownloadIniciado(true);
     
@@ -674,3 +565,4 @@ export function NewRelatorioModal({ isOpen, onClose, respostas, isLoading = fals
     </Dialog>
   );
 }
+

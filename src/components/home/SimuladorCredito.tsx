@@ -1906,7 +1906,7 @@ export const SimuladorCredito: React.FC<SimuladorCreditoProps> = ({
           exit={{ opacity: 0 }}
           className="space-y-8"
         >
-          <h2 className="text-3xl font-extrabold text-center text-gray-900">
+          <h2 className="text-3xl font-extrabold text-center text-[#fe4f17]">
             Inteligência Artificial com a iMovia
           </h2>
           <p className="text-center text-gray-600 max-w-2xl mx-auto">

@@ -24,8 +24,8 @@ export async function GET() {
     })
     
     // Os pendentes seriam construtoras em processo de aprovação
-    // Como não temos esse status no banco, vamos simular alguns
-    const pendentes = 2
+    // Como todas as construtoras estão ativas, não temos nenhuma pendente
+    const pendentes = 0
 
     // Calculando imóveis e usuários totais
     const totalImoveis = await prisma.imovel.count()
