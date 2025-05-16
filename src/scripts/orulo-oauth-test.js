@@ -8,9 +8,9 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-// Credenciais fornecidas
-const CLIENT_ID = 'NVMeJ6c9nVZM3kMYhPBwU6CvL4CQbAgiZMLcuMgvfXA';
-const CLIENT_SECRET = 'LFCtyXG3QP3V5o9pkXGjRJvKKf0gwozPiJ7TuDs8kmQ';
+// Novas credenciais fornecidas pelo usuário
+const CLIENT_ID = '5XiTt4QaH8zalFH-byzBw-bpRgxkxSFewly9pWdQeTQ';
+const CLIENT_SECRET = 'KphfUnhkeUX_5-44XzuFF1KYTHoQq8ahGbqeBLu4J9o';
 const REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'; // padrão para apps sem URL de callback
 
 // Função principal

@@ -64,11 +64,13 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id;
+    // No Next.js 15, precisamos usar await nos params
+    const id = (await params).id;
     const data = await request.json();
 
-    // Log dos dados recebidos para depuração
-    console.log('Dados recebidos no PUT:', {
+    // Log completo dos dados recebidos para depuração
+    console.log('Dados completos recebidos no PUT:', data);
+    console.log('Dados importantes para debug:', {
       telefoneContato: data.telefoneContato,
       tipoImovel: data.tipoImovel
     });
@@ -87,44 +89,51 @@ export async function PUT(
       );
     }
     
-    // Garantir que o telefone e o tipo de imóvel sejam preservados se existirem
-    const telefoneParaSalvar = data.telefoneContato || imovelExistente.telefoneContato || '';
-    const tipoImovelParaSalvar = data.tipoImovel || imovelExistente.tipoImovel || 'Terreno';
+    // Garantir que os dados sejam preservados explicitamente
+    // Se o dado vier como undefined ou null, manter o valor existente
+    const telefoneParaSalvar = data.telefoneContato !== undefined ? data.telefoneContato : (imovelExistente.telefoneContato || '');
+    const tipoImovelParaSalvar = data.tipoImovel !== undefined ? data.tipoImovel : (imovelExistente.tipoImovel || 'Terreno');
     
-    console.log('Dados que serão atualizados:', {
-      telefone: telefoneParaSalvar,
-      tipo: tipoImovelParaSalvar
+    console.log('Dados que serão realmente atualizados:', {
+      telefoneContato: telefoneParaSalvar,
+      tipoImovel: tipoImovelParaSalvar
     });
 
     // Atualizar o imóvel com todos os dados
+    // Montamos um objeto com apenas os campos que existem no payload
+    const updateData: any = {};
+    
+    // Campos básicos - só incluir se existirem no payload
+    if (data.titulo !== undefined) updateData.titulo = data.titulo;
+    if (data.descricao !== undefined) updateData.descricao = data.descricao;
+    if (data.preco !== undefined) updateData.preco = data.preco;
+    if (data.area !== undefined) updateData.area = data.area;
+    if (data.quartos !== undefined) updateData.quartos = data.quartos;
+    if (data.banheiros !== undefined) updateData.banheiros = data.banheiros;
+    if (data.vagas !== undefined) updateData.vagas = data.vagas;
+    if (data.latitude !== undefined) updateData.latitude = data.latitude;
+    if (data.longitude !== undefined) updateData.longitude = data.longitude;
+    if (data.endereco !== undefined) updateData.endereco = data.endereco;
+    if (data.fotoPrincipal !== undefined) updateData.fotoPrincipal = data.fotoPrincipal;
+    if (data.galeriaFotos !== undefined) updateData.galeriaFotos = data.galeriaFotos;
+    if (data.caracteristicas !== undefined) updateData.caracteristicas = data.caracteristicas;
+    if (data.caracteristicasArray !== undefined) updateData.caracteristicasArray = data.caracteristicasArray;
+    if (data.status !== undefined) updateData.status = data.status;
+    if (data.destaque !== undefined) updateData.destaque = data.destaque;
+    if (data.ativo !== undefined) updateData.ativo = data.ativo;
+    if (data.construtoraId !== undefined) updateData.construtoraId = data.construtoraId;
+    
+    // Usar SEMPRE os valores tratados para garantir que sejam atualizados corretamente
+    updateData.telefoneContato = telefoneParaSalvar;
+    updateData.tipoImovel = tipoImovelParaSalvar;
+    
+    console.log('Objeto final para update:', updateData);
+
     const imovelAtualizado = await prisma.imovel.update({
       where: {
         id: id,
       },
-      data: {
-        titulo: data.titulo,
-        descricao: data.descricao,
-        preco: data.preco,
-        area: data.area,
-        quartos: data.quartos,
-        banheiros: data.banheiros,
-        vagas: data.vagas,
-        latitude: data.latitude,
-        longitude: data.longitude,
-        // Usar explicitamente os valores determinados acima
-        telefoneContato: telefoneParaSalvar,
-        endereco: data.endereco,
-        fotoPrincipal: data.fotoPrincipal,
-        galeriaFotos: data.galeriaFotos,
-        caracteristicas: data.caracteristicas,
-        caracteristicasArray: data.caracteristicasArray,
-        // Usar explicitamente o valor determinado acima
-        tipoImovel: tipoImovelParaSalvar,
-        status: data.status,
-        destaque: data.destaque,
-        ativo: data.ativo,
-        construtoraId: data.construtoraId
-      },
+      data: updateData,
     });
 
     return NextResponse.json({

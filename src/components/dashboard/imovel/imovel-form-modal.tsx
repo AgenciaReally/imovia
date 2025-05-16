@@ -127,7 +127,11 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
     let telefoneContato = ''
     
     if (typeof imovel === 'object') {
-      if ('telefoneContato' in imovel) {
+      // Log para depuração
+      console.log('Propriedades disponíveis no imóvel:', Object.keys(imovel))
+      console.log('Valor bruto do telefoneContato:', (imovel as any).telefoneContato)
+      
+      if ('telefoneContato' in imovel && (imovel as any).telefoneContato !== undefined) {
         telefoneContato = (imovel as any).telefoneContato || ''
       }
     }
@@ -142,27 +146,35 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
     let tipoImovel = ''
     
     if (typeof imovel === 'object') {
-      if ('tipoImovel' in imovel) {
+      // Log para depuração
+      console.log('Valor bruto do tipoImovel:', (imovel as any).tipoImovel)
+      
+      if ('tipoImovel' in imovel && (imovel as any).tipoImovel !== undefined) {
         tipoImovel = (imovel as any).tipoImovel || ''
+        console.log('Tipo de imóvel obtido do objeto raiz:', tipoImovel)
       }
     }
     
     // Se ainda não encontrou, tentar nas características
     if (!tipoImovel && imovel.caracteristicas) {
+      console.log('Tentando obter tipo imóvel das características:', imovel.caracteristicas)
+      
       if (typeof imovel.caracteristicas === 'object' && !Array.isArray(imovel.caracteristicas)) {
         const caracteristicas = imovel.caracteristicas as any
         if ('tipoImovel' in caracteristicas) {
           tipoImovel = caracteristicas.tipoImovel || ''
+          console.log('Tipo obtido das características:', tipoImovel)
         }
       }
     }
     
     // Valor padrão se nada for encontrado
     if (!tipoImovel) {
-      tipoImovel = "Comercial"
+      tipoImovel = "Apartamento"
+      console.log('Usando valor padrão para tipo de imóvel:', tipoImovel)
     }
     
-    console.log('Tipo de imóvel encontrado:', tipoImovel)
+    console.log('Tipo de imóvel final encontrado:', tipoImovel)
     
     let caracteristicasArray: string[] = []
     
@@ -266,46 +278,163 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
 
   // Efeito para preencher os valores do formulário quando receber um imóvel para edição
   // Usamos um state específico para armazenar o tipo do imóvel e o telefone
-  const [tipoImovelSalvo, setTipoImovelSalvo] = useState<string>("") 
+  const [tipoImovelSalvo, setTipoImovelSalvo] = useState<string>("Apartamento") 
   const [telefoneSalvo, setTelefoneSalvo] = useState<string>("") 
   
-  // Efeito para carregar os dados do imóvel quando recebido
+  // SOLUÇÃO EXTREMA: Fazer uma consulta direta ao banco de dados no momento que abrimos o modal
+  const buscarDadosDiretamente = async (imovelId: string) => {
+    try {
+      console.log('INICIANDO CONSULTA DIRETA PARA O IMÓVEL:', imovelId);
+      
+      // Consulta a API para obter os dados mais recentes diretamente do banco
+      const response = await fetch(`/api/imoveis/${imovelId}`, { 
+        method: 'GET',
+        headers: { 'Cache-Control': 'no-cache, no-store' } // Força bypass do cache
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erro ao buscar dados do imóvel');
+      }
+      
+      const data = await response.json();
+      console.log('DADOS OBTIDOS DIRETAMENTE DO BANCO:', data);
+      
+      // Extrair telefone e tipo garantindo que são os dados mais recentes
+      const telefoneRaw = data.imovel.telefoneContato || '';
+      const tipoImovelRaw = data.imovel.tipoImovel || 'Apartamento';
+      
+      console.log('DADOS BRUTOS ENCONTRADOS:', {
+        telefone: telefoneRaw,
+        tipo: tipoImovelRaw
+      });
+      
+      // Limpar e formatar o telefone
+      const telefoneFormatado = telefoneRaw ? formatTelefone(telefoneRaw) : '';
+      
+      // Atualizar o formulário e os states
+      setTelefoneSalvo(telefoneRaw);
+      setTipoImovelSalvo(tipoImovelRaw);
+      
+      // Forçar a redefinição dos campos no formulário sem resetar tudo
+      form.setValue('telefoneContato', telefoneFormatado);
+      form.setValue('tipoImovel', tipoImovelRaw);
+      
+      console.log('CAMPOS ATUALIZADOS COM DADOS DIRETOS DO BANCO!');
+      
+      // Também atualizar o DOM diretamente para casos extremos
+      setTimeout(() => {
+        const inputTelefone = document.querySelector('input[name="telefoneContato"]') as HTMLInputElement;
+        const selectTipo = document.querySelector('select[name="tipoImovel"]') as HTMLSelectElement;
+        
+        if (inputTelefone) {
+          inputTelefone.value = telefoneFormatado;
+          console.log('TELEFONE ATUALIZADO DIRETAMENTE NO DOM');
+        }
+        
+        if (selectTipo) {
+          selectTipo.value = tipoImovelRaw;
+          console.log('TIPO ATUALIZADO DIRETAMENTE NO DOM'); 
+        }
+      }, 500);
+      
+      return { telefoneFormatado, tipoImovelRaw };
+    } catch (error) {
+      console.error('ERRO NA CONSULTA DIRETA:', error);
+      return null;
+    }
+  };
+  
+  // SOLUÇÃO BOMBADA: useEffect específico para forçar o preenchimento do telefone e tipo
+  useEffect(() => {
+    if (modoEdicao && imovel && (imovel as any).id) {
+      console.log('SOLUÇÃO BOMBADA ATIVADA PARA ID:', (imovel as any).id);
+      
+      // Chamar a função de busca direta
+      buscarDadosDiretamente((imovel as any).id);
+      
+      // Extrair os dados direto do objeto bruto (como fallback)
+      const dados = imovel as any;
+      
+      // Pegando o telefone de todos os possíveis lugares
+      let telefone = '';
+      if (dados.telefoneContato) telefone = dados.telefoneContato;
+      
+      // Pegando o tipo de imóvel de todos os possíveis lugares
+      let tipo = 'Apartamento';
+      if (dados.tipoImovel) tipo = dados.tipoImovel;
+      else if (dados.caracteristicas?.tipoImovel) tipo = dados.caracteristicas.tipoImovel;
+      
+      console.log('VALORES BRUTOS ENCONTRADOS (FALLBACK):', { telefone, tipo });
+      
+      // Atualizar diretamente o DOM se necessário (hack extremo) - como fallback apenas
+      setTimeout(() => {
+        // Aplicar diretamente no formulário
+        form.setValue('telefoneContato', telefone ? formatTelefone(telefone) : '');
+        form.setValue('tipoImovel', tipo);
+        
+        // Guardar nos states também
+        setTelefoneSalvo(telefone);
+        setTipoImovelSalvo(tipo);
+        
+        console.log('CAMPOS FORÇADAMENTE ATUALIZADOS (FALLBACK)!');
+      }, 1000); // Um pequeno delay para garantir que o DOM está pronto
+    }
+  }, [imovel, modoEdicao, form]);
+  
+  // Efeito original para carregar os dados do imóvel quando recebido
   useEffect(() => {
     if (imovel) {
+      console.log('Carregando imóvel para edição:', imovel);
+      
+      // Obter dados brutos diretamente do imóvel para debug
+      const dadosBrutos = imovel as any;
+      console.log('Dados brutos do imóvel:', {
+        id: dadosBrutos.id,
+        telefoneContato: dadosBrutos.telefoneContato,
+        tipoImovel: dadosBrutos.tipoImovel,
+        caracteristicas: dadosBrutos.caracteristicas
+      });
+      
       // Verificar se temos o tipo de imóvel no imovel recebido
       let tipoDoImovel = ""
       
-      // Buscar o tipo do imóvel de todas as possíveis fontes
-      if (typeof imovel === 'object') {
-        // Verificar direto no objeto raiz
-        if ('tipoImovel' in imovel && (imovel as any).tipoImovel) {
-          tipoDoImovel = (imovel as any).tipoImovel
-          console.log('Tipo obtido do objeto raiz:', tipoDoImovel)
-        } 
-        // Verificar nas características se for um objeto
-        else if (imovel.caracteristicas && typeof imovel.caracteristicas === 'object' && !Array.isArray(imovel.caracteristicas)) {
-          if ('tipoImovel' in (imovel.caracteristicas as any)) {
-            tipoDoImovel = (imovel.caracteristicas as any).tipoImovel
-            console.log('Tipo obtido das características:', tipoDoImovel)
-          }
-        }
+      // Determinamos explicitamente a prioridade de busca para garantir consistência
+      // 1. Diretamente no objeto (valor mais recente)  
+      if (dadosBrutos.tipoImovel) {
+        tipoDoImovel = dadosBrutos.tipoImovel;
+        console.log('Tipo obtido diretamente:', tipoDoImovel);
+      }
+      // 2. Nas características se existirem como objeto
+      else if (dadosBrutos.caracteristicas && 
+               typeof dadosBrutos.caracteristicas === 'object' && 
+               !Array.isArray(dadosBrutos.caracteristicas) && 
+               dadosBrutos.caracteristicas.tipoImovel) {
+        tipoDoImovel = dadosBrutos.caracteristicas.tipoImovel;
+        console.log('Tipo obtido das características:', tipoDoImovel);
+      }
+      // 3. Valor padrão se nada for encontrado
+      else {
+        tipoDoImovel = 'Apartamento';
+        console.log('Usando tipo padrão:', tipoDoImovel);
       }
       
-      // Buscar o telefone de contato do imóvel
-      let telefoneDoImovel = ""
-      if (typeof imovel === 'object' && 'telefoneContato' in imovel) {
-        telefoneDoImovel = (imovel as any).telefoneContato || ""
-        console.log('Telefone obtido:', telefoneDoImovel)
-      }
+      // Buscar o telefone diretamente, garantindo valor válido
+      let telefoneDoImovel = dadosBrutos.telefoneContato || "";
+      console.log('Telefone obtido:', telefoneDoImovel);
       
-      // Salvar os valores em states para uso posterior
-      setTipoImovelSalvo(tipoDoImovel || "Terreno")
+      // Salvar os valores em states para uso posterior e no console para debug
+      console.log('Definindo states para:', {
+        tipoImovel: tipoDoImovel || "Apartamento",
+        telefone: telefoneDoImovel
+      })
+      
+      setTipoImovelSalvo(tipoDoImovel || "Apartamento")
       setTelefoneSalvo(telefoneDoImovel)
       
       // Resetar o formulário com os dados do imóvel
       setTimeout(() => {
         console.log('Inicializando formulário com dados:', {
-          tipo: tipoDoImovel,
+          tipo: tipoDoImovel || "Apartamento",
           telefone: telefoneDoImovel
         })
         
@@ -321,17 +450,22 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
           construtoraId: imovel.construtoraId,
           latitude: imovel.latitude,
           longitude: imovel.longitude,
-          // Usar o telefone que encontramos, aplicando a formatação
+          // IMPORTANTE: Usar o telefone que encontramos, aplicando a formatação
           telefoneContato: telefoneDoImovel ? formatTelefone(telefoneDoImovel) : "",
           caracteristicasArray: Array.isArray(imovel.caracteristicas) ? imovel.caracteristicas : 
             ((imovel as any).caracteristicasArray || []),
-          // Usar o tipo de imóvel que encontramos
-          tipoImovel: tipoDoImovel || "Terreno",
+          // IMPORTANTE: Usar o tipo de imóvel que encontramos
+          tipoImovel: tipoDoImovel || "Apartamento",
           status: imovel.status || 'Disponível',
           destaque: (imovel as any).destaque || false,
           ativo: imovel.ativo !== false,
           fotoPrincipal: "",
           galeriaFotos: [],
+        })
+        
+        console.log('Form reset completo, valores atuais:', {
+          tipoImovel: form.getValues("tipoImovel"),
+          telefoneContato: form.getValues("telefoneContato")
         })
         
         // Também atualizar os estados
@@ -400,6 +534,19 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
     }
   }
 
+  // Função para remover uma foto da galeria
+  const removerFotoGaleria = (index: number) => {
+    console.log(`Removendo foto do índice ${index}`);
+    const novasUrls = [...galeriaUrls];
+    novasUrls.splice(index, 1);
+    setGaleriaUrls(novasUrls);
+    
+    toast({
+      title: "Foto removida",
+      description: "A foto foi removida da galeria.",
+    });
+  };
+
   const onSubmit = async (values: ImovelFormValues) => {
     setLoading(true)
     try {
@@ -418,18 +565,21 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
       }
       
       // Adicionar logs para debug
-      console.log('Valores do formulário antes do envio:', values);
+      console.log('Valores completos do formulário antes do envio:', values);
+      console.log('Telefone original:', values.telefoneContato);
       console.log('Telefone limpo:', telefoneLimpo);
       console.log('Tipo de imóvel selecionado:', values.tipoImovel);
+      console.log('Tipo de imóvel salvo anteriormente:', tipoImovelSalvo);
       
-      // IMPORTANTE: Usamos o valor do formulário para garantir que editamos o que o usuário deseja
-      const telefoneParaEnviar = telefoneLimpo || '';
-      // Para o tipo, usamos o valor selecionado no formulário ou o valor que tinhamos salvo
+      // CRÍTICO: Garantir que os valores sempre sejam enviados, mesmo quando vazios
+      // Isso é crucial para que o backend não use valores antigos quando o usuário limpa um campo
+      const telefoneParaEnviar = telefoneLimpo; // Pode ser undefined/vazio, e isso é intencional!
+      // Para o tipo, usamos o valor selecionado no formulário, garantindo que seja enviado
       const tipoImovelParaEnviar = values.tipoImovel || tipoImovelSalvo || "Terreno";
       
       console.log('Dados finais para envio:', {
-        telefone: telefoneParaEnviar,
-        tipo: tipoImovelParaEnviar
+        telefoneContato: telefoneParaEnviar,
+        tipoImovel: tipoImovelParaEnviar
       });
       
       const payload: ImovelNovo = {
@@ -444,6 +594,8 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
         caracteristicasArray: values.caracteristicasArray || [],
         // Enviar o tipoImovel explicitamente
         tipoImovel: tipoImovelParaEnviar,
+        // SOLUÇÃO DEFINITIVA: Forçar o imóvel a sempre estar ativo, independente do modo
+        ativo: true,
         // Campo JSON opcional com metadados adicionais
         caracteristicas: {
           // Também incluir o tipoImovel dentro do objeto caracteristicas
@@ -875,27 +1027,34 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
                   control={form.control}
                   name="tipoImovel"
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem className="w-full">
                       <FormLabel>Tipo de Imóvel</FormLabel>
                       <Select 
-                        onValueChange={field.onChange} 
-                        value={field.value || tipoImovelSalvo} 
-                        defaultValue={tipoImovelSalvo}>
+                        onValueChange={(value) => {
+                          console.log('Alteração do tipo de imóvel para:', value);
+                          field.onChange(value);
+                          // Também atualizar o state para ter redundância
+                          setTipoImovelSalvo(value);
+                        }} 
+                        value={field.value || tipoImovelSalvo}
+                        defaultValue={tipoImovelSalvo}
+                      >
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Selecione o tipo">
-                              {field.value || tipoImovelSalvo}
-                            </SelectValue>
+                          <SelectTrigger className="capitalize">
+                            <SelectValue placeholder="Selecione o tipo de imóvel" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="Apartamento">Apartamento</SelectItem>
                           <SelectItem value="Casa">Casa</SelectItem>
                           <SelectItem value="Terreno">Terreno</SelectItem>
-                          <SelectItem value="Comercial">Imóvel Comercial</SelectItem>
-                          <SelectItem value="Rural">Imóvel Rural</SelectItem>
+                          <SelectItem value="Imóvel Comercial">Imóvel Comercial</SelectItem>
+                          <SelectItem value="Imóvel Rural">Imóvel Rural</SelectItem>
                         </SelectContent>
                       </Select>
+                      <FormDescription>
+                        Tipo atual: {field.value || tipoImovelSalvo}
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}

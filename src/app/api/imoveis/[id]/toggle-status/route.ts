@@ -7,8 +7,8 @@ export async function PATCH(
   context: { params: { id: string } }
 ) {
   try {
-    // Usar o id do param de forma segura
-    const id = context.params.id;
+    // No Next.js 15, precisamos usar await nos params
+    const id = (await context.params).id;
     const { ativo } = await request.json();
 
     // Verificar se o imóvel existe

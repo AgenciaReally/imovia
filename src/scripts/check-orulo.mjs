@@ -1,8 +1,8 @@
 // Script para verificar a contagem real de imóveis na Orulo (usando ESM)
 
-// Usando as credenciais que você já forneceu
-const CLIENT_ID = 'NVMeJ6c9nVZM3kMYhPBwU6CvL4CQbAgiZMLcuMgvfXA';
-const CLIENT_SECRET = 'LFCtyXG3QP3V5o9pkXGjRJvKKf0gwozPiJ7TuDs8kmQ';
+// Usando as novas credenciais fornecidas
+const CLIENT_ID = '5XiTt4QaH8zalFH-byzBw-bpRgxkxSFewly9pWdQeTQ';
+const CLIENT_SECRET = 'KphfUnhkeUX_5-44XzuFF1KYTHoQq8ahGbqeBLu4J9o';
 
 async function checkOruloCount() {
   console.log('Verificando contagem real de imóveis na Orulo...');
