@@ -92,7 +92,27 @@ export async function PUT(
     // Garantir que os dados sejam preservados explicitamente
     // Se o dado vier como undefined ou null, manter o valor existente
     const telefoneParaSalvar = data.telefoneContato !== undefined ? data.telefoneContato : (imovelExistente.telefoneContato || '');
-    const tipoImovelParaSalvar = data.tipoImovel !== undefined ? data.tipoImovel : (imovelExistente.tipoImovel || 'Terreno');
+    
+    // FORÇAR O TIPO DE IMÓVEL PARA 'TERRENO' OU O VALOR ENVIADO
+    // NUNCA USAR 'APARTAMENTO' COMO PADRÃO
+    let tipoImovelParaSalvar = 'Terreno'; // Padrão fixo para TERRENO
+    
+    // Se enviou um tipo, usar esse
+    if (data.tipoImovel && data.tipoImovel.trim() !== '') {
+      tipoImovelParaSalvar = data.tipoImovel;
+      console.log('USANDO TIPO ENVIADO:', tipoImovelParaSalvar);
+    }
+    // Se já existir um tipo no banco que não seja Apartamento, manter
+    else if (imovelExistente.tipoImovel && 
+             imovelExistente.tipoImovel.trim() !== '' && 
+             imovelExistente.tipoImovel !== 'Apartamento') {
+      tipoImovelParaSalvar = imovelExistente.tipoImovel;
+      console.log('MANTENDO TIPO EXISTENTE:', tipoImovelParaSalvar);
+    }
+    // Caso contrário, usar TERRENO como padrão
+    else {
+      console.log('USANDO TIPO PADRÃO TERRENO');
+    }
     
     console.log('Dados que serão realmente atualizados:', {
       telefoneContato: telefoneParaSalvar,

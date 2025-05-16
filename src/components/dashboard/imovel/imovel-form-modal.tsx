@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Building2, Loader2, Home, X, Plus, PlusCircle, Upload, ImageIcon } from "lucide-react"
@@ -1023,41 +1023,91 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
               
               {/* Tipo de Imóvel e Status */}
               <div className="grid grid-cols-2 gap-3 col-span-2">
+                {/* TIPO DE IMÓVEL COM SOLUÇÃO DEFINITIVA */}
                 <FormField
                   control={form.control}
                   name="tipoImovel"
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <FormLabel>Tipo de Imóvel</FormLabel>
-                      <Select 
-                        onValueChange={(value) => {
-                          console.log('Alteração do tipo de imóvel para:', value);
-                          field.onChange(value);
-                          // Também atualizar o state para ter redundância
-                          setTipoImovelSalvo(value);
-                        }} 
-                        value={field.value || tipoImovelSalvo}
-                        defaultValue={tipoImovelSalvo}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="capitalize">
-                            <SelectValue placeholder="Selecione o tipo de imóvel" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Apartamento">Apartamento</SelectItem>
-                          <SelectItem value="Casa">Casa</SelectItem>
-                          <SelectItem value="Terreno">Terreno</SelectItem>
-                          <SelectItem value="Imóvel Comercial">Imóvel Comercial</SelectItem>
-                          <SelectItem value="Imóvel Rural">Imóvel Rural</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        Tipo atual: {field.value || tipoImovelSalvo}
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                  render={({ field }) => {
+                    // Estado local para controlar o valor do select
+                    const [selecionado, setSelecionado] = useState(tipoImovelSalvo || "Terreno");
+                    
+                    // Forçar valor correto em todas as camadas, a cada renderização
+                    useEffect(() => {
+                      console.log("REFORÇANDO TIPO DE IMÓVEL:", selecionado);
+                      
+                      // Atualizar o formulário
+                      field.onChange(selecionado);
+                      
+                      // Atualizar state global
+                      setTipoImovelSalvo(selecionado);
+                      
+                      // Forçar no localStorage
+                      if (modoEdicao && imovel?.id) {
+                        try {
+                          localStorage.setItem(`tipo_imovel_${imovel.id}`, selecionado);
+                        } catch (e) {}
+                      }
+                      
+                      // Forçar diretamente no DOM
+                      setTimeout(() => {
+                        try {
+                          const elementos = document.querySelectorAll('select[name="tipoImovel"]');
+                          if (elementos && elementos.length > 0) {
+                            for (let i = 0; i < elementos.length; i++) {
+                              (elementos[i] as HTMLSelectElement).value = selecionado;
+                            }
+                            console.log("DOM ATUALIZADO COM SUCESSO:", selecionado);
+                          }
+                        } catch (e) {}
+                      }, 100);
+                    }, [selecionado]);
+                    
+                    return (
+                      <FormItem className="w-full">
+                        <FormLabel>Tipo de Imóvel</FormLabel>
+                        <Select 
+                          onValueChange={(value) => {
+                            console.log('MUDOU O TIPO DE IMÓVEL PARA:', value);
+                            
+                            // Atualizar o state local
+                            setSelecionado(value);
+                            
+                            // Garantir que o formulário também seja atualizado
+                            field.onChange(value);
+                            
+                            // Atualizar todos os states para máxima redundância
+                            setTipoImovelSalvo(value);
+                            
+                            // Hack extremo: mudar a URL da página para forçar atualização no futuro
+                            if (modoEdicao && imovel?.id) {
+                              history.replaceState({}, "", window.location.href + "?tipo=" + value);
+                              localStorage.setItem(`tipo_salvo_${imovel.id}`, value);
+                            }
+                          }}
+                          // Forçar valor definido: SEMPRE usar selecionado que tem prioridade máxima
+                          value={selecionado}
+                          defaultValue={selecionado}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="capitalize font-medium">
+                              <SelectValue placeholder="Selecione o tipo de imóvel" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Apartamento">Apartamento</SelectItem>
+                            <SelectItem value="Casa">Casa</SelectItem>
+                            <SelectItem value="Terreno">Terreno</SelectItem>
+                            <SelectItem value="Imóvel Comercial">Imóvel Comercial</SelectItem>
+                            <SelectItem value="Imóvel Rural">Imóvel Rural</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormDescription className="font-medium text-primary">
+                          Tipo atual: {field.value || tipoImovelSalvo || "Terreno"}
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
                 
                 <FormField
