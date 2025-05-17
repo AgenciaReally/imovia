@@ -11,6 +11,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Modelo para tipos de imóveis
+model TipoImovel {
+  id        String   @id @default(cuid())
+  nome      String   @unique // Nome do tipo (Apartamento, Casa, etc)
+  slug      String   @unique // Versão simplificada para URLs
+  descricao String? // Descrição opcional
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relações
+  imoveis Imovel[]
+}
+
 // Enum para tipos de usuário
 enum UserRole {
   ADMIN
@@ -73,12 +86,16 @@ model Imovel {
   galeriaFotos         String[] // Array de URLs para fotos do imóvel
   caracteristicas      Json? // Para armazenar características variáveis
   caracteristicasArray String[] // Lista de características em formato de array
-  tipoImovel           String? // Apartamento, Casa, Terreno, etc.
-  status               String? // Disponível, Vendido, Em construção, etc.
-  ativo                Boolean  @default(true) // Se o imóvel está ativo ou inativo
-  destaque             Boolean  @default(false) // Imóvel em destaque na página inicial
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
+
+  // Tipo de imóvel como relação com outra tabela
+  tipoImovelId   String?
+  tipoImovel     TipoImovel? @relation(fields: [tipoImovelId], references: [id])
+  tipoImovelNome String? // Campo auxiliar para manter compatibilidade
+  status         String? // Disponível, Vendido, Em construção, etc.
+  ativo          Boolean     @default(true) // Se o imóvel está ativo ou inativo
+  destaque       Boolean     @default(false) // Imóvel em destaque na página inicial
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 
   // Relações
   construtoraId String

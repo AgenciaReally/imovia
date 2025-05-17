@@ -4,10 +4,11 @@ import { prisma } from '@/lib/prisma'
 // Busca todos os imóveis cadastrados no banco de dados
 export async function GET() {
   try {
-    // Buscar todos os imóveis do banco de dados com suas construtoras
+    // Buscar todos os imóveis do banco de dados com suas construtoras e tipo de imóvel
     const imoveis = await prisma.imovel.findMany({
       include: {
-        construtora: true
+        construtora: true,
+        tipoImovel: true
       },
       orderBy: {
         createdAt: 'desc'
@@ -36,6 +37,8 @@ export async function GET() {
       fotoPrincipal: imovel.fotoPrincipal,
       construtora: imovel.construtora?.nome || 'Não informada',
       construtoraId: imovel.construtoraId,
+      tipoImovel: imovel.tipoImovel?.nome || 'Apartamento', // Usar o nome do tipo de imóvel da relação
+      tipoImovelId: imovel.tipoImovelId, // Incluir também o ID do tipo de imóvel
       status: imovel.status || 'Disponível',
       dataAtualizacao: imovel.updatedAt.toLocaleDateString('pt-BR'),
       caracteristicas: imovel.caracteristicasArray || [],
@@ -73,7 +76,7 @@ export async function POST(request: Request) {
       fotoPrincipal,
       galeriaFotos,
       caracteristicasArray,
-      tipoImovel,
+      tipoImovelId, // Agora usamos o ID da relação
       status,
       destaque,
       construtoraId,
@@ -97,11 +100,14 @@ export async function POST(request: Request) {
         fotoPrincipal,
         galeriaFotos: galeriaFotos || [],
         caracteristicasArray: caracteristicasArray || [],
-        tipoImovel,
+        tipoImovelId, // Usar o ID da relação com TipoImovel
         status,
         destaque: destaque || false,
         construtoraId,
         caracteristicas
+      },
+      include: {
+        tipoImovel: true // Incluir o tipo de imóvel na resposta
       }
     })
     

@@ -120,6 +120,15 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.TipoImovelScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  slug: 'slug',
+  descricao: 'descricao',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -162,7 +171,8 @@ exports.Prisma.ImovelScalarFieldEnum = {
   galeriaFotos: 'galeriaFotos',
   caracteristicas: 'caracteristicas',
   caracteristicasArray: 'caracteristicasArray',
-  tipoImovel: 'tipoImovel',
+  tipoImovelId: 'tipoImovelId',
+  tipoImovelNome: 'tipoImovelNome',
   status: 'status',
   ativo: 'ativo',
   destaque: 'destaque',
@@ -331,6 +341,7 @@ exports.UserRole = exports.$Enums.UserRole = {
 };
 
 exports.Prisma.ModelName = {
+  TipoImovel: 'TipoImovel',
   User: 'User',
   Construtora: 'Construtora',
   Imovel: 'Imovel',

@@ -7,7 +7,8 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = params.id;
+    // Desestruturar o id para evitar uso síncrono de params
+    const { id } = params;
 
     const imovel = await prisma.imovel.findUnique({
       where: {
@@ -15,6 +16,7 @@ export async function GET(
       },
       include: {
         construtora: true,
+        tipoImovel: true, // Incluir o relacionamento com TipoImovel
       },
     });
     
@@ -36,7 +38,8 @@ export async function GET(
     console.log('Imóvel encontrado:', {
       id: imovel.id,
       telefoneContato: imovel.telefoneContato,
-      tipoImovel: imovel.tipoImovel,
+      tipoImovel: imovel.tipoImovel?.nome, // Agora é um objeto relacionado
+      tipoImovelId: imovel.tipoImovelId,
       // Outros campos importantes
     });
 
@@ -46,7 +49,8 @@ export async function GET(
         ...imovel,
         // Garantir que esses campos estão presentes e não são nulos
         telefoneContato: imovel.telefoneContato || '',
-        tipoImovel: imovel.tipoImovel || 'Apartamento'
+        tipoImovelNome: imovel.tipoImovel?.nome || 'Apartamento', // Nome do tipo de imóvel da relação
+        tipoImovelId: imovel.tipoImovelId // ID do tipo de imóvel para referência
       },
     });
   } catch (error) {
@@ -61,18 +65,18 @@ export async function GET(
 // PUT - Atualização completa de um imóvel
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
-    // No Next.js 15, precisamos usar await nos params
-    const id = (await params).id;
+    // Desestruturar o id para evitar uso síncrono de params
+    const { id } = params;
     const data = await request.json();
 
     // Log completo dos dados recebidos para depuração
     console.log('Dados completos recebidos no PUT:', data);
     console.log('Dados importantes para debug:', {
       telefoneContato: data.telefoneContato,
-      tipoImovel: data.tipoImovel
+      tipoImovelId: data.tipoImovelId // Agora usamos o ID do tipo de imóvel
     });
 
     // Verificar se o imóvel existe
@@ -80,6 +84,9 @@ export async function PUT(
       where: {
         id: id,
       },
+      include: {
+        tipoImovel: true
+      }
     });
 
     if (!imovelExistente) {
@@ -93,30 +100,39 @@ export async function PUT(
     // Se o dado vier como undefined ou null, manter o valor existente
     const telefoneParaSalvar = data.telefoneContato !== undefined ? data.telefoneContato : (imovelExistente.telefoneContato || '');
     
-    // FORÇAR O TIPO DE IMÓVEL PARA 'TERRENO' OU O VALOR ENVIADO
-    // NUNCA USAR 'APARTAMENTO' COMO PADRÃO
-    let tipoImovelParaSalvar = 'Terreno'; // Padrão fixo para TERRENO
+    // Buscar o tipo default caso necessário
+    let tipoImovelIdParaSalvar: string | null = null;
     
-    // Se enviou um tipo, usar esse
-    if (data.tipoImovel && data.tipoImovel.trim() !== '') {
-      tipoImovelParaSalvar = data.tipoImovel;
-      console.log('USANDO TIPO ENVIADO:', tipoImovelParaSalvar);
+    // Se enviou um ID de tipo, usar esse
+    if (data.tipoImovelId) {
+      tipoImovelIdParaSalvar = data.tipoImovelId;
+      console.log('USANDO TIPO ENVIADO COM ID:', tipoImovelIdParaSalvar);
     }
-    // Se já existir um tipo no banco que não seja Apartamento, manter
-    else if (imovelExistente.tipoImovel && 
-             imovelExistente.tipoImovel.trim() !== '' && 
-             imovelExistente.tipoImovel !== 'Apartamento') {
-      tipoImovelParaSalvar = imovelExistente.tipoImovel;
-      console.log('MANTENDO TIPO EXISTENTE:', tipoImovelParaSalvar);
+    // Se já existir um tipo no banco, manter
+    else if (imovelExistente.tipoImovelId) {
+      tipoImovelIdParaSalvar = imovelExistente.tipoImovelId;
+      console.log('MANTENDO TIPO EXISTENTE COM ID:', tipoImovelIdParaSalvar);
     }
-    // Caso contrário, usar TERRENO como padrão
+    // Caso contrário, buscar o ID do tipo 'Terreno' como padrão
     else {
-      console.log('USANDO TIPO PADRÃO TERRENO');
+      // Vamos buscar o ID do tipo "Terreno" no banco
+      const tipoTerreno = await prisma.tipoImovel.findFirst({
+        where: {
+          nome: 'Terreno'
+        }
+      });
+      
+      if (tipoTerreno) {
+        tipoImovelIdParaSalvar = tipoTerreno.id;
+        console.log('USANDO TIPO PADRÃO TERRENO COM ID:', tipoImovelIdParaSalvar);
+      } else {
+        console.log('TIPO TERRENO NÃO ENCONTRADO, USANDO NULL');
+      }
     }
     
     console.log('Dados que serão realmente atualizados:', {
       telefoneContato: telefoneParaSalvar,
-      tipoImovel: tipoImovelParaSalvar
+      tipoImovelId: tipoImovelIdParaSalvar
     });
 
     // Atualizar o imóvel com todos os dados
@@ -145,7 +161,7 @@ export async function PUT(
     
     // Usar SEMPRE os valores tratados para garantir que sejam atualizados corretamente
     updateData.telefoneContato = telefoneParaSalvar;
-    updateData.tipoImovel = tipoImovelParaSalvar;
+    updateData.tipoImovelId = tipoImovelIdParaSalvar;
     
     console.log('Objeto final para update:', updateData);
 
@@ -154,6 +170,9 @@ export async function PUT(
         id: id,
       },
       data: updateData,
+      include: {
+        tipoImovel: true // Incluir o tipo de imóvel na resposta
+      }
     });
 
     return NextResponse.json({
@@ -232,6 +251,9 @@ export async function PATCH(
       where: {
         id: id,
       },
+      include: {
+        tipoImovel: true
+      }
     });
 
     if (!imovelExistente) {
@@ -247,6 +269,9 @@ export async function PATCH(
         id: id,
       },
       data: data,
+      include: {
+        tipoImovel: true
+      }
     });
 
     return NextResponse.json({

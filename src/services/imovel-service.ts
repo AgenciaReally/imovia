@@ -13,6 +13,14 @@ export interface OruloBuildingImage {
   order: number
 }
 
+// Interface para o tipo de imóvel relacionado
+export interface TipoImovel {
+  id: string
+  nome: string
+  slug: string
+  descricao?: string
+}
+
 export interface ImovelDisplay {
   id: string
   idExterno?: string
@@ -39,6 +47,11 @@ export interface ImovelDisplay {
   caracteristicas: string[]
   ativo?: boolean
   destaque?: boolean
+  
+  // Campos adicionados para o novo modelo relacional de tipo de imóvel
+  tipoImovel?: TipoImovel      // Objeto relacionado completo
+  tipoImovelId?: string        // ID do tipo relacionado
+  tipoImovelNome?: string      // Nome do tipo para compatibilidade
 }
 
 // Importando nossa implementação OAuth2 da Orulo

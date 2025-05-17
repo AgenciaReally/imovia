@@ -14,6 +14,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model TipoImovel
+ * 
+ */
+export type TipoImovel = $Result.DefaultSelection<Prisma.$TipoImovelPayload>
+/**
  * Model User
  * 
  */
@@ -114,8 +119,8 @@ export const UserRole: typeof $Enums.UserRole
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more TipoImovels
+ * const tipoImovels = await prisma.tipoImovel.findMany()
  * ```
  *
  *
@@ -135,8 +140,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Users
-   * const users = await prisma.user.findMany()
+   * // Fetch zero or more TipoImovels
+   * const tipoImovels = await prisma.tipoImovel.findMany()
    * ```
    *
    *
@@ -233,6 +238,16 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.tipoImovel`: Exposes CRUD operations for the **TipoImovel** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TipoImovels
+    * const tipoImovels = await prisma.tipoImovel.findMany()
+    * ```
+    */
+  get tipoImovel(): Prisma.TipoImovelDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -821,6 +836,7 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    TipoImovel: 'TipoImovel',
     User: 'User',
     Construtora: 'Construtora',
     Imovel: 'Imovel',
@@ -854,10 +870,84 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "construtora" | "imovel" | "pergunta" | "resposta" | "match" | "relatorio" | "configuracao" | "logIntegracao" | "imovelMetadata" | "imovelPergunta" | "mensagemContato" | "aIConversation" | "aIActionHistory" | "aIConfig"
+      modelProps: "tipoImovel" | "user" | "construtora" | "imovel" | "pergunta" | "resposta" | "match" | "relatorio" | "configuracao" | "logIntegracao" | "imovelMetadata" | "imovelPergunta" | "mensagemContato" | "aIConversation" | "aIActionHistory" | "aIConfig"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      TipoImovel: {
+        payload: Prisma.$TipoImovelPayload<ExtArgs>
+        fields: Prisma.TipoImovelFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TipoImovelFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TipoImovelFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload>
+          }
+          findFirst: {
+            args: Prisma.TipoImovelFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TipoImovelFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload>
+          }
+          findMany: {
+            args: Prisma.TipoImovelFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload>[]
+          }
+          create: {
+            args: Prisma.TipoImovelCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload>
+          }
+          createMany: {
+            args: Prisma.TipoImovelCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TipoImovelCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload>[]
+          }
+          delete: {
+            args: Prisma.TipoImovelDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload>
+          }
+          update: {
+            args: Prisma.TipoImovelUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload>
+          }
+          deleteMany: {
+            args: Prisma.TipoImovelDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TipoImovelUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TipoImovelUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload>[]
+          }
+          upsert: {
+            args: Prisma.TipoImovelUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TipoImovelPayload>
+          }
+          aggregate: {
+            args: Prisma.TipoImovelAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTipoImovel>
+          }
+          groupBy: {
+            args: Prisma.TipoImovelGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TipoImovelGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TipoImovelCountArgs<ExtArgs>
+            result: $Utils.Optional<TipoImovelCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -2052,6 +2142,7 @@ export namespace Prisma {
     omit?: Prisma.GlobalOmitConfig
   }
   export type GlobalOmitConfig = {
+    tipoImovel?: TipoImovelOmit
     user?: UserOmit
     construtora?: ConstrutoraOmit
     imovel?: ImovelOmit
@@ -2154,6 +2245,37 @@ export namespace Prisma {
   /**
    * Count Types
    */
+
+
+  /**
+   * Count Type TipoImovelCountOutputType
+   */
+
+  export type TipoImovelCountOutputType = {
+    imoveis: number
+  }
+
+  export type TipoImovelCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    imoveis?: boolean | TipoImovelCountOutputTypeCountImoveisArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * TipoImovelCountOutputType without action
+   */
+  export type TipoImovelCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovelCountOutputType
+     */
+    select?: TipoImovelCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * TipoImovelCountOutputType without action
+   */
+  export type TipoImovelCountOutputTypeCountImoveisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ImovelWhereInput
+  }
 
 
   /**
@@ -2359,6 +2481,1089 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model TipoImovel
+   */
+
+  export type AggregateTipoImovel = {
+    _count: TipoImovelCountAggregateOutputType | null
+    _min: TipoImovelMinAggregateOutputType | null
+    _max: TipoImovelMaxAggregateOutputType | null
+  }
+
+  export type TipoImovelMinAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    slug: string | null
+    descricao: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TipoImovelMaxAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    slug: string | null
+    descricao: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TipoImovelCountAggregateOutputType = {
+    id: number
+    nome: number
+    slug: number
+    descricao: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TipoImovelMinAggregateInputType = {
+    id?: true
+    nome?: true
+    slug?: true
+    descricao?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TipoImovelMaxAggregateInputType = {
+    id?: true
+    nome?: true
+    slug?: true
+    descricao?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TipoImovelCountAggregateInputType = {
+    id?: true
+    nome?: true
+    slug?: true
+    descricao?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TipoImovelAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TipoImovel to aggregate.
+     */
+    where?: TipoImovelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TipoImovels to fetch.
+     */
+    orderBy?: TipoImovelOrderByWithRelationInput | TipoImovelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TipoImovelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TipoImovels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TipoImovels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TipoImovels
+    **/
+    _count?: true | TipoImovelCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TipoImovelMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TipoImovelMaxAggregateInputType
+  }
+
+  export type GetTipoImovelAggregateType<T extends TipoImovelAggregateArgs> = {
+        [P in keyof T & keyof AggregateTipoImovel]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTipoImovel[P]>
+      : GetScalarType<T[P], AggregateTipoImovel[P]>
+  }
+
+
+
+
+  export type TipoImovelGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TipoImovelWhereInput
+    orderBy?: TipoImovelOrderByWithAggregationInput | TipoImovelOrderByWithAggregationInput[]
+    by: TipoImovelScalarFieldEnum[] | TipoImovelScalarFieldEnum
+    having?: TipoImovelScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TipoImovelCountAggregateInputType | true
+    _min?: TipoImovelMinAggregateInputType
+    _max?: TipoImovelMaxAggregateInputType
+  }
+
+  export type TipoImovelGroupByOutputType = {
+    id: string
+    nome: string
+    slug: string
+    descricao: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: TipoImovelCountAggregateOutputType | null
+    _min: TipoImovelMinAggregateOutputType | null
+    _max: TipoImovelMaxAggregateOutputType | null
+  }
+
+  type GetTipoImovelGroupByPayload<T extends TipoImovelGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TipoImovelGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TipoImovelGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TipoImovelGroupByOutputType[P]>
+            : GetScalarType<T[P], TipoImovelGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TipoImovelSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    slug?: boolean
+    descricao?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    imoveis?: boolean | TipoImovel$imoveisArgs<ExtArgs>
+    _count?: boolean | TipoImovelCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["tipoImovel"]>
+
+  export type TipoImovelSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    slug?: boolean
+    descricao?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["tipoImovel"]>
+
+  export type TipoImovelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    slug?: boolean
+    descricao?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["tipoImovel"]>
+
+  export type TipoImovelSelectScalar = {
+    id?: boolean
+    nome?: boolean
+    slug?: boolean
+    descricao?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TipoImovelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "slug" | "descricao" | "createdAt" | "updatedAt", ExtArgs["result"]["tipoImovel"]>
+  export type TipoImovelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    imoveis?: boolean | TipoImovel$imoveisArgs<ExtArgs>
+    _count?: boolean | TipoImovelCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type TipoImovelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type TipoImovelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $TipoImovelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TipoImovel"
+    objects: {
+      imoveis: Prisma.$ImovelPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      nome: string
+      slug: string
+      descricao: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["tipoImovel"]>
+    composites: {}
+  }
+
+  type TipoImovelGetPayload<S extends boolean | null | undefined | TipoImovelDefaultArgs> = $Result.GetResult<Prisma.$TipoImovelPayload, S>
+
+  type TipoImovelCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TipoImovelFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TipoImovelCountAggregateInputType | true
+    }
+
+  export interface TipoImovelDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TipoImovel'], meta: { name: 'TipoImovel' } }
+    /**
+     * Find zero or one TipoImovel that matches the filter.
+     * @param {TipoImovelFindUniqueArgs} args - Arguments to find a TipoImovel
+     * @example
+     * // Get one TipoImovel
+     * const tipoImovel = await prisma.tipoImovel.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TipoImovelFindUniqueArgs>(args: SelectSubset<T, TipoImovelFindUniqueArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TipoImovel that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TipoImovelFindUniqueOrThrowArgs} args - Arguments to find a TipoImovel
+     * @example
+     * // Get one TipoImovel
+     * const tipoImovel = await prisma.tipoImovel.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TipoImovelFindUniqueOrThrowArgs>(args: SelectSubset<T, TipoImovelFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TipoImovel that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TipoImovelFindFirstArgs} args - Arguments to find a TipoImovel
+     * @example
+     * // Get one TipoImovel
+     * const tipoImovel = await prisma.tipoImovel.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TipoImovelFindFirstArgs>(args?: SelectSubset<T, TipoImovelFindFirstArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TipoImovel that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TipoImovelFindFirstOrThrowArgs} args - Arguments to find a TipoImovel
+     * @example
+     * // Get one TipoImovel
+     * const tipoImovel = await prisma.tipoImovel.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TipoImovelFindFirstOrThrowArgs>(args?: SelectSubset<T, TipoImovelFindFirstOrThrowArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TipoImovels that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TipoImovelFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TipoImovels
+     * const tipoImovels = await prisma.tipoImovel.findMany()
+     * 
+     * // Get first 10 TipoImovels
+     * const tipoImovels = await prisma.tipoImovel.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const tipoImovelWithIdOnly = await prisma.tipoImovel.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TipoImovelFindManyArgs>(args?: SelectSubset<T, TipoImovelFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TipoImovel.
+     * @param {TipoImovelCreateArgs} args - Arguments to create a TipoImovel.
+     * @example
+     * // Create one TipoImovel
+     * const TipoImovel = await prisma.tipoImovel.create({
+     *   data: {
+     *     // ... data to create a TipoImovel
+     *   }
+     * })
+     * 
+     */
+    create<T extends TipoImovelCreateArgs>(args: SelectSubset<T, TipoImovelCreateArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TipoImovels.
+     * @param {TipoImovelCreateManyArgs} args - Arguments to create many TipoImovels.
+     * @example
+     * // Create many TipoImovels
+     * const tipoImovel = await prisma.tipoImovel.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TipoImovelCreateManyArgs>(args?: SelectSubset<T, TipoImovelCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TipoImovels and returns the data saved in the database.
+     * @param {TipoImovelCreateManyAndReturnArgs} args - Arguments to create many TipoImovels.
+     * @example
+     * // Create many TipoImovels
+     * const tipoImovel = await prisma.tipoImovel.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TipoImovels and only return the `id`
+     * const tipoImovelWithIdOnly = await prisma.tipoImovel.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TipoImovelCreateManyAndReturnArgs>(args?: SelectSubset<T, TipoImovelCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TipoImovel.
+     * @param {TipoImovelDeleteArgs} args - Arguments to delete one TipoImovel.
+     * @example
+     * // Delete one TipoImovel
+     * const TipoImovel = await prisma.tipoImovel.delete({
+     *   where: {
+     *     // ... filter to delete one TipoImovel
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TipoImovelDeleteArgs>(args: SelectSubset<T, TipoImovelDeleteArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TipoImovel.
+     * @param {TipoImovelUpdateArgs} args - Arguments to update one TipoImovel.
+     * @example
+     * // Update one TipoImovel
+     * const tipoImovel = await prisma.tipoImovel.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TipoImovelUpdateArgs>(args: SelectSubset<T, TipoImovelUpdateArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TipoImovels.
+     * @param {TipoImovelDeleteManyArgs} args - Arguments to filter TipoImovels to delete.
+     * @example
+     * // Delete a few TipoImovels
+     * const { count } = await prisma.tipoImovel.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TipoImovelDeleteManyArgs>(args?: SelectSubset<T, TipoImovelDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TipoImovels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TipoImovelUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TipoImovels
+     * const tipoImovel = await prisma.tipoImovel.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TipoImovelUpdateManyArgs>(args: SelectSubset<T, TipoImovelUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TipoImovels and returns the data updated in the database.
+     * @param {TipoImovelUpdateManyAndReturnArgs} args - Arguments to update many TipoImovels.
+     * @example
+     * // Update many TipoImovels
+     * const tipoImovel = await prisma.tipoImovel.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TipoImovels and only return the `id`
+     * const tipoImovelWithIdOnly = await prisma.tipoImovel.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TipoImovelUpdateManyAndReturnArgs>(args: SelectSubset<T, TipoImovelUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TipoImovel.
+     * @param {TipoImovelUpsertArgs} args - Arguments to update or create a TipoImovel.
+     * @example
+     * // Update or create a TipoImovel
+     * const tipoImovel = await prisma.tipoImovel.upsert({
+     *   create: {
+     *     // ... data to create a TipoImovel
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TipoImovel we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TipoImovelUpsertArgs>(args: SelectSubset<T, TipoImovelUpsertArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TipoImovels.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TipoImovelCountArgs} args - Arguments to filter TipoImovels to count.
+     * @example
+     * // Count the number of TipoImovels
+     * const count = await prisma.tipoImovel.count({
+     *   where: {
+     *     // ... the filter for the TipoImovels we want to count
+     *   }
+     * })
+    **/
+    count<T extends TipoImovelCountArgs>(
+      args?: Subset<T, TipoImovelCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TipoImovelCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TipoImovel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TipoImovelAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TipoImovelAggregateArgs>(args: Subset<T, TipoImovelAggregateArgs>): Prisma.PrismaPromise<GetTipoImovelAggregateType<T>>
+
+    /**
+     * Group by TipoImovel.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TipoImovelGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TipoImovelGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TipoImovelGroupByArgs['orderBy'] }
+        : { orderBy?: TipoImovelGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TipoImovelGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTipoImovelGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TipoImovel model
+   */
+  readonly fields: TipoImovelFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TipoImovel.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TipoImovelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    imoveis<T extends TipoImovel$imoveisArgs<ExtArgs> = {}>(args?: Subset<T, TipoImovel$imoveisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImovelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TipoImovel model
+   */
+  interface TipoImovelFieldRefs {
+    readonly id: FieldRef<"TipoImovel", 'String'>
+    readonly nome: FieldRef<"TipoImovel", 'String'>
+    readonly slug: FieldRef<"TipoImovel", 'String'>
+    readonly descricao: FieldRef<"TipoImovel", 'String'>
+    readonly createdAt: FieldRef<"TipoImovel", 'DateTime'>
+    readonly updatedAt: FieldRef<"TipoImovel", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TipoImovel findUnique
+   */
+  export type TipoImovelFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    /**
+     * Filter, which TipoImovel to fetch.
+     */
+    where: TipoImovelWhereUniqueInput
+  }
+
+  /**
+   * TipoImovel findUniqueOrThrow
+   */
+  export type TipoImovelFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    /**
+     * Filter, which TipoImovel to fetch.
+     */
+    where: TipoImovelWhereUniqueInput
+  }
+
+  /**
+   * TipoImovel findFirst
+   */
+  export type TipoImovelFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    /**
+     * Filter, which TipoImovel to fetch.
+     */
+    where?: TipoImovelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TipoImovels to fetch.
+     */
+    orderBy?: TipoImovelOrderByWithRelationInput | TipoImovelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TipoImovels.
+     */
+    cursor?: TipoImovelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TipoImovels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TipoImovels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TipoImovels.
+     */
+    distinct?: TipoImovelScalarFieldEnum | TipoImovelScalarFieldEnum[]
+  }
+
+  /**
+   * TipoImovel findFirstOrThrow
+   */
+  export type TipoImovelFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    /**
+     * Filter, which TipoImovel to fetch.
+     */
+    where?: TipoImovelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TipoImovels to fetch.
+     */
+    orderBy?: TipoImovelOrderByWithRelationInput | TipoImovelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TipoImovels.
+     */
+    cursor?: TipoImovelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TipoImovels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TipoImovels.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TipoImovels.
+     */
+    distinct?: TipoImovelScalarFieldEnum | TipoImovelScalarFieldEnum[]
+  }
+
+  /**
+   * TipoImovel findMany
+   */
+  export type TipoImovelFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    /**
+     * Filter, which TipoImovels to fetch.
+     */
+    where?: TipoImovelWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TipoImovels to fetch.
+     */
+    orderBy?: TipoImovelOrderByWithRelationInput | TipoImovelOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TipoImovels.
+     */
+    cursor?: TipoImovelWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TipoImovels from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TipoImovels.
+     */
+    skip?: number
+    distinct?: TipoImovelScalarFieldEnum | TipoImovelScalarFieldEnum[]
+  }
+
+  /**
+   * TipoImovel create
+   */
+  export type TipoImovelCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TipoImovel.
+     */
+    data: XOR<TipoImovelCreateInput, TipoImovelUncheckedCreateInput>
+  }
+
+  /**
+   * TipoImovel createMany
+   */
+  export type TipoImovelCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TipoImovels.
+     */
+    data: TipoImovelCreateManyInput | TipoImovelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TipoImovel createManyAndReturn
+   */
+  export type TipoImovelCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * The data used to create many TipoImovels.
+     */
+    data: TipoImovelCreateManyInput | TipoImovelCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TipoImovel update
+   */
+  export type TipoImovelUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TipoImovel.
+     */
+    data: XOR<TipoImovelUpdateInput, TipoImovelUncheckedUpdateInput>
+    /**
+     * Choose, which TipoImovel to update.
+     */
+    where: TipoImovelWhereUniqueInput
+  }
+
+  /**
+   * TipoImovel updateMany
+   */
+  export type TipoImovelUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TipoImovels.
+     */
+    data: XOR<TipoImovelUpdateManyMutationInput, TipoImovelUncheckedUpdateManyInput>
+    /**
+     * Filter which TipoImovels to update
+     */
+    where?: TipoImovelWhereInput
+    /**
+     * Limit how many TipoImovels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TipoImovel updateManyAndReturn
+   */
+  export type TipoImovelUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * The data used to update TipoImovels.
+     */
+    data: XOR<TipoImovelUpdateManyMutationInput, TipoImovelUncheckedUpdateManyInput>
+    /**
+     * Filter which TipoImovels to update
+     */
+    where?: TipoImovelWhereInput
+    /**
+     * Limit how many TipoImovels to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TipoImovel upsert
+   */
+  export type TipoImovelUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TipoImovel to update in case it exists.
+     */
+    where: TipoImovelWhereUniqueInput
+    /**
+     * In case the TipoImovel found by the `where` argument doesn't exist, create a new TipoImovel with this data.
+     */
+    create: XOR<TipoImovelCreateInput, TipoImovelUncheckedCreateInput>
+    /**
+     * In case the TipoImovel was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TipoImovelUpdateInput, TipoImovelUncheckedUpdateInput>
+  }
+
+  /**
+   * TipoImovel delete
+   */
+  export type TipoImovelDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    /**
+     * Filter which TipoImovel to delete.
+     */
+    where: TipoImovelWhereUniqueInput
+  }
+
+  /**
+   * TipoImovel deleteMany
+   */
+  export type TipoImovelDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TipoImovels to delete
+     */
+    where?: TipoImovelWhereInput
+    /**
+     * Limit how many TipoImovels to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TipoImovel.imoveis
+   */
+  export type TipoImovel$imoveisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Imovel
+     */
+    select?: ImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Imovel
+     */
+    omit?: ImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImovelInclude<ExtArgs> | null
+    where?: ImovelWhereInput
+    orderBy?: ImovelOrderByWithRelationInput | ImovelOrderByWithRelationInput[]
+    cursor?: ImovelWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ImovelScalarFieldEnum | ImovelScalarFieldEnum[]
+  }
+
+  /**
+   * TipoImovel without action
+   */
+  export type TipoImovelDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+  }
+
 
   /**
    * Model User
@@ -4772,7 +5977,8 @@ export namespace Prisma {
     telefoneContato: string | null
     endereco: string | null
     fotoPrincipal: string | null
-    tipoImovel: string | null
+    tipoImovelId: string | null
+    tipoImovelNome: string | null
     status: string | null
     ativo: boolean | null
     destaque: boolean | null
@@ -4796,7 +6002,8 @@ export namespace Prisma {
     telefoneContato: string | null
     endereco: string | null
     fotoPrincipal: string | null
-    tipoImovel: string | null
+    tipoImovelId: string | null
+    tipoImovelNome: string | null
     status: string | null
     ativo: boolean | null
     destaque: boolean | null
@@ -4823,7 +6030,8 @@ export namespace Prisma {
     galeriaFotos: number
     caracteristicas: number
     caracteristicasArray: number
-    tipoImovel: number
+    tipoImovelId: number
+    tipoImovelNome: number
     status: number
     ativo: number
     destaque: number
@@ -4869,7 +6077,8 @@ export namespace Prisma {
     telefoneContato?: true
     endereco?: true
     fotoPrincipal?: true
-    tipoImovel?: true
+    tipoImovelId?: true
+    tipoImovelNome?: true
     status?: true
     ativo?: true
     destaque?: true
@@ -4893,7 +6102,8 @@ export namespace Prisma {
     telefoneContato?: true
     endereco?: true
     fotoPrincipal?: true
-    tipoImovel?: true
+    tipoImovelId?: true
+    tipoImovelNome?: true
     status?: true
     ativo?: true
     destaque?: true
@@ -4920,7 +6130,8 @@ export namespace Prisma {
     galeriaFotos?: true
     caracteristicas?: true
     caracteristicasArray?: true
-    tipoImovel?: true
+    tipoImovelId?: true
+    tipoImovelNome?: true
     status?: true
     ativo?: true
     destaque?: true
@@ -5034,7 +6245,8 @@ export namespace Prisma {
     galeriaFotos: string[]
     caracteristicas: JsonValue | null
     caracteristicasArray: string[]
-    tipoImovel: string | null
+    tipoImovelId: string | null
+    tipoImovelNome: string | null
     status: string | null
     ativo: boolean
     destaque: boolean
@@ -5080,13 +6292,15 @@ export namespace Prisma {
     galeriaFotos?: boolean
     caracteristicas?: boolean
     caracteristicasArray?: boolean
-    tipoImovel?: boolean
+    tipoImovelId?: boolean
+    tipoImovelNome?: boolean
     status?: boolean
     ativo?: boolean
     destaque?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
     matches?: boolean | Imovel$matchesArgs<ExtArgs>
     perguntas?: boolean | Imovel$perguntasArgs<ExtArgs>
@@ -5111,13 +6325,15 @@ export namespace Prisma {
     galeriaFotos?: boolean
     caracteristicas?: boolean
     caracteristicasArray?: boolean
-    tipoImovel?: boolean
+    tipoImovelId?: boolean
+    tipoImovelNome?: boolean
     status?: boolean
     ativo?: boolean
     destaque?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["imovel"]>
 
@@ -5139,13 +6355,15 @@ export namespace Prisma {
     galeriaFotos?: boolean
     caracteristicas?: boolean
     caracteristicasArray?: boolean
-    tipoImovel?: boolean
+    tipoImovelId?: boolean
+    tipoImovelNome?: boolean
     status?: boolean
     ativo?: boolean
     destaque?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["imovel"]>
 
@@ -5167,7 +6385,8 @@ export namespace Prisma {
     galeriaFotos?: boolean
     caracteristicas?: boolean
     caracteristicasArray?: boolean
-    tipoImovel?: boolean
+    tipoImovelId?: boolean
+    tipoImovelNome?: boolean
     status?: boolean
     ativo?: boolean
     destaque?: boolean
@@ -5176,23 +6395,27 @@ export namespace Prisma {
     construtoraId?: boolean
   }
 
-  export type ImovelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idExternoAPI" | "titulo" | "descricao" | "preco" | "area" | "quartos" | "banheiros" | "vagas" | "latitude" | "longitude" | "telefoneContato" | "endereco" | "fotoPrincipal" | "galeriaFotos" | "caracteristicas" | "caracteristicasArray" | "tipoImovel" | "status" | "ativo" | "destaque" | "createdAt" | "updatedAt" | "construtoraId", ExtArgs["result"]["imovel"]>
+  export type ImovelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idExternoAPI" | "titulo" | "descricao" | "preco" | "area" | "quartos" | "banheiros" | "vagas" | "latitude" | "longitude" | "telefoneContato" | "endereco" | "fotoPrincipal" | "galeriaFotos" | "caracteristicas" | "caracteristicasArray" | "tipoImovelId" | "tipoImovelNome" | "status" | "ativo" | "destaque" | "createdAt" | "updatedAt" | "construtoraId", ExtArgs["result"]["imovel"]>
   export type ImovelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
     matches?: boolean | Imovel$matchesArgs<ExtArgs>
     perguntas?: boolean | Imovel$perguntasArgs<ExtArgs>
     _count?: boolean | ImovelCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ImovelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
   }
   export type ImovelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
   }
 
   export type $ImovelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Imovel"
     objects: {
+      tipoImovel: Prisma.$TipoImovelPayload<ExtArgs> | null
       construtora: Prisma.$ConstrutoraPayload<ExtArgs>
       matches: Prisma.$MatchPayload<ExtArgs>[]
       perguntas: Prisma.$ImovelPerguntaPayload<ExtArgs>[]
@@ -5215,7 +6438,8 @@ export namespace Prisma {
       galeriaFotos: string[]
       caracteristicas: Prisma.JsonValue | null
       caracteristicasArray: string[]
-      tipoImovel: string | null
+      tipoImovelId: string | null
+      tipoImovelNome: string | null
       status: string | null
       ativo: boolean
       destaque: boolean
@@ -5616,6 +6840,7 @@ export namespace Prisma {
    */
   export interface Prisma__ImovelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    tipoImovel<T extends Imovel$tipoImovelArgs<ExtArgs> = {}>(args?: Subset<T, Imovel$tipoImovelArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     construtora<T extends ConstrutoraDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConstrutoraDefaultArgs<ExtArgs>>): Prisma__ConstrutoraClient<$Result.GetResult<Prisma.$ConstrutoraPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     matches<T extends Imovel$matchesArgs<ExtArgs> = {}>(args?: Subset<T, Imovel$matchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     perguntas<T extends Imovel$perguntasArgs<ExtArgs> = {}>(args?: Subset<T, Imovel$perguntasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImovelPerguntaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5665,7 +6890,8 @@ export namespace Prisma {
     readonly galeriaFotos: FieldRef<"Imovel", 'String[]'>
     readonly caracteristicas: FieldRef<"Imovel", 'Json'>
     readonly caracteristicasArray: FieldRef<"Imovel", 'String[]'>
-    readonly tipoImovel: FieldRef<"Imovel", 'String'>
+    readonly tipoImovelId: FieldRef<"Imovel", 'String'>
+    readonly tipoImovelNome: FieldRef<"Imovel", 'String'>
     readonly status: FieldRef<"Imovel", 'String'>
     readonly ativo: FieldRef<"Imovel", 'Boolean'>
     readonly destaque: FieldRef<"Imovel", 'Boolean'>
@@ -6065,6 +7291,25 @@ export namespace Prisma {
      * Limit how many Imovels to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Imovel.tipoImovel
+   */
+  export type Imovel$tipoImovelArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TipoImovel
+     */
+    select?: TipoImovelSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TipoImovel
+     */
+    omit?: TipoImovelOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TipoImovelInclude<ExtArgs> | null
+    where?: TipoImovelWhereInput
   }
 
   /**
@@ -19052,6 +20297,18 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const TipoImovelScalarFieldEnum: {
+    id: 'id',
+    nome: 'nome',
+    slug: 'slug',
+    descricao: 'descricao',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TipoImovelScalarFieldEnum = (typeof TipoImovelScalarFieldEnum)[keyof typeof TipoImovelScalarFieldEnum]
+
+
   export const UserScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -19100,7 +20357,8 @@ export namespace Prisma {
     galeriaFotos: 'galeriaFotos',
     caracteristicas: 'caracteristicas',
     caracteristicasArray: 'caracteristicasArray',
-    tipoImovel: 'tipoImovel',
+    tipoImovelId: 'tipoImovelId',
+    tipoImovelNome: 'tipoImovelNome',
     status: 'status',
     ativo: 'ativo',
     destaque: 'destaque',
@@ -19340,20 +20598,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'UserRole'
-   */
-  export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
-    
-
-
-  /**
-   * Reference to a field of type 'UserRole[]'
-   */
-  export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -19364,6 +20608,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserRole'
+   */
+  export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+    
+
+
+  /**
+   * Reference to a field of type 'UserRole[]'
+   */
+  export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
     
 
 
@@ -19418,6 +20676,66 @@ export namespace Prisma {
    * Deep Input Types
    */
 
+
+  export type TipoImovelWhereInput = {
+    AND?: TipoImovelWhereInput | TipoImovelWhereInput[]
+    OR?: TipoImovelWhereInput[]
+    NOT?: TipoImovelWhereInput | TipoImovelWhereInput[]
+    id?: StringFilter<"TipoImovel"> | string
+    nome?: StringFilter<"TipoImovel"> | string
+    slug?: StringFilter<"TipoImovel"> | string
+    descricao?: StringNullableFilter<"TipoImovel"> | string | null
+    createdAt?: DateTimeFilter<"TipoImovel"> | Date | string
+    updatedAt?: DateTimeFilter<"TipoImovel"> | Date | string
+    imoveis?: ImovelListRelationFilter
+  }
+
+  export type TipoImovelOrderByWithRelationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    slug?: SortOrder
+    descricao?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    imoveis?: ImovelOrderByRelationAggregateInput
+  }
+
+  export type TipoImovelWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    nome?: string
+    slug?: string
+    AND?: TipoImovelWhereInput | TipoImovelWhereInput[]
+    OR?: TipoImovelWhereInput[]
+    NOT?: TipoImovelWhereInput | TipoImovelWhereInput[]
+    descricao?: StringNullableFilter<"TipoImovel"> | string | null
+    createdAt?: DateTimeFilter<"TipoImovel"> | Date | string
+    updatedAt?: DateTimeFilter<"TipoImovel"> | Date | string
+    imoveis?: ImovelListRelationFilter
+  }, "id" | "nome" | "slug">
+
+  export type TipoImovelOrderByWithAggregationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    slug?: SortOrder
+    descricao?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TipoImovelCountOrderByAggregateInput
+    _max?: TipoImovelMaxOrderByAggregateInput
+    _min?: TipoImovelMinOrderByAggregateInput
+  }
+
+  export type TipoImovelScalarWhereWithAggregatesInput = {
+    AND?: TipoImovelScalarWhereWithAggregatesInput | TipoImovelScalarWhereWithAggregatesInput[]
+    OR?: TipoImovelScalarWhereWithAggregatesInput[]
+    NOT?: TipoImovelScalarWhereWithAggregatesInput | TipoImovelScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TipoImovel"> | string
+    nome?: StringWithAggregatesFilter<"TipoImovel"> | string
+    slug?: StringWithAggregatesFilter<"TipoImovel"> | string
+    descricao?: StringNullableWithAggregatesFilter<"TipoImovel"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"TipoImovel"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"TipoImovel"> | Date | string
+  }
 
   export type UserWhereInput = {
     AND?: UserWhereInput | UserWhereInput[]
@@ -19602,13 +20920,15 @@ export namespace Prisma {
     galeriaFotos?: StringNullableListFilter<"Imovel">
     caracteristicas?: JsonNullableFilter<"Imovel">
     caracteristicasArray?: StringNullableListFilter<"Imovel">
-    tipoImovel?: StringNullableFilter<"Imovel"> | string | null
+    tipoImovelId?: StringNullableFilter<"Imovel"> | string | null
+    tipoImovelNome?: StringNullableFilter<"Imovel"> | string | null
     status?: StringNullableFilter<"Imovel"> | string | null
     ativo?: BoolFilter<"Imovel"> | boolean
     destaque?: BoolFilter<"Imovel"> | boolean
     createdAt?: DateTimeFilter<"Imovel"> | Date | string
     updatedAt?: DateTimeFilter<"Imovel"> | Date | string
     construtoraId?: StringFilter<"Imovel"> | string
+    tipoImovel?: XOR<TipoImovelNullableScalarRelationFilter, TipoImovelWhereInput> | null
     construtora?: XOR<ConstrutoraScalarRelationFilter, ConstrutoraWhereInput>
     matches?: MatchListRelationFilter
     perguntas?: ImovelPerguntaListRelationFilter
@@ -19632,13 +20952,15 @@ export namespace Prisma {
     galeriaFotos?: SortOrder
     caracteristicas?: SortOrderInput | SortOrder
     caracteristicasArray?: SortOrder
-    tipoImovel?: SortOrderInput | SortOrder
+    tipoImovelId?: SortOrderInput | SortOrder
+    tipoImovelNome?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
     ativo?: SortOrder
     destaque?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrder
+    tipoImovel?: TipoImovelOrderByWithRelationInput
     construtora?: ConstrutoraOrderByWithRelationInput
     matches?: MatchOrderByRelationAggregateInput
     perguntas?: ImovelPerguntaOrderByRelationAggregateInput
@@ -19665,13 +20987,15 @@ export namespace Prisma {
     galeriaFotos?: StringNullableListFilter<"Imovel">
     caracteristicas?: JsonNullableFilter<"Imovel">
     caracteristicasArray?: StringNullableListFilter<"Imovel">
-    tipoImovel?: StringNullableFilter<"Imovel"> | string | null
+    tipoImovelId?: StringNullableFilter<"Imovel"> | string | null
+    tipoImovelNome?: StringNullableFilter<"Imovel"> | string | null
     status?: StringNullableFilter<"Imovel"> | string | null
     ativo?: BoolFilter<"Imovel"> | boolean
     destaque?: BoolFilter<"Imovel"> | boolean
     createdAt?: DateTimeFilter<"Imovel"> | Date | string
     updatedAt?: DateTimeFilter<"Imovel"> | Date | string
     construtoraId?: StringFilter<"Imovel"> | string
+    tipoImovel?: XOR<TipoImovelNullableScalarRelationFilter, TipoImovelWhereInput> | null
     construtora?: XOR<ConstrutoraScalarRelationFilter, ConstrutoraWhereInput>
     matches?: MatchListRelationFilter
     perguntas?: ImovelPerguntaListRelationFilter
@@ -19695,7 +21019,8 @@ export namespace Prisma {
     galeriaFotos?: SortOrder
     caracteristicas?: SortOrderInput | SortOrder
     caracteristicasArray?: SortOrder
-    tipoImovel?: SortOrderInput | SortOrder
+    tipoImovelId?: SortOrderInput | SortOrder
+    tipoImovelNome?: SortOrderInput | SortOrder
     status?: SortOrderInput | SortOrder
     ativo?: SortOrder
     destaque?: SortOrder
@@ -19730,7 +21055,8 @@ export namespace Prisma {
     galeriaFotos?: StringNullableListFilter<"Imovel">
     caracteristicas?: JsonNullableWithAggregatesFilter<"Imovel">
     caracteristicasArray?: StringNullableListFilter<"Imovel">
-    tipoImovel?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
+    tipoImovelId?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
+    tipoImovelNome?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
     status?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
     ativo?: BoolWithAggregatesFilter<"Imovel"> | boolean
     destaque?: BoolWithAggregatesFilter<"Imovel"> | boolean
@@ -20543,6 +21869,73 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"AIConfig"> | Date | string
   }
 
+  export type TipoImovelCreateInput = {
+    id?: string
+    nome: string
+    slug: string
+    descricao?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    imoveis?: ImovelCreateNestedManyWithoutTipoImovelInput
+  }
+
+  export type TipoImovelUncheckedCreateInput = {
+    id?: string
+    nome: string
+    slug: string
+    descricao?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    imoveis?: ImovelUncheckedCreateNestedManyWithoutTipoImovelInput
+  }
+
+  export type TipoImovelUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    imoveis?: ImovelUpdateManyWithoutTipoImovelNestedInput
+  }
+
+  export type TipoImovelUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    imoveis?: ImovelUncheckedUpdateManyWithoutTipoImovelNestedInput
+  }
+
+  export type TipoImovelCreateManyInput = {
+    id?: string
+    nome: string
+    slug: string
+    descricao?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TipoImovelUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TipoImovelUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -20748,12 +22141,13 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
     construtora: ConstrutoraCreateNestedOneWithoutImoveisInput
     matches?: MatchCreateNestedManyWithoutImovelInput
     perguntas?: ImovelPerguntaCreateNestedManyWithoutImovelInput
@@ -20777,7 +22171,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
@@ -20806,12 +22201,13 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
     construtora?: ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput
     matches?: MatchUpdateManyWithoutImovelNestedInput
     perguntas?: ImovelPerguntaUpdateManyWithoutImovelNestedInput
@@ -20835,7 +22231,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
@@ -20864,7 +22261,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
@@ -20891,7 +22289,7 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
@@ -20917,7 +22315,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
@@ -21825,13 +23224,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type EnumUserRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
-  }
-
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -21841,6 +23233,105 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type ImovelListRelationFilter = {
+    every?: ImovelWhereInput
+    some?: ImovelWhereInput
+    none?: ImovelWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type ImovelOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TipoImovelCountOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    slug?: SortOrder
+    descricao?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TipoImovelMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    slug?: SortOrder
+    descricao?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TipoImovelMinOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    slug?: SortOrder
+    descricao?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type EnumUserRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
   }
 
   export type ConstrutoraNullableScalarRelationFilter = {
@@ -21858,11 +23349,6 @@ export namespace Prisma {
     every?: RelatorioWhereInput
     some?: RelatorioWhereInput
     none?: RelatorioWhereInput
-  }
-
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
   }
 
   export type RespostaOrderByRelationAggregateInput = {
@@ -21909,42 +23395,6 @@ export namespace Prisma {
     construtoraId?: SortOrder
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
     in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
@@ -21953,20 +23403,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumUserRoleFilter<$PrismaModel>
     _max?: NestedEnumUserRoleFilter<$PrismaModel>
-  }
-
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -21980,12 +23416,6 @@ export namespace Prisma {
     none?: UserWhereInput
   }
 
-  export type ImovelListRelationFilter = {
-    every?: ImovelWhereInput
-    some?: ImovelWhereInput
-    none?: ImovelWhereInput
-  }
-
   export type ImovelMetadataListRelationFilter = {
     every?: ImovelMetadataWhereInput
     some?: ImovelMetadataWhereInput
@@ -21993,10 +23423,6 @@ export namespace Prisma {
   }
 
   export type UserOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ImovelOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22101,6 +23527,11 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type TipoImovelNullableScalarRelationFilter = {
+    is?: TipoImovelWhereInput | null
+    isNot?: TipoImovelWhereInput | null
+  }
+
   export type ConstrutoraScalarRelationFilter = {
     is?: ConstrutoraWhereInput
     isNot?: ConstrutoraWhereInput
@@ -22144,7 +23575,8 @@ export namespace Prisma {
     galeriaFotos?: SortOrder
     caracteristicas?: SortOrder
     caracteristicasArray?: SortOrder
-    tipoImovel?: SortOrder
+    tipoImovelId?: SortOrder
+    tipoImovelNome?: SortOrder
     status?: SortOrder
     ativo?: SortOrder
     destaque?: SortOrder
@@ -22178,7 +23610,8 @@ export namespace Prisma {
     telefoneContato?: SortOrder
     endereco?: SortOrder
     fotoPrincipal?: SortOrder
-    tipoImovel?: SortOrder
+    tipoImovelId?: SortOrder
+    tipoImovelNome?: SortOrder
     status?: SortOrder
     ativo?: SortOrder
     destaque?: SortOrder
@@ -22202,7 +23635,8 @@ export namespace Prisma {
     telefoneContato?: SortOrder
     endereco?: SortOrder
     fotoPrincipal?: SortOrder
-    tipoImovel?: SortOrder
+    tipoImovelId?: SortOrder
+    tipoImovelNome?: SortOrder
     status?: SortOrder
     ativo?: SortOrder
     destaque?: SortOrder
@@ -22743,6 +24177,60 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type ImovelCreateNestedManyWithoutTipoImovelInput = {
+    create?: XOR<ImovelCreateWithoutTipoImovelInput, ImovelUncheckedCreateWithoutTipoImovelInput> | ImovelCreateWithoutTipoImovelInput[] | ImovelUncheckedCreateWithoutTipoImovelInput[]
+    connectOrCreate?: ImovelCreateOrConnectWithoutTipoImovelInput | ImovelCreateOrConnectWithoutTipoImovelInput[]
+    createMany?: ImovelCreateManyTipoImovelInputEnvelope
+    connect?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+  }
+
+  export type ImovelUncheckedCreateNestedManyWithoutTipoImovelInput = {
+    create?: XOR<ImovelCreateWithoutTipoImovelInput, ImovelUncheckedCreateWithoutTipoImovelInput> | ImovelCreateWithoutTipoImovelInput[] | ImovelUncheckedCreateWithoutTipoImovelInput[]
+    connectOrCreate?: ImovelCreateOrConnectWithoutTipoImovelInput | ImovelCreateOrConnectWithoutTipoImovelInput[]
+    createMany?: ImovelCreateManyTipoImovelInputEnvelope
+    connect?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+  }
+
+  export type StringFieldUpdateOperationsInput = {
+    set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+  }
+
+  export type DateTimeFieldUpdateOperationsInput = {
+    set?: Date | string
+  }
+
+  export type ImovelUpdateManyWithoutTipoImovelNestedInput = {
+    create?: XOR<ImovelCreateWithoutTipoImovelInput, ImovelUncheckedCreateWithoutTipoImovelInput> | ImovelCreateWithoutTipoImovelInput[] | ImovelUncheckedCreateWithoutTipoImovelInput[]
+    connectOrCreate?: ImovelCreateOrConnectWithoutTipoImovelInput | ImovelCreateOrConnectWithoutTipoImovelInput[]
+    upsert?: ImovelUpsertWithWhereUniqueWithoutTipoImovelInput | ImovelUpsertWithWhereUniqueWithoutTipoImovelInput[]
+    createMany?: ImovelCreateManyTipoImovelInputEnvelope
+    set?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+    disconnect?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+    delete?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+    connect?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+    update?: ImovelUpdateWithWhereUniqueWithoutTipoImovelInput | ImovelUpdateWithWhereUniqueWithoutTipoImovelInput[]
+    updateMany?: ImovelUpdateManyWithWhereWithoutTipoImovelInput | ImovelUpdateManyWithWhereWithoutTipoImovelInput[]
+    deleteMany?: ImovelScalarWhereInput | ImovelScalarWhereInput[]
+  }
+
+  export type ImovelUncheckedUpdateManyWithoutTipoImovelNestedInput = {
+    create?: XOR<ImovelCreateWithoutTipoImovelInput, ImovelUncheckedCreateWithoutTipoImovelInput> | ImovelCreateWithoutTipoImovelInput[] | ImovelUncheckedCreateWithoutTipoImovelInput[]
+    connectOrCreate?: ImovelCreateOrConnectWithoutTipoImovelInput | ImovelCreateOrConnectWithoutTipoImovelInput[]
+    upsert?: ImovelUpsertWithWhereUniqueWithoutTipoImovelInput | ImovelUpsertWithWhereUniqueWithoutTipoImovelInput[]
+    createMany?: ImovelCreateManyTipoImovelInputEnvelope
+    set?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+    disconnect?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+    delete?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+    connect?: ImovelWhereUniqueInput | ImovelWhereUniqueInput[]
+    update?: ImovelUpdateWithWhereUniqueWithoutTipoImovelInput | ImovelUpdateWithWhereUniqueWithoutTipoImovelInput[]
+    updateMany?: ImovelUpdateManyWithWhereWithoutTipoImovelInput | ImovelUpdateManyWithWhereWithoutTipoImovelInput[]
+    deleteMany?: ImovelScalarWhereInput | ImovelScalarWhereInput[]
+  }
+
   export type ConstrutoraCreateNestedOneWithoutUsuariosInput = {
     create?: XOR<ConstrutoraCreateWithoutUsuariosInput, ConstrutoraUncheckedCreateWithoutUsuariosInput>
     connectOrCreate?: ConstrutoraCreateOrConnectWithoutUsuariosInput
@@ -22777,20 +24265,8 @@ export namespace Prisma {
     connect?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
   }
 
-  export type StringFieldUpdateOperationsInput = {
-    set?: string
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type EnumUserRoleFieldUpdateOperationsInput = {
     set?: $Enums.UserRole
-  }
-
-  export type DateTimeFieldUpdateOperationsInput = {
-    set?: Date | string
   }
 
   export type ConstrutoraUpdateOneWithoutUsuariosNestedInput = {
@@ -22997,6 +24473,12 @@ export namespace Prisma {
     set: string[]
   }
 
+  export type TipoImovelCreateNestedOneWithoutImoveisInput = {
+    create?: XOR<TipoImovelCreateWithoutImoveisInput, TipoImovelUncheckedCreateWithoutImoveisInput>
+    connectOrCreate?: TipoImovelCreateOrConnectWithoutImoveisInput
+    connect?: TipoImovelWhereUniqueInput
+  }
+
   export type ConstrutoraCreateNestedOneWithoutImoveisInput = {
     create?: XOR<ConstrutoraCreateWithoutImoveisInput, ConstrutoraUncheckedCreateWithoutImoveisInput>
     connectOrCreate?: ConstrutoraCreateOrConnectWithoutImoveisInput
@@ -23055,6 +24537,16 @@ export namespace Prisma {
   export type ImovelUpdatecaracteristicasArrayInput = {
     set?: string[]
     push?: string | string[]
+  }
+
+  export type TipoImovelUpdateOneWithoutImoveisNestedInput = {
+    create?: XOR<TipoImovelCreateWithoutImoveisInput, TipoImovelUncheckedCreateWithoutImoveisInput>
+    connectOrCreate?: TipoImovelCreateOrConnectWithoutImoveisInput
+    upsert?: TipoImovelUpsertWithoutImoveisInput
+    disconnect?: TipoImovelWhereInput | boolean
+    delete?: TipoImovelWhereInput | boolean
+    connect?: TipoImovelWhereUniqueInput
+    update?: XOR<XOR<TipoImovelUpdateToOneWithWhereWithoutImoveisInput, TipoImovelUpdateWithoutImoveisInput>, TipoImovelUncheckedUpdateWithoutImoveisInput>
   }
 
   export type ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput = {
@@ -23391,13 +24883,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
-  }
-
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -23465,16 +24950,6 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumUserRoleFilter<$PrismaModel>
-    _max?: NestedEnumUserRoleFilter<$PrismaModel>
-  }
-
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -23487,6 +24962,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
+  }
+
+  export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserRoleFilter<$PrismaModel>
+    _max?: NestedEnumUserRoleFilter<$PrismaModel>
   }
 
   export type NestedBoolFilter<$PrismaModel = never> = {
@@ -23589,6 +25081,121 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type ImovelCreateWithoutTipoImovelInput = {
+    id?: string
+    idExternoAPI?: string | null
+    titulo: string
+    descricao: string
+    preco: number
+    area: number
+    quartos: number
+    banheiros: number
+    vagas: number
+    latitude: number
+    longitude: number
+    telefoneContato?: string | null
+    endereco: string
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    caracteristicas?: NullableJsonNullValueInput | InputJsonValue
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    tipoImovelNome?: string | null
+    status?: string | null
+    ativo?: boolean
+    destaque?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    construtora: ConstrutoraCreateNestedOneWithoutImoveisInput
+    matches?: MatchCreateNestedManyWithoutImovelInput
+    perguntas?: ImovelPerguntaCreateNestedManyWithoutImovelInput
+  }
+
+  export type ImovelUncheckedCreateWithoutTipoImovelInput = {
+    id?: string
+    idExternoAPI?: string | null
+    titulo: string
+    descricao: string
+    preco: number
+    area: number
+    quartos: number
+    banheiros: number
+    vagas: number
+    latitude: number
+    longitude: number
+    telefoneContato?: string | null
+    endereco: string
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    caracteristicas?: NullableJsonNullValueInput | InputJsonValue
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    tipoImovelNome?: string | null
+    status?: string | null
+    ativo?: boolean
+    destaque?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    construtoraId: string
+    matches?: MatchUncheckedCreateNestedManyWithoutImovelInput
+    perguntas?: ImovelPerguntaUncheckedCreateNestedManyWithoutImovelInput
+  }
+
+  export type ImovelCreateOrConnectWithoutTipoImovelInput = {
+    where: ImovelWhereUniqueInput
+    create: XOR<ImovelCreateWithoutTipoImovelInput, ImovelUncheckedCreateWithoutTipoImovelInput>
+  }
+
+  export type ImovelCreateManyTipoImovelInputEnvelope = {
+    data: ImovelCreateManyTipoImovelInput | ImovelCreateManyTipoImovelInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ImovelUpsertWithWhereUniqueWithoutTipoImovelInput = {
+    where: ImovelWhereUniqueInput
+    update: XOR<ImovelUpdateWithoutTipoImovelInput, ImovelUncheckedUpdateWithoutTipoImovelInput>
+    create: XOR<ImovelCreateWithoutTipoImovelInput, ImovelUncheckedCreateWithoutTipoImovelInput>
+  }
+
+  export type ImovelUpdateWithWhereUniqueWithoutTipoImovelInput = {
+    where: ImovelWhereUniqueInput
+    data: XOR<ImovelUpdateWithoutTipoImovelInput, ImovelUncheckedUpdateWithoutTipoImovelInput>
+  }
+
+  export type ImovelUpdateManyWithWhereWithoutTipoImovelInput = {
+    where: ImovelScalarWhereInput
+    data: XOR<ImovelUpdateManyMutationInput, ImovelUncheckedUpdateManyWithoutTipoImovelInput>
+  }
+
+  export type ImovelScalarWhereInput = {
+    AND?: ImovelScalarWhereInput | ImovelScalarWhereInput[]
+    OR?: ImovelScalarWhereInput[]
+    NOT?: ImovelScalarWhereInput | ImovelScalarWhereInput[]
+    id?: StringFilter<"Imovel"> | string
+    idExternoAPI?: StringNullableFilter<"Imovel"> | string | null
+    titulo?: StringFilter<"Imovel"> | string
+    descricao?: StringFilter<"Imovel"> | string
+    preco?: FloatFilter<"Imovel"> | number
+    area?: FloatFilter<"Imovel"> | number
+    quartos?: IntFilter<"Imovel"> | number
+    banheiros?: IntFilter<"Imovel"> | number
+    vagas?: IntFilter<"Imovel"> | number
+    latitude?: FloatFilter<"Imovel"> | number
+    longitude?: FloatFilter<"Imovel"> | number
+    telefoneContato?: StringNullableFilter<"Imovel"> | string | null
+    endereco?: StringFilter<"Imovel"> | string
+    fotoPrincipal?: StringNullableFilter<"Imovel"> | string | null
+    galeriaFotos?: StringNullableListFilter<"Imovel">
+    caracteristicas?: JsonNullableFilter<"Imovel">
+    caracteristicasArray?: StringNullableListFilter<"Imovel">
+    tipoImovelId?: StringNullableFilter<"Imovel"> | string | null
+    tipoImovelNome?: StringNullableFilter<"Imovel"> | string | null
+    status?: StringNullableFilter<"Imovel"> | string | null
+    ativo?: BoolFilter<"Imovel"> | boolean
+    destaque?: BoolFilter<"Imovel"> | boolean
+    createdAt?: DateTimeFilter<"Imovel"> | Date | string
+    updatedAt?: DateTimeFilter<"Imovel"> | Date | string
+    construtoraId?: StringFilter<"Imovel"> | string
   }
 
   export type ConstrutoraCreateWithoutUsuariosInput = {
@@ -23827,12 +25434,13 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
     matches?: MatchCreateNestedManyWithoutImovelInput
     perguntas?: ImovelPerguntaCreateNestedManyWithoutImovelInput
   }
@@ -23855,7 +25463,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
@@ -23950,36 +25559,6 @@ export namespace Prisma {
     data: XOR<ImovelUpdateManyMutationInput, ImovelUncheckedUpdateManyWithoutConstrutoraInput>
   }
 
-  export type ImovelScalarWhereInput = {
-    AND?: ImovelScalarWhereInput | ImovelScalarWhereInput[]
-    OR?: ImovelScalarWhereInput[]
-    NOT?: ImovelScalarWhereInput | ImovelScalarWhereInput[]
-    id?: StringFilter<"Imovel"> | string
-    idExternoAPI?: StringNullableFilter<"Imovel"> | string | null
-    titulo?: StringFilter<"Imovel"> | string
-    descricao?: StringFilter<"Imovel"> | string
-    preco?: FloatFilter<"Imovel"> | number
-    area?: FloatFilter<"Imovel"> | number
-    quartos?: IntFilter<"Imovel"> | number
-    banheiros?: IntFilter<"Imovel"> | number
-    vagas?: IntFilter<"Imovel"> | number
-    latitude?: FloatFilter<"Imovel"> | number
-    longitude?: FloatFilter<"Imovel"> | number
-    telefoneContato?: StringNullableFilter<"Imovel"> | string | null
-    endereco?: StringFilter<"Imovel"> | string
-    fotoPrincipal?: StringNullableFilter<"Imovel"> | string | null
-    galeriaFotos?: StringNullableListFilter<"Imovel">
-    caracteristicas?: JsonNullableFilter<"Imovel">
-    caracteristicasArray?: StringNullableListFilter<"Imovel">
-    tipoImovel?: StringNullableFilter<"Imovel"> | string | null
-    status?: StringNullableFilter<"Imovel"> | string | null
-    ativo?: BoolFilter<"Imovel"> | boolean
-    destaque?: BoolFilter<"Imovel"> | boolean
-    createdAt?: DateTimeFilter<"Imovel"> | Date | string
-    updatedAt?: DateTimeFilter<"Imovel"> | Date | string
-    construtoraId?: StringFilter<"Imovel"> | string
-  }
-
   export type ImovelMetadataUpsertWithWhereUniqueWithoutConstrutoraInput = {
     where: ImovelMetadataWhereUniqueInput
     update: XOR<ImovelMetadataUpdateWithoutConstrutoraInput, ImovelMetadataUncheckedUpdateWithoutConstrutoraInput>
@@ -24007,6 +25586,29 @@ export namespace Prisma {
     construtoraId?: StringNullableFilter<"ImovelMetadata"> | string | null
     createdAt?: DateTimeFilter<"ImovelMetadata"> | Date | string
     updatedAt?: DateTimeFilter<"ImovelMetadata"> | Date | string
+  }
+
+  export type TipoImovelCreateWithoutImoveisInput = {
+    id?: string
+    nome: string
+    slug: string
+    descricao?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TipoImovelUncheckedCreateWithoutImoveisInput = {
+    id?: string
+    nome: string
+    slug: string
+    descricao?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TipoImovelCreateOrConnectWithoutImoveisInput = {
+    where: TipoImovelWhereUniqueInput
+    create: XOR<TipoImovelCreateWithoutImoveisInput, TipoImovelUncheckedCreateWithoutImoveisInput>
   }
 
   export type ConstrutoraCreateWithoutImoveisInput = {
@@ -24096,6 +25698,35 @@ export namespace Prisma {
   export type ImovelPerguntaCreateManyImovelInputEnvelope = {
     data: ImovelPerguntaCreateManyImovelInput | ImovelPerguntaCreateManyImovelInput[]
     skipDuplicates?: boolean
+  }
+
+  export type TipoImovelUpsertWithoutImoveisInput = {
+    update: XOR<TipoImovelUpdateWithoutImoveisInput, TipoImovelUncheckedUpdateWithoutImoveisInput>
+    create: XOR<TipoImovelCreateWithoutImoveisInput, TipoImovelUncheckedCreateWithoutImoveisInput>
+    where?: TipoImovelWhereInput
+  }
+
+  export type TipoImovelUpdateToOneWithWhereWithoutImoveisInput = {
+    where?: TipoImovelWhereInput
+    data: XOR<TipoImovelUpdateWithoutImoveisInput, TipoImovelUncheckedUpdateWithoutImoveisInput>
+  }
+
+  export type TipoImovelUpdateWithoutImoveisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TipoImovelUncheckedUpdateWithoutImoveisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    descricao?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ConstrutoraUpsertWithoutImoveisInput = {
@@ -24451,12 +26082,13 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
     construtora: ConstrutoraCreateNestedOneWithoutImoveisInput
     perguntas?: ImovelPerguntaCreateNestedManyWithoutImovelInput
   }
@@ -24479,7 +26111,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
@@ -24546,12 +26179,13 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
     construtora?: ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput
     perguntas?: ImovelPerguntaUpdateManyWithoutImovelNestedInput
   }
@@ -24574,7 +26208,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
@@ -24819,12 +26454,13 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
     construtora: ConstrutoraCreateNestedOneWithoutImoveisInput
     matches?: MatchCreateNestedManyWithoutImovelInput
   }
@@ -24847,7 +26483,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
@@ -24932,12 +26569,13 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
     construtora?: ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput
     matches?: MatchUpdateManyWithoutImovelNestedInput
   }
@@ -24960,7 +26598,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
@@ -25015,6 +26654,118 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     respostas?: RespostaUncheckedUpdateManyWithoutPerguntaNestedInput
+  }
+
+  export type ImovelCreateManyTipoImovelInput = {
+    id?: string
+    idExternoAPI?: string | null
+    titulo: string
+    descricao: string
+    preco: number
+    area: number
+    quartos: number
+    banheiros: number
+    vagas: number
+    latitude: number
+    longitude: number
+    telefoneContato?: string | null
+    endereco: string
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    caracteristicas?: NullableJsonNullValueInput | InputJsonValue
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    tipoImovelNome?: string | null
+    status?: string | null
+    ativo?: boolean
+    destaque?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    construtoraId: string
+  }
+
+  export type ImovelUpdateWithoutTipoImovelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idExternoAPI?: NullableStringFieldUpdateOperationsInput | string | null
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    preco?: FloatFieldUpdateOperationsInput | number
+    area?: FloatFieldUpdateOperationsInput | number
+    quartos?: IntFieldUpdateOperationsInput | number
+    banheiros?: IntFieldUpdateOperationsInput | number
+    vagas?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
+    endereco?: StringFieldUpdateOperationsInput | string
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    caracteristicas?: NullableJsonNullValueInput | InputJsonValue
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    construtora?: ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput
+    matches?: MatchUpdateManyWithoutImovelNestedInput
+    perguntas?: ImovelPerguntaUpdateManyWithoutImovelNestedInput
+  }
+
+  export type ImovelUncheckedUpdateWithoutTipoImovelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idExternoAPI?: NullableStringFieldUpdateOperationsInput | string | null
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    preco?: FloatFieldUpdateOperationsInput | number
+    area?: FloatFieldUpdateOperationsInput | number
+    quartos?: IntFieldUpdateOperationsInput | number
+    banheiros?: IntFieldUpdateOperationsInput | number
+    vagas?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
+    endereco?: StringFieldUpdateOperationsInput | string
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    caracteristicas?: NullableJsonNullValueInput | InputJsonValue
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    construtoraId?: StringFieldUpdateOperationsInput | string
+    matches?: MatchUncheckedUpdateManyWithoutImovelNestedInput
+    perguntas?: ImovelPerguntaUncheckedUpdateManyWithoutImovelNestedInput
+  }
+
+  export type ImovelUncheckedUpdateManyWithoutTipoImovelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idExternoAPI?: NullableStringFieldUpdateOperationsInput | string | null
+    titulo?: StringFieldUpdateOperationsInput | string
+    descricao?: StringFieldUpdateOperationsInput | string
+    preco?: FloatFieldUpdateOperationsInput | number
+    area?: FloatFieldUpdateOperationsInput | number
+    quartos?: IntFieldUpdateOperationsInput | number
+    banheiros?: IntFieldUpdateOperationsInput | number
+    vagas?: IntFieldUpdateOperationsInput | number
+    latitude?: FloatFieldUpdateOperationsInput | number
+    longitude?: FloatFieldUpdateOperationsInput | number
+    telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
+    endereco?: StringFieldUpdateOperationsInput | string
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    caracteristicas?: NullableJsonNullValueInput | InputJsonValue
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    construtoraId?: StringFieldUpdateOperationsInput | string
   }
 
   export type RespostaCreateManyUsuarioInput = {
@@ -25112,7 +26863,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovel?: string | null
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     status?: string | null
     ativo?: boolean
     destaque?: boolean
@@ -25184,12 +26936,13 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
     matches?: MatchUpdateManyWithoutImovelNestedInput
     perguntas?: ImovelPerguntaUpdateManyWithoutImovelNestedInput
   }
@@ -25212,7 +26965,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
@@ -25240,7 +26994,8 @@ export namespace Prisma {
     galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
     caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     ativo?: BoolFieldUpdateOperationsInput | boolean
     destaque?: BoolFieldUpdateOperationsInput | boolean
