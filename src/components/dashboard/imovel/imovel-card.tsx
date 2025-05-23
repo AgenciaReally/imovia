@@ -206,64 +206,38 @@ export function ImovelCard({ imovel, className, onDelete, onToggleStatus }: Imov
             </div>
           </div>
           
-          {/* Status de ativo/inativo e ações */}
+          {/* Botões de ação */}
           <div className="flex items-center justify-between mt-4 pt-3 border-t text-xs text-muted-foreground">
-            <div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={`flex items-center gap-1 text-xs px-2 ${imovel.ativo !== false ? 'text-green-600 hover:text-green-700' : 'text-red-600 hover:text-red-700'}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (onToggleStatus) {
-                    // Passar o status atual para a função de toggle
-                    onToggleStatus(imovel.id, imovel.ativo !== false);
-                  }
-                }}
+            <div className="flex gap-1">
+              <Button 
+                variant="default" 
+                size="sm" 
+                className="text-xs gap-2"
+                onClick={() => setModalEdicaoAberto(true)}
               >
-                {imovel.ativo !== false ? (
-                  <>
-                    <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
-                    <span>Ativo</span>
-                  </>
-                ) : (
-                  <>
-                    <XCircle className="h-3.5 w-3.5 text-red-600" />
-                    <span>Inativo</span>
-                  </>
-                )}
+                <Eye className="w-3.5 h-3.5" />
+                Editar Imóvel
               </Button>
+              
+              {onDelete && (
+                <Button 
+                  variant="destructive" 
+                  size="sm"
+                  className="text-xs"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (confirm(`Tem certeza que deseja excluir o imóvel ${imovel.titulo}?`)) {
+                      onDelete(imovel.id);
+                    }
+                  }}
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </Button>
+              )}
             </div>
             
-            {/* Botões de ação */}
-            <div className="space-y-2 mt-auto">
-              <div className="flex gap-1">
-                <Button 
-                  variant="default" 
-                  size="sm" 
-                  className="flex-1 text-xs gap-2"
-                  onClick={() => setModalEdicaoAberto(true)}
-                >
-                  <Eye className="w-3.5 h-3.5" />
-                  Editar Imóvel
-                </Button>
-                
-                {onDelete && (
-                  <Button 
-                    variant="destructive" 
-                    size="sm"
-                    className="text-xs"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (confirm(`Tem certeza que deseja excluir o imóvel ${imovel.titulo}?`)) {
-                        onDelete(imovel.id);
-                      }
-                    }}
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </Button>
-                )}
-              </div>
+            <div>
+              {/* Espaço vazio à direita */}
             </div>
           </div>
         </CardContent>

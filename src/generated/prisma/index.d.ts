@@ -39,6 +39,11 @@ export type Imovel = $Result.DefaultSelection<Prisma.$ImovelPayload>
  */
 export type Pergunta = $Result.DefaultSelection<Prisma.$PerguntaPayload>
 /**
+ * Model ConfiguracaoPergunta
+ * 
+ */
+export type ConfiguracaoPergunta = $Result.DefaultSelection<Prisma.$ConfiguracaoPerguntaPayload>
+/**
  * Model Resposta
  * 
  */
@@ -286,6 +291,16 @@ export class PrismaClient<
     * ```
     */
   get pergunta(): Prisma.PerguntaDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.configuracaoPergunta`: Exposes CRUD operations for the **ConfiguracaoPergunta** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConfiguracaoPerguntas
+    * const configuracaoPerguntas = await prisma.configuracaoPergunta.findMany()
+    * ```
+    */
+  get configuracaoPergunta(): Prisma.ConfiguracaoPerguntaDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.resposta`: Exposes CRUD operations for the **Resposta** model.
@@ -841,6 +856,7 @@ export namespace Prisma {
     Construtora: 'Construtora',
     Imovel: 'Imovel',
     Pergunta: 'Pergunta',
+    ConfiguracaoPergunta: 'ConfiguracaoPergunta',
     Resposta: 'Resposta',
     Match: 'Match',
     Relatorio: 'Relatorio',
@@ -870,7 +886,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tipoImovel" | "user" | "construtora" | "imovel" | "pergunta" | "resposta" | "match" | "relatorio" | "configuracao" | "logIntegracao" | "imovelMetadata" | "imovelPergunta" | "mensagemContato" | "aIConversation" | "aIActionHistory" | "aIConfig"
+      modelProps: "tipoImovel" | "user" | "construtora" | "imovel" | "pergunta" | "configuracaoPergunta" | "resposta" | "match" | "relatorio" | "configuracao" | "logIntegracao" | "imovelMetadata" | "imovelPergunta" | "mensagemContato" | "aIConversation" | "aIActionHistory" | "aIConfig"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1241,6 +1257,80 @@ export namespace Prisma {
           count: {
             args: Prisma.PerguntaCountArgs<ExtArgs>
             result: $Utils.Optional<PerguntaCountAggregateOutputType> | number
+          }
+        }
+      }
+      ConfiguracaoPergunta: {
+        payload: Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>
+        fields: Prisma.ConfiguracaoPerguntaFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConfiguracaoPerguntaFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConfiguracaoPerguntaFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload>
+          }
+          findFirst: {
+            args: Prisma.ConfiguracaoPerguntaFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConfiguracaoPerguntaFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload>
+          }
+          findMany: {
+            args: Prisma.ConfiguracaoPerguntaFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload>[]
+          }
+          create: {
+            args: Prisma.ConfiguracaoPerguntaCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload>
+          }
+          createMany: {
+            args: Prisma.ConfiguracaoPerguntaCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConfiguracaoPerguntaCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload>[]
+          }
+          delete: {
+            args: Prisma.ConfiguracaoPerguntaDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload>
+          }
+          update: {
+            args: Prisma.ConfiguracaoPerguntaUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload>
+          }
+          deleteMany: {
+            args: Prisma.ConfiguracaoPerguntaDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConfiguracaoPerguntaUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConfiguracaoPerguntaUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload>[]
+          }
+          upsert: {
+            args: Prisma.ConfiguracaoPerguntaUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConfiguracaoPerguntaPayload>
+          }
+          aggregate: {
+            args: Prisma.ConfiguracaoPerguntaAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConfiguracaoPergunta>
+          }
+          groupBy: {
+            args: Prisma.ConfiguracaoPerguntaGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConfiguracaoPerguntaGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConfiguracaoPerguntaCountArgs<ExtArgs>
+            result: $Utils.Optional<ConfiguracaoPerguntaCountAggregateOutputType> | number
           }
         }
       }
@@ -2147,6 +2237,7 @@ export namespace Prisma {
     construtora?: ConstrutoraOmit
     imovel?: ImovelOmit
     pergunta?: PerguntaOmit
+    configuracaoPergunta?: ConfiguracaoPerguntaOmit
     resposta?: RespostaOmit
     match?: MatchOmit
     relatorio?: RelatorioOmit
@@ -2444,6 +2535,37 @@ export namespace Prisma {
    */
   export type PerguntaCountOutputTypeCountImoveisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ImovelPerguntaWhereInput
+  }
+
+
+  /**
+   * Count Type ConfiguracaoPerguntaCountOutputType
+   */
+
+  export type ConfiguracaoPerguntaCountOutputType = {
+    perguntas: number
+  }
+
+  export type ConfiguracaoPerguntaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    perguntas?: boolean | ConfiguracaoPerguntaCountOutputTypeCountPerguntasArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ConfiguracaoPerguntaCountOutputType without action
+   */
+  export type ConfiguracaoPerguntaCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPerguntaCountOutputType
+     */
+    select?: ConfiguracaoPerguntaCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ConfiguracaoPerguntaCountOutputType without action
+   */
+  export type ConfiguracaoPerguntaCountOutputTypeCountPerguntasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PerguntaWhereInput
   }
 
 
@@ -7414,6 +7536,7 @@ export namespace Prisma {
     ativa: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    configuracaoId: string | null
   }
 
   export type PerguntaMaxAggregateOutputType = {
@@ -7429,6 +7552,7 @@ export namespace Prisma {
     ativa: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    configuracaoId: string | null
   }
 
   export type PerguntaCountAggregateOutputType = {
@@ -7446,6 +7570,7 @@ export namespace Prisma {
     ativa: number
     createdAt: number
     updatedAt: number
+    configuracaoId: number
     _all: number
   }
 
@@ -7473,6 +7598,7 @@ export namespace Prisma {
     ativa?: true
     createdAt?: true
     updatedAt?: true
+    configuracaoId?: true
   }
 
   export type PerguntaMaxAggregateInputType = {
@@ -7488,6 +7614,7 @@ export namespace Prisma {
     ativa?: true
     createdAt?: true
     updatedAt?: true
+    configuracaoId?: true
   }
 
   export type PerguntaCountAggregateInputType = {
@@ -7505,6 +7632,7 @@ export namespace Prisma {
     ativa?: true
     createdAt?: true
     updatedAt?: true
+    configuracaoId?: true
     _all?: true
   }
 
@@ -7609,6 +7737,7 @@ export namespace Prisma {
     ativa: boolean
     createdAt: Date
     updatedAt: Date
+    configuracaoId: string | null
     _count: PerguntaCountAggregateOutputType | null
     _avg: PerguntaAvgAggregateOutputType | null
     _sum: PerguntaSumAggregateOutputType | null
@@ -7645,8 +7774,10 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    configuracaoId?: boolean
     respostas?: boolean | Pergunta$respostasArgs<ExtArgs>
     imoveis?: boolean | Pergunta$imoveisArgs<ExtArgs>
+    configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
     _count?: boolean | PerguntaCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pergunta"]>
 
@@ -7665,6 +7796,8 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    configuracaoId?: boolean
+    configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
   }, ExtArgs["result"]["pergunta"]>
 
   export type PerguntaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7682,6 +7815,8 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    configuracaoId?: boolean
+    configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
   }, ExtArgs["result"]["pergunta"]>
 
   export type PerguntaSelectScalar = {
@@ -7699,22 +7834,29 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    configuracaoId?: boolean
   }
 
-  export type PerguntaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "texto" | "tipo" | "opcoes" | "ordem" | "categoria" | "fluxo" | "pontuacao" | "obrigatoria" | "condicional" | "geradaPorIA" | "ativa" | "createdAt" | "updatedAt", ExtArgs["result"]["pergunta"]>
+  export type PerguntaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "texto" | "tipo" | "opcoes" | "ordem" | "categoria" | "fluxo" | "pontuacao" | "obrigatoria" | "condicional" | "geradaPorIA" | "ativa" | "createdAt" | "updatedAt" | "configuracaoId", ExtArgs["result"]["pergunta"]>
   export type PerguntaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     respostas?: boolean | Pergunta$respostasArgs<ExtArgs>
     imoveis?: boolean | Pergunta$imoveisArgs<ExtArgs>
+    configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
     _count?: boolean | PerguntaCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type PerguntaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type PerguntaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type PerguntaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
+  }
+  export type PerguntaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
+  }
 
   export type $PerguntaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Pergunta"
     objects: {
       respostas: Prisma.$RespostaPayload<ExtArgs>[]
       imoveis: Prisma.$ImovelPerguntaPayload<ExtArgs>[]
+      configuracao: Prisma.$ConfiguracaoPerguntaPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7731,6 +7873,7 @@ export namespace Prisma {
       ativa: boolean
       createdAt: Date
       updatedAt: Date
+      configuracaoId: string | null
     }, ExtArgs["result"]["pergunta"]>
     composites: {}
   }
@@ -8127,6 +8270,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     respostas<T extends Pergunta$respostasArgs<ExtArgs> = {}>(args?: Subset<T, Pergunta$respostasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RespostaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     imoveis<T extends Pergunta$imoveisArgs<ExtArgs> = {}>(args?: Subset<T, Pergunta$imoveisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImovelPerguntaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    configuracao<T extends Pergunta$configuracaoArgs<ExtArgs> = {}>(args?: Subset<T, Pergunta$configuracaoArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8170,6 +8314,7 @@ export namespace Prisma {
     readonly ativa: FieldRef<"Pergunta", 'Boolean'>
     readonly createdAt: FieldRef<"Pergunta", 'DateTime'>
     readonly updatedAt: FieldRef<"Pergunta", 'DateTime'>
+    readonly configuracaoId: FieldRef<"Pergunta", 'String'>
   }
     
 
@@ -8419,6 +8564,10 @@ export namespace Prisma {
      */
     data: PerguntaCreateManyInput | PerguntaCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerguntaIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -8489,6 +8638,10 @@ export namespace Prisma {
      * Limit how many Perguntas to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerguntaIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -8606,6 +8759,25 @@ export namespace Prisma {
   }
 
   /**
+   * Pergunta.configuracao
+   */
+  export type Pergunta$configuracaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    where?: ConfiguracaoPerguntaWhereInput
+  }
+
+  /**
    * Pergunta without action
    */
   export type PerguntaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8621,6 +8793,1140 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PerguntaInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ConfiguracaoPergunta
+   */
+
+  export type AggregateConfiguracaoPergunta = {
+    _count: ConfiguracaoPerguntaCountAggregateOutputType | null
+    _avg: ConfiguracaoPerguntaAvgAggregateOutputType | null
+    _sum: ConfiguracaoPerguntaSumAggregateOutputType | null
+    _min: ConfiguracaoPerguntaMinAggregateOutputType | null
+    _max: ConfiguracaoPerguntaMaxAggregateOutputType | null
+  }
+
+  export type ConfiguracaoPerguntaAvgAggregateOutputType = {
+    limitePergunta: number | null
+    intensidade: number | null
+  }
+
+  export type ConfiguracaoPerguntaSumAggregateOutputType = {
+    limitePergunta: number | null
+    intensidade: number | null
+  }
+
+  export type ConfiguracaoPerguntaMinAggregateOutputType = {
+    id: string | null
+    limitePergunta: number | null
+    intensidade: number | null
+    instrucoesAvancadas: string | null
+    modeloIA: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConfiguracaoPerguntaMaxAggregateOutputType = {
+    id: string | null
+    limitePergunta: number | null
+    intensidade: number | null
+    instrucoesAvancadas: string | null
+    modeloIA: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ConfiguracaoPerguntaCountAggregateOutputType = {
+    id: number
+    limitePergunta: number
+    intensidade: number
+    instrucoesAvancadas: number
+    modeloIA: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ConfiguracaoPerguntaAvgAggregateInputType = {
+    limitePergunta?: true
+    intensidade?: true
+  }
+
+  export type ConfiguracaoPerguntaSumAggregateInputType = {
+    limitePergunta?: true
+    intensidade?: true
+  }
+
+  export type ConfiguracaoPerguntaMinAggregateInputType = {
+    id?: true
+    limitePergunta?: true
+    intensidade?: true
+    instrucoesAvancadas?: true
+    modeloIA?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConfiguracaoPerguntaMaxAggregateInputType = {
+    id?: true
+    limitePergunta?: true
+    intensidade?: true
+    instrucoesAvancadas?: true
+    modeloIA?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ConfiguracaoPerguntaCountAggregateInputType = {
+    id?: true
+    limitePergunta?: true
+    intensidade?: true
+    instrucoesAvancadas?: true
+    modeloIA?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ConfiguracaoPerguntaAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConfiguracaoPergunta to aggregate.
+     */
+    where?: ConfiguracaoPerguntaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfiguracaoPerguntas to fetch.
+     */
+    orderBy?: ConfiguracaoPerguntaOrderByWithRelationInput | ConfiguracaoPerguntaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConfiguracaoPerguntaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfiguracaoPerguntas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfiguracaoPerguntas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConfiguracaoPerguntas
+    **/
+    _count?: true | ConfiguracaoPerguntaCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ConfiguracaoPerguntaAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ConfiguracaoPerguntaSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConfiguracaoPerguntaMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConfiguracaoPerguntaMaxAggregateInputType
+  }
+
+  export type GetConfiguracaoPerguntaAggregateType<T extends ConfiguracaoPerguntaAggregateArgs> = {
+        [P in keyof T & keyof AggregateConfiguracaoPergunta]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConfiguracaoPergunta[P]>
+      : GetScalarType<T[P], AggregateConfiguracaoPergunta[P]>
+  }
+
+
+
+
+  export type ConfiguracaoPerguntaGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConfiguracaoPerguntaWhereInput
+    orderBy?: ConfiguracaoPerguntaOrderByWithAggregationInput | ConfiguracaoPerguntaOrderByWithAggregationInput[]
+    by: ConfiguracaoPerguntaScalarFieldEnum[] | ConfiguracaoPerguntaScalarFieldEnum
+    having?: ConfiguracaoPerguntaScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConfiguracaoPerguntaCountAggregateInputType | true
+    _avg?: ConfiguracaoPerguntaAvgAggregateInputType
+    _sum?: ConfiguracaoPerguntaSumAggregateInputType
+    _min?: ConfiguracaoPerguntaMinAggregateInputType
+    _max?: ConfiguracaoPerguntaMaxAggregateInputType
+  }
+
+  export type ConfiguracaoPerguntaGroupByOutputType = {
+    id: string
+    limitePergunta: number
+    intensidade: number
+    instrucoesAvancadas: string | null
+    modeloIA: string
+    createdAt: Date
+    updatedAt: Date
+    _count: ConfiguracaoPerguntaCountAggregateOutputType | null
+    _avg: ConfiguracaoPerguntaAvgAggregateOutputType | null
+    _sum: ConfiguracaoPerguntaSumAggregateOutputType | null
+    _min: ConfiguracaoPerguntaMinAggregateOutputType | null
+    _max: ConfiguracaoPerguntaMaxAggregateOutputType | null
+  }
+
+  type GetConfiguracaoPerguntaGroupByPayload<T extends ConfiguracaoPerguntaGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConfiguracaoPerguntaGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConfiguracaoPerguntaGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConfiguracaoPerguntaGroupByOutputType[P]>
+            : GetScalarType<T[P], ConfiguracaoPerguntaGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConfiguracaoPerguntaSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    limitePergunta?: boolean
+    intensidade?: boolean
+    instrucoesAvancadas?: boolean
+    modeloIA?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    perguntas?: boolean | ConfiguracaoPergunta$perguntasArgs<ExtArgs>
+    _count?: boolean | ConfiguracaoPerguntaCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["configuracaoPergunta"]>
+
+  export type ConfiguracaoPerguntaSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    limitePergunta?: boolean
+    intensidade?: boolean
+    instrucoesAvancadas?: boolean
+    modeloIA?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["configuracaoPergunta"]>
+
+  export type ConfiguracaoPerguntaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    limitePergunta?: boolean
+    intensidade?: boolean
+    instrucoesAvancadas?: boolean
+    modeloIA?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["configuracaoPergunta"]>
+
+  export type ConfiguracaoPerguntaSelectScalar = {
+    id?: boolean
+    limitePergunta?: boolean
+    intensidade?: boolean
+    instrucoesAvancadas?: boolean
+    modeloIA?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ConfiguracaoPerguntaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "limitePergunta" | "intensidade" | "instrucoesAvancadas" | "modeloIA" | "createdAt" | "updatedAt", ExtArgs["result"]["configuracaoPergunta"]>
+  export type ConfiguracaoPerguntaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    perguntas?: boolean | ConfiguracaoPergunta$perguntasArgs<ExtArgs>
+    _count?: boolean | ConfiguracaoPerguntaCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ConfiguracaoPerguntaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ConfiguracaoPerguntaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ConfiguracaoPerguntaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ConfiguracaoPergunta"
+    objects: {
+      perguntas: Prisma.$PerguntaPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      limitePergunta: number
+      intensidade: number
+      instrucoesAvancadas: string | null
+      modeloIA: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["configuracaoPergunta"]>
+    composites: {}
+  }
+
+  type ConfiguracaoPerguntaGetPayload<S extends boolean | null | undefined | ConfiguracaoPerguntaDefaultArgs> = $Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload, S>
+
+  type ConfiguracaoPerguntaCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ConfiguracaoPerguntaFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConfiguracaoPerguntaCountAggregateInputType | true
+    }
+
+  export interface ConfiguracaoPerguntaDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConfiguracaoPergunta'], meta: { name: 'ConfiguracaoPergunta' } }
+    /**
+     * Find zero or one ConfiguracaoPergunta that matches the filter.
+     * @param {ConfiguracaoPerguntaFindUniqueArgs} args - Arguments to find a ConfiguracaoPergunta
+     * @example
+     * // Get one ConfiguracaoPergunta
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConfiguracaoPerguntaFindUniqueArgs>(args: SelectSubset<T, ConfiguracaoPerguntaFindUniqueArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ConfiguracaoPergunta that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConfiguracaoPerguntaFindUniqueOrThrowArgs} args - Arguments to find a ConfiguracaoPergunta
+     * @example
+     * // Get one ConfiguracaoPergunta
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConfiguracaoPerguntaFindUniqueOrThrowArgs>(args: SelectSubset<T, ConfiguracaoPerguntaFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConfiguracaoPergunta that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfiguracaoPerguntaFindFirstArgs} args - Arguments to find a ConfiguracaoPergunta
+     * @example
+     * // Get one ConfiguracaoPergunta
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConfiguracaoPerguntaFindFirstArgs>(args?: SelectSubset<T, ConfiguracaoPerguntaFindFirstArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConfiguracaoPergunta that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfiguracaoPerguntaFindFirstOrThrowArgs} args - Arguments to find a ConfiguracaoPergunta
+     * @example
+     * // Get one ConfiguracaoPergunta
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConfiguracaoPerguntaFindFirstOrThrowArgs>(args?: SelectSubset<T, ConfiguracaoPerguntaFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ConfiguracaoPerguntas that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfiguracaoPerguntaFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConfiguracaoPerguntas
+     * const configuracaoPerguntas = await prisma.configuracaoPergunta.findMany()
+     * 
+     * // Get first 10 ConfiguracaoPerguntas
+     * const configuracaoPerguntas = await prisma.configuracaoPergunta.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const configuracaoPerguntaWithIdOnly = await prisma.configuracaoPergunta.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConfiguracaoPerguntaFindManyArgs>(args?: SelectSubset<T, ConfiguracaoPerguntaFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ConfiguracaoPergunta.
+     * @param {ConfiguracaoPerguntaCreateArgs} args - Arguments to create a ConfiguracaoPergunta.
+     * @example
+     * // Create one ConfiguracaoPergunta
+     * const ConfiguracaoPergunta = await prisma.configuracaoPergunta.create({
+     *   data: {
+     *     // ... data to create a ConfiguracaoPergunta
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConfiguracaoPerguntaCreateArgs>(args: SelectSubset<T, ConfiguracaoPerguntaCreateArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ConfiguracaoPerguntas.
+     * @param {ConfiguracaoPerguntaCreateManyArgs} args - Arguments to create many ConfiguracaoPerguntas.
+     * @example
+     * // Create many ConfiguracaoPerguntas
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConfiguracaoPerguntaCreateManyArgs>(args?: SelectSubset<T, ConfiguracaoPerguntaCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConfiguracaoPerguntas and returns the data saved in the database.
+     * @param {ConfiguracaoPerguntaCreateManyAndReturnArgs} args - Arguments to create many ConfiguracaoPerguntas.
+     * @example
+     * // Create many ConfiguracaoPerguntas
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ConfiguracaoPerguntas and only return the `id`
+     * const configuracaoPerguntaWithIdOnly = await prisma.configuracaoPergunta.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConfiguracaoPerguntaCreateManyAndReturnArgs>(args?: SelectSubset<T, ConfiguracaoPerguntaCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ConfiguracaoPergunta.
+     * @param {ConfiguracaoPerguntaDeleteArgs} args - Arguments to delete one ConfiguracaoPergunta.
+     * @example
+     * // Delete one ConfiguracaoPergunta
+     * const ConfiguracaoPergunta = await prisma.configuracaoPergunta.delete({
+     *   where: {
+     *     // ... filter to delete one ConfiguracaoPergunta
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConfiguracaoPerguntaDeleteArgs>(args: SelectSubset<T, ConfiguracaoPerguntaDeleteArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ConfiguracaoPergunta.
+     * @param {ConfiguracaoPerguntaUpdateArgs} args - Arguments to update one ConfiguracaoPergunta.
+     * @example
+     * // Update one ConfiguracaoPergunta
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConfiguracaoPerguntaUpdateArgs>(args: SelectSubset<T, ConfiguracaoPerguntaUpdateArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ConfiguracaoPerguntas.
+     * @param {ConfiguracaoPerguntaDeleteManyArgs} args - Arguments to filter ConfiguracaoPerguntas to delete.
+     * @example
+     * // Delete a few ConfiguracaoPerguntas
+     * const { count } = await prisma.configuracaoPergunta.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConfiguracaoPerguntaDeleteManyArgs>(args?: SelectSubset<T, ConfiguracaoPerguntaDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConfiguracaoPerguntas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfiguracaoPerguntaUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConfiguracaoPerguntas
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConfiguracaoPerguntaUpdateManyArgs>(args: SelectSubset<T, ConfiguracaoPerguntaUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConfiguracaoPerguntas and returns the data updated in the database.
+     * @param {ConfiguracaoPerguntaUpdateManyAndReturnArgs} args - Arguments to update many ConfiguracaoPerguntas.
+     * @example
+     * // Update many ConfiguracaoPerguntas
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ConfiguracaoPerguntas and only return the `id`
+     * const configuracaoPerguntaWithIdOnly = await prisma.configuracaoPergunta.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ConfiguracaoPerguntaUpdateManyAndReturnArgs>(args: SelectSubset<T, ConfiguracaoPerguntaUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ConfiguracaoPergunta.
+     * @param {ConfiguracaoPerguntaUpsertArgs} args - Arguments to update or create a ConfiguracaoPergunta.
+     * @example
+     * // Update or create a ConfiguracaoPergunta
+     * const configuracaoPergunta = await prisma.configuracaoPergunta.upsert({
+     *   create: {
+     *     // ... data to create a ConfiguracaoPergunta
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConfiguracaoPergunta we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConfiguracaoPerguntaUpsertArgs>(args: SelectSubset<T, ConfiguracaoPerguntaUpsertArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ConfiguracaoPerguntas.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfiguracaoPerguntaCountArgs} args - Arguments to filter ConfiguracaoPerguntas to count.
+     * @example
+     * // Count the number of ConfiguracaoPerguntas
+     * const count = await prisma.configuracaoPergunta.count({
+     *   where: {
+     *     // ... the filter for the ConfiguracaoPerguntas we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConfiguracaoPerguntaCountArgs>(
+      args?: Subset<T, ConfiguracaoPerguntaCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConfiguracaoPerguntaCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConfiguracaoPergunta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfiguracaoPerguntaAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConfiguracaoPerguntaAggregateArgs>(args: Subset<T, ConfiguracaoPerguntaAggregateArgs>): Prisma.PrismaPromise<GetConfiguracaoPerguntaAggregateType<T>>
+
+    /**
+     * Group by ConfiguracaoPergunta.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConfiguracaoPerguntaGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConfiguracaoPerguntaGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConfiguracaoPerguntaGroupByArgs['orderBy'] }
+        : { orderBy?: ConfiguracaoPerguntaGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConfiguracaoPerguntaGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConfiguracaoPerguntaGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConfiguracaoPergunta model
+   */
+  readonly fields: ConfiguracaoPerguntaFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConfiguracaoPergunta.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConfiguracaoPerguntaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    perguntas<T extends ConfiguracaoPergunta$perguntasArgs<ExtArgs> = {}>(args?: Subset<T, ConfiguracaoPergunta$perguntasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerguntaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConfiguracaoPergunta model
+   */
+  interface ConfiguracaoPerguntaFieldRefs {
+    readonly id: FieldRef<"ConfiguracaoPergunta", 'String'>
+    readonly limitePergunta: FieldRef<"ConfiguracaoPergunta", 'Int'>
+    readonly intensidade: FieldRef<"ConfiguracaoPergunta", 'Int'>
+    readonly instrucoesAvancadas: FieldRef<"ConfiguracaoPergunta", 'String'>
+    readonly modeloIA: FieldRef<"ConfiguracaoPergunta", 'String'>
+    readonly createdAt: FieldRef<"ConfiguracaoPergunta", 'DateTime'>
+    readonly updatedAt: FieldRef<"ConfiguracaoPergunta", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ConfiguracaoPergunta findUnique
+   */
+  export type ConfiguracaoPerguntaFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    /**
+     * Filter, which ConfiguracaoPergunta to fetch.
+     */
+    where: ConfiguracaoPerguntaWhereUniqueInput
+  }
+
+  /**
+   * ConfiguracaoPergunta findUniqueOrThrow
+   */
+  export type ConfiguracaoPerguntaFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    /**
+     * Filter, which ConfiguracaoPergunta to fetch.
+     */
+    where: ConfiguracaoPerguntaWhereUniqueInput
+  }
+
+  /**
+   * ConfiguracaoPergunta findFirst
+   */
+  export type ConfiguracaoPerguntaFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    /**
+     * Filter, which ConfiguracaoPergunta to fetch.
+     */
+    where?: ConfiguracaoPerguntaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfiguracaoPerguntas to fetch.
+     */
+    orderBy?: ConfiguracaoPerguntaOrderByWithRelationInput | ConfiguracaoPerguntaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConfiguracaoPerguntas.
+     */
+    cursor?: ConfiguracaoPerguntaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfiguracaoPerguntas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfiguracaoPerguntas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConfiguracaoPerguntas.
+     */
+    distinct?: ConfiguracaoPerguntaScalarFieldEnum | ConfiguracaoPerguntaScalarFieldEnum[]
+  }
+
+  /**
+   * ConfiguracaoPergunta findFirstOrThrow
+   */
+  export type ConfiguracaoPerguntaFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    /**
+     * Filter, which ConfiguracaoPergunta to fetch.
+     */
+    where?: ConfiguracaoPerguntaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfiguracaoPerguntas to fetch.
+     */
+    orderBy?: ConfiguracaoPerguntaOrderByWithRelationInput | ConfiguracaoPerguntaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConfiguracaoPerguntas.
+     */
+    cursor?: ConfiguracaoPerguntaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfiguracaoPerguntas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfiguracaoPerguntas.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConfiguracaoPerguntas.
+     */
+    distinct?: ConfiguracaoPerguntaScalarFieldEnum | ConfiguracaoPerguntaScalarFieldEnum[]
+  }
+
+  /**
+   * ConfiguracaoPergunta findMany
+   */
+  export type ConfiguracaoPerguntaFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    /**
+     * Filter, which ConfiguracaoPerguntas to fetch.
+     */
+    where?: ConfiguracaoPerguntaWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConfiguracaoPerguntas to fetch.
+     */
+    orderBy?: ConfiguracaoPerguntaOrderByWithRelationInput | ConfiguracaoPerguntaOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConfiguracaoPerguntas.
+     */
+    cursor?: ConfiguracaoPerguntaWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConfiguracaoPerguntas from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConfiguracaoPerguntas.
+     */
+    skip?: number
+    distinct?: ConfiguracaoPerguntaScalarFieldEnum | ConfiguracaoPerguntaScalarFieldEnum[]
+  }
+
+  /**
+   * ConfiguracaoPergunta create
+   */
+  export type ConfiguracaoPerguntaCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ConfiguracaoPergunta.
+     */
+    data: XOR<ConfiguracaoPerguntaCreateInput, ConfiguracaoPerguntaUncheckedCreateInput>
+  }
+
+  /**
+   * ConfiguracaoPergunta createMany
+   */
+  export type ConfiguracaoPerguntaCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConfiguracaoPerguntas.
+     */
+    data: ConfiguracaoPerguntaCreateManyInput | ConfiguracaoPerguntaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConfiguracaoPergunta createManyAndReturn
+   */
+  export type ConfiguracaoPerguntaCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * The data used to create many ConfiguracaoPerguntas.
+     */
+    data: ConfiguracaoPerguntaCreateManyInput | ConfiguracaoPerguntaCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConfiguracaoPergunta update
+   */
+  export type ConfiguracaoPerguntaUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ConfiguracaoPergunta.
+     */
+    data: XOR<ConfiguracaoPerguntaUpdateInput, ConfiguracaoPerguntaUncheckedUpdateInput>
+    /**
+     * Choose, which ConfiguracaoPergunta to update.
+     */
+    where: ConfiguracaoPerguntaWhereUniqueInput
+  }
+
+  /**
+   * ConfiguracaoPergunta updateMany
+   */
+  export type ConfiguracaoPerguntaUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConfiguracaoPerguntas.
+     */
+    data: XOR<ConfiguracaoPerguntaUpdateManyMutationInput, ConfiguracaoPerguntaUncheckedUpdateManyInput>
+    /**
+     * Filter which ConfiguracaoPerguntas to update
+     */
+    where?: ConfiguracaoPerguntaWhereInput
+    /**
+     * Limit how many ConfiguracaoPerguntas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConfiguracaoPergunta updateManyAndReturn
+   */
+  export type ConfiguracaoPerguntaUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * The data used to update ConfiguracaoPerguntas.
+     */
+    data: XOR<ConfiguracaoPerguntaUpdateManyMutationInput, ConfiguracaoPerguntaUncheckedUpdateManyInput>
+    /**
+     * Filter which ConfiguracaoPerguntas to update
+     */
+    where?: ConfiguracaoPerguntaWhereInput
+    /**
+     * Limit how many ConfiguracaoPerguntas to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConfiguracaoPergunta upsert
+   */
+  export type ConfiguracaoPerguntaUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ConfiguracaoPergunta to update in case it exists.
+     */
+    where: ConfiguracaoPerguntaWhereUniqueInput
+    /**
+     * In case the ConfiguracaoPergunta found by the `where` argument doesn't exist, create a new ConfiguracaoPergunta with this data.
+     */
+    create: XOR<ConfiguracaoPerguntaCreateInput, ConfiguracaoPerguntaUncheckedCreateInput>
+    /**
+     * In case the ConfiguracaoPergunta was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConfiguracaoPerguntaUpdateInput, ConfiguracaoPerguntaUncheckedUpdateInput>
+  }
+
+  /**
+   * ConfiguracaoPergunta delete
+   */
+  export type ConfiguracaoPerguntaDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
+    /**
+     * Filter which ConfiguracaoPergunta to delete.
+     */
+    where: ConfiguracaoPerguntaWhereUniqueInput
+  }
+
+  /**
+   * ConfiguracaoPergunta deleteMany
+   */
+  export type ConfiguracaoPerguntaDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConfiguracaoPerguntas to delete
+     */
+    where?: ConfiguracaoPerguntaWhereInput
+    /**
+     * Limit how many ConfiguracaoPerguntas to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConfiguracaoPergunta.perguntas
+   */
+  export type ConfiguracaoPergunta$perguntasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Pergunta
+     */
+    select?: PerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Pergunta
+     */
+    omit?: PerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerguntaInclude<ExtArgs> | null
+    where?: PerguntaWhereInput
+    orderBy?: PerguntaOrderByWithRelationInput | PerguntaOrderByWithRelationInput[]
+    cursor?: PerguntaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PerguntaScalarFieldEnum | PerguntaScalarFieldEnum[]
+  }
+
+  /**
+   * ConfiguracaoPergunta without action
+   */
+  export type ConfiguracaoPerguntaDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConfiguracaoPergunta
+     */
+    select?: ConfiguracaoPerguntaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConfiguracaoPergunta
+     */
+    omit?: ConfiguracaoPerguntaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
   }
 
 
@@ -20384,10 +21690,24 @@ export namespace Prisma {
     geradaPorIA: 'geradaPorIA',
     ativa: 'ativa',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    configuracaoId: 'configuracaoId'
   };
 
   export type PerguntaScalarFieldEnum = (typeof PerguntaScalarFieldEnum)[keyof typeof PerguntaScalarFieldEnum]
+
+
+  export const ConfiguracaoPerguntaScalarFieldEnum: {
+    id: 'id',
+    limitePergunta: 'limitePergunta',
+    intensidade: 'intensidade',
+    instrucoesAvancadas: 'instrucoesAvancadas',
+    modeloIA: 'modeloIA',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ConfiguracaoPerguntaScalarFieldEnum = (typeof ConfiguracaoPerguntaScalarFieldEnum)[keyof typeof ConfiguracaoPerguntaScalarFieldEnum]
 
 
   export const RespostaScalarFieldEnum: {
@@ -21083,8 +22403,10 @@ export namespace Prisma {
     ativa?: BoolFilter<"Pergunta"> | boolean
     createdAt?: DateTimeFilter<"Pergunta"> | Date | string
     updatedAt?: DateTimeFilter<"Pergunta"> | Date | string
+    configuracaoId?: StringNullableFilter<"Pergunta"> | string | null
     respostas?: RespostaListRelationFilter
     imoveis?: ImovelPerguntaListRelationFilter
+    configuracao?: XOR<ConfiguracaoPerguntaNullableScalarRelationFilter, ConfiguracaoPerguntaWhereInput> | null
   }
 
   export type PerguntaOrderByWithRelationInput = {
@@ -21102,8 +22424,10 @@ export namespace Prisma {
     ativa?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    configuracaoId?: SortOrderInput | SortOrder
     respostas?: RespostaOrderByRelationAggregateInput
     imoveis?: ImovelPerguntaOrderByRelationAggregateInput
+    configuracao?: ConfiguracaoPerguntaOrderByWithRelationInput
   }
 
   export type PerguntaWhereUniqueInput = Prisma.AtLeast<{
@@ -21124,8 +22448,10 @@ export namespace Prisma {
     ativa?: BoolFilter<"Pergunta"> | boolean
     createdAt?: DateTimeFilter<"Pergunta"> | Date | string
     updatedAt?: DateTimeFilter<"Pergunta"> | Date | string
+    configuracaoId?: StringNullableFilter<"Pergunta"> | string | null
     respostas?: RespostaListRelationFilter
     imoveis?: ImovelPerguntaListRelationFilter
+    configuracao?: XOR<ConfiguracaoPerguntaNullableScalarRelationFilter, ConfiguracaoPerguntaWhereInput> | null
   }, "id">
 
   export type PerguntaOrderByWithAggregationInput = {
@@ -21143,6 +22469,7 @@ export namespace Prisma {
     ativa?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    configuracaoId?: SortOrderInput | SortOrder
     _count?: PerguntaCountOrderByAggregateInput
     _avg?: PerguntaAvgOrderByAggregateInput
     _max?: PerguntaMaxOrderByAggregateInput
@@ -21168,6 +22495,74 @@ export namespace Prisma {
     ativa?: BoolWithAggregatesFilter<"Pergunta"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Pergunta"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Pergunta"> | Date | string
+    configuracaoId?: StringNullableWithAggregatesFilter<"Pergunta"> | string | null
+  }
+
+  export type ConfiguracaoPerguntaWhereInput = {
+    AND?: ConfiguracaoPerguntaWhereInput | ConfiguracaoPerguntaWhereInput[]
+    OR?: ConfiguracaoPerguntaWhereInput[]
+    NOT?: ConfiguracaoPerguntaWhereInput | ConfiguracaoPerguntaWhereInput[]
+    id?: StringFilter<"ConfiguracaoPergunta"> | string
+    limitePergunta?: IntFilter<"ConfiguracaoPergunta"> | number
+    intensidade?: IntFilter<"ConfiguracaoPergunta"> | number
+    instrucoesAvancadas?: StringNullableFilter<"ConfiguracaoPergunta"> | string | null
+    modeloIA?: StringFilter<"ConfiguracaoPergunta"> | string
+    createdAt?: DateTimeFilter<"ConfiguracaoPergunta"> | Date | string
+    updatedAt?: DateTimeFilter<"ConfiguracaoPergunta"> | Date | string
+    perguntas?: PerguntaListRelationFilter
+  }
+
+  export type ConfiguracaoPerguntaOrderByWithRelationInput = {
+    id?: SortOrder
+    limitePergunta?: SortOrder
+    intensidade?: SortOrder
+    instrucoesAvancadas?: SortOrderInput | SortOrder
+    modeloIA?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    perguntas?: PerguntaOrderByRelationAggregateInput
+  }
+
+  export type ConfiguracaoPerguntaWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ConfiguracaoPerguntaWhereInput | ConfiguracaoPerguntaWhereInput[]
+    OR?: ConfiguracaoPerguntaWhereInput[]
+    NOT?: ConfiguracaoPerguntaWhereInput | ConfiguracaoPerguntaWhereInput[]
+    limitePergunta?: IntFilter<"ConfiguracaoPergunta"> | number
+    intensidade?: IntFilter<"ConfiguracaoPergunta"> | number
+    instrucoesAvancadas?: StringNullableFilter<"ConfiguracaoPergunta"> | string | null
+    modeloIA?: StringFilter<"ConfiguracaoPergunta"> | string
+    createdAt?: DateTimeFilter<"ConfiguracaoPergunta"> | Date | string
+    updatedAt?: DateTimeFilter<"ConfiguracaoPergunta"> | Date | string
+    perguntas?: PerguntaListRelationFilter
+  }, "id">
+
+  export type ConfiguracaoPerguntaOrderByWithAggregationInput = {
+    id?: SortOrder
+    limitePergunta?: SortOrder
+    intensidade?: SortOrder
+    instrucoesAvancadas?: SortOrderInput | SortOrder
+    modeloIA?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ConfiguracaoPerguntaCountOrderByAggregateInput
+    _avg?: ConfiguracaoPerguntaAvgOrderByAggregateInput
+    _max?: ConfiguracaoPerguntaMaxOrderByAggregateInput
+    _min?: ConfiguracaoPerguntaMinOrderByAggregateInput
+    _sum?: ConfiguracaoPerguntaSumOrderByAggregateInput
+  }
+
+  export type ConfiguracaoPerguntaScalarWhereWithAggregatesInput = {
+    AND?: ConfiguracaoPerguntaScalarWhereWithAggregatesInput | ConfiguracaoPerguntaScalarWhereWithAggregatesInput[]
+    OR?: ConfiguracaoPerguntaScalarWhereWithAggregatesInput[]
+    NOT?: ConfiguracaoPerguntaScalarWhereWithAggregatesInput | ConfiguracaoPerguntaScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ConfiguracaoPergunta"> | string
+    limitePergunta?: IntWithAggregatesFilter<"ConfiguracaoPergunta"> | number
+    intensidade?: IntWithAggregatesFilter<"ConfiguracaoPergunta"> | number
+    instrucoesAvancadas?: StringNullableWithAggregatesFilter<"ConfiguracaoPergunta"> | string | null
+    modeloIA?: StringWithAggregatesFilter<"ConfiguracaoPergunta"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ConfiguracaoPergunta"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ConfiguracaoPergunta"> | Date | string
   }
 
   export type RespostaWhereInput = {
@@ -22342,6 +23737,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     respostas?: RespostaCreateNestedManyWithoutPerguntaInput
     imoveis?: ImovelPerguntaCreateNestedManyWithoutPerguntaInput
+    configuracao?: ConfiguracaoPerguntaCreateNestedOneWithoutPerguntasInput
   }
 
   export type PerguntaUncheckedCreateInput = {
@@ -22359,6 +23755,7 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    configuracaoId?: string | null
     respostas?: RespostaUncheckedCreateNestedManyWithoutPerguntaInput
     imoveis?: ImovelPerguntaUncheckedCreateNestedManyWithoutPerguntaInput
   }
@@ -22380,6 +23777,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     respostas?: RespostaUpdateManyWithoutPerguntaNestedInput
     imoveis?: ImovelPerguntaUpdateManyWithoutPerguntaNestedInput
+    configuracao?: ConfiguracaoPerguntaUpdateOneWithoutPerguntasNestedInput
   }
 
   export type PerguntaUncheckedUpdateInput = {
@@ -22397,6 +23795,7 @@ export namespace Prisma {
     ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    configuracaoId?: NullableStringFieldUpdateOperationsInput | string | null
     respostas?: RespostaUncheckedUpdateManyWithoutPerguntaNestedInput
     imoveis?: ImovelPerguntaUncheckedUpdateManyWithoutPerguntaNestedInput
   }
@@ -22416,6 +23815,7 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    configuracaoId?: string | null
   }
 
   export type PerguntaUpdateManyMutationInput = {
@@ -22448,6 +23848,81 @@ export namespace Prisma {
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
     ativa?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    configuracaoId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ConfiguracaoPerguntaCreateInput = {
+    id?: string
+    limitePergunta?: number
+    intensidade?: number
+    instrucoesAvancadas?: string | null
+    modeloIA?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    perguntas?: PerguntaCreateNestedManyWithoutConfiguracaoInput
+  }
+
+  export type ConfiguracaoPerguntaUncheckedCreateInput = {
+    id?: string
+    limitePergunta?: number
+    intensidade?: number
+    instrucoesAvancadas?: string | null
+    modeloIA?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    perguntas?: PerguntaUncheckedCreateNestedManyWithoutConfiguracaoInput
+  }
+
+  export type ConfiguracaoPerguntaUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    limitePergunta?: IntFieldUpdateOperationsInput | number
+    intensidade?: IntFieldUpdateOperationsInput | number
+    instrucoesAvancadas?: NullableStringFieldUpdateOperationsInput | string | null
+    modeloIA?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    perguntas?: PerguntaUpdateManyWithoutConfiguracaoNestedInput
+  }
+
+  export type ConfiguracaoPerguntaUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    limitePergunta?: IntFieldUpdateOperationsInput | number
+    intensidade?: IntFieldUpdateOperationsInput | number
+    instrucoesAvancadas?: NullableStringFieldUpdateOperationsInput | string | null
+    modeloIA?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    perguntas?: PerguntaUncheckedUpdateManyWithoutConfiguracaoNestedInput
+  }
+
+  export type ConfiguracaoPerguntaCreateManyInput = {
+    id?: string
+    limitePergunta?: number
+    intensidade?: number
+    instrucoesAvancadas?: string | null
+    modeloIA?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConfiguracaoPerguntaUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    limitePergunta?: IntFieldUpdateOperationsInput | number
+    intensidade?: IntFieldUpdateOperationsInput | number
+    instrucoesAvancadas?: NullableStringFieldUpdateOperationsInput | string | null
+    modeloIA?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConfiguracaoPerguntaUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    limitePergunta?: IntFieldUpdateOperationsInput | number
+    intensidade?: IntFieldUpdateOperationsInput | number
+    instrucoesAvancadas?: NullableStringFieldUpdateOperationsInput | string | null
+    modeloIA?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23713,6 +25188,11 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type ConfiguracaoPerguntaNullableScalarRelationFilter = {
+    is?: ConfiguracaoPerguntaWhereInput | null
+    isNot?: ConfiguracaoPerguntaWhereInput | null
+  }
+
   export type PerguntaCountOrderByAggregateInput = {
     id?: SortOrder
     texto?: SortOrder
@@ -23728,6 +25208,7 @@ export namespace Prisma {
     ativa?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    configuracaoId?: SortOrder
   }
 
   export type PerguntaAvgOrderByAggregateInput = {
@@ -23748,6 +25229,7 @@ export namespace Prisma {
     ativa?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    configuracaoId?: SortOrder
   }
 
   export type PerguntaMinOrderByAggregateInput = {
@@ -23763,11 +25245,62 @@ export namespace Prisma {
     ativa?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    configuracaoId?: SortOrder
   }
 
   export type PerguntaSumOrderByAggregateInput = {
     ordem?: SortOrder
     pontuacao?: SortOrder
+  }
+
+  export type PerguntaListRelationFilter = {
+    every?: PerguntaWhereInput
+    some?: PerguntaWhereInput
+    none?: PerguntaWhereInput
+  }
+
+  export type PerguntaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ConfiguracaoPerguntaCountOrderByAggregateInput = {
+    id?: SortOrder
+    limitePergunta?: SortOrder
+    intensidade?: SortOrder
+    instrucoesAvancadas?: SortOrder
+    modeloIA?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConfiguracaoPerguntaAvgOrderByAggregateInput = {
+    limitePergunta?: SortOrder
+    intensidade?: SortOrder
+  }
+
+  export type ConfiguracaoPerguntaMaxOrderByAggregateInput = {
+    id?: SortOrder
+    limitePergunta?: SortOrder
+    intensidade?: SortOrder
+    instrucoesAvancadas?: SortOrder
+    modeloIA?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConfiguracaoPerguntaMinOrderByAggregateInput = {
+    id?: SortOrder
+    limitePergunta?: SortOrder
+    intensidade?: SortOrder
+    instrucoesAvancadas?: SortOrder
+    modeloIA?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ConfiguracaoPerguntaSumOrderByAggregateInput = {
+    limitePergunta?: SortOrder
+    intensidade?: SortOrder
   }
 
   export type PerguntaScalarRelationFilter = {
@@ -24627,6 +26160,12 @@ export namespace Prisma {
     connect?: ImovelPerguntaWhereUniqueInput | ImovelPerguntaWhereUniqueInput[]
   }
 
+  export type ConfiguracaoPerguntaCreateNestedOneWithoutPerguntasInput = {
+    create?: XOR<ConfiguracaoPerguntaCreateWithoutPerguntasInput, ConfiguracaoPerguntaUncheckedCreateWithoutPerguntasInput>
+    connectOrCreate?: ConfiguracaoPerguntaCreateOrConnectWithoutPerguntasInput
+    connect?: ConfiguracaoPerguntaWhereUniqueInput
+  }
+
   export type RespostaUncheckedCreateNestedManyWithoutPerguntaInput = {
     create?: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput> | RespostaCreateWithoutPerguntaInput[] | RespostaUncheckedCreateWithoutPerguntaInput[]
     connectOrCreate?: RespostaCreateOrConnectWithoutPerguntaInput | RespostaCreateOrConnectWithoutPerguntaInput[]
@@ -24669,6 +26208,16 @@ export namespace Prisma {
     deleteMany?: ImovelPerguntaScalarWhereInput | ImovelPerguntaScalarWhereInput[]
   }
 
+  export type ConfiguracaoPerguntaUpdateOneWithoutPerguntasNestedInput = {
+    create?: XOR<ConfiguracaoPerguntaCreateWithoutPerguntasInput, ConfiguracaoPerguntaUncheckedCreateWithoutPerguntasInput>
+    connectOrCreate?: ConfiguracaoPerguntaCreateOrConnectWithoutPerguntasInput
+    upsert?: ConfiguracaoPerguntaUpsertWithoutPerguntasInput
+    disconnect?: ConfiguracaoPerguntaWhereInput | boolean
+    delete?: ConfiguracaoPerguntaWhereInput | boolean
+    connect?: ConfiguracaoPerguntaWhereUniqueInput
+    update?: XOR<XOR<ConfiguracaoPerguntaUpdateToOneWithWhereWithoutPerguntasInput, ConfiguracaoPerguntaUpdateWithoutPerguntasInput>, ConfiguracaoPerguntaUncheckedUpdateWithoutPerguntasInput>
+  }
+
   export type RespostaUncheckedUpdateManyWithoutPerguntaNestedInput = {
     create?: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput> | RespostaCreateWithoutPerguntaInput[] | RespostaUncheckedCreateWithoutPerguntaInput[]
     connectOrCreate?: RespostaCreateOrConnectWithoutPerguntaInput | RespostaCreateOrConnectWithoutPerguntaInput[]
@@ -24695,6 +26244,48 @@ export namespace Prisma {
     update?: ImovelPerguntaUpdateWithWhereUniqueWithoutPerguntaInput | ImovelPerguntaUpdateWithWhereUniqueWithoutPerguntaInput[]
     updateMany?: ImovelPerguntaUpdateManyWithWhereWithoutPerguntaInput | ImovelPerguntaUpdateManyWithWhereWithoutPerguntaInput[]
     deleteMany?: ImovelPerguntaScalarWhereInput | ImovelPerguntaScalarWhereInput[]
+  }
+
+  export type PerguntaCreateNestedManyWithoutConfiguracaoInput = {
+    create?: XOR<PerguntaCreateWithoutConfiguracaoInput, PerguntaUncheckedCreateWithoutConfiguracaoInput> | PerguntaCreateWithoutConfiguracaoInput[] | PerguntaUncheckedCreateWithoutConfiguracaoInput[]
+    connectOrCreate?: PerguntaCreateOrConnectWithoutConfiguracaoInput | PerguntaCreateOrConnectWithoutConfiguracaoInput[]
+    createMany?: PerguntaCreateManyConfiguracaoInputEnvelope
+    connect?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+  }
+
+  export type PerguntaUncheckedCreateNestedManyWithoutConfiguracaoInput = {
+    create?: XOR<PerguntaCreateWithoutConfiguracaoInput, PerguntaUncheckedCreateWithoutConfiguracaoInput> | PerguntaCreateWithoutConfiguracaoInput[] | PerguntaUncheckedCreateWithoutConfiguracaoInput[]
+    connectOrCreate?: PerguntaCreateOrConnectWithoutConfiguracaoInput | PerguntaCreateOrConnectWithoutConfiguracaoInput[]
+    createMany?: PerguntaCreateManyConfiguracaoInputEnvelope
+    connect?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+  }
+
+  export type PerguntaUpdateManyWithoutConfiguracaoNestedInput = {
+    create?: XOR<PerguntaCreateWithoutConfiguracaoInput, PerguntaUncheckedCreateWithoutConfiguracaoInput> | PerguntaCreateWithoutConfiguracaoInput[] | PerguntaUncheckedCreateWithoutConfiguracaoInput[]
+    connectOrCreate?: PerguntaCreateOrConnectWithoutConfiguracaoInput | PerguntaCreateOrConnectWithoutConfiguracaoInput[]
+    upsert?: PerguntaUpsertWithWhereUniqueWithoutConfiguracaoInput | PerguntaUpsertWithWhereUniqueWithoutConfiguracaoInput[]
+    createMany?: PerguntaCreateManyConfiguracaoInputEnvelope
+    set?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+    disconnect?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+    delete?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+    connect?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+    update?: PerguntaUpdateWithWhereUniqueWithoutConfiguracaoInput | PerguntaUpdateWithWhereUniqueWithoutConfiguracaoInput[]
+    updateMany?: PerguntaUpdateManyWithWhereWithoutConfiguracaoInput | PerguntaUpdateManyWithWhereWithoutConfiguracaoInput[]
+    deleteMany?: PerguntaScalarWhereInput | PerguntaScalarWhereInput[]
+  }
+
+  export type PerguntaUncheckedUpdateManyWithoutConfiguracaoNestedInput = {
+    create?: XOR<PerguntaCreateWithoutConfiguracaoInput, PerguntaUncheckedCreateWithoutConfiguracaoInput> | PerguntaCreateWithoutConfiguracaoInput[] | PerguntaUncheckedCreateWithoutConfiguracaoInput[]
+    connectOrCreate?: PerguntaCreateOrConnectWithoutConfiguracaoInput | PerguntaCreateOrConnectWithoutConfiguracaoInput[]
+    upsert?: PerguntaUpsertWithWhereUniqueWithoutConfiguracaoInput | PerguntaUpsertWithWhereUniqueWithoutConfiguracaoInput[]
+    createMany?: PerguntaCreateManyConfiguracaoInputEnvelope
+    set?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+    disconnect?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+    delete?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+    connect?: PerguntaWhereUniqueInput | PerguntaWhereUniqueInput[]
+    update?: PerguntaUpdateWithWhereUniqueWithoutConfiguracaoInput | PerguntaUpdateWithWhereUniqueWithoutConfiguracaoInput[]
+    updateMany?: PerguntaUpdateManyWithWhereWithoutConfiguracaoInput | PerguntaUpdateManyWithWhereWithoutConfiguracaoInput[]
+    deleteMany?: PerguntaScalarWhereInput | PerguntaScalarWhereInput[]
   }
 
   export type PerguntaCreateNestedOneWithoutRespostasInput = {
@@ -25876,6 +27467,31 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ConfiguracaoPerguntaCreateWithoutPerguntasInput = {
+    id?: string
+    limitePergunta?: number
+    intensidade?: number
+    instrucoesAvancadas?: string | null
+    modeloIA?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConfiguracaoPerguntaUncheckedCreateWithoutPerguntasInput = {
+    id?: string
+    limitePergunta?: number
+    intensidade?: number
+    instrucoesAvancadas?: string | null
+    modeloIA?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConfiguracaoPerguntaCreateOrConnectWithoutPerguntasInput = {
+    where: ConfiguracaoPerguntaWhereUniqueInput
+    create: XOR<ConfiguracaoPerguntaCreateWithoutPerguntasInput, ConfiguracaoPerguntaUncheckedCreateWithoutPerguntasInput>
+  }
+
   export type RespostaUpsertWithWhereUniqueWithoutPerguntaInput = {
     where: RespostaWhereUniqueInput
     update: XOR<RespostaUpdateWithoutPerguntaInput, RespostaUncheckedUpdateWithoutPerguntaInput>
@@ -25908,6 +27524,122 @@ export namespace Prisma {
     data: XOR<ImovelPerguntaUpdateManyMutationInput, ImovelPerguntaUncheckedUpdateManyWithoutPerguntaInput>
   }
 
+  export type ConfiguracaoPerguntaUpsertWithoutPerguntasInput = {
+    update: XOR<ConfiguracaoPerguntaUpdateWithoutPerguntasInput, ConfiguracaoPerguntaUncheckedUpdateWithoutPerguntasInput>
+    create: XOR<ConfiguracaoPerguntaCreateWithoutPerguntasInput, ConfiguracaoPerguntaUncheckedCreateWithoutPerguntasInput>
+    where?: ConfiguracaoPerguntaWhereInput
+  }
+
+  export type ConfiguracaoPerguntaUpdateToOneWithWhereWithoutPerguntasInput = {
+    where?: ConfiguracaoPerguntaWhereInput
+    data: XOR<ConfiguracaoPerguntaUpdateWithoutPerguntasInput, ConfiguracaoPerguntaUncheckedUpdateWithoutPerguntasInput>
+  }
+
+  export type ConfiguracaoPerguntaUpdateWithoutPerguntasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    limitePergunta?: IntFieldUpdateOperationsInput | number
+    intensidade?: IntFieldUpdateOperationsInput | number
+    instrucoesAvancadas?: NullableStringFieldUpdateOperationsInput | string | null
+    modeloIA?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConfiguracaoPerguntaUncheckedUpdateWithoutPerguntasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    limitePergunta?: IntFieldUpdateOperationsInput | number
+    intensidade?: IntFieldUpdateOperationsInput | number
+    instrucoesAvancadas?: NullableStringFieldUpdateOperationsInput | string | null
+    modeloIA?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerguntaCreateWithoutConfiguracaoInput = {
+    id?: string
+    texto: string
+    tipo: string
+    opcoes?: NullableJsonNullValueInput | InputJsonValue
+    ordem: number
+    categoria: string
+    fluxo: string
+    pontuacao?: number
+    obrigatoria?: boolean
+    condicional?: NullableJsonNullValueInput | InputJsonValue
+    geradaPorIA?: boolean
+    ativa?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    respostas?: RespostaCreateNestedManyWithoutPerguntaInput
+    imoveis?: ImovelPerguntaCreateNestedManyWithoutPerguntaInput
+  }
+
+  export type PerguntaUncheckedCreateWithoutConfiguracaoInput = {
+    id?: string
+    texto: string
+    tipo: string
+    opcoes?: NullableJsonNullValueInput | InputJsonValue
+    ordem: number
+    categoria: string
+    fluxo: string
+    pontuacao?: number
+    obrigatoria?: boolean
+    condicional?: NullableJsonNullValueInput | InputJsonValue
+    geradaPorIA?: boolean
+    ativa?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    respostas?: RespostaUncheckedCreateNestedManyWithoutPerguntaInput
+    imoveis?: ImovelPerguntaUncheckedCreateNestedManyWithoutPerguntaInput
+  }
+
+  export type PerguntaCreateOrConnectWithoutConfiguracaoInput = {
+    where: PerguntaWhereUniqueInput
+    create: XOR<PerguntaCreateWithoutConfiguracaoInput, PerguntaUncheckedCreateWithoutConfiguracaoInput>
+  }
+
+  export type PerguntaCreateManyConfiguracaoInputEnvelope = {
+    data: PerguntaCreateManyConfiguracaoInput | PerguntaCreateManyConfiguracaoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PerguntaUpsertWithWhereUniqueWithoutConfiguracaoInput = {
+    where: PerguntaWhereUniqueInput
+    update: XOR<PerguntaUpdateWithoutConfiguracaoInput, PerguntaUncheckedUpdateWithoutConfiguracaoInput>
+    create: XOR<PerguntaCreateWithoutConfiguracaoInput, PerguntaUncheckedCreateWithoutConfiguracaoInput>
+  }
+
+  export type PerguntaUpdateWithWhereUniqueWithoutConfiguracaoInput = {
+    where: PerguntaWhereUniqueInput
+    data: XOR<PerguntaUpdateWithoutConfiguracaoInput, PerguntaUncheckedUpdateWithoutConfiguracaoInput>
+  }
+
+  export type PerguntaUpdateManyWithWhereWithoutConfiguracaoInput = {
+    where: PerguntaScalarWhereInput
+    data: XOR<PerguntaUpdateManyMutationInput, PerguntaUncheckedUpdateManyWithoutConfiguracaoInput>
+  }
+
+  export type PerguntaScalarWhereInput = {
+    AND?: PerguntaScalarWhereInput | PerguntaScalarWhereInput[]
+    OR?: PerguntaScalarWhereInput[]
+    NOT?: PerguntaScalarWhereInput | PerguntaScalarWhereInput[]
+    id?: StringFilter<"Pergunta"> | string
+    texto?: StringFilter<"Pergunta"> | string
+    tipo?: StringFilter<"Pergunta"> | string
+    opcoes?: JsonNullableFilter<"Pergunta">
+    ordem?: IntFilter<"Pergunta"> | number
+    categoria?: StringFilter<"Pergunta"> | string
+    fluxo?: StringFilter<"Pergunta"> | string
+    pontuacao?: IntFilter<"Pergunta"> | number
+    obrigatoria?: BoolFilter<"Pergunta"> | boolean
+    condicional?: JsonNullableFilter<"Pergunta">
+    geradaPorIA?: BoolFilter<"Pergunta"> | boolean
+    ativa?: BoolFilter<"Pergunta"> | boolean
+    createdAt?: DateTimeFilter<"Pergunta"> | Date | string
+    updatedAt?: DateTimeFilter<"Pergunta"> | Date | string
+    configuracaoId?: StringNullableFilter<"Pergunta"> | string | null
+  }
+
   export type PerguntaCreateWithoutRespostasInput = {
     id?: string
     texto: string
@@ -25924,6 +27656,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     imoveis?: ImovelPerguntaCreateNestedManyWithoutPerguntaInput
+    configuracao?: ConfiguracaoPerguntaCreateNestedOneWithoutPerguntasInput
   }
 
   export type PerguntaUncheckedCreateWithoutRespostasInput = {
@@ -25941,6 +27674,7 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    configuracaoId?: string | null
     imoveis?: ImovelPerguntaUncheckedCreateNestedManyWithoutPerguntaInput
   }
 
@@ -26007,6 +27741,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     imoveis?: ImovelPerguntaUpdateManyWithoutPerguntaNestedInput
+    configuracao?: ConfiguracaoPerguntaUpdateOneWithoutPerguntasNestedInput
   }
 
   export type PerguntaUncheckedUpdateWithoutRespostasInput = {
@@ -26024,6 +27759,7 @@ export namespace Prisma {
     ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    configuracaoId?: NullableStringFieldUpdateOperationsInput | string | null
     imoveis?: ImovelPerguntaUncheckedUpdateManyWithoutPerguntaNestedInput
   }
 
@@ -26515,6 +28251,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     respostas?: RespostaCreateNestedManyWithoutPerguntaInput
+    configuracao?: ConfiguracaoPerguntaCreateNestedOneWithoutPerguntasInput
   }
 
   export type PerguntaUncheckedCreateWithoutImoveisInput = {
@@ -26532,6 +28269,7 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    configuracaoId?: string | null
     respostas?: RespostaUncheckedCreateNestedManyWithoutPerguntaInput
   }
 
@@ -26636,6 +28374,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     respostas?: RespostaUpdateManyWithoutPerguntaNestedInput
+    configuracao?: ConfiguracaoPerguntaUpdateOneWithoutPerguntasNestedInput
   }
 
   export type PerguntaUncheckedUpdateWithoutImoveisInput = {
@@ -26653,6 +28392,7 @@ export namespace Prisma {
     ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    configuracaoId?: NullableStringFieldUpdateOperationsInput | string | null
     respostas?: RespostaUncheckedUpdateManyWithoutPerguntaNestedInput
   }
 
@@ -27160,6 +28900,78 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     imovelId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PerguntaCreateManyConfiguracaoInput = {
+    id?: string
+    texto: string
+    tipo: string
+    opcoes?: NullableJsonNullValueInput | InputJsonValue
+    ordem: number
+    categoria: string
+    fluxo: string
+    pontuacao?: number
+    obrigatoria?: boolean
+    condicional?: NullableJsonNullValueInput | InputJsonValue
+    geradaPorIA?: boolean
+    ativa?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PerguntaUpdateWithoutConfiguracaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    opcoes?: NullableJsonNullValueInput | InputJsonValue
+    ordem?: IntFieldUpdateOperationsInput | number
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    obrigatoria?: BoolFieldUpdateOperationsInput | boolean
+    condicional?: NullableJsonNullValueInput | InputJsonValue
+    geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    respostas?: RespostaUpdateManyWithoutPerguntaNestedInput
+    imoveis?: ImovelPerguntaUpdateManyWithoutPerguntaNestedInput
+  }
+
+  export type PerguntaUncheckedUpdateWithoutConfiguracaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    opcoes?: NullableJsonNullValueInput | InputJsonValue
+    ordem?: IntFieldUpdateOperationsInput | number
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    obrigatoria?: BoolFieldUpdateOperationsInput | boolean
+    condicional?: NullableJsonNullValueInput | InputJsonValue
+    geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    respostas?: RespostaUncheckedUpdateManyWithoutPerguntaNestedInput
+    imoveis?: ImovelPerguntaUncheckedUpdateManyWithoutPerguntaNestedInput
+  }
+
+  export type PerguntaUncheckedUpdateManyWithoutConfiguracaoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    texto?: StringFieldUpdateOperationsInput | string
+    tipo?: StringFieldUpdateOperationsInput | string
+    opcoes?: NullableJsonNullValueInput | InputJsonValue
+    ordem?: IntFieldUpdateOperationsInput | number
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
+    obrigatoria?: BoolFieldUpdateOperationsInput | boolean
+    condicional?: NullableJsonNullValueInput | InputJsonValue
+    geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MatchCreateManyRelatorioInput = {

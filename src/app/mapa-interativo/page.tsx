@@ -37,6 +37,7 @@ function MapaInterativoContent() {
     destaque: boolean;
     matchPercentage: number;
     thumbnail: string;
+    telefoneContato?: string; // Telefone de contato para WhatsApp
     caracteristicas: {
       quartos: number;
       banheiros: number;
@@ -56,123 +57,228 @@ function MapaInterativoContent() {
   // Estado para controlar carregamento de dados
   const [carregando, setCarregando] = useState<boolean>(true);
   
-  // Função para obter imóveis do banco de dados
-  async function obterImoveisDoDb() {
+  // Função para obter imóveis do banco de dados com filtros opcionais
+  async function obterImoveisDoDb(filtros?: Record<string, any>) {
     try {
-      const response = await fetch('/api/imoveis');
-      return await response.json();
+      // Construir URL com parâmetros de filtro
+      let url = '/api/imoveis';
+      
+      if (filtros && Object.keys(filtros).length > 0) {
+        const params = new URLSearchParams();
+        
+        // Adicionar filtros específicos baseados nas respostas
+        if (filtros.quartos) {
+          params.append('quartos', filtros.quartos.toString());
+        }
+        
+        if (filtros.banheiros) {
+          params.append('banheiros', filtros.banheiros.toString());
+        }
+        
+        if (filtros.valorMaximo) {
+          params.append('valorMaximo', filtros.valorMaximo.toString());
+        }
+        
+        if (filtros.valorMinimo) {
+          params.append('valorMinimo', filtros.valorMinimo.toString());
+        }
+        
+        if (filtros.area) {
+          params.append('area', filtros.area.toString());
+        }
+        
+        if (filtros.bairro) {
+          params.append('bairro', filtros.bairro);
+        }
+        
+        if (filtros.tipoImovel) {
+          params.append('tipoImovel', filtros.tipoImovel);
+        }
+        
+        // Adicionar parâmetro para filtrar apenas imóveis ativos
+        params.append('ativo', 'true');
+        
+        url = `${url}?${params.toString()}`;
+      }
+      
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`Erro ao buscar imóveis: ${response.statusText}`);
+      }
+      
+      const imoveis = await response.json();
+      console.log(`Encontrados ${imoveis.length} imóveis com os filtros aplicados:`, filtros);
+      return imoveis;
     } catch (error) {
       console.error('Erro ao buscar imóveis:', error);
       return [];
     }
   }
   
+  // Função para extrair filtros das respostas de URL
+  const extrairFiltrosDeURL = () => {
+    const filtros: Record<string, any> = {};
+    
+    // Extrair filtros dos parâmetros de URL
+    const quartos = searchParams.get('quartos');
+    const banheiros = searchParams.get('banheiros');
+    const valorMaximo = searchParams.get('valorMaximo');
+    const area = searchParams.get('area');
+    const bairro = searchParams.get('bairro');
+    const tipoImovel = searchParams.get('tipoImovel');
+    
+    // Adicionar apenas os parâmetros que existem
+    if (quartos) filtros.quartos = parseInt(quartos, 10);
+    if (banheiros) filtros.banheiros = parseInt(banheiros, 10);
+    if (valorMaximo) filtros.valorMaximo = parseInt(valorMaximo, 10);
+    if (area) filtros.area = parseInt(area, 10);
+    if (bairro) filtros.bairro = bairro;
+    if (tipoImovel) filtros.tipoImovel = tipoImovel;
+    
+    return filtros;
+  };
+  
+  // Função para calcular a porcentagem de match entre o imóvel e os filtros
+  const calcularMatchPercentage = (imovel: any, filtros: Record<string, any>) => {
+    let pontos = 0;
+    let totalPossivel = 0;
+    
+    // Critérios de match com pesos
+    const criterios = [
+      { campo: 'quartos', peso: 25 },
+      { campo: 'banheiros', peso: 15 },
+      { campo: 'area', peso: 20 },
+      { campo: 'preco', peso: 30 },
+      { campo: 'bairro', peso: 10 }
+    ];
+    
+    // Verificar cada critério
+    criterios.forEach(criterio => {
+      totalPossivel += criterio.peso;
+      
+      switch (criterio.campo) {
+        case 'quartos':
+          if (filtros.quartos && imovel.quartos) {
+            // Match exato = 100%, 1 a mais ou a menos = 50%
+            const diff = Math.abs(filtros.quartos - imovel.quartos);
+            if (diff === 0) pontos += criterio.peso;
+            else if (diff === 1) pontos += criterio.peso * 0.5;
+          }
+          break;
+          
+        case 'banheiros':
+          if (filtros.banheiros && imovel.banheiros) {
+            const diff = Math.abs(filtros.banheiros - imovel.banheiros);
+            if (diff === 0) pontos += criterio.peso;
+            else if (diff === 1) pontos += criterio.peso * 0.5;
+          }
+          break;
+          
+        case 'area':
+          if (filtros.area && imovel.area) {
+            // Aceitar até 20% de diferença
+            const areaDiff = Math.abs(filtros.area - imovel.area) / filtros.area;
+            if (areaDiff <= 0.1) pontos += criterio.peso;
+            else if (areaDiff <= 0.2) pontos += criterio.peso * 0.7;
+            else if (areaDiff <= 0.3) pontos += criterio.peso * 0.4;
+          }
+          break;
+          
+        case 'preco':
+          if (filtros.valorMaximo && imovel.preco) {
+            // Preço deve ser até 10% acima do orçamento
+            if (imovel.preco <= filtros.valorMaximo) {
+              pontos += criterio.peso;
+            } else {
+              const diff = (imovel.preco - filtros.valorMaximo) / filtros.valorMaximo;
+              if (diff <= 0.1) pontos += criterio.peso * 0.7;
+              else if (diff <= 0.2) pontos += criterio.peso * 0.3;
+            }
+          }
+          break;
+          
+        case 'bairro':
+          if (filtros.bairro && imovel.bairro) {
+            if (imovel.bairro.toLowerCase().includes(filtros.bairro.toLowerCase())) {
+              pontos += criterio.peso;
+            }
+          }
+          break;
+      }
+    });
+    
+    // Adicionar pontos para imóveis em destaque
+    if (imovel.destaque) {
+      pontos += 10;
+      totalPossivel += 10;
+    }
+    
+    // Calcular porcentagem final
+    return Math.min(Math.round((pontos / totalPossivel) * 100), 98); // Limitar a 98% para sempre ter espaço para melhorias
+  };
+  
   useEffect(() => {
     // Buscar imóveis do banco de dados
     const buscarImoveis = async () => {
       setCarregando(true);
       try {
-        // Tentar obter imóveis do banco de dados
-        const imoveisData = await obterImoveisDoDb();
+        // Extrair filtros dos parâmetros de URL
+        const filtros = extrairFiltrosDeURL();
+        console.log('Filtros extraídos da URL:', filtros);
+        
+        // Tentar obter imóveis do banco de dados com os filtros
+        const imoveisData = await obterImoveisDoDb(filtros);
         
         if (imoveisData && imoveisData.length > 0) {
           console.log('Imóveis encontrados no banco:', imoveisData.length);
           
           // Converter os dados do banco para o formato esperado pelo componente
-          const imoveisReais: PinItem[] = imoveisData.map((imovel, index) => ({
-            id: imovel.id,
-            titulo: imovel.titulo,
-            preco: imovel.preco,
-            destaque: index < 3 ? true : false, // Primeiros 3 são destaques
-            matchPercentage: index < 3 ? 95 - (index * 5) : 70 - (index * 3),
-            thumbnail: imovel.imagens && imovel.imagens.length > 0 
-              ? imovel.imagens[0]
-              : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300&h=200&fit=crop",
-            caracteristicas: {
-              quartos: imovel.quartos || 2,
-              banheiros: imovel.banheiros || 1,
-              area: imovel.area || 80,
-              vagas: imovel.vagas || 1
-            },
-            position: pinPositions[Math.min(index, pinPositions.length - 1)],
-            indisponivel: index >= 3 // Pins não destacados são indisponíveis
-          }));
-          
-          // Adicionar pins cinzas ilustrativos para preencher o mapa
-          const pinsIlustrativos: PinItem[] = [];
-          for (let i = 0; i < 8; i++) {
-            // Usar posições de pin que não estão sendo usadas pelos imóveis reais
-            const posIndex = imoveisReais.length + i;
-            if (posIndex >= pinPositions.length) break;
+          const imoveisReais: PinItem[] = imoveisData.map((imovel, index) => {
+            // Calcular porcentagem de match para cada imóvel usando a função
+            const matchPercentage = Object.keys(filtros).length > 0 
+              ? calcularMatchPercentage(imovel, filtros)
+              : index < 3 ? 95 - (index * 5) : 70 - (index * 3); // Fallback se não houver filtros
             
-            pinsIlustrativos.push({
-              id: `ilustrativo-${i}`,
-              titulo: `Imóvel Ilustrativo ${i+1}`,
-              preco: 350000 + (i * 75000),
-              destaque: false,
-              matchPercentage: 50 - (i * 2),
-              thumbnail: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=300&h=200&fit=crop",
+            return {
+              id: imovel.id,
+              titulo: imovel.titulo,
+              preco: imovel.preco,
+              destaque: matchPercentage >= 80, // Imóveis com match alto são destaques
+              matchPercentage,
+              telefoneContato: imovel.telefoneContato, // Usar apenas o telefone do próprio imóvel
+              thumbnail: imovel.imagens && imovel.imagens.length > 0 
+                ? imovel.imagens[0]
+                : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300&h=200&fit=crop",
               caracteristicas: {
-                quartos: 1 + Math.floor(i/3),
-                banheiros: 1 + Math.floor(i/4),
-                area: 60 + (i * 10),
-                vagas: Math.floor(i/2)
+                quartos: imovel.quartos || 2,
+                banheiros: imovel.banheiros || 1,
+                area: imovel.area || 80,
+                vagas: imovel.vagas || 1
               },
-              position: pinPositions[posIndex],
-              indisponivel: true // Todos os pins ilustrativos são indisponíveis (cinzas)
-            });
-          }
+              position: pinPositions[Math.min(index, pinPositions.length - 1)],
+              indisponivel: matchPercentage < 70 // Pins com match baixo são indisponíveis
+            };
+          });
           
-          // Combinar imóveis reais com pins ilustrativos
-          const todosPins = [...imoveisReais, ...pinsIlustrativos];
-          
-          // Definir no estado
-          setPins(todosPins);
+          // Definir no estado - usar apenas os imóveis reais
+          setPins(imoveisReais);
           console.log('Imóveis reais carregados:', imoveisReais.length);
         } else {
-          console.warn('Nenhum imóvel encontrado no banco. Usando mocks como fallback.');
-          // Fallback para pins simulados caso não haja dados reais
-          const pinsMock = gerarPinsMock();
-          setPins(pinsMock);
+          console.warn('Nenhum imóvel encontrado no banco.');
+          // Mostrar lista vazia se não houver imóveis
+          setPins([]);
         }
       } catch (error) {
         console.error('Erro ao carregar imóveis:', error);
-        // Fallback para pins simulados em caso de erro
-        const pinsMock = gerarPinsMock();
-        setPins(pinsMock);
+        // Mostrar lista vazia em caso de erro
+        setPins([]);
       } finally {
         setCarregando(false);
       }
     };
     
-    // Função para gerar pins mockados caso não haja dados reais
-    const gerarPinsMock = () => {
-      const novosImoveis: PinItem[] = [];
-      for (let i = 0; i < pinPositions.length; i++) {
-        const matchValue = i < 3 ? 90 - (i * 5) : 70 - (i * 2);
-        novosImoveis.push({
-          id: `imovel-${i}`,
-          titulo: `Apartamento ${i < 3 ? 'Premium' : 'Padrão'} ${i+1}`,
-          preco: 500000 + (i * 100000),
-          destaque: i < 3,
-          matchPercentage: matchValue,
-          thumbnail: i % 3 === 0 
-            ? "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300&h=200&fit=crop"
-            : i % 3 === 1
-            ? "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=300&h=200&fit=crop"
-            : "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=300&h=200&fit=crop",
-          caracteristicas: {
-            quartos: 2 + Math.floor(i/3),
-            banheiros: 1 + Math.floor(i/4),
-            area: 80 + (i * 15),
-            vagas: 1 + Math.floor(i/3)
-          },
-          position: pinPositions[i],
-          indisponivel: i >= 3 // Pins não destacados são indisponíveis
-        });
-      }
-      return novosImoveis;
-    };
+    // Buscar imóveis apenas do banco de dados
     
     buscarImoveis();
   }, []);
@@ -180,8 +286,39 @@ function MapaInterativoContent() {
   return (
     <div className="w-full h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
       <div className="w-full h-full relative">
-        {/* Background map image */}
-        <div className="absolute inset-0 bg-gray-200/40"></div>
+        {/* Background estilizado simulando um mapa em tons de cinza */}
+        <div className="absolute inset-0">
+          {/* Base do mapa */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200"></div>
+          
+          {/* Grade simulando ruas */}
+          <div className="absolute inset-0" style={{ 
+            backgroundImage: `
+              linear-gradient(to right, rgba(255,255,255,0.6) 1px, transparent 1px),
+              linear-gradient(to bottom, rgba(255,255,255,0.6) 1px, transparent 1px)
+            `,
+            backgroundSize: '30px 30px'
+          }}></div>
+          
+          {/* Ruas principais */}
+          <div className="absolute top-1/2 left-0 right-0 h-[2px] bg-white/70"></div>
+          <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-white/70"></div>
+          
+          {/* Áreas de "parques" */}
+          <div className="absolute top-[20%] left-[20%] w-[15%] h-[15%] rounded-full bg-gray-300/30"></div>
+          <div className="absolute bottom-[20%] right-[20%] w-[20%] h-[10%] rounded-full bg-gray-300/30"></div>
+          
+          {/* "Lago" */}
+          <div className="absolute top-[40%] right-[30%] w-[10%] h-[25%] rounded-full bg-gray-400/20"></div>
+        </div>
+        
+        {/* Overlay com efeito suave para dar destaque aos pins */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-white/20 pointer-events-none"></div>
+        
+        {/* Título do mapa */}
+        <div className="absolute top-4 left-4 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm">
+          <h1 className="text-lg font-medium text-gray-800">Mapa de Imóveis - Curitiba</h1>
+        </div>
         
         {/* Mini cards dos imóveis sobre os pins */}
         <AnimatePresence>              
@@ -315,7 +452,22 @@ function MapaInterativoContent() {
                       {/* Botão de contato mais destacado */}
                       <Button 
                         size="sm" 
-                        className="w-full text-sm font-medium bg-[#fe4f17] text-white hover:bg-[#fe4f17]/90 gap-1.5 shadow-sm"
+                        className="w-full text-sm font-medium bg-green-600 text-white hover:bg-green-700 gap-1.5 shadow-sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // Verificar se o imóvel tem telefone de contato
+                          if (!pin.telefoneContato) {
+                            alert('Este imóvel não possui telefone de contato cadastrado.');
+                            return;
+                          }
+                          
+                          // Formatar o número de telefone para o WhatsApp (remover caracteres não numéricos)
+                          const telefoneFormatado = pin.telefoneContato.replace(/\D/g, '');
+                          // Mensagem pré-definida para o WhatsApp
+                          const mensagem = `Olá! Vi o imóvel ${pin.titulo} no sistema iMovia e gostaria de mais informações.`;
+                          // Abrir WhatsApp com o número e mensagem
+                          window.open(`https://wa.me/55${telefoneFormatado}?text=${encodeURIComponent(mensagem)}`, '_blank');
+                        }}
                       >
                         <Phone className="h-3.5 w-3.5" />
                         Atendimento direto

@@ -65,7 +65,7 @@ const imovelFormSchema = z.object({
   status: z.string().optional(),
   destaque: z.boolean().default(false),
   ativo: z.boolean().default(true),
-  construtoraId: z.string({ required_error: "Selecione uma construtora" })
+  construtoraId: z.string().optional(), // Tornando construtoraId opcional
 })
 
 type ImovelFormValues = z.infer<typeof imovelFormSchema>
@@ -90,7 +90,7 @@ type ImovelNovo = {
   status?: string
   destaque: boolean
   ativo: boolean
-  construtoraId: string
+  construtoraId?: string // Tornando construtoraId opcional
   caracteristicas?: Record<string, any>
 }
 
@@ -406,22 +406,22 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
     }
   };
   
-  // SOLUÇÃO BOMBADA: useEffect específico para forçar o preenchimento do telefone e tipo
+  // SOLUÇÃO MELHORADA: useEffect para garantir que o telefone e o tipo são carregados corretamente
   useEffect(() => {
     if (modoEdicao && imovel && (imovel as any).id) {
-      console.log('SOLUÇÃO BOMBADA ATIVADA PARA ID:', (imovel as any).id);
+      console.log('Carregando dados atualizados para o imóvel:', (imovel as any).id);
       
-      // Chamar a função de busca direta
+      // Primeiro buscamos os dados atualizados da API
       buscarDadosDiretamente((imovel as any).id);
       
-      // Extrair os dados direto do objeto bruto (como fallback)
+      // Como medida de segurança, também usamos os dados que já temos no objeto imovel
       const dados = imovel as any;
       
-      // Pegando o telefone de todos os possíveis lugares
-      let telefone = '';
-      if (dados.telefoneContato) telefone = dados.telefoneContato;
+      // Pegando o telefone e garantindo que ele nunca seja undefined
+      let telefone = dados.telefoneContato || '';
+      console.log('Telefone detectado:', telefone);
       
-      // Pegando o tipo de imóvel de todos os possíveis lugares
+      // Pegando o tipo de imóvel
       let tipoId = dados.tipoImovelId || null;
       let tipoNome = 'Apartamento';
       
@@ -431,20 +431,35 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
         tipoNome = dados.tipoImovelNome;
       }
       
-      console.log('VALORES BRUTOS ENCONTRADOS (FALLBACK):', { telefone, tipoId, tipoNome });
+      console.log('Valores do imóvel:', { telefone, tipoId, tipoNome, ativo: dados.ativo });
       
-      // Atualizar diretamente o DOM se necessário (hack extremo) - como fallback apenas
-      setTimeout(() => {
-        // Aplicar diretamente no formulário
-        form.setValue('telefoneContato', telefone ? formatTelefone(telefone) : '');
-        form.setValue('tipoImovel', tipoId);
+      // Aplicar os valores imediatamente e também com um delay para garantir
+      function aplicarValores() {
+        // Garantir que o telefone seja aplicado corretamente
+        if (telefone) {
+          const telefoneFormatado = formatTelefone(telefone);
+          form.setValue('telefoneContato', telefoneFormatado);
+          console.log('Telefone aplicado:', telefoneFormatado);
+        }
         
-        // Guardar nos states também
+        // Aplicar o tipo de imóvel
+        if (tipoId) {
+          form.setValue('tipoImovel', tipoId);
+        }
+        
+        // Garantir que o imóvel esteja sempre ativo
+        form.setValue('ativo', true);
+        
+        // Guardar nos states para referência
         setTelefoneSalvo(telefone);
         setTipoImovelSalvo(tipoNome);
-        
-        console.log('CAMPOS FORÇADAMENTE ATUALIZADOS (FALLBACK)!');
-      }, 1000); // Um pequeno delay para garantir que o DOM está pronto
+      }
+      
+      // Aplicar imediatamente
+      aplicarValores();
+      
+      // E também com um delay para garantir que os valores sejam aplicados
+      setTimeout(aplicarValores, 500);
     }
   }, [imovel, modoEdicao, form]);
   

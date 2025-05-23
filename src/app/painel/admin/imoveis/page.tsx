@@ -65,7 +65,7 @@ export default function ImoveisPage() {
   
   // Paginação
   const [pagina, setPagina] = useState(1)
-  const [itensPorPagina, setItensPorPagina] = useState(24)
+  const [itensPorPagina, setItensPorPagina] = useState(8)
   const [totalPaginas, setTotalPaginas] = useState(1)
   const [imoveisPaginados, setImoveisPaginados] = useState<ImovelDisplay[]>([])
   

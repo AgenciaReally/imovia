@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Plus, Filter, RefreshCw, CheckCircle2, Ban, ArrowUpCircle, ArrowDownCircle } from "lucide-react"
+import { Plus, Filter, RefreshCw, CheckCircle2, Ban, ArrowUpCircle, ArrowDownCircle, Settings, Sliders } from "lucide-react"
 
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout"
 import { Button } from "@/components/ui/button"
@@ -28,6 +28,28 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Textarea } from "@/components/ui/textarea"
+import { Slider } from "@/components/ui/slider"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import {
   Pergunta,
   CATEGORIAS_PERGUNTA,
   TIPOS_FLUXO,
@@ -37,16 +59,17 @@ import {
   excluirPergunta,
   atualizarOrdemPergunta
 } from "@/services/pergunta-service"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
 import { useToast } from "@/components/ui/use-toast"
+
+// Schema para validação do formulário de configurações
+const configFormSchema = z.object({
+  limitePergunta: z.number().min(1).max(100),
+  intensidade: z.number().min(0).max(100),
+  instrucoesAvancadas: z.string().optional(),
+  modeloIA: z.enum(["deepseek-r1", "chatgpt"]).default("deepseek-r1"),
+});
+
+type ConfigFormValues = z.infer<typeof configFormSchema>
 
 export default function PerguntasPage() {
   const router = useRouter()
@@ -57,6 +80,7 @@ export default function PerguntasPage() {
   const [perguntas, setPerguntas] = useState<Pergunta[]>([])
   const [perguntasFiltradas, setPerguntasFiltradas] = useState<Pergunta[]>([])
   const [busca, setBusca] = useState("")
+  const [configModalOpen, setConfigModalOpen] = useState(false)
   const [categoriaFiltro, setCategoriaFiltro] = useState<string | null>(null)
   const [fluxoFiltro, setFluxoFiltro] = useState<string | null>(null)
   const [apenasAtivas, setApenasAtivas] = useState<boolean | null>(null)
@@ -282,15 +306,28 @@ export default function PerguntasPage() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Button 
-              size="lg"
-              className="gap-2 relative overflow-hidden group"
-              onClick={handleNovaPergunta}
-            >
-              <div className="absolute inset-0 w-3 bg-white dark:bg-gray-800 opacity-10 transform -skew-x-12 group-hover:animate-shimmer" />
-              <Plus className="h-5 w-5" />
-              <span>Nova Pergunta</span>
-            </Button>
+            <div className="flex space-x-3">
+              <Button 
+                size="lg"
+                className="gap-2 relative overflow-hidden group"
+                onClick={handleNovaPergunta}
+              >
+                <div className="absolute inset-0 w-3 bg-white dark:bg-gray-800 opacity-10 transform -skew-x-12 group-hover:animate-shimmer" />
+                <Plus className="h-5 w-5" />
+                <span>Nova Pergunta</span>
+              </Button>
+              
+              <Button 
+                size="lg"
+                variant="outline"
+                className="gap-2 relative overflow-hidden group"
+                onClick={() => setConfigModalOpen(true)}
+              >
+                <div className="absolute inset-0 w-3 bg-white dark:bg-gray-800 opacity-10 transform -skew-x-12 group-hover:animate-shimmer" />
+                <Settings className="h-5 w-5" />
+                <span>Configurar Perguntas</span>
+              </Button>
+            </div>
           </motion.div>
         </div>
         
@@ -468,6 +505,181 @@ export default function PerguntasPage() {
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* Modal de Configuração de Perguntas */}
+      <Dialog open={configModalOpen} onOpenChange={setConfigModalOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Settings className="h-5 w-5" />
+              Configurar Perguntas
+            </DialogTitle>
+            <DialogDescription>
+              Configure os parâmetros para o sistema de perguntas da IA
+            </DialogDescription>
+          </DialogHeader>
+
+          <ConfiguracaoForm onClose={() => setConfigModalOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </DashboardLayout>
+  )
+}
+
+// Componente do formulário de configuração de perguntas
+function ConfiguracaoForm({ onClose }: { onClose: () => void }) {
+  const { toast } = useToast()
+
+  // Formulário usando react-hook-form e zod
+  const form = useForm<ConfigFormValues>({
+    resolver: zodResolver(configFormSchema),
+    defaultValues: {
+      limitePergunta: 10,
+      intensidade: 70,
+      instrucoesAvancadas: "",
+      modeloIA: "deepseek-r1",
+    },
+  })
+
+  // Função para salvar as configurações
+  async function onSubmit(data: ConfigFormValues) {
+    try {
+      // Aqui você implementaria a chamada para a API para salvar as configurações
+      // Por enquanto apenas mostraremos um toast de sucesso
+      console.log("Configurações salvas:", data)
+      
+      toast({
+        title: "Configurações salvas",
+        description: "As configurações de perguntas foram salvas com sucesso.",
+      })
+
+      onClose()
+    } catch (error) {
+      console.error("Erro ao salvar configurações:", error)
+      toast({
+        variant: "destructive",
+        title: "Erro ao salvar",
+        description: "Ocorreu um erro ao salvar as configurações.",
+      })
+    }
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormField
+          control={form.control}
+          name="limitePergunta"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Limite de Perguntas</FormLabel>
+              <FormControl>
+                <div className="flex items-center gap-4">
+                  <Slider
+                    min={1}
+                    max={100}
+                    step={1}
+                    value={[field.value]}
+                    onValueChange={(value) => field.onChange(value[0])}
+                    className="flex-1"
+                  />
+                  <span className="font-medium text-lg min-w-[40px] text-center">
+                    {field.value}
+                  </span>
+                </div>
+              </FormControl>
+              <FormDescription>
+                Número máximo de perguntas que podem ser feitas no sistema
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="intensidade"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Intensidade das Perguntas</FormLabel>
+              <FormControl>
+                <div className="flex items-center gap-4">
+                  <Slider
+                    min={0}
+                    max={100}
+                    step={1}
+                    value={[field.value]}
+                    onValueChange={(value) => field.onChange(value[0])}
+                    className="flex-1"
+                  />
+                  <span className="font-medium text-lg min-w-[40px] text-center">
+                    {field.value}%
+                  </span>
+                </div>
+              </FormControl>
+              <FormDescription>
+                Ajuste a intensidade ou profundidade das perguntas geradas pela IA
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="modeloIA"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Modelo de IA</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione um modelo" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="deepseek-r1">DeepSeek R1 (Recomendado)</SelectItem>
+                  <SelectItem value="chatgpt">ChatGPT</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                Selecione o modelo de IA utilizado para gerar as perguntas
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="instrucoesAvancadas"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Instruções Avançadas para a IA</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder="Digite instruções adicionais para a IA ao gerar perguntas..."
+                  className="min-h-[120px]"
+                  {...field}
+                />
+              </FormControl>
+              <FormDescription>
+                Instruções específicas para a IA seguir ao gerar as perguntas (opcional)
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <DialogFooter>
+          <Button type="button" variant="outline" onClick={onClose}>
+            Cancelar
+          </Button>
+          <Button type="submit">
+            Salvar Configurações
+          </Button>
+        </DialogFooter>
+      </form>
+    </Form>
   )
 }

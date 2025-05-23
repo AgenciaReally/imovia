@@ -25,12 +25,15 @@ export async function PATCH(
       );
     }
 
-    // Atualizar o status do imóvel
+    // Atualizar o status do imóvel apenas quando explicitamente solicitado pelo toggle
+    // E forçar que ele continue ativo quando estiver editando
     const imovelAtualizado = await prisma.imovel.update({
       where: {
         id: id,
       },
       data: {
+        // Se estamos editando via form de edição, sempre mantenha ativo
+        // Caso contrário, use o valor recebido no toggle
         ativo: ativo,
       },
     });

@@ -47,6 +47,7 @@ export interface ImovelDisplay {
   caracteristicas: string[]
   ativo?: boolean
   destaque?: boolean
+  telefoneContato?: string    // Telefone de contato do imóvel
   
   // Campos adicionados para o novo modelo relacional de tipo de imóvel
   tipoImovel?: TipoImovel      // Objeto relacionado completo
@@ -125,17 +126,60 @@ export async function buscarImovelOruloPorId(id: string): Promise<OruloBuilding>
 }
 
 // Função para obter imóveis do banco de dados
-export async function obterImoveisDoDb(): Promise<ImovelDisplay[]> {
+export async function obterImoveisDoDb(filtros?: Record<string, any>): Promise<ImovelDisplay[]> {
   try {
-    const response = await fetch('/api/imoveis')
+    // Construir URL com parâmetros de filtro
+    let url = '/api/imoveis';
     
-    if (!response.ok) {
-      throw new Error(`Erro ao buscar imóveis: ${response.statusText}`)
+    if (filtros && Object.keys(filtros).length > 0) {
+      const params = new URLSearchParams();
+      
+      // Adicionar filtros específicos baseados nas respostas
+      if (filtros.quartos) {
+        params.append('quartos', filtros.quartos.toString());
+      }
+      
+      if (filtros.banheiros) {
+        params.append('banheiros', filtros.banheiros.toString());
+      }
+      
+      if (filtros.valorMaximo) {
+        params.append('valorMaximo', filtros.valorMaximo.toString());
+      }
+      
+      if (filtros.valorMinimo) {
+        params.append('valorMinimo', filtros.valorMinimo.toString());
+      }
+      
+      if (filtros.area) {
+        params.append('area', filtros.area.toString());
+      }
+      
+      if (filtros.bairro) {
+        params.append('bairro', filtros.bairro);
+      }
+      
+      if (filtros.tipoImovel) {
+        params.append('tipoImovel', filtros.tipoImovel);
+      }
+      
+      // Adicionar parâmetro para filtrar apenas imóveis ativos
+      params.append('ativo', 'true');
+      
+      url = `${url}?${params.toString()}`;
     }
     
-    return await response.json()
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar imóveis: ${response.statusText}`);
+    }
+    
+    const imoveis = await response.json();
+    console.log(`Encontrados ${imoveis.length} imóveis com os filtros aplicados:`, filtros);
+    return imoveis;
   } catch (error) {
-    console.error('Erro ao buscar imóveis do banco de dados:', error)
-    return []
+    console.error('Erro ao buscar imóveis do banco de dados:', error);
+    return [];
   }
 }

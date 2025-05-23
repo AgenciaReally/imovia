@@ -124,6 +124,24 @@ model Pergunta {
   // Relações
   respostas     Resposta[]
   imoveis       ImovelPergunta[]
+  
+  // Relação com a configuração de perguntas
+  configuracaoId String?
+  configuracao  ConfiguracaoPergunta? @relation(fields: [configuracaoId], references: [id])
+}
+
+// Modelo de configuração de perguntas
+model ConfiguracaoPergunta {
+  id                  String    @id @default(cuid())
+  limitePergunta      Int       @default(10)
+  intensidade         Int       @default(70)
+  instrucoesAvancadas String?   // Instruções adicionais para a IA ao gerar perguntas
+  modeloIA            String    @default("deepseek-r1") // "deepseek-r1" ou "chatgpt"
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  
+  // Relações
+  perguntas           Pergunta[] // Relação com as perguntas que usam esta configuração
 }
 
 // Modelo de respostas

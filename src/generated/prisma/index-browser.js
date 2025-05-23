@@ -195,6 +195,17 @@ exports.Prisma.PerguntaScalarFieldEnum = {
   geradaPorIA: 'geradaPorIA',
   ativa: 'ativa',
   createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  configuracaoId: 'configuracaoId'
+};
+
+exports.Prisma.ConfiguracaoPerguntaScalarFieldEnum = {
+  id: 'id',
+  limitePergunta: 'limitePergunta',
+  intensidade: 'intensidade',
+  instrucoesAvancadas: 'instrucoesAvancadas',
+  modeloIA: 'modeloIA',
+  createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
 
@@ -346,6 +357,7 @@ exports.Prisma.ModelName = {
   Construtora: 'Construtora',
   Imovel: 'Imovel',
   Pergunta: 'Pergunta',
+  ConfiguracaoPergunta: 'ConfiguracaoPergunta',
   Resposta: 'Resposta',
   Match: 'Match',
   Relatorio: 'Relatorio',

@@ -1,17 +1,76 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-// Busca todos os imóveis cadastrados no banco de dados
-export async function GET() {
+// Busca imóveis cadastrados no banco de dados com filtros opcionais
+export async function GET(request: Request) {
   try {
-    // Buscar todos os imóveis do banco de dados com suas construtoras e tipo de imóvel
+    // Obter parâmetros de URL para filtrar imóveis
+    const { searchParams } = new URL(request.url);
+    
+    // Construir objeto de filtros para o Prisma
+    const where: any = {};
+    
+    // Filtrar por imóveis ativos (se o parâmetro existir)
+    if (searchParams.has('ativo')) {
+      where.ativo = searchParams.get('ativo') === 'true';
+    }
+    
+    // Filtros baseados em parâmetros da URL
+    if (searchParams.has('quartos')) {
+      const quartos = parseInt(searchParams.get('quartos') || '0', 10);
+      where.quartos = quartos > 0 ? quartos : undefined;
+    }
+    
+    if (searchParams.has('banheiros')) {
+      const banheiros = parseInt(searchParams.get('banheiros') || '0', 10);
+      where.banheiros = banheiros > 0 ? banheiros : undefined;
+    }
+    
+    if (searchParams.has('valorMinimo')) {
+      const valorMinimo = parseFloat(searchParams.get('valorMinimo') || '0');
+      where.preco = { ...(where.preco || {}), gte: valorMinimo };
+    }
+    
+    if (searchParams.has('valorMaximo')) {
+      const valorMaximo = parseFloat(searchParams.get('valorMaximo') || '0');
+      where.preco = { ...(where.preco || {}), lte: valorMaximo };
+    }
+    
+    if (searchParams.has('area')) {
+      const area = parseFloat(searchParams.get('area') || '0');
+      where.area = { gte: area * 0.8 }; // 20% de margem para baixo
+    }
+    
+    if (searchParams.has('bairro')) {
+      const bairro = searchParams.get('bairro');
+      where.endereco = { contains: bairro, mode: 'insensitive' };
+    }
+    
+    if (searchParams.has('tipoImovel')) {
+      const tipoImovelSlug = searchParams.get('tipoImovel');
+      // Buscar o tipo de imóvel pelo slug
+      if (tipoImovelSlug) {
+        const tipoImovel = await prisma.tipoImovel.findFirst({
+          where: { slug: { equals: tipoImovelSlug, mode: 'insensitive' } }
+        });
+        
+        if (tipoImovel) {
+          where.tipoImovelId = tipoImovel.id;
+        }
+      }
+    }
+    
+    console.log('Filtros aplicados:', where);
+    
+    // Buscar imóveis do banco de dados com seus relacionamentos e filtros
     const imoveis = await prisma.imovel.findMany({
+      where,
       include: {
         construtora: true,
         tipoImovel: true
       },
       orderBy: {
-        createdAt: 'desc'
+        destaque: 'desc' // Ordenar por destaque primeiro
       }
     })
     
@@ -43,7 +102,8 @@ export async function GET() {
       dataAtualizacao: imovel.updatedAt.toLocaleDateString('pt-BR'),
       caracteristicas: imovel.caracteristicasArray || [],
       destaque: imovel.destaque,
-      ativo: imovel.ativo
+      ativo: imovel.ativo,
+      telefoneContato: imovel.telefoneContato // Incluir o telefone de contato do imóvel
     }))
     
     return NextResponse.json(imoveisFormatados)
@@ -83,29 +143,36 @@ export async function POST(request: Request) {
       caracteristicas
     } = body
     
+    // Preparar os dados para criar o imóvel
+    const imovelData: any = {
+      titulo,
+      descricao,
+      preco,
+      area,
+      quartos,
+      banheiros,
+      vagas,
+      latitude,
+      longitude,
+      telefoneContato,
+      endereco,
+      fotoPrincipal,
+      galeriaFotos: galeriaFotos || [],
+      caracteristicasArray: caracteristicasArray || [],
+      tipoImovelId, // Usar o ID da relação com TipoImovel
+      status,
+      destaque: destaque || false,
+      caracteristicas
+    }
+    
+    // Adicionar construtoraId apenas se foi fornecido
+    if (construtoraId) {
+      imovelData.construtoraId = construtoraId
+    }
+    
     // Criar o imóvel no banco de dados
     const novoImovel = await prisma.imovel.create({
-      data: {
-        titulo,
-        descricao,
-        preco,
-        area,
-        quartos,
-        banheiros,
-        vagas,
-        latitude,
-        longitude,
-        telefoneContato,
-        endereco,
-        fotoPrincipal,
-        galeriaFotos: galeriaFotos || [],
-        caracteristicasArray: caracteristicasArray || [],
-        tipoImovelId, // Usar o ID da relação com TipoImovel
-        status,
-        destaque: destaque || false,
-        construtoraId,
-        caracteristicas
-      },
+      data: imovelData,
       include: {
         tipoImovel: true // Incluir o tipo de imóvel na resposta
       }
