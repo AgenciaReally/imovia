@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { format, parseISO } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { Plus, Info } from "lucide-react"
+import { Plus, Info, ChevronLeft, ChevronRight } from "lucide-react"
 
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout"
 import { Button } from "@/components/ui/button"
@@ -24,10 +24,16 @@ export default function ConstrutorasPage() {
   const [loading, setLoading] = useState(true)
   const [construtoras, setConstrutoras] = useState<ConstrutoraDashboard[]>([])
   const [filteredConstrutoras, setFilteredConstrutoras] = useState<ConstrutoraDashboard[]>([])
+  const [paginatedConstrutoras, setPaginatedConstrutoras] = useState<ConstrutoraDashboard[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOptions, setSortOptions] = useState({ field: 'nome', direction: 'asc' as 'asc' | 'desc' })
   const [statusFilter, setStatusFilter] = useState<'todas' | 'ativa' | 'inativa' | 'pendente'>('todas')
   const [dateRange, setDateRange] = useState<{ from: Date | undefined; to: Date | undefined }>({ from: undefined, to: undefined })
+  
+  // Paginação
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const itemsPerPage = 8
   
   // Função para recarregar dados após adicionar ou excluir construtora
   const handleNovaConstrutora = async () => {
@@ -113,9 +119,88 @@ export default function ConstrutorasPage() {
       filtered = filtered.filter(c => c.status === statusFilter)
     }
     
+    // Ordenação
+    filtered = filtered.sort((a, b) => {
+      const fieldA = a[sortOptions.field as keyof ConstrutoraDashboard];
+      const fieldB = b[sortOptions.field as keyof ConstrutoraDashboard];
+      
+      // Converter para string ou número para comparação
+      const valueA = typeof fieldA === 'string' ? fieldA.toLowerCase() : Number(fieldA) || 0;
+      const valueB = typeof fieldB === 'string' ? fieldB.toLowerCase() : Number(fieldB) || 0;
+      
+      if (sortOptions.direction === 'asc') {
+        return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+      } else {
+        return valueA < valueB ? 1 : valueA > valueB ? -1 : 0;
+      }
+    });
+    
     setFilteredConstrutoras(filtered)
-  }, [construtoras, searchQuery, statusFilter])
+    setCurrentPage(1) // Resetar para primeira página quando filtros mudam
+    setTotalPages(Math.ceil(filtered.length / itemsPerPage))
+  }, [construtoras, searchQuery, statusFilter, sortOptions])
+  
+  // Paginação
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+    setPaginatedConstrutoras(filteredConstrutoras.slice(startIndex, endIndex))
+  }, [filteredConstrutoras, currentPage, itemsPerPage])
 
+  // Função para exportar dados das construtoras em CSV
+  const handleExport = () => {
+    try {
+      // Criar cabeçalhos para o CSV
+      const headers = ['Nome', 'CNPJ', 'Email', 'Telefone', 'Endereço', 'Status', 'Data Registro', 'Qtd. Imóveis', 'Qtd. Usuários']
+      
+      // Transformar os dados em linhas de CSV
+      const csvRows = [
+        headers.join(','),
+        ...filteredConstrutoras.map(c => {
+          return [
+            `"${c.nome}"`,
+            `"${c.cnpj}"`,
+            `"${c.email}"`,
+            `"${c.telefone}"`,
+            `"${c.endereco}"`,
+            `"${c.status}"`,
+            `"${c.dataRegistro}"`,
+            c.qtdImoveis,
+            c.qtdUsuarios
+          ].join(',')
+        })
+      ]
+      
+      // Criar conteúdo do CSV
+      const csvContent = csvRows.join('\n')
+      
+      // Criar o blob e link para download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      
+      // Configurar e simular o clique no link para download
+      link.setAttribute('href', url)
+      link.setAttribute('download', `construtoras_${format(new Date(), 'dd-MM-yyyy')}.csv`)
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      
+      toast({
+        title: "Exportação concluída",
+        description: `${filteredConstrutoras.length} construtoras exportadas com sucesso.`
+      })
+    } catch (error) {
+      console.error('Erro ao exportar dados:', error)
+      toast({
+        variant: "destructive",
+        title: "Erro na exportação",
+        description: "Não foi possível exportar os dados.",
+      })
+    }
+  }
+  
   // Esqueletos de carregamento para o estado de loading
   const skeletonArray = Array(8).fill(null)
   
@@ -159,7 +244,7 @@ export default function ConstrutorasPage() {
           setSortOptions={setSortOptions}
           dateRange={dateRange}
           setDateRange={setDateRange}
-          onExport={() => alert("Exportação em desenvolvimento")}
+          onExport={handleExport}
           statusFilter={statusFilter}
         />
         
@@ -181,7 +266,7 @@ export default function ConstrutorasPage() {
             </div>
           ) : (
             <>
-              {filteredConstrutoras.map(construtora => (
+              {paginatedConstrutoras.map(construtora => (
                 <ConstrutoraTileCard 
                   key={construtora.id}
                   construtora={construtora}
@@ -193,6 +278,81 @@ export default function ConstrutorasPage() {
             </>
           )}
         </div>
+        
+        {/* Paginação */}
+        {filteredConstrutoras.length > 0 && (
+          <div className="flex items-center justify-between mt-6">
+            <div className="text-sm text-muted-foreground">
+              Mostrando {paginatedConstrutoras.length} de {filteredConstrutoras.length} construtoras
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex items-center space-x-1">
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter(page => {
+                    // Mostrar apenas páginas próximas à atual ou as extremidades
+                    return (
+                      page === 1 ||
+                      page === totalPages ||
+                      Math.abs(page - currentPage) <= 1
+                    );
+                  })
+                  .map((page, i, arr) => {
+                    const pageNum = page as number;
+                    // Adicionar elipses quando necessário
+                    if (i > 0 && (arr[i - 1] as number) !== pageNum - 1) {
+                      return (
+                        <React.Fragment key={`ellipsis-${pageNum}`}>
+                          <span className="px-2 text-muted-foreground">
+                            ...
+                          </span>
+                          <Button
+                            key={pageNum}
+                            variant={currentPage === pageNum ? "default" : "outline"}
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            onClick={() => setCurrentPage(pageNum)}
+                          >
+                            {pageNum}
+                          </Button>
+                        </React.Fragment>
+                      );
+                    }
+                    
+                    return (
+                      <Button
+                        key={pageNum}
+                        variant={currentPage === pageNum ? "default" : "outline"}
+                        size="sm"
+                        className="h-8 w-8 p-0"
+                        onClick={() => setCurrentPage(pageNum)}
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  })}
+              </div>
+              
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   )

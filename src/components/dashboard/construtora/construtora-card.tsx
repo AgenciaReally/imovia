@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Building2, Users, HomeIcon, CalendarIcon, Eye, Trash2, CheckCircle, XCircle } from 'lucide-react'
+import { Building2, Users, HomeIcon, CalendarIcon, Eye, Trash2, CheckCircle, XCircle, Edit } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -17,6 +17,7 @@ import { ConstrutoraDashboard } from '@/services/construtora-service'
 import { ConstrutorDetalheModal } from './construtora-detalhe-modal'
 import { ConstrutorDeleteButton } from './construtora-delete-button'
 import { ConstrutorStatusButton } from './construtora-status-button'
+import { ConstrutorFormModal } from './construtora-form-modal'
 
 interface ConstrutoraProp {
   construtora: ConstrutoraDashboard
@@ -136,6 +137,31 @@ export function ConstrutoraTileCard({ construtora, className, onDelete, onStatus
                 </TooltipTrigger>
                 <TooltipContent>
                   Visualizar todos os detalhes da construtora
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            
+            {/* Botão de editar */}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <ConstrutorFormModal 
+                    editMode={true}
+                    construtora={construtora}
+                    onSuccess={onStatusChange} // Reutilizando a função de callback
+                  >
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full flex gap-2 items-center"
+                    >
+                      <Edit className="h-3.5 w-3.5" />
+                      <span>Editar</span>
+                    </Button>
+                  </ConstrutorFormModal>
+                </TooltipTrigger>
+                <TooltipContent>
+                  Editar informações da construtora
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

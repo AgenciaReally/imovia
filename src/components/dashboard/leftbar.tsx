@@ -21,7 +21,8 @@ import {
   BarChart,
   SunMedium,
   Moon,
-  ShieldCheck
+  ShieldCheck,
+  Globe
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -67,8 +68,13 @@ export function LeftBar({ userRole = "admin", userName }: LeftBarProps) {
         },
         { 
           icon: <Home className="h-5 w-5" />,
-          label: "Imóveis",
+          label: "Imóveis Imovia",
           href: "/painel/admin/imoveis",
+        },
+        { 
+          icon: <Globe className="h-5 w-5" />,
+          label: "Imóveis Orulo",
+          href: "/painel/admin/imoveis-orulo",
         },
         { 
           icon: <BrainCircuit className="h-5 w-5" />,

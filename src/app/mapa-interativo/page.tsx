@@ -75,12 +75,22 @@ function MapaInterativoContent() {
           params.append('banheiros', filtros.banheiros.toString());
         }
         
-        if (filtros.valorMaximo) {
-          params.append('valorMaximo', filtros.valorMaximo.toString());
-        }
-        
-        if (filtros.valorMinimo) {
-          params.append('valorMinimo', filtros.valorMinimo.toString());
+        // Tratar filtros de preço (pode vir como valorMaximo/valorMinimo ou como preco.lte/preco.gte)
+        if (filtros.preco) {
+          if (filtros.preco.lte) {
+            params.append('valorMaximo', filtros.preco.lte.toString());
+          }
+          if (filtros.preco.gte) {
+            params.append('valorMinimo', filtros.preco.gte.toString());
+          }
+        } else {
+          // Manter compatibilidade com versão antiga
+          if (filtros.valorMaximo) {
+            params.append('valorMaximo', filtros.valorMaximo.toString());
+          }
+          if (filtros.valorMinimo) {
+            params.append('valorMinimo', filtros.valorMinimo.toString());
+          }
         }
         
         if (filtros.area) {
@@ -123,6 +133,7 @@ function MapaInterativoContent() {
     // Extrair filtros dos parâmetros de URL
     const quartos = searchParams.get('quartos');
     const banheiros = searchParams.get('banheiros');
+    const valorMinimo = searchParams.get('valorMinimo');
     const valorMaximo = searchParams.get('valorMaximo');
     const area = searchParams.get('area');
     const bairro = searchParams.get('bairro');
@@ -131,7 +142,17 @@ function MapaInterativoContent() {
     // Adicionar apenas os parâmetros que existem
     if (quartos) filtros.quartos = parseInt(quartos, 10);
     if (banheiros) filtros.banheiros = parseInt(banheiros, 10);
-    if (valorMaximo) filtros.valorMaximo = parseInt(valorMaximo, 10);
+    
+    // Tratar valores mínimos e máximos
+    if (valorMinimo || valorMaximo) {
+      filtros.preco = {};
+      if (valorMinimo) filtros.preco.gte = parseFloat(valorMinimo);
+      if (valorMaximo) filtros.preco.lte = parseFloat(valorMaximo);
+    } else if (valorMaximo) {
+      // Manter compatibilidade com versão antiga que só usava valorMaximo
+      filtros.preco = { lte: parseFloat(valorMaximo) };
+    }
+    
     if (area) filtros.area = parseInt(area, 10);
     if (bairro) filtros.bairro = bairro;
     if (tipoImovel) filtros.tipoImovel = tipoImovel;

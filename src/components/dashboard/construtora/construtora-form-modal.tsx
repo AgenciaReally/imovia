@@ -3,10 +3,11 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Plus, Loader2, X } from "lucide-react"
+import { Plus, Loader2, X, Edit } from "lucide-react"
 import { z } from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ConstrutoraDashboard } from "@/services/construtora-service"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -53,7 +54,14 @@ type ConstrutoraNovo = {
   ativa: boolean
 }
 
-export function ConstrutorFormModal({ onSuccess }: { onSuccess?: () => void }) {
+interface ConstrutorFormModalProps {
+  children?: React.ReactNode;
+  onSuccess?: () => void;
+  construtora?: ConstrutoraDashboard;
+  editMode?: boolean;
+}
+
+export function ConstrutorFormModal({ children, onSuccess, construtora, editMode = false }: ConstrutorFormModalProps) {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -80,16 +88,16 @@ export function ConstrutorFormModal({ onSuccess }: { onSuccess?: () => void }) {
   const form = useForm<ConstrutorFormValues>({
     resolver: zodResolver(construtoraFormSchema),
     defaultValues: {
-      nome: "",
-      cnpj: "",
-      telefone: "",
-      email: "",
-      endereco: "",
-      ativa: true,
+      nome: construtora?.nome || "",
+      cnpj: construtora?.cnpj || "",
+      telefone: construtora?.telefone || "",
+      email: construtora?.email || "",
+      endereco: construtora?.endereco || "",
+      ativa: construtora ? (construtora.status === "ativa") : true,
     },
   })
 
-  const onSubmit = async (values: ConstrutorFormValues) => {
+  const onSubmit = async (values: z.infer<typeof construtoraFormSchema>) => {
     setLoading(true)
     try {
       // Remover formatação do CNPJ e telefone
@@ -102,8 +110,17 @@ export function ConstrutorFormModal({ onSuccess }: { onSuccess?: () => void }) {
         telefone: telefoneLimpo,
       }
       
-      const response = await fetch('/api/construtoras', {
-        method: 'POST',
+      let url = '/api/construtoras';
+      let method = 'POST';
+      
+      // Se estiver em modo de edição, usar o endpoint de atualização
+      if (editMode && construtora?.id) {
+        url = `/api/construtoras/${construtora.id}`;
+        method = 'PUT';
+      }
+      
+      const response = await fetch(url, {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -111,12 +128,12 @@ export function ConstrutorFormModal({ onSuccess }: { onSuccess?: () => void }) {
       })
       
       if (!response.ok) {
-        throw new Error('Erro ao criar construtora')
+        throw new Error(editMode ? 'Erro ao atualizar construtora' : 'Erro ao criar construtora')
       }
       
       toast({
-        title: "Construtora criada com sucesso!",
-        description: "A construtora foi adicionada ao sistema.",
+        title: editMode ? "Construtora atualizada com sucesso!" : "Construtora criada com sucesso!",
+        description: editMode ? "As informações da construtora foram atualizadas." : "A construtora foi adicionada ao sistema.",
       })
       
       setOpen(false)
@@ -143,16 +160,37 @@ export function ConstrutorFormModal({ onSuccess }: { onSuccess?: () => void }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="lg">
-          <Plus className="h-5 w-5 mr-2" />
-          Nova Construtora
-        </Button>
+        {children ? (
+          <div onClick={() => form.reset()}>
+            {children}
+          </div>
+        ) : (
+          <Button
+            onClick={() => form.reset()} 
+            size="sm"
+            className="gap-1 px-2.5 py-1.5 h-auto text-xs font-medium"
+          >
+            {editMode ? (
+              <>
+                <Edit className="h-3.5 w-3.5" />
+                <span>Editar</span>
+              </>
+            ) : (
+              <>
+                <Plus className="h-3.5 w-3.5" />
+                <span>Nova Construtora</span>
+              </>
+            )}
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
-          <DialogTitle>Adicionar Nova Construtora</DialogTitle>
+          <DialogTitle>
+            {editMode ? "Editar Construtora" : "Nova Construtora"}
+          </DialogTitle>
           <DialogDescription>
-            Preencha os dados da construtora e clique em salvar.
+            {editMode ? "Atualize os dados da construtora." : "Preencha os dados da nova construtora parceira."}
           </DialogDescription>
         </DialogHeader>
         

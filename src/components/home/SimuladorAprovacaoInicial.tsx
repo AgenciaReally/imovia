@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, AlertCircle, CheckCircle, AlertTriangle, ThumbsUp, ThumbsDown, TrendingUp } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface SimuladorAprovacaoInicialProps {
   onContinuar: (simulacaoData: {
@@ -34,6 +35,7 @@ export const SimuladorAprovacaoInicial = ({
   const [resultadoVisivel, setResultadoVisivel] = useState<boolean>(false);
   const [isAprovado, setIsAprovado] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [aceitouTermos, setAceitouTermos] = useState<boolean>(false);
 
   // Calcular capacidade de pagamento e porcentagem da entrada
   const porcentagemEntrada = (entradaDisponivel / valorImovel) * 100;
@@ -79,13 +81,13 @@ export const SimuladorAprovacaoInicial = ({
     if (porcentagemEntrada < 5) {
       return {
         icon: <ThumbsDown className="h-4 w-4 text-red-500" />,
-        message: "Entrada muito baixa. Pode ser difícil conseguir financiamento sem pelo menos 10-20% de entrada.",
+        message: "Entrada muito baixa. Para imóveis de luxo, é necessário pelo menos 30% de entrada.",
         color: "bg-red-100 text-red-800 border-red-200"
       };
     } else if (porcentagemEntrada < 10) {
       return {
         icon: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
-        message: "Entrada abaixo do recomendado. Bancos geralmente preferem entradas a partir de 20%.",
+        message: "Entrada abaixo do recomendado. Para imóveis de luxo, bancos exigem entradas a partir de 30%.",
         color: "bg-yellow-100 text-yellow-800 border-yellow-200"
       };
     } else if (porcentagemEntrada < 20) {
@@ -185,19 +187,23 @@ export const SimuladorAprovacaoInicial = ({
     
     // Simular chamada a uma API de aprovação
     setTimeout(() => {
-      // Critérios de aprovação conforme padrões do mercado imobiliário
-      const aprovadoEntrada = porcentagemEntrada >= 30; // Entrada mínima de 30% (padrão do mercado)
+      // Critérios de aprovação conforme padrões do mercado imobiliário para imóveis de luxo
+      const aprovadoEntrada = porcentagemEntrada >= 30; // Entrada mínima de 30% para imóveis de luxo
       const aprovadoRenda = comprometimentoRenda <= 30; // Máximo 30% da renda comprometida
       const aprovadoOutrosEmprestimos = temOutrosEmprestimos === false; // Preferencialmente sem outros empréstimos
       
       // Calcular pontuação baseada nos critérios (0-100)
       let pontuacao = 0;
-      pontuacao += aprovadoEntrada ? 40 : (porcentagemEntrada >= 20 ? 20 : (porcentagemEntrada >= 10 ? 10 : 0));
+      
+      // Entrada tem peso maior e exige no mínimo 30% (regra mais rígida para imóveis de luxo)
+      pontuacao += aprovadoEntrada ? 40 : 0; // Sem pontos parciais para entrada menor que 30%
       pontuacao += aprovadoRenda ? 40 : (comprometimentoRenda <= 40 ? 20 : 0);
-      pontuacao += aprovadoOutrosEmprestimos ? 20 : 10;
+      pontuacao += aprovadoOutrosEmprestimos ? 20 : 0; // Sem outros empréstimos é essencial
       
       setScore(pontuacao);
-      setIsAprovado(pontuacao >= 60); // Aprovado se pontuação >= 60
+      
+      // Regra mais rígida: Aprovado apenas se pontuação >= 60 E entrada >= 30%
+      setIsAprovado(pontuacao >= 60 && aprovadoEntrada);
       setResultadoVisivel(true);
       setIsLoading(false);
     }, 1500);
@@ -407,11 +413,47 @@ export const SimuladorAprovacaoInicial = ({
               <p className="font-bold">{comprometimentoRenda.toFixed(1)}% da renda</p>
             </div>
           </div>
+          
+          {/* Alerta sobre custos adicionais */}
+          <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+            <h4 className="text-sm font-semibold text-amber-800 flex items-center gap-1">
+              <AlertCircle className="h-4 w-4" /> 
+              Atenção aos custos adicionais
+            </h4>
+            <p className="text-xs text-amber-700 mt-1">
+              Além da entrada de {formatCurrency(entradaDisponivel)}, você precisará dispor de valores adicionais para:
+            </p>
+            <ul className="text-xs text-amber-700 mt-1 list-disc pl-4 space-y-1">
+              <li>ITBI: ~3% do valor do imóvel ({formatCurrency(valorImovel * 0.03)})</li>
+              <li>Escritura e Registro: ~1-2% do valor do imóvel ({formatCurrency(valorImovel * 0.015)})</li>
+              <li>Laudêmio (se for terreno de marinha): 5% do valor de venda</li>
+              <li>Taxa de avaliação do imóvel: ~R$ 2.500,00</li>
+              <li>Seguros e taxas bancárias</li>
+            </ul>
+            <p className="text-xs font-semibold text-amber-800 mt-2">
+              Valor aproximado adicional: {formatCurrency(valorImovel * 0.05)} (cerca de 5% do valor do imóvel)
+            </p>
+          </div>
+        </div>
+
+        {/* Termos e Condições */}
+        <div className="flex items-center space-x-2 my-4">
+          <Checkbox 
+            id="termos" 
+            checked={aceitouTermos} 
+            onCheckedChange={(checked) => setAceitouTermos(checked as boolean)}
+          />
+          <Label 
+            htmlFor="termos" 
+            className="text-sm font-normal cursor-pointer"
+          >
+            Concordo com os <span className="text-[#fe4f17] hover:underline cursor-pointer">termos e condições</span> da simulação e autorizo a consulta ao meu CPF.
+          </Label>
         </div>
 
         <Button 
           onClick={calcularAprovacao} 
-          disabled={isLoading || temOutrosEmprestimos === null}
+          disabled={isLoading || temOutrosEmprestimos === null || !aceitouTermos}
           className="w-full bg-[#fe4f17] hover:bg-[#fe4f17]/90 text-white py-6 text-lg"
         >
           {isLoading ? "Analisando sua situação..." : "Verificar Aprovação"}
@@ -454,12 +496,12 @@ export const SimuladorAprovacaoInicial = ({
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
                     <div className="flex items-center gap-1">
-                      {porcentagemEntrada >= 10 ? (
+                      {porcentagemEntrada >= 30 ? (
                         <Check className="h-4 w-4 text-green-500" />
                       ) : (
                         <X className="h-4 w-4 text-red-500" />
                       )}
-                      <span>Entrada {porcentagemEntrada >= 10 ? 'adequada' : 'insuficiente'}</span>
+                      <span>Entrada {porcentagemEntrada >= 30 ? 'adequada' : 'insuficiente'}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       {comprometimentoRenda <= 30 ? (
