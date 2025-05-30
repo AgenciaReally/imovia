@@ -320,7 +320,7 @@ export function gerarHTMLRelatorio(dados: RelatorioData): string {
           <h2>Próximos Passos</h2>
           <p>Baseado em suas preferências, nossa equipe já está trabalhando para selecionar os melhores imóveis que atendam suas necessidades.</p>
           <p>Um de nossos consultores entrará em contato em breve para apresentar as opções disponíveis e esclarecer quaisquer dúvidas.</p>
-          <a href="https://imovia.ai/imoveis/" class="cta-button">Ver Imóveis Disponíveis</a>
+          <a href="https://app.imovia.ai/login/" class="cta-button">Ver Imóveis Disponíveis</a>
         </div>
       </div>
       
@@ -328,8 +328,7 @@ export function gerarHTMLRelatorio(dados: RelatorioData): string {
         <p>© 2025 Imovia - Todos os direitos reservados</p>
         <p>Este email foi enviado para ${dados.email} em ${dataFormatada}</p>
         <div class="social-links">
-          <a href="https://facebook.com/imovia">Facebook</a>
-          <a href="https://instagram.com/imovia">Instagram</a>
+          <a href="https://www.instagram.com/imovia.ai/">Instagram</a>
           <a href="https://imovia.ai">Website</a>
         </div>
       </div>

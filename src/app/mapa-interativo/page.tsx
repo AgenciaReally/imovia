@@ -29,25 +29,58 @@ function MapaInterativoContent() {
     { left: "80%", top: "85%" },  // Inferior direito
   ];
   
+  // Tipagem dos imóveis que vem da API
+  interface Imovel {
+    id: string;
+    idExterno?: string | null;
+    titulo: string;
+    descricao: string;
+    preco: number;
+    area: number;
+    quartos: number;
+    banheiros: number;
+    vagas: number;
+    endereco: string;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    cep: string;
+    latitude?: number;
+    longitude?: number;
+    imagens: string[];
+    fotoPrincipal?: string;
+    construtora?: string;
+    construtoraId?: string;
+    tipoImovel?: string;
+    tipoImovelId?: string;
+    status?: string;
+    dataAtualizacao?: string;
+    caracteristicas?: string[];
+    destaque?: boolean;
+    ativo?: boolean;
+    telefoneContato?: string;
+    matchPercentage?: number; // Campo adicional para armazenar o percentual de match
+    dentroOrcamento?: boolean; // Indica se o imóvel está dentro do orçamento do usuário
+    destacado?: boolean; // Indica se o imóvel deve ser destacado no mapa (pin laranja)
+  }
+  
   // Gerar pins simulados
   interface PinItem {
     id: string;
     titulo: string;
+    descricao: string;
     preco: number;
-    destaque: boolean;
+    area: number;
+    quartos: number;
+    banheiros: number;
+    vagas: number;
+    imagens: string[];
+    fotoPrincipal: string;
+    tipoImovel: string;
+    position: { left: string; top: string };
     matchPercentage: number;
-    thumbnail: string;
-    telefoneContato?: string; // Telefone de contato para WhatsApp
-    caracteristicas: {
-      quartos: number;
-      banheiros: number;
-      area: number;
-      vagas: number;
-    };
-    position: {
-      left: string;
-      top: string;
-    };
+    dentroOrcamento?: boolean; // Indica se o imóvel está dentro do orçamento do usuário
+    destaque?: boolean; // Indica se o imóvel deve ser destacado no mapa (pin laranja)
     indisponivel?: boolean; // Propriedade para marcar pins indisponíveis (pins cinzas)
   }
   
@@ -75,22 +108,27 @@ function MapaInterativoContent() {
           params.append('banheiros', filtros.banheiros.toString());
         }
         
-        // Tratar filtros de preço (pode vir como valorMaximo/valorMinimo ou como preco.lte/preco.gte)
+        // SEMPRE PASSAR FILTROS DE PREÇO - PRIORIDADE ABSOLUTA
+        // Verificar se há um valor máximo definido (forma direta)
+        if (filtros.valorMaximo) {
+          params.append('valorMaximo', filtros.valorMaximo.toString());
+          console.log('\u2757\ufe0f APLICANDO FILTRO DE VALOR MÁXIMO DIRETO:', filtros.valorMaximo);
+        }
+        
+        // Verificar se existe um objeto preco com limites
         if (filtros.preco) {
-          if (filtros.preco.lte) {
+          if (filtros.preco.lte && !params.has('valorMaximo')) {
             params.append('valorMaximo', filtros.preco.lte.toString());
+            console.log('Aplicando filtro de valor máximo via preco.lte:', filtros.preco.lte);
           }
           if (filtros.preco.gte) {
             params.append('valorMinimo', filtros.preco.gte.toString());
           }
-        } else {
-          // Manter compatibilidade com versão antiga
-          if (filtros.valorMaximo) {
-            params.append('valorMaximo', filtros.valorMaximo.toString());
-          }
-          if (filtros.valorMinimo) {
-            params.append('valorMinimo', filtros.valorMinimo.toString());
-          }
+        }
+        
+        // Adicionando valor mínimo tradicional se estiver definido
+        if (filtros.valorMinimo && !params.has('valorMinimo')) {
+          params.append('valorMinimo', filtros.valorMinimo.toString());
         }
         
         if (filtros.area) {
@@ -138,25 +176,43 @@ function MapaInterativoContent() {
     const area = searchParams.get('area');
     const bairro = searchParams.get('bairro');
     const tipoImovel = searchParams.get('tipoImovel');
+    const ativo = searchParams.get('ativo');
+    
+    console.log('Parâmetros de URL recebidos BRUTOS:', { 
+      valorMaximo: searchParams.get('valorMaximo'),
+      todos: Object.fromEntries([...searchParams.entries()])
+    });
     
     // Adicionar apenas os parâmetros que existem
     if (quartos) filtros.quartos = parseInt(quartos, 10);
     if (banheiros) filtros.banheiros = parseInt(banheiros, 10);
     
-    // Tratar valores mínimos e máximos
-    if (valorMinimo || valorMaximo) {
-      filtros.preco = {};
-      if (valorMinimo) filtros.preco.gte = parseFloat(valorMinimo);
-      if (valorMaximo) filtros.preco.lte = parseFloat(valorMaximo);
-    } else if (valorMaximo) {
-      // Manter compatibilidade com versão antiga que só usava valorMaximo
-      filtros.preco = { lte: parseFloat(valorMaximo) };
+    // Forçar valor máximo se estiver definido
+    if (valorMaximo) {
+      const valor = parseFloat(valorMaximo);
+      console.log('⭐ Valor máximo do imóvel definido:', valor);
+      filtros.valorMaximo = valor;
     }
+    
+    // Configuração de preço para API
+    filtros.preco = {};
+    if (valorMinimo) filtros.preco.gte = parseFloat(valorMinimo);
+    if (valorMaximo) filtros.preco.lte = parseFloat(valorMaximo);
     
     if (area) filtros.area = parseInt(area, 10);
     if (bairro) filtros.bairro = bairro;
     if (tipoImovel) filtros.tipoImovel = tipoImovel;
     
+    // Sempre filtrar apenas imóveis ativos
+    filtros.ativo = true;
+    
+    // Adicionar modo matches para priorização especial
+    const modo = searchParams.get('modo');
+    if (modo === 'matches') {
+      filtros.modoMatches = true;
+    }
+    
+    console.log('Filtros extraídos para API de imóveis:', filtros);
     return filtros;
   };
   
@@ -254,20 +310,34 @@ function MapaInterativoContent() {
         if (imoveisData && imoveisData.length > 0) {
           console.log('Imóveis encontrados no banco:', imoveisData.length);
           
-          // Converter os dados do banco para o formato esperado pelo componente
-          const imoveisReais: PinItem[] = imoveisData.map((imovel, index) => {
-            // Calcular porcentagem de match para cada imóvel usando a função
+          // Calcular porcentagem de match para cada imóvel
+          const imoveisComMatch = imoveisData.map((imovel: any) => {
             const matchPercentage = Object.keys(filtros).length > 0 
               ? calcularMatchPercentage(imovel, filtros)
-              : index < 3 ? 95 - (index * 5) : 70 - (index * 3); // Fallback se não houver filtros
+              : Math.floor(Math.random() * 30) + 70; // Fallback se não houver filtros (70-99%)
+            
+            return { ...imovel, matchPercentage };
+          });
+          
+          // Ordenar imóveis pelo percentual de match (maior para menor)
+          imoveisComMatch.sort((a: any, b: any) => b.matchPercentage - a.matchPercentage);
+          
+          // Converter os dados do banco para o formato esperado pelo componente
+          let imoveisReais: PinItem[] = imoveisComMatch.map((imovel, index) => {
+            // Determinar se é um destaque baseado na posição do ranking (TOP 3) e percentual de match
+            // Os 3 primeiros imóveis com match acima de 80% são destacados em laranja
+            const destaque = index < 3 && imovel.matchPercentage >= 80;
+            
+            // Determinar se é um imóvel indisponível (pin cinza) - quando o match é baixo
+            const indisponivel = imovel.matchPercentage < 70;
             
             return {
               id: imovel.id,
-              titulo: imovel.titulo,
-              preco: imovel.preco,
-              destaque: matchPercentage >= 80, // Imóveis com match alto são destaques
-              matchPercentage,
-              telefoneContato: imovel.telefoneContato, // Usar apenas o telefone do próprio imóvel
+              titulo: imovel.titulo || `Imóvel ${index + 1}`,
+              preco: imovel.preco || 200000,
+              destaque: destaque, // TOP 3 em laranja
+              matchPercentage: imovel.matchPercentage,
+              telefoneContato: imovel.telefoneContato || '', // Verificar se tem telefone
               thumbnail: imovel.imagens && imovel.imagens.length > 0 
                 ? imovel.imagens[0]
                 : "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=300&h=200&fit=crop",
@@ -278,13 +348,271 @@ function MapaInterativoContent() {
                 vagas: imovel.vagas || 1
               },
               position: pinPositions[Math.min(index, pinPositions.length - 1)],
-              indisponivel: matchPercentage < 70 // Pins com match baixo são indisponíveis
+              indisponivel: indisponivel // Pins cinzas para imóveis que não atendem às necessidades
             };
           });
           
-          // Definir no estado - usar apenas os imóveis reais
-          setPins(imoveisReais);
-          console.log('Imóveis reais carregados:', imoveisReais.length);
+          // Garantir que temos os 3 melhores imóveis (pins laranjas) e mais alguns imóveis que não atendem às necessidades (pins cinzas)
+          // Os 3 primeiros serão os melhores matches, e o resto serã uma mistura de bons e ruins para dar contraste
+          
+          console.log('Quantidade de imóveis encontrados:', imoveisReais.length);
+          
+          // IDENTIFICAR imóveis dentro e fora do orçamento (sem remover os fora do orçamento)
+          let valorMaximoImovel = 0;
+          
+          // Verificar todas as formas possíveis de definir o valor máximo
+          if (filtros.valorMaximo) {
+            valorMaximoImovel = parseFloat(filtros.valorMaximo);
+          } else if (filtros.preco?.lte) {
+            valorMaximoImovel = parseFloat(filtros.preco.lte);
+          } else {
+            // Verificar nos search params diretamente
+            const valorMaximoParam = searchParams.get('valorMaximo');
+            if (valorMaximoParam) {
+              valorMaximoImovel = parseFloat(valorMaximoParam);
+            }
+          }
+          
+          console.log('\n\n\u2757\ufe0f FILTRO DE VALOR MÁXIMO DEFINIDO:', valorMaximoImovel);
+          
+          // Se temos um valor máximo definido
+          if (valorMaximoImovel > 0) {
+            console.log('TOTAL DE IMÓVEIS:', imoveisReais.length);
+            
+            // Marcar cada imóvel como dentro ou fora do orçamento
+            const imoveisDentroOrcamento = [];
+            const imoveisDentroPorPreco = [];
+            const imoveisDentroPorMatch = [];
+            
+            imoveisReais.forEach(imovel => {
+              // Adicionar marcação se está dentro do orçamento
+              imovel.dentroOrcamento = imovel.preco <= valorMaximoImovel;
+              
+              if (imovel.dentroOrcamento) {
+                imoveisDentroOrcamento.push(imovel);
+                console.log(`\u2705 ${imovel.titulo}: R$ ${imovel.preco.toLocaleString('pt-BR')} (DENTRO do limite de R$ ${valorMaximoImovel.toLocaleString('pt-BR')})`);
+              } else {
+                console.log(`\u26A0\ufe0f ${imovel.titulo}: R$ ${imovel.preco.toLocaleString('pt-BR')} (EXCEDE LIMITE de R$ ${valorMaximoImovel.toLocaleString('pt-BR')})`);
+              }
+            });
+            
+            console.log(`IMÓVEIS DENTRO DO ORÇAMENTO: ${imoveisDentroOrcamento.length} de ${imoveisReais.length}`);
+            
+            // Se houver imóveis dentro do orçamento
+            if (imoveisDentroOrcamento.length > 0) {
+              // Ordenar imóveis dentro do orçamento por match percentage (decrescente)
+              imoveisDentroOrcamento.sort((a, b) => b.matchPercentage - a.matchPercentage);
+              
+              // Selecionar os 3 melhores imóveis dentro do orçamento para destacar (laranja)
+              const topImoveisDentroOrcamento = imoveisDentroOrcamento.slice(0, 3);
+              
+              // Marcar os top 3 imóveis como destacados
+              topImoveisDentroOrcamento.forEach(imovel => {
+                imovel.destacado = true;
+              });
+              
+              console.log('TOP 3 IMÓVEIS DESTACADOS:');
+              topImoveisDentroOrcamento.forEach(imovel => {
+                console.log(`- ${imovel.titulo}: Match ${imovel.matchPercentage}%, Preço: R$ ${imovel.preco.toLocaleString('pt-BR')}`);
+              });
+            } else {
+              console.warn('\u26A0\ufe0f NENHUM IMÓVEL DENTRO DO VALOR MÁXIMO ESPECIFICADO');
+              // Se não tiver nenhum imóvel dentro do orçamento, destacar os 3 mais baratos
+              imoveisReais.sort((a, b) => a.preco - b.preco);
+              
+              // Pegar os 3 mais baratos
+              const imoveisMaisBaratos = imoveisReais.slice(0, 3);
+              
+              // Marcar como destacados
+              imoveisMaisBaratos.forEach(imovel => {
+                imovel.destacado = true;
+              });
+              
+              console.log('MOSTRANDO 3 IMÓVEIS MAIS BARATOS (MESMO FORA DO ORÇAMENTO):');
+              imoveisMaisBaratos.forEach(imovel => {
+                console.log(`- ${imovel.titulo}: R$ ${imovel.preco.toLocaleString('pt-BR')}`);
+              });
+            }
+          }
+          
+          console.log('Imóveis após filtro de valor:', imoveisReais.length);
+          
+          // HARD RESET - Garantir que sempre teremos exatamente 3 imóveis de destaque (pins laranjas)
+          // Mesmo que não encontremos nenhum imóvel com match alto
+          
+          // VERIFICAR VALOR MÁXIMO DO IMÓVEL
+          // Usar o valorMaximoImovel que já foi definido anteriormente (ou zero se não foi definido)
+          
+          console.log('\n\n\u2757\ufe0f VALOR MÁXIMO DEFINIDO:', valorMaximoImovel);
+          
+          // Marcar imóveis como dentro ou fora do orçamento
+          if (valorMaximoImovel > 0) {
+            // Verificar e marcar cada imóvel
+            imoveisReais.forEach(imovel => {
+              // Verificar se está dentro do orçamento
+              const dentroOrcamento = imovel.preco <= valorMaximoImovel;
+              imovel.dentroOrcamento = dentroOrcamento;
+              
+              console.log(`${dentroOrcamento ? '\u2705' : '\u26A0\ufe0f'} ${imovel.titulo}: R$ ${imovel.preco.toLocaleString('pt-BR')} ${dentroOrcamento ? '(DENTRO do limite)' : '(EXCEDE LIMITE)'}`);
+            });
+            
+            // Separar imóveis dentro e fora do orçamento
+            const imoveisDentroOrcamento = imoveisReais.filter(imovel => imovel.dentroOrcamento);
+            const imoveisFora = imoveisReais.filter(imovel => !imovel.dentroOrcamento);
+            
+            console.log(`IMÓVEIS DENTRO DO ORÇAMENTO: ${imoveisDentroOrcamento.length} de ${imoveisReais.length}`);
+            
+            // Preparar array de imóveis destaques (TOP 3 DENTRO DO ORÇAMENTO)
+            let imoveisDestaqueForce: PinItem[] = [];
+            
+            // Se temos imóveis dentro do orçamento para destacar
+            if (imoveisDentroOrcamento.length > 0) {
+              // Ordenar os imóveis dentro do orçamento por match percentage
+              imoveisDentroOrcamento.sort((a, b) => b.matchPercentage - a.matchPercentage);
+              
+              // Pegar até 3 imóveis DENTRO do orçamento
+              const topDentroOrcamento = imoveisDentroOrcamento.slice(0, 3);
+              
+              // Map para o formato de pins destacados
+              imoveisDestaqueForce = topDentroOrcamento.map((imovel, idx) => ({
+                ...imovel,
+                destaque: true, // SEMPRE true para imóveis dentro do orçamento
+                matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                position: pinPositions[idx]
+              }));
+            }
+            
+            // Se não temos 3 imóveis dentro do orçamento, completar com os mais baratos fora do orçamento
+            if (imoveisDestaqueForce.length < 3 && imoveisFora.length > 0) {
+              // Ordenar imóveis fora do orçamento pelo preço (mais baratos primeiro)
+              imoveisFora.sort((a, b) => a.preco - b.preco);
+              
+              // Quantos faltam para completar 3 destaques
+              const faltam = 3 - imoveisDestaqueForce.length;
+              
+              // Pegar os N mais baratos
+              const topMaisBaratos = imoveisFora.slice(0, faltam);
+              
+              // Adicionar aos destaques com match mais baixo
+              const maisBaratosDestaques = topMaisBaratos.map((imovel, idx) => ({
+                ...imovel,
+                destaque: true, // MESMO estando fora do orçamento, destacamos os mais baratos
+                matchPercentage: 70 - (idx * 5), // Começa em 70% e diminui
+                position: pinPositions[imoveisDestaqueForce.length + idx]
+              }));
+              
+              // Juntar com os destaques que já temos
+              imoveisDestaqueForce = [...imoveisDestaqueForce, ...maisBaratosDestaques];
+            }
+          } 
+          // Se não temos valor máximo definido, usar lógica original
+          else {
+            // Preparar array de imóveis destaques (TOP 3)
+            let imoveisDestaqueForce: PinItem[] = [];
+            
+            // Se temos imóveis suficientes para destacar 3
+            if (imoveisReais.length >= 3) {
+              // Pegar os 3 primeiros e forçar como destaques
+              imoveisDestaqueForce = imoveisReais.slice(0, 3).map((imovel, idx) => ({
+                ...imovel,
+                destaque: true, // SEMPRE true para os 3 primeiros
+                matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                position: pinPositions[idx] 
+              }));
+            } 
+            // Se temos menos de 3 imóveis
+            else if (imoveisReais.length > 0) {
+              // Usar os que temos e forçar como destaques
+              imoveisDestaqueForce = imoveisReais.map((imovel, idx) => ({
+                ...imovel,
+                destaque: true,
+                matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                position: pinPositions[idx]
+              }));
+            }
+          }
+          
+          // Inicializar a variável de imóveis destacados
+          let imoveisDestaque: PinItem[] = [];
+          
+          // Verificar quais imóveis têm a propriedade destaque=true
+          imoveisReais.forEach(imovel => {
+            if (imovel.destaque) {
+              imoveisDestaque.push(imovel);
+            }
+          });
+          
+          // Se não temos pelo menos 3 imóveis destacados, forçar os 3 primeiros como destaque
+          if (imoveisDestaque.length < 3 && imoveisReais.length > 0) {
+            // Ordenar por match ou preço se valorMaximoImovel estiver definido
+            if (valorMaximoImovel > 0) {
+              // Primeiro verificar imóveis dentro do orçamento
+              const dentroOrcamento = imoveisReais.filter(i => i.preco <= valorMaximoImovel);
+              
+              if (dentroOrcamento.length > 0) {
+                // Destacar até 3 imóveis dentro do orçamento
+                dentroOrcamento.sort((a, b) => b.matchPercentage - a.matchPercentage);
+                imoveisDestaque = dentroOrcamento.slice(0, 3).map((imovel, idx) => ({
+                  ...imovel,
+                  destaque: true,
+                  matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                  position: pinPositions[idx]
+                }));
+              } else {
+                // Se não há imóveis dentro do orçamento, usar os mais baratos
+                const ordenados = [...imoveisReais].sort((a, b) => a.preco - b.preco);
+                imoveisDestaque = ordenados.slice(0, 3).map((imovel, idx) => ({
+                  ...imovel,
+                  destaque: true,
+                  matchPercentage: 70 - (idx * 5),
+                  position: pinPositions[idx]
+                }));
+              }
+            } else {
+              // Sem filtro de valor, usar os com melhor match
+              const ordenados = [...imoveisReais].sort((a, b) => b.matchPercentage - a.matchPercentage);
+              imoveisDestaque = ordenados.slice(0, 3).map((imovel, idx) => ({
+                ...imovel,
+                destaque: true,
+                matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                position: pinPositions[idx]
+              }));
+            }
+          }
+          
+          console.log('Imóveis destaque:', imoveisDestaque.length);
+          console.log('Destaque 1:', imoveisDestaque[0]?.destaque);
+          
+          // Depois, selecionar alguns imóveis indisponíveis (pins cinzas) - Começando do índice 3 se tivermos mais de 3 imóveis
+          const startIndex = Math.min(3, imoveisReais.length);
+          const imoveisIndisponiveis = imoveisReais.length > startIndex ?
+            imoveisReais.slice(startIndex, startIndex + 5).map(imovel => ({
+              ...imovel,
+              destaque: false, // Garantir que não é destaque
+              indisponivel: true // Forçar indisponível para os próximos 5 imóveis
+            })) : [];
+          
+          // Combinar os dois grupos, garantindo que os destaques venham primeiro
+          const todosImoveis = [...imoveisDestaque, ...imoveisIndisponiveis];
+          
+          // Para garantir que temos pins suficientes, adicionar mais imóveis se necessário
+          if (todosImoveis.length < 6 && imoveisReais.length > todosImoveis.length) {
+            // Adicionar imóveis que ainda não foram selecionados
+            const imoveisFaltantes = imoveisReais.filter(i => 
+              !todosImoveis.some(selected => selected.id === i.id)
+            ).slice(0, 8 - todosImoveis.length);
+            
+            todosImoveis.push(...imoveisFaltantes);
+          }
+          
+          // Definir no estado todos os imóveis selecionados
+          setPins(todosImoveis);
+          console.log(`Mostrando ${todosImoveis.length} imóveis: ${imoveisDestaque.length} destaques e ${imoveisIndisponiveis.length} indisponíveis`);
+          
+          // Ativar automaticamente o primeiro pin (melhor match)
+          if (imoveisDestaque.length > 0) {
+            setPinAtivo(imoveisDestaque[0].id);
+          }
         } else {
           console.warn('Nenhum imóvel encontrado no banco.');
           // Mostrar lista vazia se não houver imóveis
@@ -362,7 +690,8 @@ function MapaInterativoContent() {
                   damping: 30
                 }}
               >
-                {pin.indisponivel ? (
+                {/* Verificar se é realmente um pin indisponível (não pode ser um destaque) */}
+                {pin.indisponivel && !pin.destaque ? (
                   // Card de imóvel indisponível redesenhado para pins cinza
                   <Card className="overflow-hidden shadow-xl border-0 bg-white/95 backdrop-blur-md w-64">
                     <div className="p-4 border-b border-gray-100">

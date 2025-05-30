@@ -462,6 +462,11 @@ export const SimuladorCredito: React.FC<SimuladorCreditoProps> = ({
         onPerguntaRespondida("seed-AVALIACAO_CREDITO-12", dataNascimento);
       } else if (fluxoSelecionado === "INFORMACOES_COMPLEMENTARES") {
         // No fluxo de informações complementares
+        // INFORMAÇÃO CRÍTICA: Valor máximo do imóvel para filtrar no mapa
+        onPerguntaRespondida("valorMaximoImovel", valorMaximoImovel);
+        console.log('💰 Valor máximo do imóvel definido no simulador:', valorMaximoImovel);
+        
+        // Demais informações complementares
         onPerguntaRespondida("seed-INFO_COMPLEMENTARES-1", entradaVista);
         onPerguntaRespondida("seed-INFO_COMPLEMENTARES-2", valorParcela);
         onPerguntaRespondida("seed-INFO_COMPLEMENTARES-3", mesesPagamento);

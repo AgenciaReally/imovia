@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,650 +8,210 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Download, Loader2, Phone } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Download, Loader2, MessageCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { IconCheck, IconMap, IconBed, IconBath, IconRuler, IconCar } from "@tabler/icons-react";
+import { IconMap } from "@tabler/icons-react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { useToast } from "@/components/ui/use-toast";
-
-// Hook para copiar para a área de transferência
-const useClipboard = () => {
-  const [error, setError] = useState<Error | null>(null);
-
-  const copy = useCallback(async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      return true;
-    } catch (err) {
-      console.error('Erro ao copiar texto:', err);
-      setError(err instanceof Error ? err : new Error(String(err)));
-      return false;
-    }
-  }, []);
-
-  return { copy, error };
-};
-
 
 // Interface para os imóveis recomendados
 interface Imovel {
   id: string;
   titulo: string;
   preco: number;
-  caracteristicas: {
+  caracteristicas?: {
     quartos: number;
     banheiros: number;
     area: number;
     vagas?: number;
   };
+  quartos?: number;
+  banheiros?: number;
+  area?: number;
+  vagas?: number;
   thumbnail?: string;
+  fotoPrincipal?: string;
   matchPercentage?: number;
   destaque?: boolean;
   telefone?: string;
+  telefoneContato?: string;
   construtora?: string;
 }
 
 // Props do componente
-interface RelatorioModalProps {
+interface NewRelatorioModalProps {
   isOpen: boolean;
   onClose: () => void;
-  respostas: Record<string, any>;
-  isLoading?: boolean;
   imoveis?: Imovel[];
+  isLoading?: boolean;
+  valorMaximo?: number;
 }
 
-// Mapeamento SUPER DIRETO e SIMPLIFICADO para tratar todas as variações possíveis
-const MAPEAMENTO_PERGUNTAS: Record<string, string> = {
-  // ===== AVALIAÇÃO DE CRÉDITO =====
-  "AVALIACAOCREDITO10": "Renda mensal",
-  "A V A L I A C A O C R E D I T O 10": "Renda mensal",
-  "AVALIACAOCREDITO-10": "Renda mensal",
-  "A V A L I A C A O C R E D I T O-10": "Renda mensal",
-  "Seed-AVALIACAOCREDITO-10": "Renda mensal",
-  "Seed- A V A L I A C A O C R E D I T O-10": "Renda mensal",
-  "AVALIACAOCREDITO11": "Possui restrição de crédito",
-  "A V A L I A C A O C R E D I T O 11": "Possui restrição de crédito",
-  "AVALIACAOCREDITO-11": "Possui restrição de crédito",
-  "A V A L I A C A O C R E D I T O-11": "Possui restrição de crédito",
-  "Seed-AVALIACAOCREDITO-11": "Possui restrição de crédito",
-  "Seed- A V A L I A C A O C R E D I T O-11": "Possui restrição de crédito",
-  "AVALIACAOCREDITO12": "Data de nascimento",
-  "A V A L I A C A O C R E D I T O 12": "Data de nascimento",
-  "AVALIACAOCREDITO-12": "Data de nascimento",
-  "A V A L I A C A O C R E D I T O-12": "Data de nascimento",
-  "Seed-AVALIACAOCREDITO-12": "Data de nascimento",
-  "Seed- A V A L I A C A O C R E D I T O-12": "Data de nascimento",
-  
-  // ===== INFORMAÇÕES COMPLEMENTARES =====
-  "INFOCOMPLEMENTARES1": "Valor do imóvel",
-  "I N F O C O M P L E M E N T A R E S 1": "Valor do imóvel",
-  "INFOCOMPLEMENTARES-1": "Valor do imóvel",
-  "I N F O C O M P L E M E N T A R E S-1": "Valor do imóvel",
-  "Seed-INFOCOMPLEMENTARES-1": "Valor do imóvel",
-  "Seed- I N F O C O M P L E M E N T A R E S-1": "Valor do imóvel",
-  
-  "INFOCOMPLEMENTARES2": "Valor parcela máxima",
-  "I N F O C O M P L E M E N T A R E S 2": "Valor parcela máxima",
-  "INFOCOMPLEMENTARES-2": "Valor parcela máxima",
-  "I N F O C O M P L E M E N T A R E S-2": "Valor parcela máxima",
-  "Seed-INFOCOMPLEMENTARES-2": "Valor parcela máxima",
-  "Seed- I N F O C O M P L E M E N T A R E S-2": "Valor parcela máxima",
-  
-  "INFOCOMPLEMENTARES3": "Prazo do financiamento",
-  "I N F O C O M P L E M E N T A R E S 3": "Prazo do financiamento",
-  "INFOCOMPLEMENTARES-3": "Prazo do financiamento",
-  "I N F O C O M P L E M E N T A R E S-3": "Prazo do financiamento",
-  "Seed-INFOCOMPLEMENTARES-3": "Prazo do financiamento",
-  "Seed- I N F O C O M P L E M E N T A R E S-3": "Prazo do financiamento",
-  
-  "INFOCOMPLEMENTARES4": "Entrada disponível",
-  "I N F O C O M P L E M E N T A R E S 4": "Entrada disponível",
-  "INFOCOMPLEMENTARES-4": "Entrada disponível",
-  "I N F O C O M P L E M E N T A R E S-4": "Entrada disponível",
-  "Seed-INFOCOMPLEMENTARES-4": "Entrada disponível",
-  "Seed- I N F O C O M P L E M E N T A R E S-4": "Entrada disponível",
-  
-  "INFOCOMPLEMENTARES5": "Valor do financiamento",
-  "I N F O C O M P L E M E N T A R E S 5": "Valor do financiamento",
-  "INFOCOMPLEMENTARES-5": "Valor do financiamento",
-  "I N F O C O M P L E M E N T A R E S-5": "Valor do financiamento",
-  "Seed-INFOCOMPLEMENTARES-5": "Valor do financiamento",
-  "Seed- I N F O C O M P L E M E N T A R E S-5": "Valor do financiamento",
-  
-  // ===== PREFERÊNCIAS =====
-  "Seed-PREFERENCIAS-1": "Código da cidade",
-  "Seed- P R E F E R E N C I A S-1": "Código da cidade",
-  "Seed-PREFERENCIAS-2": "Bairros Selecionados",
-  "Seed- P R E F E R E N C I A S-2": "Bairros Selecionados",
-  "Seed-PREFERENCIAS-3": "Local de trabalho",
-  "Seed- P R E F E R E N C I A S-3": "Local de trabalho",
-  "Seed-PREFERENCIAS-4": "Local da escola",
-  "Seed- P R E F E R E N C I A S-4": "Local da escola",
-  
-  // ===== EMPREENDIMENTO =====
-  "Seed-EMPREENDIMENTO-1": "Importância do piso nos quartos",
-  "Seed- E M P R E E N D I M E N T O-1": "Importância do piso nos quartos",
-  "Seed-EMPREENDIMENTO-2": "Importância da academia",
-  "Seed- E M P R E E N D I M E N T O-2": "Importância da academia",
-  "Seed-EMPREENDIMENTO-3": "Importância da piscina",
-  "Seed- E M P R E E N D I M E N T O-3": "Importância da piscina",
-  "Seed-EMPREENDIMENTO-4": "Tipo de portaria preferido",
-  "Seed- E M P R E E N D I M E N T O-4": "Tipo de portaria preferido",
-  "Seed-EMPREENDIMENTO-5": "Importância do salão de festas",
-  "Seed- E M P R E E N D I M E N T O-5": "Importância do salão de festas",
-  "Seed-EMPREENDIMENTO-6": "Importância do playground",
-  "Seed- E M P R E E N D I M E N T O-6": "Importância do playground",
-  "Seed-EMPREENDIMENTO-7": "Importância do espaço pet",
-  "Seed- E M P R E E N D I M E N T O-7": "Importância do espaço pet",
-  
-  // ===== PROXIMIDADES =====
-  "Seed-PROXIMIDADES-1": "Importância de parques próximos",
-  "Seed- P R O X I M I D A D E S-1": "Importância de parques próximos",
-  "Seed-PROXIMIDADES-2": "Importância de shoppings próximos",
-  "Seed- P R O X I M I D A D E S-2": "Importância de shoppings próximos",
-  "Seed-PROXIMIDADES-3": "Importância de restaurantes próximos",
-  "Seed- P R O X I M I D A D E S-3": "Importância de restaurantes próximos",
-  "Seed-PROXIMIDADES-4": "Importância da caminhabilidade",
-  "Seed- P R O X I M I D A D E S-4": "Importância da caminhabilidade",
-  "Seed-PROXIMIDADES-5": "Possui pet",
-  "Seed- P R O X I M I D A D E S-5": "Possui pet",
-  "Seed-PROXIMIDADES-6": "Importância de escolas próximas",
-  "Seed- P R O X I M I D A D E S-6": "Importância de escolas próximas",
-  "Seed-PROXIMIDADES-7": "Importância de transporte público próximo",
-  "Seed- P R O X I M I D A D E S-7": "Importância de transporte público próximo",
-  
-  // ===== IMÓVEL IDEAL =====
-  "seed-IMOVEL_IDEAL-1": "Prazo de mudança",
-  "seed-IMOVEL_IDEAL-2": "Tipo de imóvel",
-  "seed-IMOVEL_IDEAL-3": "Quantidade de quartos",
-  "seed-IMOVEL_IDEAL-4": "Quantidade de suítes",
-  "seed-IMOVEL_IDEAL-5": "Quantidade de vagas",
-  "seed-IMOVEL_IDEAL-6": "Metragem desejada",
-  "seed-IMOVEL_IDEAL-7": "Importância de churrasqueira",
-  "seed-IMOVEL_IDEAL-8": "Deseja ar condicionado",
-  "seed-IMOVEL_IDEAL-9": "Importância de varanda",
-  "seed-IMOVEL_IDEAL-10": "Importância de silêncio",
-  "seed-IMOVEL_IDEAL-11": "Face solar preferida",
-  
-  // Campos diretos comuns
-  "Fluxo": "Fluxo de perguntas",
-  "fluxo": "Fluxo de perguntas",
-  "fluxoAtual": "Fluxo atual",
-  "PREFERENCIAS": "Preferências",
-  
-  // Valores de campo
-  "rendaMensal": "Renda mensal",
-  "valorImovel": "Valor do imóvel",
-  "entradaDisponivel": "Entrada disponível",
-  "valorParcelaMaxima": "Valor máximo da parcela",
-  "valorFinanciamento": "Valor do financiamento",
-  "temOutrosEmprestimos": "Possui outros empréstimos",
-  "aprovado": "Pré-aprovado",
-  "score": "Score de crédito",
-  "nomeCidade": "Cidade",
-  "codCidade": "Código da cidade",
-  "bairros": "Bairros de interesse",
-  "localTrabalho": "Local de trabalho",
-  "localEscola": "Local da escola",
-  "tipoImovel": "Tipo de imóvel",
-  "tipoPortaria": "Tipo de portaria",
-  "prazoFinanciamento": "Prazo de financiamento",
-  "quartos": "Número de quartos",
-  "suites": "Número de suítes",
-  "banheiros": "Número de banheiros",
-  "metragem": "Metragem desejada",
-  "valorMaximoImovel": "Valor máximo do imóvel",
-  "fgts": "Valor do FGTS",
-  
-  // Importâncias específicas  
-  "importanciaPlayground": "Importância do playground",
-  "importanciaEspacoPet": "Importância do espaço pet",
-  "importanciaSalaoFestas": "Importância do salão de festas",
-  "importanciaPisoQuartos": "Importância do piso nos quartos",
-  "importanciaAcademia": "Importância da academia",
-  "importanciaPiscina": "Importância da piscina",
-  "importanciaParques": "Importância de parques próximos",
-  "importanciaShoppings": "Importância de shoppings próximos",
-  "importanciaRestaurantes": "Importância de restaurantes próximos",
-  "importanciaCaminhabilidade": "Importância da caminhabilidade",
-  "importanciaEscolas": "Importância de escolas próximas",
-  "importanciaTransporte": "Importância de transporte próximo",
-  "importanciaEspacos": "Importância de espaços",
-  "temPet": "Possui pet",
-  "importanciaChurrasqueira": "Importância de churrasqueira",
-  "importanciaVaranda": "Importância de varanda",
-  "importanciaSilencio": "Importância de silêncio",
-  "arCondicionado": "Deseja ar condicionado",
-  "faceSolar": "Face solar preferida"
-};
-
-// Hook useClipboard já está definido no início do arquivo
-
-// Categorias para agrupar as perguntas
-const CATEGORIAS = [
-  {
-    titulo: "Dados Financeiros",
-    prefixos: ["AVALIACAOCREDITO", "rendaMensal", "valorImovel", "entradaDisponivel", "score"]
-  },
-  {
-    titulo: "Localização",
-    prefixos: ["PREFERENCIAS", "cidade", "bairros", "localTrabalho", "localEscola"]
-  },
-  {
-    titulo: "Características do Imóvel",
-    prefixos: ["IMOVEL_IDEAL", "tipoImovel", "quartos", "suites", "banheiros", "metragem", "vagas"]
-  },
-  {
-    titulo: "Características do Condomínio",
-    prefixos: ["EMPREENDIMENTO", "portaria", "academia", "piscina", "salao"]
-  },
-  {
-    titulo: "Proximidades Desejadas",
-    prefixos: ["PROXIMIDADES", "parques", "shoppings", "restaurantes", "transporte", "escolas"]
-  },
-  {
-    titulo: "Financiamento",
-    prefixos: ["INFOCOMPLEMENTARES", "prazo", "parcela", "fgts", "financiamento"]
-  }
-];
-
-export function NewRelatorioModal({ isOpen, onClose, respostas, isLoading = false, imoveis = [] }: RelatorioModalProps) {
-  const [activeTab, setActiveTab] = useState("respostas");
-  const relatorioPdfRef = useRef<HTMLDivElement>(null);
+export default function NewRelatorioModal({ 
+  isOpen, 
+  onClose, 
+  imoveis = [], 
+  isLoading = false,
+  valorMaximo = 0
+}: NewRelatorioModalProps) {
+  const reportRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const [downloadIniciado, setDownloadIniciado] = useState(false);
-  const { copy } = useClipboard();
-  const [copiado, setCopiado] = useState(false);
-  
-  // Função para normalizar keys para comparação
-  const normalizarChave = (chave: string): string => {
-    return chave
-      .replace(/\s+/g, '') // Remove todos os espaços
-      .replace(/-/g, '') // Remove todos os hífens
-      .toUpperCase(); // Converte para maiúsculas
-  };
-  
-  // Função especial para tratar as chaves com espaços entre letras
-  const obterTextoParaChave = (chave: string): string => {
-    // Verifica se temos um mapeamento direto primeiro
-    if (MAPEAMENTO_PERGUNTAS[chave]) {
-      return MAPEAMENTO_PERGUNTAS[chave];
-    }
-    
-    // Trata casos especiais - formatos com espaços entre letras
-    if (chave.includes('A V A L I A C A O C R E D I T O')) {
-      const numeroMatch = chave.match(/(\d+)\s*$/); // Pega o número no final
-      if (numeroMatch) {
-        const numeroChave = numeroMatch[1];
-        const chaveNormalizada = `AVALIACAOCREDITO${numeroChave}`;
-        return MAPEAMENTO_PERGUNTAS[chaveNormalizada] || chave;
-      }
-    }
-    
-    if (chave.includes('I N F O C O M P L E M E N T A R E S')) {
-      const numeroMatch = chave.match(/(\d+)\s*$/); // Pega o número no final
-      if (numeroMatch) {
-        const numeroChave = numeroMatch[1];
-        const chaveNormalizada = `INFOCOMPLEMENTARES${numeroChave}`;
-        return MAPEAMENTO_PERGUNTAS[chaveNormalizada] || chave;
-      }
-    }
-    
-    // Se não encontrou, tenta normalizar
-    const chaveNormalizada = normalizarChave(chave);
-    return MAPEAMENTO_PERGUNTAS[chaveNormalizada] || chave;
-  };
-  
-  // Função para obter nome legível da pergunta
-  const getNomePergunta = (chave: string): string => {
-    // Tenta a função especial para chaves com espaços entre letras primeiro
-    const resultado = obterTextoParaChave(chave);
-    
-    // Se a função retornou a própria chave, significa que não encontrou um mapeamento
-    // Nesse caso, tentamos realizar uma formatação básica da chave
-    if (resultado === chave) {
-      return chave
-        .replace(/([A-Z])/g, ' $1') // Adiciona espaço antes de maiúsculas
-        .replace(/^./, (str) => str.toUpperCase()) // Primeira letra maiúscula
-        .replace(/[_-]/g, ' ') // Substitui underscore e hífen por espaço
-        .replace(/seed/i, '') // Remove 'seed'
-        .trim();
-    }
-    
-    return resultado;
-  };
-  
-  // Função para agrupar respostas por categoria
-  const agruparRespostas = () => {
-    const grupos: Record<string, Record<string, any>> = {};
-    
-    // Inicializar todas as categorias
-    CATEGORIAS.forEach(cat => {
-      grupos[cat.titulo] = {};
-    });
-    grupos["Outros"] = {};
-    
-    // Processar todas as respostas
-    Object.entries(respostas || {}).forEach(([chave, valor]) => {
-      // Ignorar campos vazios, null, undefined
-      if (valor === undefined || valor === null || chave === 'userId' || chave === 'fluxoAtual') {
-        return;
-      }
-      
-      // Normalizar a chave para comparação
-      const chaveNormalizada = normalizarChave(chave);
-      let categoriaEncontrada = false;
-      
-      // Verificar em cada categoria se a chave pertence
-      for (const categoria of CATEGORIAS) {
-        for (const prefixo of categoria.prefixos) {
-          if (chaveNormalizada.includes(normalizarChave(prefixo))) {
-            grupos[categoria.titulo][chave] = valor;
-            categoriaEncontrada = true;
-            break;
-          }
-        }
-        if (categoriaEncontrada) break;
-      }
-      
-      // Se não encontrou categoria específica, vai para "Outros"
-      if (!categoriaEncontrada) {
-        grupos["Outros"][chave] = valor;
-      }
-    });
-    
-    // Remover categorias vazias
-    return Object.fromEntries(
-      Object.entries(grupos).filter(([_, valores]) => Object.keys(valores).length > 0)
-    );
-  };
-  
-  // Formatar valores para exibição
-  const formatarValor = (valor: any): string => {
-    if (valor === null || valor === undefined) return "";
-    
-    // Booleanos
-    if (typeof valor === 'boolean') {
-      return valor ? "Sim" : "Não";
-    }
-    
-    // Datas
-    if (valor instanceof Date) {
-      return valor.toLocaleDateString('pt-BR');
-    }
-    
-    // Strings que parecem datas
-    if (typeof valor === 'string' && valor.match(/^\d{4}-\d{2}-\d{2}/)) {
+
+  // Função para baixar o relatório como PDF
+  const downloadPDF = async () => {
+    if (reportRef.current) {
       try {
-        return new Date(valor).toLocaleDateString('pt-BR');
-      } catch (e) {
-        return valor;
-      }
-    }
-    
-    // Valores que parecem com dinheiro
-    if (typeof valor === 'number' && 
-        (getNomePergunta(valor.toString()).toLowerCase().includes('valor') || 
-         getNomePergunta(valor.toString()).toLowerCase().includes('renda'))) {
-      return new Intl.NumberFormat('pt-BR', { 
-        style: 'currency', 
-        currency: 'BRL' 
-      }).format(valor);
-    }
-    
-    // Arrays
-    if (Array.isArray(valor)) {
-      return valor.join(', ');
-    }
-    
-    // Geral (strings e outros tipos)
-    return String(valor);
-  };
-  
-  // Gerar PDF do relatório
-  const gerarPDF = async () => {
-    setDownloadIniciado(true);
-    
-    if (relatorioPdfRef.current) {
-      try {
-        const canvas = await html2canvas(relatorioPdfRef.current, {
-          scale: 1.5,
+        toast({
+          title: "Gerando PDF...",
+          description: "O download começará automaticamente em instantes.",
+        });
+
+        const canvas = await html2canvas(reportRef.current, {
+          scale: 2,
           useCORS: true,
           logging: false
         });
         
-        const imgData = canvas.toDataURL('image/jpeg', 0.8);
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgWidth = 210; // A4 width in mm
-        const imgHeight = canvas.height * imgWidth / canvas.width;
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4'
+        });
         
-        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
-        pdf.save(`Relatório iMovia - ${new Date().toLocaleDateString('pt-BR')}.pdf`);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const ratio = canvas.width / canvas.height;
+        const imgWidth = pdfWidth;
+        const imgHeight = pdfWidth / ratio;
+        
+        // Centralizar verticalmente se a imagem for menor que a página
+        const yPosition = Math.max(0, (pdfHeight - imgHeight) / 2);
+        
+        pdf.addImage(imgData, 'PNG', 0, yPosition, imgWidth, imgHeight);
+        pdf.save('relatorio-imoveis.pdf');
         
         toast({
-          title: "PDF gerado com sucesso",
-          description: "O download do seu relatório foi iniciado"
+          title: "PDF Gerado com Sucesso!",
+          description: "O relatório foi salvo no seu dispositivo.",
         });
       } catch (error) {
-        console.error('Erro ao gerar PDF:', error);
+        console.error("Erro ao gerar PDF:", error);
         toast({
-          title: "Erro ao gerar PDF",
-          description: "Ocorreu um problema ao gerar o relatório",
           variant: "destructive",
+          title: "Erro ao Gerar PDF",
+          description: "Ocorreu um erro ao gerar o PDF. Tente novamente.",
         });
-      } finally {
-        setDownloadIniciado(false);
       }
     }
   };
-  
-  // Função para copiar o relatório como texto
-  const copiarRelatorio = async () => {
-    const textoCategorias = Object.entries(agruparRespostas()).map(([categoria, items]) => {
-      const itensTexto = Object.entries(items).map(([chave, valor]) => {
-        return `${getNomePergunta(chave)}: ${formatarValor(valor)}`;
-      }).join('\n');
-      
-      return `${categoria}\n${itensTexto}`;
-    }).join('\n\n');
-    
-    const sucessoCopia = await copy(textoCategorias);
-    if (sucessoCopia) {
-      setCopiado(true);
-      toast({
-        title: "Relatório copiado",
-        description: "O relatório foi copiado para a área de transferência"
-      });
-      
-      setTimeout(() => setCopiado(false), 2000);
-    }
-  };
-  
-  // Renderizar o componente
+
   return (
-    <Dialog open={isOpen} onOpenChange={isLoading ? undefined : onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-[#fe4f17]">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <polyline points="10 9 9 9 8 9"/>
-            </svg>
-            Relatório de Preferências
+          <DialogTitle className="text-2xl font-bold text-center">
+            Imóveis Recomendados para Você
           </DialogTitle>
         </DialogHeader>
         
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-10">
-            <Loader2 className="h-8 w-8 animate-spin text-[#fe4f17]" />
-            <p className="mt-4 text-muted-foreground">Gerando seu relatório...</p>
+            <Loader2 className="h-10 w-10 animate-spin text-[#fe4f17]" />
+            <p className="mt-4 text-gray-500">Gerando seu relatório personalizado...</p>
           </div>
         ) : (
-          <>
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 overflow-hidden flex flex-col">
-              <TabsList className="m-0 justify-start px-0 pt-0 pb-2 border-b overflow-x-auto">
-                <TabsTrigger value="respostas" className="data-[state=active]:text-[#fe4f17] data-[state=active]:border-b-2 data-[state=active]:border-[#fe4f17] rounded-none">
-                  Respostas
-                </TabsTrigger>
-                {imoveis.length > 0 && (
-                  <TabsTrigger value="imoveis" className="data-[state=active]:text-[#fe4f17] data-[state=active]:border-b-2 data-[state=active]:border-[#fe4f17] rounded-none">
-                    Imóveis Recomendados ({imoveis.length})
-                  </TabsTrigger>
-                )}
-              </TabsList>
-              
-              <TabsContent value="respostas" className="flex-1 overflow-y-auto p-1 pt-4">
-                <div ref={relatorioPdfRef} className="bg-white p-4 rounded-lg">
-                  <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold text-[#fe4f17]">Suas Preferências</h2>
-                    <div className="flex justify-end space-x-2">
-                      <Button 
-                        variant="outline"
-                        size="sm"
-                        className="text-xs"
-                        onClick={copiarRelatorio}
-                      >
-                        {copiado ? (
-                          <>
-                            <IconCheck className="mr-1 h-3 w-3" />
-                            Copiado
-                          </>
-                        ) : (
-                          <>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="mr-1 h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            Copiar
-                          </>
-                        )}
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="text-xs"
-                        onClick={gerarPDF}
-                        disabled={downloadIniciado}
-                      >
-                        {downloadIniciado ? (
-                          <>
-                            <Loader2 className="mr-1 h-3 w-3 animate-spin" />
-                            Gerando...
-                          </>
-                        ) : (
-                          <>
-                            <Download className="mr-1 h-3 w-3" />
-                            PDF
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  {/* Conteúdo do relatório por categorias */}
-                  <div className="space-y-6">
-                    {Object.entries(agruparRespostas()).map(([categoria, items]) => (
-                      <div key={categoria} className="border rounded-lg overflow-hidden">
-                        <div className="bg-gray-100 p-3 font-medium text-gray-900 border-b">
-                          {categoria}
-                        </div>
-                        <div className="p-3 divide-y">
-                          {Object.entries(items).map(([chave, valor]) => (
-                            <div key={chave} className="py-2 flex flex-wrap justify-between">
-                              <span className="font-medium text-gray-700 mr-2">
-                                {getNomePergunta(chave)}:
-                              </span>
-                              <span className="text-gray-900">
-                                {formatarValor(valor)}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+          <div ref={reportRef} className="bg-white p-4 rounded-lg">
+            {valorMaximo > 0 && (
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg border">
+                <h3 className="font-medium text-lg">Parâmetros da Busca</h3>
+                <div className="mt-2">
+                  <p className="text-gray-700">
+                    <span className="font-medium">Valor máximo:</span>{' '}
+                    {new Intl.NumberFormat('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL',
+                      maximumFractionDigits: 0
+                    }).format(valorMaximo)}
+                  </p>
                 </div>
-              </TabsContent>
+              </div>
+            )}
+            
+            <div className="mt-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold">Imóveis Recomendados</h2>
+                <Button 
+                  onClick={downloadPDF}
+                  variant="outline" 
+                  className="flex items-center"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Salvar PDF
+                </Button>
+              </div>
               
-              {imoveis.length > 0 && (
-                <TabsContent value="imoveis" className="flex-1 overflow-y-auto p-1 pt-4">
-                  <div className="space-y-4">
-                    <h2 className="text-xl font-bold text-[#fe4f17] mb-4">Imóveis Recomendados para Você</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {imoveis.map((imovel) => (
-                        <div key={imovel.id} className="border rounded-lg overflow-hidden hover:shadow-md transition-all">
-                          {imovel.thumbnail ? (
-                            <div className="aspect-video bg-gray-100 relative overflow-hidden">
-                              <img 
-                                src={imovel.thumbnail} 
-                                alt={imovel.titulo} 
-                                className="w-full h-full object-cover"
-                              />
-                              {imovel.matchPercentage && (
-                                <Badge className="absolute top-2 right-2 bg-[#fe4f17]">
-                                  {imovel.matchPercentage}% Match
-                                </Badge>
-                              )}
-                            </div>
-                          ) : (
-                            <div className="aspect-video bg-gray-100 flex items-center justify-center">
-                              <IconMap className="h-12 w-12 text-gray-400" />
-                            </div>
+              {imoveis.length === 0 ? (
+                <div className="text-center py-6 bg-gray-50 rounded-lg">
+                  <p className="text-gray-500">Nenhum imóvel encontrado com os parâmetros informados.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {imoveis.map(imovel => (
+                    <div key={imovel.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                      {(imovel.thumbnail || imovel.fotoPrincipal) ? (
+                        <div className="relative aspect-video">
+                          <img 
+                            src={imovel.thumbnail || imovel.fotoPrincipal} 
+                            alt={imovel.titulo}
+                            className="w-full h-full object-cover"
+                          />
+                          {imovel.matchPercentage && (
+                            <Badge className="absolute top-2 right-2 bg-[#fe4f17]">
+                              {imovel.matchPercentage}% Match
+                            </Badge>
                           )}
-                          <div className="p-4">
-                            <h3 className="font-bold truncate">{imovel.titulo}</h3>
-                            <p className="text-[#fe4f17] font-bold text-lg mt-1">
-                              {new Intl.NumberFormat('pt-BR', {
-                                style: 'currency',
-                                currency: 'BRL',
-                                maximumFractionDigits: 0
-                              }).format(imovel.preco)}
-                            </p>
-                            <div className="flex mt-2 text-sm text-gray-500 gap-3">
-                              {imovel.caracteristicas?.quartos && (
-                                <div className="flex items-center">
-                                  <IconBed className="h-4 w-4 mr-1" />
-                                  {imovel.caracteristicas.quartos} {imovel.caracteristicas.quartos === 1 ? 'quarto' : 'quartos'}
-                                </div>
-                              )}
-                              {imovel.caracteristicas?.banheiros && (
-                                <div className="flex items-center">
-                                  <IconBath className="h-4 w-4 mr-1" />
-                                  {imovel.caracteristicas.banheiros} {imovel.caracteristicas.banheiros === 1 ? 'banho' : 'banhos'}
-                                </div>
-                              )}
-                              {imovel.caracteristicas?.area && (
-                                <div className="flex items-center">
-                                  <IconRuler className="h-4 w-4 mr-1" />
-                                  {imovel.caracteristicas.area}m²
-                                </div>
-                              )}
-                              {imovel.caracteristicas?.vagas && (
-                                <div className="flex items-center">
-                                  <IconCar className="h-4 w-4 mr-1" />
-                                  {imovel.caracteristicas.vagas} {imovel.caracteristicas.vagas === 1 ? 'vaga' : 'vagas'}
-                                </div>
-                              )}
-                            </div>
-                            {imovel.telefone && (
-                              <div className="mt-3 pt-3 border-t flex">
-                                <Phone className="h-4 w-4 mr-2 text-[#fe4f17]" />
-                                <span className="text-sm">{imovel.telefone}</span>
-                              </div>
-                            )}
-                          </div>
                         </div>
-                      ))}
+                      ) : (
+                        <div className="aspect-video bg-gray-100 flex items-center justify-center">
+                          <IconMap className="h-12 w-12 text-gray-400" />
+                        </div>
+                      )}
+                      <div className="p-4">
+                        <h3 className="font-bold truncate">{imovel.titulo}</h3>
+                        <p className="text-[#fe4f17] font-bold text-lg mt-1">
+                          {new Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                            maximumFractionDigits: 0
+                          }).format(imovel.preco)}
+                        </p>
+                        {/* Removida a exibição de características conforme solicitado */}
+                        {(imovel.telefone || imovel.telefoneContato) && (
+                          <div className="mt-3 pt-3 border-t">
+                            <Button 
+                              size="sm"
+                              variant="outline" 
+                              className="w-full flex items-center justify-center text-green-600 hover:text-green-700 hover:bg-green-50 border-green-200"
+                              onClick={() => {
+                                const telefone = (imovel.telefone || imovel.telefoneContato || '').replace(/\D/g, '');
+                                if (telefone) {
+                                  window.open(`https://wa.me/55${telefone}?text=Olá! Vi este imóvel no site e gostaria de mais informações.`, '_blank');
+                                }
+                              }}
+                            >
+                              <MessageCircle className="h-4 w-4 mr-2" />
+                              Falar no WhatsApp
+                            </Button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </TabsContent>
+                  ))}
+                </div>
               )}
-            </Tabs>
+            </div>
             
             <div className="mt-6 flex justify-between items-center pt-4 border-t">
               <Button 
@@ -668,7 +228,7 @@ export function NewRelatorioModal({ isOpen, onClose, respostas, isLoading = fals
                 </span>
               </div>
             </div>
-          </>
+          </div>
         )}
       </DialogContent>
     </Dialog>

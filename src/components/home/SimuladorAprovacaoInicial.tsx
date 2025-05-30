@@ -245,22 +245,38 @@ export const SimuladorAprovacaoInicial = ({
             <Label htmlFor="valorImovel" className="text-lg font-medium">
               Valor do Imóvel
             </Label>
-            <span className="font-bold text-lg text-[#fe4f17]">
-              {formatCurrency(valorImovel)}
-            </span>
           </div>
-          <Slider
-            id="valorImovel"
-            min={100000}
-            max={50000000}
-            step={10000}
-            value={[valorImovel]}
-            onValueChange={(value) => setValorImovel(value[0])}
-            className="py-2"
-          />
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">R$</span>
+            <Input
+              id="valorImovel"
+              type="text"
+              className="pl-10 text-lg font-bold"
+              placeholder="Digite o valor do imóvel"
+              value={valorImovel === 0 ? '' : valorImovel.toLocaleString('pt-BR')}
+              onChange={(e) => {
+                // Obter apenas os dígitos do valor digitado
+                const digitsOnly = e.target.value.replace(/\D/g, '');
+                
+                // Converter para número
+                let numValue = parseInt(digitsOnly, 10) || 0;
+                
+                // Verificar limites apenas ao perder o foco
+                setValorImovel(numValue);
+              }}
+              onBlur={() => {
+                // Aplicar limites apenas ao perder o foco
+                if (valorImovel < 100000) {
+                  setValorImovel(100000);
+                } else if (valorImovel > 50000000) {
+                  setValorImovel(50000000);
+                }
+              }}
+            />
+          </div>
           <div className="flex justify-between text-sm text-muted-foreground">
-            <span>R$ 100 mil</span>
-            <span>R$ 50 milhões</span>
+            <span>Mínimo: R$ 100 mil</span>
+            <span>Máximo: R$ 50 milhões</span>
           </div>
           
           <div className={`mt-2 flex items-center gap-2 rounded-lg border p-3 ${feedbackValorImovel.color}`}>
@@ -447,7 +463,7 @@ export const SimuladorAprovacaoInicial = ({
             htmlFor="termos" 
             className="text-sm font-normal cursor-pointer"
           >
-            Concordo com os <span className="text-[#fe4f17] hover:underline cursor-pointer">termos e condições</span> da simulação e autorizo a consulta ao meu CPF.
+            Concordo com os <a href="https://imovia.ai/termos-e-condicoes/" target="_blank" rel="noopener noreferrer" className="text-[#fe4f17] hover:underline cursor-pointer">termos e condições</a> da simulação e autorizo a consulta.
           </Label>
         </div>
 

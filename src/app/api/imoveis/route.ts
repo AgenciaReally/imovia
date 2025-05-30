@@ -31,9 +31,18 @@ export async function GET(request: Request) {
       where.preco = { ...(where.preco || {}), gte: valorMinimo };
     }
     
+    // FILTRO CRÍTICO: Garantir que o valor máximo seja respeitado rigorosamente
     if (searchParams.has('valorMaximo')) {
       const valorMaximo = parseFloat(searchParams.get('valorMaximo') || '0');
-      where.preco = { ...(where.preco || {}), lte: valorMaximo };
+      
+      // Verificar se o valor é válido
+      if (valorMaximo > 0) {
+        // Log detalhado para debug
+        console.log(`\n\n\u2757 APLICANDO FILTRO DE VALOR MÁXIMO NA API: R$ ${valorMaximo.toLocaleString('pt-BR')}`);
+        
+        // Aplicar o filtro de preço máximo
+        where.preco = { ...(where.preco || {}), lte: valorMaximo };
+      }
     }
     
     if (searchParams.has('area')) {

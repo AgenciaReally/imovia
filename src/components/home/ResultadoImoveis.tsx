@@ -143,7 +143,7 @@ export const ResultadoImoveis = ({
               className="bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg rounded-full px-8 py-6 text-lg font-medium transition-all duration-300 hover:scale-105 gap-3"
             >
               <MapPin className="w-5 h-5" />
-              Ver Matches no Mapa
+              Ver Matches no Mapas
             </Button>
           </div>
         </div>

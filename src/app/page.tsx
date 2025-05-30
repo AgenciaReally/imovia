@@ -17,7 +17,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { DownloadCloud, MapPin, Loader2, Mail, X } from "lucide-react";
 import { enviarRelatorio } from "@/services/relatorio-service";
 import { SearchParamsHandler } from "@/components/home/SearchParamsHandler";
-import { NewRelatorioModal } from "@/components/home/RelatorioModal";
+import NewRelatorioModal from "@/components/home/RelatorioModal";
 import { Poppins } from "next/font/google";
 
 // Carregar fonte Poppins
@@ -290,6 +290,62 @@ export default function Home() {
     setRelatorioLoading(true);
     
     try {
+      // IMPORTANTE: Buscar imóveis destacados antes de abrir o modal
+      // Construir URL com parâmetros baseados nas respostas do usuário
+      const valorMaximo = respostas.valorMaximoImovel || respostas.valorImovel;
+      let url = '/api/imoveis?ativo=true';
+      
+      // Adicionar filtros relevantes 
+      if (valorMaximo) url += `&valorMaximo=${valorMaximo}`;
+      if (respostas.quartos) url += `&quartos=${respostas.quartos}`;
+      if (respostas.banheiros) url += `&banheiros=${respostas.banheiros}`;
+      if (respostas.tipoImovel) url += `&tipoImovel=${respostas.tipoImovel}`;
+      
+      console.log('\u2757\ufe0f Buscando imóveis para o relatório:', url);
+      
+      try {
+        // Buscar imóveis do backend
+        const response = await fetch(url);
+        if (response.ok) {
+          const imoveisData = await response.json();
+          console.log(`\u2705 Encontrados ${imoveisData.length} imóveis para o relatório`);
+          
+          // Filtrar por valor máximo se necessário
+          let imoveisFiltrados = imoveisData;
+          if (valorMaximo) {
+            imoveisFiltrados = imoveisData.filter((imovel: { preco: number }) => imovel.preco <= valorMaximo);
+            console.log(`\u2705 ${imoveisFiltrados.length} imóveis dentro do orçamento de R$ ${valorMaximo.toLocaleString('pt-BR')}`);
+          }
+          
+          // Pegar os 3 melhores imóveis (ou mais baratos se não houver suficientes no orçamento)
+          if (imoveisFiltrados.length > 0) {
+            // Ordenar por match percentage ou preço se não tiver match
+            imoveisFiltrados.sort((a: { matchPercentage?: number, preco: number }, b: { matchPercentage?: number, preco: number }) => {
+              if (a.matchPercentage && b.matchPercentage) {
+                return b.matchPercentage - a.matchPercentage;
+              }
+              return a.preco - b.preco; // Mais baratos primeiro
+            });
+            
+            // Pegar os 3 primeiros
+            const melhoresImoveis = imoveisFiltrados.slice(0, 3);
+            setImoveisDestaque(melhoresImoveis);
+            console.log('\u2705 3 melhores imóveis selecionados para o relatório!');
+          } else if (imoveisData.length > 0) {
+            // Se não houver imóveis dentro do orçamento, usar os 3 mais baratos disponíveis
+            const imoveisMaisBaratos = [...imoveisData].sort((a: { preco: number }, b: { preco: number }) => a.preco - b.preco).slice(0, 3);
+            setImoveisDestaque(imoveisMaisBaratos);
+            console.log('\u26a0\ufe0f Usando os 3 imóveis mais baratos disponíveis (fora do orçamento)');
+          } else {
+            console.warn('\u26d4 Nenhum imóvel encontrado!');
+          }
+        } else {
+          console.error('Erro ao buscar imóveis:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar imóveis:', error);
+      }
+      
       // Preparar dados para o relatório
       const dadosRelatorio = {
         nome: dadosUsuario.nome,
@@ -297,7 +353,7 @@ export default function Home() {
         telefone: dadosUsuario.telefone || respostas.telefone,
         // Informações financeiras
         rendaMensal: respostas.rendaMensal || respostas.renda,
-        valorMaximoImovel: respostas.valorMaximoImovel || respostas.valorImovel,
+        valorMaximoImovel: valorMaximo,
         // Preferências
         tipoImovel: respostas.tipoImovel,
         caracteristicas: Array.isArray(respostas.caracteristicas) 
@@ -352,6 +408,51 @@ export default function Home() {
     setModalRelatorioAberto(false);
     // Resetar o estado para permitir que o usuário solicite um novo relatório
     setRelatorioSolicitado(false);
+  };
+  
+  // Função para construir os parâmetros da URL com base nas respostas do questionário
+  const construirParametrosUrl = () => {
+    if (!respostas || Object.keys(respostas).length === 0) return '';
+    
+    const params = new URLSearchParams();
+    
+    // PRIORIDADE: Extrair valor máximo do imóvel do simulador de crédito
+    if (respostas.valorMaximoImovel) {
+      params.append('valorMaximo', respostas.valorMaximoImovel.toString());
+      console.log('Valor máximo do imóvel definido no simulador:', respostas.valorMaximoImovel);
+    }
+    
+    // Extrair parâmetros relevantes das respostas
+    if (respostas.quartos) params.append('quartos', respostas.quartos.toString());
+    if (respostas.banheiros) params.append('banheiros', respostas.banheiros.toString());
+    
+    // Tratar valores de preço (caso não tenha sido definido pelo simulador)
+    if (!params.has('valorMaximo') && respostas.valorMaximo) {
+      params.append('valorMaximo', respostas.valorMaximo.toString());
+    }
+    if (respostas.valorMinimo) params.append('valorMinimo', respostas.valorMinimo.toString());
+    
+    // Adicionar área se existir
+    if (respostas.area) params.append('area', respostas.area.toString());
+    
+    // Adicionar bairro se existir
+    if (respostas.bairro) params.append('bairro', respostas.bairro);
+    
+    // Adicionar tipo de imóvel se existir
+    if (respostas.tipoImovel) params.append('tipoImovel', respostas.tipoImovel);
+    
+    // Verificar os campos específicos do formulário que podem estar em locais diferentes
+    if (respostas.preferencias?.bairro) params.append('bairro', respostas.preferencias.bairro);
+    if (respostas.imovelIdeal?.quartos) params.append('quartos', respostas.imovelIdeal.quartos.toString());
+    if (respostas.imovelIdeal?.banheiros) params.append('banheiros', respostas.imovelIdeal.banheiros.toString());
+    if (respostas.imovelIdeal?.area) params.append('area', respostas.imovelIdeal.area.toString());
+    if (respostas.imovelIdeal?.tipoImovel) params.append('tipoImovel', respostas.imovelIdeal.tipoImovel);
+    
+    // Adicionar parâmetro para filtrar apenas imóveis ativos
+    params.append('ativo', 'true');
+    
+    const paramString = params.toString();
+    return paramString ? `&${paramString}` : '';
   };
   
   return (
@@ -559,7 +660,7 @@ export default function Home() {
                 </div>
                 <div className="w-full h-full">
                   <iframe 
-                    src="/mapa-interativo?modo=matches" 
+                    src={`/mapa-interativo?modo=matches${construirParametrosUrl()}`} 
                     className="w-full h-full border-0"
                     title="Mapa de Matches"
                   />
