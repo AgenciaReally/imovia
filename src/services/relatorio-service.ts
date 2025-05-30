@@ -186,7 +186,7 @@ export function gerarHTMLRelatorio(dados: RelatorioData): string {
   <body>
     <div class="container">
       <div class="header">
-        <img src="https://imovia.ai/wp-content/uploads/2024/04/logo-imovia-branco.png" alt="Imovia Logo">
+        <img src="/logo-branco.png" alt="Imovia Logo">
         <h1>Seu Relatório Personalizado</h1>
         <p>Encontramos imóveis que combinam com seu perfil</p>
       </div>
@@ -225,96 +225,7 @@ export function gerarHTMLRelatorio(dados: RelatorioData): string {
           </div>
         </div>
         
-        <div class="section">
-          <h2>Suas Preferências</h2>
-          
-          <p class="data-label">Tipo de Imóvel</p>
-          <p class="data-value">${dados.tipoImovel || 'Não especificado'}</p>
-          
-          <p class="data-label">Características Desejadas</p>
-          <ul>
-            ${formatarLista(dados.caracteristicas)}
-          </ul>
-          
-          <p class="data-label">Bairros de Interesse</p>
-          <ul>
-            ${formatarLista(dados.bairrosInteresse)}
-          </ul>
-          
-          <p class="data-label">Proximidades Importantes</p>
-          <ul>
-            ${formatarLista(dados.proximidades)}
-          </ul>
-        </div>
-        
-        <div class="section">
-          <h2>Respostas Detalhadas</h2>
-          <p>Abaixo estão todas as suas respostas e pontuações coletadas durante o processo.</p>
-          
-          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px;">
-            ${Object.entries(dados).
-              filter(([key, value]) => 
-                // Filtrar campos relevantes
-                !key.startsWith('_') && 
-                key !== 'userId' && 
-                key !== 'imoveisRecomendados' &&
-                key !== 'dataEnvio' &&
-                value !== undefined &&
-                value !== null
-              ).
-              map(([key, value]) => {
-                // Formatar a chave para exibição
-                const formatKey = (key: string): string => {
-                  return key
-                    .replace(/([A-Z])/g, ' $1')
-                    .replace(/^./, (str: string) => str.toUpperCase())
-                    .replace(/(\w)([A-Z])/g, '$1 $2');
-                };
-                
-                // Formatar o valor para exibição
-                const formatValue = (value: any): string => {
-                  if (typeof value === 'boolean') return value ? 'Sim' : 'Não';
-                  if (typeof value === 'number') {
-                    // Se parece com dinheiro
-                    if (key.includes('valor') || key.includes('preco') || key.includes('renda')) {
-                      try {
-                        return new Intl.NumberFormat('pt-BR', { 
-                          style: 'currency', 
-                          currency: 'BRL' 
-                        }).format(value);
-                      } catch (e) {
-                        return `R$ ${value}`;
-                      }
-                    }
-                    // Se parece com porcentagem
-                    if (key.includes('percentagem') || key.includes('score') || key.includes('pontuacao')) {
-                      return `${value}%`;
-                    }
-                    return value.toString();
-                  }
-                  if (Array.isArray(value)) return value.join(', ');
-                  return String(value);
-                };
-                
-                const isPontuacao = key.includes('score') || key.includes('pontuacao') || 
-                                   (typeof value === 'number' && value >= 0 && value <= 100);
-                
-                return `
-                <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px;">
-                  <p style="color: #666; font-size: 14px; margin-bottom: 5px;">${formatKey(key)}</p>
-                  <p style="font-weight: 600; font-size: 16px; margin: 0; ${isPontuacao ? 'color: #ff6b35;' : 'color: #333;'}">
-                    ${formatValue(value)}
-                    ${isPontuacao ? `<span style="display: inline-block; width: 80px; height: 6px; margin-left: 10px; vertical-align: middle; background-color: #eee; border-radius: 3px; overflow: hidden;">` +
-                      `<span style="display: block; width: ${value}%; height: 100%; background: linear-gradient(to right, #fb923c, #ea580c);"></span>` +
-                    `</span>` : ''}
-                  </p>
-                </div>
-                `;
-              }).
-              join('')
-            }
-          </div>
-        </div>
+    
         
         <div class="section">
           <h2>Próximos Passos</h2>
