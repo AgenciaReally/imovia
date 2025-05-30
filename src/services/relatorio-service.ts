@@ -186,7 +186,7 @@ export function gerarHTMLRelatorio(dados: RelatorioData): string {
   <body>
     <div class="container">
       <div class="header">
-        <img src="/logo-branco.png" alt="Imovia Logo">
+        <img src="https://imovia.ai/wp-content/uploads/2024/04/logo-imovia-branco.png" alt="Imovia Logo">
         <h1>Seu Relatório Personalizado</h1>
         <p>Encontramos imóveis que combinam com seu perfil</p>
       </div>
