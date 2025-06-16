@@ -197,7 +197,7 @@ export function FormularioEmpreendimento({
           <div className="space-y-6">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <Label className="text-base font-medium">Qual a importância de ter piso nos quartos?</Label>
+                <Label className="text-base font-medium">Vir com pisos nos quartos?</Label>
                 <Badge variant="outline" className="px-3 py-1 font-semibold">
                   {importanciaPisoQuartos}%
                 </Badge>

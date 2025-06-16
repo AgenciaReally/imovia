@@ -55,7 +55,7 @@ import { Notification } from "@/app/api/notificacoes/route"
 
 // Interface para as propriedades do Topbar
 interface TopbarProps {
-  userRole?: "admin" | "construtora"
+  userRole?: "admin" | "construtora" | "cliente"
   userName?: string
 }
 
@@ -219,7 +219,7 @@ export function Topbar({ userRole = "admin", userName = "Admin" }: TopbarProps) 
           transition={{ duration: 0.5 }}
           className="ml-8 font-medium hidden md:block"
         >
-          {userRole === "admin" ? "Painel do Administrador" : "Painel da Construtora"}
+          {userRole === "admin" ? "Painel do Administrador" : userRole === "cliente" ? "Painel do Cliente" : "Painel da Construtora"}
         </motion.span>
       </div>
 
@@ -462,7 +462,10 @@ export function Topbar({ userRole = "admin", userName = "Admin" }: TopbarProps) 
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-9 pl-2 pr-3 ml-1 flex items-center gap-2">
               <Avatar className="h-7 w-7">
-                <AvatarImage src={userRole === "admin" ? "/avatars/admin.png" : "/avatars/construtora.png"} />
+                <AvatarImage src={userRole === "admin" ? "/avatars/admin.png" : userRole === "cliente" ? "/avatars/cliente.png" : "/avatars/construtora.png"} onError={(e) => {
+                  // Quando a imagem não existir, usar apenas o fallback
+                  e.currentTarget.style.display = 'none';
+                }} />
                 <AvatarFallback className="bg-primary/10 text-primary text-xs">
                   {getUserInitials(userName)}
                 </AvatarFallback>
@@ -470,7 +473,7 @@ export function Topbar({ userRole = "admin", userName = "Admin" }: TopbarProps) 
               <div className="flex flex-col items-start text-left hidden sm:flex">
                 <span className="text-sm font-medium leading-none">{userName}</span>
                 <span className="text-xs text-muted-foreground">
-                  {userRole === "admin" ? "Administrador" : "Construtora"}
+                  {userRole === "admin" ? "Administrador" : userRole === "cliente" ? "Cliente" : "Construtora"}
                 </span>
               </div>
               <ChevronDown className="h-4 w-4 text-muted-foreground hidden sm:block" />
@@ -481,13 +484,13 @@ export function Topbar({ userRole = "admin", userName = "Admin" }: TopbarProps) 
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/painel/admin/configuracoes" className="cursor-pointer">
+                <Link href={`/painel/${userRole}/perfil`} className="cursor-pointer">
                   <User className="mr-2 h-4 w-4" />
                   <span>Perfil</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href="/painel/admin/configuracoes" className="cursor-pointer">
+                <Link href={`/painel/${userRole}/configuracoes`} className="cursor-pointer">
                   <Settings className="mr-2 h-4 w-4" />
                   <span>Configurações</span>
                 </Link>

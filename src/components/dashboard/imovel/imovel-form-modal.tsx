@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Building2, Loader2, Home, X, Plus, PlusCircle, Upload, ImageIcon } from "lucide-react"
+import { Building2, Loader2, Home, X, Plus, PlusCircle, Upload, ImageIcon, Check } from "lucide-react"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { z } from "zod"
@@ -44,6 +44,7 @@ import {
 import { toast } from "@/components/ui/use-toast"
 import { getConstrutoras, ConstrutoraDashboard } from "@/services/construtora-service"
 import { ImovelDisplay } from "@/services/imovel-service"
+import { buscarPerguntas, Pergunta } from "@/services/pergunta-service"
 
 // Schema de validação para o formulário
 const imovelFormSchema = z.object({
@@ -63,6 +64,7 @@ const imovelFormSchema = z.object({
   caracteristicasArray: z.array(z.string()).default([]),
   tipoImovel: z.string().optional(), // ID do tipo de imóvel
   status: z.string().optional(),
+  perguntasIds: z.array(z.string()).default([]), // IDs das perguntas vinculadas ao imóvel
   destaque: z.boolean().default(false),
   ativo: z.boolean().default(true),
   construtoraId: z.string().optional(), // Tornando construtoraId opcional
@@ -88,6 +90,7 @@ type ImovelNovo = {
   tipoImovelId?: string // ID do tipo de imóvel (alterado de tipoImovel)
   tipoImovel?: string | undefined // Campo antigo mantido para compatibilidade
   status?: string
+  perguntasIds?: string[] // IDs das perguntas vinculadas ao imóvel
   destaque: boolean
   ativo: boolean
   construtoraId?: string // Tornando construtoraId opcional
@@ -96,13 +99,19 @@ type ImovelNovo = {
 
 interface ImovelFormModalProps {
   onSuccess?: () => void;
-  imovel?: ImovelDisplay; // Imóvel existente para edição (opcional)
+  imovel?: ImovelDisplay & {
+    perguntas?: Array<{ perguntaId: string }>
+  }; // Imóvel existente para edição (opcional)
 }
 
 export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
   const [open, setOpen] = useState(!!imovel) // Abrir automaticamente se tiver um imóvel para edição
   const [loading, setLoading] = useState(false)
   const [construtoras, setConstrutoras] = useState<ConstrutoraDashboard[]>([])
+  const [perguntas, setPerguntas] = useState<Pergunta[]>([])
+  const [perguntasSelecionadas, setPerguntasSelecionadas] = useState<Pergunta[]>([])
+  const [perguntasModalOpen, setPerguntasModalOpen] = useState(false)
+  const [perguntasCarregadas, setPerguntasCarregadas] = useState(false) // Controle de carregamento
   const [loadingConstrutoras, setLoadingConstrutoras] = useState(true)
   const [uploadingFoto, setUploadingFoto] = useState(false)
   const [uploadingGaleria, setUploadingGaleria] = useState(false)
@@ -279,11 +288,60 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
       }
     }
     
+    // Função para buscar perguntas ativas
+    const fetchPerguntas = async () => {
+      try {
+        const perguntasData = await buscarPerguntas({ ativa: true });
+        setPerguntas(perguntasData);
+        
+        // Se estiver editando um imóvel, selecionar as perguntas vinculadas
+        if (imovel?.perguntas?.length) {
+          console.log('Perguntas do imóvel:', imovel.perguntas);
+          
+          // Mapear os IDs das perguntas vinculadas ao imóvel
+          const perguntasIdsVinculadas = imovel.perguntas.map(p => p.perguntaId);
+          console.log('IDs das perguntas vinculadas:', perguntasIdsVinculadas);
+          
+          // Filtrar as perguntas que estão vinculadas ao imóvel
+          const perguntasDoImovel = perguntasData.filter((p: Pergunta) => 
+            perguntasIdsVinculadas.includes(p.id)
+          );
+          
+          console.log('Perguntas encontradas para o imóvel:', perguntasDoImovel);
+          
+          // Atualizar o estado local com as perguntas encontradas
+          setPerguntasSelecionadas(perguntasDoImovel);
+          
+          // Atualizar o campo do formulário com os IDs das perguntas
+          const perguntasIds = perguntasDoImovel.map(p => p.id);
+          
+          // Usar setTimeout para garantir que o formulário já esteja inicializado
+          setTimeout(() => {
+            form.setValue('perguntasIds', perguntasIds, { shouldValidate: true, shouldDirty: true });
+            console.log('IDs das perguntas definidos no formulário (com delay):', perguntasIds);
+          }, 100);
+        }
+        
+        // Marcar que as perguntas foram carregadas
+        setPerguntasCarregadas(true);
+      } catch (error) {
+        console.error('Erro ao carregar perguntas:', error);
+        toast({
+          title: "Erro ao carregar perguntas",
+          description: "Não foi possível carregar a lista de perguntas.",
+          variant: "destructive"
+        });
+      }
+    };
+    
     if (open) {
       fetchConstrutoras()
       fetchTiposImoveis()
+      fetchPerguntas()
     }
   }, [open, modoEdicao, imovel])
+  
+  // Efeito de debug removido daqui e adicionado após a declaração do formulário
   
   // Formatação do telefone ao digitar
   const formatTelefone = (value: string) => {
@@ -324,11 +382,20 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
       caracteristicasArray: dadosAdaptados?.caracteristicasArray || [],
       tipoImovel: imovel?.tipoImovelId || "", // Agora usamos o ID e não mais o nome
       status: imovel?.status || "Disponível",
+      perguntasIds: imovel?.perguntas?.map(p => p.perguntaId) || [],
       destaque: imovel?.destaque || false,
       ativo: imovel?.ativo !== false, // Se for undefined, assume true
       construtoraId: imovel?.construtoraId || ""
     },
   })
+
+  // Efeito para debug do estado das perguntas selecionadas
+  useEffect(() => {
+    if (perguntasCarregadas) {
+      console.log('Estado atual das perguntas selecionadas:', perguntasSelecionadas);
+      console.log('IDs das perguntas no formulário:', form.getValues('perguntasIds'));
+    }
+  }, [perguntasSelecionadas, perguntasCarregadas, form])
 
   // Efeito para preencher os valores do formulário quando receber um imóvel para edição
   // Usamos um state específico para armazenar o tipo do imóvel e o telefone
@@ -679,7 +746,8 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
       console.log('Dados finais para envio:', {
         telefoneContato: telefoneParaEnviar,
         tipoImovelId: tipoImovelIdParaEnviar, // Agora enviamos o ID do tipo
-        nomeTipo: tipoSelecionado?.nome || 'Não identificado'
+        nomeTipo: tipoSelecionado?.nome || 'Não identificado',
+        perguntasIds: values.perguntasIds || [] // Log das perguntas selecionadas
       });
       
       const payload: ImovelNovo = {
@@ -692,6 +760,8 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
         galeriaFotos: galeriaUrls,
         // Garantir que o array de características exista
         caracteristicasArray: values.caracteristicasArray || [],
+        // Incluir os IDs das perguntas selecionadas
+        perguntasIds: values.perguntasIds || [],
         // Enviar o tipoImovelId explicitamente - agora com o nome correto
         tipoImovelId: tipoImovelIdParaEnviar,
         // Remover campo tipoImovel que não existe mais no schema
@@ -712,6 +782,10 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
       // URL e método diferentes para criação e edição
       const url = modoEdicao ? `/api/imoveis/${imovel?.id}` : '/api/imoveis'
       const method = modoEdicao ? 'PUT' : 'POST'
+      
+      // Log final antes de enviar para o backend
+      console.log('Payload final enviado para o backend:', payload);
+      console.log('IDs de perguntas enviados:', payload.perguntasIds);
       
       const response = await fetch(url, {
         method,
@@ -1210,6 +1284,190 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
                           <SelectItem value="Reservado">Reservado</SelectItem>
                         </SelectContent>
                       </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Campo para seleção de perguntas */}
+                <FormField
+                  control={form.control}
+                  name="perguntasIds"
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <FormLabel>Perguntas vinculadas ao imóvel</FormLabel>
+                      <div className="flex flex-col space-y-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            // Sincronizar o estado local com o estado do formulário antes de abrir o modal
+                            const perguntasIds = form.getValues('perguntasIds') || [];
+                            console.log('Abrindo modal, IDs no formulário:', perguntasIds);
+                            
+                            // Se houver IDs no formulário, mas o estado local estiver vazio, sincronizar
+                            if (perguntasIds.length > 0 && perguntasSelecionadas.length === 0) {
+                              const perguntasFiltradas = perguntas.filter(p => perguntasIds.includes(p.id));
+                              console.log('Sincronizando estado local com formulário:', perguntasFiltradas);
+                              setPerguntasSelecionadas(perguntasFiltradas);
+                            }
+                            
+                            setPerguntasModalOpen(true);
+                          }}
+                          className="w-full justify-start text-left font-normal"
+                        >
+                          <span>
+                            {perguntasSelecionadas.length > 0
+                              ? `${perguntasSelecionadas.length} pergunta(s) selecionada(s)`
+                              : "Selecionar perguntas"}
+                          </span>
+                        </Button>
+
+                        {/* Modal para seleção de perguntas */}
+                        <Dialog open={perguntasModalOpen} onOpenChange={setPerguntasModalOpen}>
+                          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+                            <DialogHeader>
+                              <DialogTitle>Selecionar Perguntas</DialogTitle>
+                              <DialogDescription>
+                                Escolha as perguntas que serão vinculadas a este imóvel.
+                              </DialogDescription>
+                            </DialogHeader>
+
+                            <div className="space-y-4 my-4">
+                              {perguntas.length > 0 ? (
+                                perguntas.map((pergunta) => {
+                                  // Verificar se a pergunta está na lista de selecionadas de duas formas
+                                  // 1. Verificar no estado local (UI)
+                                  const isSelectedLocal = perguntasSelecionadas.some(p => p.id === pergunta.id);
+                                  
+                                  // 2. Verificar no formulário (dados)
+                                  const perguntasIds = form.getValues('perguntasIds') || [];
+                                  const isSelectedForm = perguntasIds.includes(pergunta.id);
+                                  
+                                  // Usar qualquer um dos dois que indique que está selecionado
+                                  const isSelected = isSelectedLocal || isSelectedForm;
+                                  
+                                  console.log(`Pergunta ${pergunta.id} (${pergunta.texto}) - Local: ${isSelectedLocal}, Form: ${isSelectedForm}, Final: ${isSelected}`);
+                                  
+                                  // Se houver inconsistência, sincronizar
+                                  if (isSelectedLocal !== isSelectedForm) {
+                                    console.log(`Inconsistência detectada para pergunta ${pergunta.id}. Sincronizando...`);
+                                  }
+                                  return (
+                                    <div
+                                      key={pergunta.id}
+                                      className={`flex items-center justify-between p-3 rounded-md border ${isSelected ? 'bg-muted' : ''} cursor-pointer`}
+                                      onClick={() => {
+                                  // Obter os IDs atuais diretamente do formulário para garantir sincronização
+                                  const perguntasIdsAtuais = form.getValues('perguntasIds') || [];
+                                  
+                                  if (isSelected) {
+                                    // Remover a pergunta da seleção
+                                    const novosIds = perguntasIdsAtuais.filter(id => id !== pergunta.id);
+                                    
+                                    // Atualizar o campo do formulário imediatamente
+                                    form.setValue('perguntasIds', novosIds, { shouldValidate: true, shouldDirty: true });
+                                    
+                                    // Atualizar o estado local para refletir a mudança na UI
+                                    const novasSelecionadas = perguntasSelecionadas.filter(p => p.id !== pergunta.id);
+                                    setPerguntasSelecionadas(novasSelecionadas);
+                                    
+                                    console.log('Pergunta removida, IDs atualizados:', novosIds);
+                                  } else {
+                                    // Adicionar a pergunta à seleção
+                                    const novosIds = [...perguntasIdsAtuais, pergunta.id];
+                                    
+                                    // Atualizar o campo do formulário imediatamente
+                                    form.setValue('perguntasIds', novosIds, { shouldValidate: true, shouldDirty: true });
+                                    
+                                    // Atualizar o estado local para refletir a mudança na UI
+                                    const novasSelecionadas = [...perguntasSelecionadas, pergunta];
+                                    setPerguntasSelecionadas(novasSelecionadas);
+                                    
+                                    console.log('Pergunta adicionada, IDs atualizados:', novosIds);
+                                  }
+                                }}
+                                    >
+                                      <div className="flex-1">
+                                        <p className="font-medium">{pergunta.texto}</p>
+                                        <p className="text-sm text-muted-foreground">
+                                          {pergunta.categoria} - {pergunta.tipo}
+                                        </p>
+                                      </div>
+                                      <div className="flex items-center">
+                                        {isSelected ? (
+                                          <div className="h-6 w-6 rounded-full bg-primary flex items-center justify-center">
+                                            <Check className="h-4 w-4 text-primary-foreground" />
+                                          </div>
+                                        ) : (
+                                          <div className="h-6 w-6 rounded-full border" />
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })
+                              ) : (
+                                <div className="text-center py-4">
+                                  <p>Nenhuma pergunta disponível</p>
+                                </div>
+                              )}
+                            </div>
+
+                            <DialogFooter>
+                              <Button
+                                variant="outline"
+                                onClick={() => setPerguntasModalOpen(false)}
+                              >
+                                Cancelar
+                              </Button>
+                              <Button
+                                onClick={() => {
+                                  // Obter os IDs atuais diretamente do formulário
+                                  const perguntasIds = form.getValues('perguntasIds') || [];
+                                  
+                                  // Garantir que o campo do formulário está atualizado
+                                  field.onChange(perguntasIds);
+                                  
+                                  // Garantir que o estado local está sincronizado com o formulário
+                                  const perguntasFiltradas = perguntas.filter(p => perguntasIds.includes(p.id));
+                                  setPerguntasSelecionadas(perguntasFiltradas);
+                                  
+                                  console.log('Confirmando seleção de perguntas, IDs:', perguntasIds);
+                                  console.log('Perguntas selecionadas atualizadas:', perguntasFiltradas);
+                                  
+                                  // Fechar o modal
+                                  setPerguntasModalOpen(false);
+                                }}
+                              >
+                                Confirmar Seleção
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+
+                        {perguntasSelecionadas.length > 0 && (
+                          <div className="flex flex-wrap gap-2 mt-2">
+                            {perguntasSelecionadas.map((pergunta) => (
+                              <Badge
+                                key={pergunta.id}
+                                variant="secondary"
+                                className="flex items-center gap-1 max-w-full"
+                              >
+                                <span className="truncate">{pergunta.texto}</span>
+                                <X
+                                  className="h-3 w-3 ml-1 cursor-pointer shrink-0"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const novasSelecionadas = perguntasSelecionadas.filter(p => p.id !== pergunta.id);
+                                    setPerguntasSelecionadas(novasSelecionadas);
+                                    field.onChange(novasSelecionadas.map(p => p.id));
+                                  }}
+                                />
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}

@@ -6,7 +6,7 @@ import { LeftBar } from "./leftbar"
 
 interface DashboardLayoutProps {
   children: ReactNode
-  userRole?: "admin" | "construtora"
+  userRole?: "admin" | "construtora" | "cliente"
   userName?: string
 }
 

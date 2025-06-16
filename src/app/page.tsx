@@ -19,6 +19,8 @@ import { enviarRelatorio } from "@/services/relatorio-service";
 import { SearchParamsHandler } from "@/components/home/SearchParamsHandler";
 import NewRelatorioModal from "@/components/home/RelatorioModal";
 import { Poppins } from "next/font/google";
+import { ModalAutenticacao } from "@/components/auth/ModalAutenticacao";
+import { getUserSession } from "@/lib/auth-client";
 
 // Carregar fonte Poppins
 const poppins = Poppins({
@@ -37,6 +39,11 @@ export default function Home() {
     token?: string;
     senha?: string;
   }>({});
+  
+  // Estado para controlar o modal de autenticação
+  const [modalAutenticacaoAberto, setModalAutenticacaoAberto] = useState(false);
+  const [parametrosUrlRecebidos, setParametrosUrlRecebidos] = useState(false);
+  const [usuarioLogado, setUsuarioLogado] = useState<boolean>(false);
   
   // Estado para respostas do formulário
   const [respostas, setRespostas] = useState<Record<string, any>>({});
@@ -61,6 +68,64 @@ export default function Home() {
       setPinsVisiveis(true);
     }
   }, [progresso]);
+
+  // Verificar se o usuário está logado e se temos parâmetros na URL
+  useEffect(() => {
+    // Verificar se temos parâmetros na URL
+    const temParametros = Object.keys(dadosUsuario).length > 0;
+    setParametrosUrlRecebidos(temParametros);
+    
+    // Verificar se o usuário está logado
+    async function verificarSessao() {
+      try {
+        // Verificar se há um token no localStorage como alternativa rápida
+        let usuarioAutenticado = false;
+        const localUser = localStorage.getItem('user-session');
+        if (localUser) {
+          try {
+            const userData = JSON.parse(localUser);
+            if (userData && userData.id) {
+              usuarioAutenticado = true;
+              setUsuarioLogado(true);
+            }
+          } catch (e) {
+            console.warn('Erro ao ler dados do usuário do localStorage:', e);
+          }
+        }
+        
+        // Mesmo assim, tentar obter a sessão da API para manter os dados atualizados
+        const sessao = await getUserSession();
+        if (sessao) {
+          setUsuarioLogado(true);
+          usuarioAutenticado = true;
+          // Atualizar o localStorage com os dados mais recentes
+          localStorage.setItem('user-session', JSON.stringify(sessao));
+        }
+        
+        // Se não houver parâmetros e não temos dados de usuário e o usuário não está logado, mostrar o modal de autenticação
+        if (!temParametros && !dadosUsuario.userId && !usuarioAutenticado) {
+          // Pequeno delay para garantir que a página carregue completamente
+          const timer = setTimeout(() => {
+            setModalAutenticacaoAberto(true);
+          }, 1000);
+          
+          return () => clearTimeout(timer);
+        }
+      } catch (error) {
+        console.error('Erro ao verificar sessão:', error);
+        // Em caso de erro, verificar se temos parâmetros e mostrar o modal se necessário
+        if (!temParametros && !dadosUsuario.userId) {
+          const timer = setTimeout(() => {
+            setModalAutenticacaoAberto(true);
+          }, 1000);
+          
+          return () => clearTimeout(timer);
+        }
+      }
+    }
+    
+    verificarSessao();
+  }, [dadosUsuario.userId]);
 
   // Efeito para criar o usuário automaticamente quando receber dados do formulário do Elementor
   useEffect(() => {
@@ -641,6 +706,12 @@ export default function Home() {
             respostas={respostas}
             isLoading={false}
             imoveis={imoveisDestaque}
+          />
+          
+          {/* Modal de autenticação */}
+          <ModalAutenticacao 
+            isOpen={modalAutenticacaoAberto} 
+            onClose={() => setModalAutenticacaoAberto(false)} 
           />
           
           {/* Modal para exibir pins no mapa */}

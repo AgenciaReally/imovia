@@ -94,6 +94,7 @@ export const SimuladorCredito: React.FC<SimuladorCreditoProps> = ({
   const [irpfFileName, setIrpfFileName] = useState<string>("");
   const [outrosFinanciamentos, setOutrosFinanciamentos] = useState<"sim" | "nao" | null>(null);
   const [dataNascimento, setDataNascimento] = useState<Date | undefined>();
+  const [dataNascimentoInput, setDataNascimentoInput] = useState<string>("");
   const [fgts, setFgts] = useState<string>("");
   const [prazoFinanciamento, setPrazoFinanciamento] = useState<string>("");
   const [tipoImovel, setTipoImovel] = useState<string>("");
@@ -156,6 +157,13 @@ export const SimuladorCredito: React.FC<SimuladorCreditoProps> = ({
     }
   };
 
+  // Inicializar o input de data quando já existe uma data definida
+  useEffect(() => {
+    if (dataNascimento) {
+      setDataNascimentoInput(format(dataNascimento, "dd/MM/yyyy"));
+    }
+  }, [dataNascimento]);
+  
   // Atualizar progresso
   useEffect(() => {
     let novoProgresso = 0;
@@ -1206,37 +1214,72 @@ export const SimuladorCredito: React.FC<SimuladorCreditoProps> = ({
                 <Input
                   type="text"
                   placeholder="DD/MM/AAAA"
-                  defaultValue={dataNascimento ? format(dataNascimento, "dd/MM/yyyy") : ""}
+                  value={dataNascimentoInput}
+                  onChange={(e) => {
+                    let valor = e.target.value;
+                    
+                    // Se estiver apagando, limpa os estados
+                    if (valor.length === 0) {
+                      setDataNascimentoInput("");
+                      setDataNascimento(undefined);
+                      return;
+                    }
+                    
+                    // Permite apenas números
+                    const apenasNumeros = valor.replace(/\D/g, "").slice(0, 8);
+                    
+                    // Formata com barras automaticamente
+                    let valorFormatado = "";
+                    
+                    if (apenasNumeros.length <= 2) {
+                      valorFormatado = apenasNumeros;
+                    } else if (apenasNumeros.length <= 4) {
+                      valorFormatado = `${apenasNumeros.slice(0, 2)}/${apenasNumeros.slice(2)}`;
+                    } else {
+                      valorFormatado = `${apenasNumeros.slice(0, 2)}/${apenasNumeros.slice(2, 4)}/${apenasNumeros.slice(4, 8)}`;
+                    }
+                    
+                    // Atualiza o estado do input
+                    setDataNascimentoInput(valorFormatado);
+                    
+                    // Tenta converter para data se estiver completo
+                    if (apenasNumeros.length === 8) {
+                      const dia = parseInt(apenasNumeros.slice(0, 2));
+                      const mes = parseInt(apenasNumeros.slice(2, 4)) - 1; // mês em JS é 0-11
+                      const ano = parseInt(apenasNumeros.slice(4, 8));
+                      
+                      const data = new Date(ano, mes, dia);
+                      
+                      // Verifica se é data válida e não está no futuro
+                      if (!isNaN(data.getTime()) && data < new Date()) {
+                        setDataNascimento(data);
+                      }
+                    } else {
+                      // Se não estiver completo, limpa o estado da data
+                      setDataNascimento(undefined);
+                    }
+                  }}
                   onBlur={(e) => {
                     const valor = e.target.value;
                     
                     // Só processa se tiver algo digitado
                     if (valor && valor.length > 0) {
-                      // Tenta diferentes formatos de data
-                      let partes;
-                      let dia, mes, ano;
+                      // Verifica se a data está completa
+                      const apenasNumeros = valor.replace(/\D/g, "");
                       
-                      // Tenta formato DD/MM/AAAA
-                      if (valor.includes('/')) {
-                        partes = valor.split('/');
-                        if (partes.length === 3) {
-                          dia = parseInt(partes[0]);
-                          mes = parseInt(partes[1]) - 1; // mês em JS é 0-11
-                          ano = parseInt(partes[2]);
-                          
-                          const data = new Date(ano, mes, dia);
-                          // Verifica se é data válida e não está no futuro
-                          if (!isNaN(data.getTime()) && data < new Date()) {
-                            setDataNascimento(data);
-                            return;
-                          }
-                        }
+                      if (apenasNumeros.length === 8) {
+                        // Já foi validado no onChange, não precisa fazer nada
+                        return;
                       }
                       
-                      // Avisa que o formato está inválido
+                      // Se não estiver completa, mostra alerta
                       alert("Digite a data no formato DD/MM/AAAA, por exemplo: 01/12/1990");
-                    } else {
-                      setDataNascimento(undefined);
+                      
+                      // Limpa o campo se estiver incompleto
+                      if (apenasNumeros.length < 8) {
+                        setDataNascimentoInput("");
+                        setDataNascimento(undefined);
+                      }
                     }
                   }}
                   className="w-full max-w-md"

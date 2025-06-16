@@ -46,7 +46,7 @@ type MenuSection = {
 
 // Tipo para as propriedades do componente
 interface LeftBarProps {
-  userRole?: "admin" | "construtora"
+  userRole?: "admin" | "construtora" | "cliente"
   userName?: string
 }
 
@@ -143,6 +143,67 @@ export function LeftBar({ userRole = "admin", userName }: LeftBarProps) {
     }
   ]
   
+  // Menu para clientes com seções
+  const clienteMenuSections: MenuSection[] = [
+    {
+      title: "PAINEL PRINCIPAL",
+      items: [
+        { 
+          icon: <LayoutDashboard className="h-5 w-5" />,
+          label: "Visão Geral",
+          href: "/painel/cliente",
+        },
+        { 
+          icon: <Home className="h-5 w-5" />,
+          label: "Imóveis",
+          href: "/painel/cliente/imoveis",
+        },
+        { 
+          icon: <Building className="h-5 w-5" />,
+          label: "Construtoras",
+          href: "/painel/cliente/construtoras",
+        }
+      ]
+    },
+    {
+      title: "RESPOSTAS E SUPORTE",
+      items: [
+        { 
+          icon: <MessageSquare className="h-5 w-5" />,
+          label: "Respostas",
+          href: "/painel/cliente/respostas",
+          badge: "IA",
+          badgeVariant: "success",
+        },
+        { 
+          icon: <BrainCircuit className="h-5 w-5" />,
+          label: "Suporte",
+          href: "/painel/cliente/suporte",
+        },
+        { 
+          icon: <FileText className="h-5 w-5" />,
+          label: "Relatórios",
+          href: "/painel/cliente/relatorios",
+        }
+      ]
+    },
+    {
+      title: "CONFIGURAÇÕES",
+      items: [
+        { 
+          icon: <Users className="h-5 w-5" />,
+          label: "Perfil",
+          href: "/painel/cliente/perfil",
+        },
+        { 
+          icon: <Settings className="h-5 w-5" />,
+          label: "Configurações",
+          href: "/painel/cliente/configuracoes",
+        }
+      ]
+    }
+  ]
+  
   // Menu para construtoras com seções
   const construtorMenuSections: MenuSection[] = [
     {
@@ -200,7 +261,10 @@ export function LeftBar({ userRole = "admin", userName }: LeftBarProps) {
   ]
   
   // Selecionando as seções de menu corretas com base na role
-  const menuSections = userRole === "admin" ? adminMenuSections : construtorMenuSections
+  const menuSections = 
+    userRole === "admin" ? adminMenuSections : 
+    userRole === "cliente" ? clienteMenuSections : 
+    construtorMenuSections
 
   useEffect(() => {
     setIsMounted(true)

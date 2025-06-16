@@ -62,9 +62,16 @@ export async function verifyPassword(password: string, hashedPassword: string): 
 
 /**
  * Cria um token JWT e salva no cookie
+ * @param userId ID do usuário
+ * @param email Email do usuário
+ * @param role Papel do usuário
+ * @param expiration Tempo de expiração em segundos (opcional, padrão: 12 horas)
  */
-export async function createSessionToken(userId: string, email: string, role: UserRole) {
+export async function createSessionToken(userId: string, email: string, role: UserRole, expiration?: number) {
   try {
+    // Usar o tempo de expiração fornecido ou o padrão
+    const tokenExpiration = expiration || TOKEN_EXPIRATION;
+    
     // Criar payload do token
     const payload = {
       sub: userId,
@@ -72,7 +79,7 @@ export async function createSessionToken(userId: string, email: string, role: Us
       email,
       role,
       iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + TOKEN_EXPIRATION,
+      exp: Math.floor(Date.now() / 1000) + tokenExpiration,
     };
 
     // Assinar token
@@ -88,7 +95,7 @@ export async function createSessionToken(userId: string, email: string, role: Us
         value: token,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        maxAge: TOKEN_EXPIRATION,
+        maxAge: tokenExpiration,
         path: '/',
       });
     } catch (e) {

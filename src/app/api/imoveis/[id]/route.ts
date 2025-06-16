@@ -17,6 +17,11 @@ export async function GET(
       include: {
         construtora: true,
         tipoImovel: true, // Incluir o relacionamento com TipoImovel
+        perguntas: {
+          include: {
+            pergunta: true
+          }
+        }
       },
     });
     
@@ -43,15 +48,23 @@ export async function GET(
       // Outros campos importantes
     });
 
+    // Transformar o resultado para incluir as perguntas de forma mais acessível
+    const imovelComPerguntas = {
+      ...imovel,
+      // Garantir que esses campos estão presentes e não são nulos
+      telefoneContato: imovel.telefoneContato || '',
+      tipoImovelNome: imovel.tipoImovel?.nome || 'Apartamento', // Nome do tipo de imóvel da relação
+      tipoImovelId: imovel.tipoImovelId, // ID do tipo de imóvel para referência
+      // Transformar a relação perguntas para um formato mais fácil de usar no frontend
+      perguntas: imovel.perguntas.map(rel => ({
+        perguntaId: rel.perguntaId,
+        ...rel.pergunta
+      }))
+    };
+    
     return NextResponse.json({
       success: true,
-      imovel: {
-        ...imovel,
-        // Garantir que esses campos estão presentes e não são nulos
-        telefoneContato: imovel.telefoneContato || '',
-        tipoImovelNome: imovel.tipoImovel?.nome || 'Apartamento', // Nome do tipo de imóvel da relação
-        tipoImovelId: imovel.tipoImovelId // ID do tipo de imóvel para referência
-      },
+      imovel: imovelComPerguntas,
     });
   } catch (error) {
     console.error('Erro ao buscar imóvel:', error);
@@ -99,6 +112,10 @@ export async function PUT(
     // Garantir que os dados sejam preservados explicitamente
     // Se o dado vier como undefined ou null, manter o valor existente
     const telefoneParaSalvar = data.telefoneContato !== undefined ? data.telefoneContato : (imovelExistente.telefoneContato || '');
+    
+    // Processar as perguntas vinculadas ao imóvel
+    const perguntasIds = data.perguntasIds || [];
+    console.log('Perguntas IDs recebidos:', perguntasIds);
     
     // Buscar o tipo default caso necessário
     let tipoImovelIdParaSalvar: string | null = null;
@@ -167,15 +184,81 @@ export async function PUT(
     
     console.log('Objeto final para update:', updateData);
 
+    // Primeiro, atualizar o imóvel
     const imovelAtualizado = await prisma.imovel.update({
       where: {
         id: id,
       },
       data: updateData,
       include: {
-        tipoImovel: true // Incluir o tipo de imóvel na resposta
+        tipoImovel: true, // Incluir o tipo de imóvel na resposta
+        perguntas: {
+          include: {
+            pergunta: true
+          }
+        }
       }
     });
+    
+    // Se temos perguntasIds, atualizar as relações
+    if (Array.isArray(perguntasIds)) {
+      // 1. Remover todas as relações existentes
+      await prisma.imovelPergunta.deleteMany({
+        where: {
+          imovelId: id
+        }
+      });
+      
+      // 2. Criar novas relações para cada perguntaId
+      if (perguntasIds.length > 0) {
+        // Buscar as perguntas para verificar se existem
+        const perguntasExistentes = await prisma.pergunta.findMany({
+          where: {
+            id: {
+              in: perguntasIds
+            }
+          }
+        });
+        
+        console.log(`Encontradas ${perguntasExistentes.length} perguntas válidas de ${perguntasIds.length} solicitadas`);
+        
+        // Criar as relações apenas para perguntas que existem
+        const perguntasIdsValidos = perguntasExistentes.map(p => p.id);
+        
+        // Criar as relações em lote
+        if (perguntasIdsValidos.length > 0) {
+          await prisma.imovelPergunta.createMany({
+            data: perguntasIdsValidos.map(perguntaId => ({
+              imovelId: id,
+              perguntaId
+            })),
+            skipDuplicates: true // Evitar duplicatas
+          });
+        }
+      }
+      
+      // Buscar o imóvel novamente com as perguntas atualizadas
+      const imovelComPerguntas = await prisma.imovel.findUnique({
+        where: {
+          id: id
+        },
+        include: {
+          tipoImovel: true,
+          perguntas: {
+            include: {
+              pergunta: true
+            }
+          }
+        }
+      });
+      
+      if (imovelComPerguntas) {
+        return NextResponse.json({
+          success: true,
+          imovel: imovelComPerguntas,
+        });
+      }
+    }
 
     return NextResponse.json({
       success: true,

@@ -5,7 +5,7 @@ export async function POST(request: NextRequest) {
   try {
     // Extrair dados da requisição
     const body = await request.json();
-    const { email, password } = body;
+    const { email, password, lembrarMe } = body;
 
     if (!email || !password) {
       return NextResponse.json(
@@ -24,8 +24,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Criar token de sessão
-    await createSessionToken(user.id, user.email, user.role);
+    // Criar token de sessão com duração baseada na opção "lembrar-me"
+    // Se lembrarMe for true, o token dura 30 dias, caso contrário, 12 horas (padrão)
+    const tokenDuration = lembrarMe ? 30 * 24 * 60 * 60 : undefined; // 30 dias em segundos
+    await createSessionToken(user.id, user.email, user.role, tokenDuration);
 
     // Retornar usuário autenticado
     return NextResponse.json({

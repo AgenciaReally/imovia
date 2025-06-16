@@ -324,7 +324,7 @@ export const SimuladorAprovacaoInicial = ({
         <div className="space-y-3">
           <div className="flex justify-between">
             <Label htmlFor="rendaMensal" className="text-lg font-medium">
-              Renda Mensal
+            Renda Mensal (familiar)
             </Label>
             <span className="font-bold text-lg text-[#fe4f17]">
               {formatCurrency(rendaMensal)}
@@ -341,7 +341,7 @@ export const SimuladorAprovacaoInicial = ({
           />
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>R$ 1 mil</span>
-            <span>R$ 30 mil</span>
+            <span>R$ 300 mil</span>
           </div>
           
           <div className={`mt-2 flex items-center gap-2 rounded-lg border p-3 ${feedbackRendaMensal.color}`}>
@@ -442,7 +442,6 @@ export const SimuladorAprovacaoInicial = ({
             <ul className="text-xs text-amber-700 mt-1 list-disc pl-4 space-y-1">
               <li>ITBI: ~3% do valor do imóvel ({formatCurrency(valorImovel * 0.03)})</li>
               <li>Escritura e Registro: ~1-2% do valor do imóvel ({formatCurrency(valorImovel * 0.015)})</li>
-              <li>Laudêmio (se for terreno de marinha): 5% do valor de venda</li>
               <li>Taxa de avaliação do imóvel: ~R$ 2.500,00</li>
               <li>Seguros e taxas bancárias</li>
             </ul>
