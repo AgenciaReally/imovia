@@ -453,7 +453,7 @@ export const SimuladorAprovacaoInicial = ({
 
         <Button 
           onClick={calcularAprovacao} 
-          disabled={isLoading || temOutrosEmprestimos === null || !aceitouTermos}
+          disabled={isLoading || temOutrosEmprestimos === null}
           className="w-full bg-[#fe4f17] hover:bg-[#fe4f17]/90 text-white py-6 text-lg"
         >
           {isLoading ? "Analisando sua situação..." : "Verificar Aprovação"}
