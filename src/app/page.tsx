@@ -102,8 +102,9 @@ export default function Home() {
           localStorage.setItem('user-session', JSON.stringify(sessao));
         }
         
-        // Se não houver parâmetros e não temos dados de usuário e o usuário não está logado, mostrar o modal de autenticação
-        if (!temParametros && !dadosUsuario.userId && !usuarioAutenticado) {
+        // Se não houver parâmetros e não temos dados de usuário, mostrar o modal de autenticação
+        // Agora mostramos o modal independentemente do usuário estar logado ou não
+        if (!temParametros && !dadosUsuario.userId) {
           // Pequeno delay para garantir que a página carregue completamente
           const timer = setTimeout(() => {
             setModalAutenticacaoAberto(true);
@@ -713,7 +714,6 @@ export default function Home() {
             isOpen={modalAutenticacaoAberto} 
             onClose={() => setModalAutenticacaoAberto(false)} 
           />
-          
           {/* Modal para exibir pins no mapa */}
           <Dialog open={mostrarModalMatches} onOpenChange={setMostrarModalMatches}>
             <DialogContent className="sm:max-w-[90vw] max-h-[90vh] overflow-hidden">

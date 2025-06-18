@@ -166,94 +166,33 @@ export default function CadastroPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-secondary relative overflow-hidden flex flex-col justify-center items-center px-4 py-8">
-      {/* Elementos decorativos animados */}
-      {decorativeElements.map(elem => (
-        <motion.div
-          key={elem.id}
-          className="absolute rounded-full bg-primary/5 z-0"
-          style={{
-            width: elem.size,
-            height: elem.size,
-            left: elem.x,
-            top: elem.y,
-            transform: `rotate(${elem.rotate}deg)`
-          }}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{
-            duration: 1,
-            delay: elem.delay,
-            ease: [0.2, 0.65, 0.3, 0.9]
-          }}
-        />
-      ))}
-
-      {/* Logo e branding animados */}
-      <motion.div
-        className="absolute top-8 left-8 flex items-center"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.2 }}
-      >
-        <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mr-3">
-          <span className="text-white font-bold text-xl">I</span>
-        </div>
-        <span className="text-lg font-medium bg-gradient-to-r from-primary to-primary-600 bg-clip-text text-transparent">Imovia</span>
-      </motion.div>
-
       <div className="relative z-10 w-full max-w-3xl">
-        {/* Elementos visuais para o card */}
-        <motion.div
-          className="absolute -top-10 -left-10 w-32 h-32 rounded-full bg-primary/10 z-0"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-        />
-        <motion.div
-          className="absolute -bottom-16 -right-16 w-40 h-40 rounded-full bg-primary/10 z-0"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-        />
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="text-center mb-6">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-block mb-4"
-            >
-              <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-primary-600 rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
-                <span className="text-white font-bold text-3xl">I</span>
-              </div>
-            </motion.div>
-            <motion.h1
-              className="text-3xl font-bold text-primary mb-2"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              Imovia
-            </motion.h1>
-            <motion.p
-              className="text-gray-600"
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              Plataforma imobiliária inteligente
-            </motion.p>
-          </div>
 
           <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm overflow-hidden relative z-10">
             {/* Elementos decorativos no card */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/80 via-primary to-primary/80"></div>
             <div className="absolute -right-6 -top-6 w-12 h-12 rounded-full bg-primary/10"></div>
             <CardHeader className="space-y-2 pb-0">
+              <div className="flex justify-center mb-2">
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Image 
+                    src="/logo.webp" 
+                    alt="Imovia Logo" 
+                    width={120} 
+                    height={40} 
+                    className="h-auto" 
+                  />
+                </motion.div>
+              </div>
               <CardTitle className="text-2xl font-bold text-center">
                 <motion.span
                   initial={{ opacity: 0 }}

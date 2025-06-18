@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useToast } from "@/components/ui/use-toast";
 import { getUserSession, UserSession } from "@/lib/auth-client";
+import Image from "next/image";
+import Link from "next/link";
 
 import {
   Dialog,
@@ -35,12 +37,14 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, User, Home } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Loader2, User, Home, LogOut, ArrowRight } from "lucide-react";
 
 // Schema de validação para o formulário de login
 const loginSchema = z.object({
   email: z.string().email({ message: "Email inválido" }),
   senha: z.string().min(6, { message: "Senha deve ter pelo menos 6 caracteres" }),
+  lembrarMe: z.boolean().default(false).optional(),
 });
 
 // Schema de validação para o formulário de cadastro
@@ -103,6 +107,7 @@ export function ModalAutenticacao({ isOpen, onClose }: ModalAutenticacaoProps) {
     defaultValues: {
       email: "",
       senha: "",
+      lembrarMe: false,
     },
   });
 
@@ -136,7 +141,7 @@ export function ModalAutenticacao({ isOpen, onClose }: ModalAutenticacaoProps) {
   };
 
   // Função para fazer login
-  async function onLogin(data: LoginFormValues) {
+  async function onLogin(data: z.infer<typeof loginSchema>) {
     setIsLoading(true);
 
     try {
@@ -148,7 +153,8 @@ export function ModalAutenticacao({ isOpen, onClose }: ModalAutenticacaoProps) {
         },
         body: JSON.stringify({
           email: data.email,
-          password: data.senha
+          senha: data.senha,
+          lembrarMe: data.lembrarMe || false,
         }),
       });
       
@@ -250,62 +256,83 @@ export function ModalAutenticacao({ isOpen, onClose }: ModalAutenticacaoProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         {verificandoSessao ? (
-          <div className="flex flex-col items-center justify-center py-8">
+          <div className="flex justify-center items-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="mt-2 text-sm text-muted-foreground">Verificando sessão...</p>
           </div>
         ) : usuarioLogado ? (
-          // Conteúdo para usuário logado
           <>
             <DialogHeader>
-              <DialogTitle className="text-center text-xl font-bold">
-                Bem-vindo de volta!
-              </DialogTitle>
-              <DialogDescription className="text-center">
-                Você está logado como <span className="font-semibold">{usuarioLogado.name}</span>
-              </DialogDescription>
+              <div className="flex justify-center mb-4">
+                <Image 
+                  src="/logo.webp" 
+                  alt="Imovia Logo" 
+                  width={120} 
+                  height={40} 
+                  className="h-auto" 
+                />
+              </div>
+              <DialogTitle className="sr-only">Perfil do Usuário</DialogTitle>
             </DialogHeader>
-            
-            <div className="flex flex-col space-y-4 py-4">
-              <div className="flex items-center space-x-4 rounded-md border p-4">
-                <User className="h-6 w-6 text-primary" />
-                <div className="flex-1 space-y-1">
-                  <p className="text-sm font-medium">{usuarioLogado.email}</p>
-                  <p className="text-xs text-muted-foreground">Conta de cliente</p>
+            <div className="text-center py-2 space-y-4">
+              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 shadow-sm">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                    <User className="h-8 w-8 text-primary" />
+                  </div>
+                </div>
+                <h2 className="text-xl font-semibold">Olá, {usuarioLogado.name || usuarioLogado.email}</h2>
+                <p className="text-gray-500 text-sm mb-4">{usuarioLogado.email}</p>
+                
+                <div className="grid grid-cols-1 gap-3 mt-4">
+                  <Button onClick={acessarPainel} className="w-full flex items-center justify-center gap-2">
+                    <Home className="h-4 w-4" />
+                    <span>Acessar meu painel</span>
+                  </Button>
+                  
+                  <Button onClick={iniciarNovaSimulacao} variant="outline" className="w-full flex items-center justify-center gap-2">
+                    <ArrowRight className="h-4 w-4" />
+                    <span>Iniciar nova simulação</span>
+                  </Button>
+                  
+                  <Button 
+                    onClick={() => {
+                      // Logout
+                      fetch('/api/auth/logout', { method: 'POST' })
+                        .then(() => {
+                          setUsuarioLogado(null);
+                          toast({
+                            title: "Logout realizado",
+                            description: "Você foi desconectado com sucesso.",
+                          });
+                          router.refresh();
+                        });
+                    }} 
+                    variant="ghost" 
+                    className="mt-2 text-gray-500 hover:text-gray-700"
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    <span>Sair</span>
+                  </Button>
                 </div>
               </div>
-              
-              <p className="text-center text-muted-foreground">
-                O que você gostaria de fazer agora?
-              </p>
             </div>
-            
-            <DialogFooter className="flex flex-col sm:flex-row sm:justify-center gap-2">
-              <Button 
-                variant="outline" 
-                onClick={iniciarNovaSimulacao}
-                className="w-full sm:w-auto"
-              >
-                Iniciar nova simulação
-              </Button>
-              <Button 
-                onClick={acessarPainel}
-                className="w-full sm:w-auto"
-              >
-                <Home className="mr-2 h-4 w-4" />
-                Acessar painel
-              </Button>
-            </DialogFooter>
           </>
         ) : (
           // Conteúdo para usuário não logado
           <>
             <DialogHeader>
-              <DialogTitle className="text-center text-xl font-bold">
-                Acesse sua conta
-              </DialogTitle>
+              <div className="flex justify-center mb-4">
+                <Image 
+                  src="/logo.webp" 
+                  alt="Imovia Logo" 
+                  width={120} 
+                  height={40} 
+                  className="h-auto" 
+                />
+              </div>
+              <DialogTitle className="text-center text-xl font-bold">Acesse sua conta</DialogTitle>
               <DialogDescription className="text-center">
-                Faça login ou crie uma nova conta para continuar
+                Entre com seu email e senha ou crie uma nova conta
               </DialogDescription>
             </DialogHeader>
             
@@ -344,6 +371,33 @@ export function ModalAutenticacao({ isOpen, onClose }: ModalAutenticacaoProps) {
                         </FormItem>
                       )}
                     />
+                    
+                    <div className="flex items-center justify-between">
+                      <FormField
+                        control={loginForm.control}
+                        name="lembrarMe"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-row items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                            <FormLabel className="text-sm font-normal cursor-pointer">Lembrar-me</FormLabel>
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <Link 
+                        href="/auth/recuperar-senha" 
+                        className="text-sm text-primary hover:text-primary-600 transition-colors"
+                        onClick={() => onClose()}
+                      >
+                        Esqueci minha senha
+                      </Link>
+                    </div>
+                    
                     <Button type="submit" className="w-full" disabled={isLoading}>
                       {isLoading ? (
                         <>
