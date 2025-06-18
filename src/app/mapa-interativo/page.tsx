@@ -29,6 +29,62 @@ function MapaInterativoContent() {
     { left: "80%", top: "85%" },  // Inferior direito
   ];
   
+  // Função para gerar posições aleatórias para pins
+  const gerarPosicoesAleatorias = (quantidade: number, area: string = "central") => {
+    const posicoes = [];
+    
+    for (let i = 0; i < quantidade; i++) {
+      let left, top;
+      
+      // Diferentes áreas do mapa para distribuição
+      switch(area) {
+        case "central":
+          // Área central (25% a 75%)
+          left = Math.floor(Math.random() * 50) + 25 + "%";
+          top = Math.floor(Math.random() * 50) + 25 + "%";
+          break;
+        case "superior":
+          // Área superior (10% a 40% de altura)
+          left = Math.floor(Math.random() * 80) + 10 + "%";
+          top = Math.floor(Math.random() * 30) + 10 + "%";
+          break;
+        case "inferior":
+          // Área inferior (60% a 90% de altura)
+          left = Math.floor(Math.random() * 80) + 10 + "%";
+          top = Math.floor(Math.random() * 30) + 60 + "%";
+          break;
+        case "esquerda":
+          // Lado esquerdo
+          left = Math.floor(Math.random() * 30) + 5 + "%";
+          top = Math.floor(Math.random() * 70) + 15 + "%";
+          break;
+        case "direita":
+          // Lado direito
+          left = Math.floor(Math.random() * 30) + 65 + "%";
+          top = Math.floor(Math.random() * 70) + 15 + "%";
+          break;
+        default:
+          // Distribuição completa (5% a 95%)
+          left = Math.floor(Math.random() * 90) + 5 + "%";
+          top = Math.floor(Math.random() * 90) + 5 + "%";
+      }
+      
+      posicoes.push({ left, top });
+    }
+    
+    return posicoes;
+  };
+  
+  // Gerar posições aleatórias para diferentes tipos de pins
+  const pinPosicoesLaranja = gerarPosicoesAleatorias(5, "completa"); // Posições para pins laranja
+  const pinPosicoesCinza = gerarPosicoesAleatorias(15, "central"); // Posições para pins cinza centrais
+  const pinPosicoesCinzaExtra = [
+    ...gerarPosicoesAleatorias(5, "superior"),
+    ...gerarPosicoesAleatorias(5, "inferior"),
+    ...gerarPosicoesAleatorias(3, "esquerda"),
+    ...gerarPosicoesAleatorias(3, "direita")
+  ]; // Posições extras para mais pins cinza
+  
   // Tipagem dos imóveis que vem da API
   interface Imovel {
     id: string;
@@ -478,7 +534,7 @@ function MapaInterativoContent() {
                 ...imovel,
                 destaque: true, // SEMPRE true para imóveis dentro do orçamento
                 matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
-                position: pinPositions[idx]
+                position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
               }));
             }
             
@@ -498,7 +554,7 @@ function MapaInterativoContent() {
                 ...imovel,
                 destaque: true, // MESMO estando fora do orçamento, destacamos os mais baratos
                 matchPercentage: 70 - (idx * 5), // Começa em 70% e diminui
-                position: pinPositions[imoveisDestaqueForce.length + idx]
+                position: pinPosicoesLaranja[(imoveisDestaqueForce.length + idx) % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
               }));
               
               // Juntar com os destaques que já temos
@@ -517,7 +573,7 @@ function MapaInterativoContent() {
                 ...imovel,
                 destaque: true, // SEMPRE true para os 3 primeiros
                 matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
-                position: pinPositions[idx] 
+                position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
               }));
             } 
             // Se temos menos de 3 imóveis
@@ -527,7 +583,7 @@ function MapaInterativoContent() {
                 ...imovel,
                 destaque: true,
                 matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
-                position: pinPositions[idx]
+                position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
               }));
             }
           }
@@ -556,7 +612,7 @@ function MapaInterativoContent() {
                   ...imovel,
                   destaque: true,
                   matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
-                  position: pinPositions[idx]
+                  position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
                 }));
               } else {
                 // Se não há imóveis dentro do orçamento, usar os mais baratos
@@ -565,7 +621,7 @@ function MapaInterativoContent() {
                   ...imovel,
                   destaque: true,
                   matchPercentage: 70 - (idx * 5),
-                  position: pinPositions[idx]
+                  position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
                 }));
               }
             } else {
@@ -575,7 +631,7 @@ function MapaInterativoContent() {
                 ...imovel,
                 destaque: true,
                 matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
-                position: pinPositions[idx]
+                position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
               }));
             }
           }
@@ -586,14 +642,39 @@ function MapaInterativoContent() {
           // Depois, selecionar alguns imóveis indisponíveis (pins cinzas) - Começando do índice 3 se tivermos mais de 3 imóveis
           const startIndex = Math.min(3, imoveisReais.length);
           const imoveisIndisponiveis = imoveisReais.length > startIndex ?
-            imoveisReais.slice(startIndex, startIndex + 5).map(imovel => ({
+            imoveisReais.slice(startIndex, startIndex + 5).map((imovel, idx) => ({
               ...imovel,
               destaque: false, // Garantir que não é destaque
-              indisponivel: true // Forçar indisponível para os próximos 5 imóveis
+              indisponivel: true, // Forçar indisponível para os próximos 5 imóveis
+              position: pinPosicoesCinza[idx % pinPosicoesCinza.length] // Usar posições aleatórias para pins cinza
             })) : [];
+            
+          // Criar pins cinza adicionais com posições aleatórias
+          const pinsGrayAdicionais = [];
+          const quantidadePinsAdicionais = 15; // Aumentado para 15 pins cinza adicionais
           
-          // Combinar os dois grupos, garantindo que os destaques venham primeiro
-          const todosImoveis = [...imoveisDestaque, ...imoveisIndisponiveis];
+          for (let i = 0; i < quantidadePinsAdicionais; i++) {
+            // Usar imóveis existentes como base ou criar novos se não houver suficientes
+            const imovelBase = imoveisReais[i % imoveisReais.length] || imoveisReais[0];
+            
+            if (imovelBase) {
+              // Determinar qual conjunto de posições usar
+              const positionSet = i < 10 ? pinPosicoesCinza : pinPosicoesCinzaExtra;
+              const positionIndex = i < 10 ? i : i - 10;
+              
+              pinsGrayAdicionais.push({
+                ...imovelBase,
+                id: `pin-gray-${i}`, // ID único para evitar conflitos
+                destaque: false,
+                indisponivel: true,
+                matchPercentage: Math.floor(Math.random() * 30) + 40, // Match entre 40-69%
+                position: positionSet[positionIndex % positionSet.length] // Usar posições aleatórias
+              });
+            }
+          }
+          
+          // Combinar os três grupos, garantindo que os destaques venham primeiro
+          const todosImoveis = [...imoveisDestaque, ...imoveisIndisponiveis, ...pinsGrayAdicionais];
           
           // Para garantir que temos pins suficientes, adicionar mais imóveis se necessário
           if (todosImoveis.length < 6 && imoveisReais.length > todosImoveis.length) {
@@ -607,7 +688,7 @@ function MapaInterativoContent() {
           
           // Definir no estado todos os imóveis selecionados
           setPins(todosImoveis);
-          console.log(`Mostrando ${todosImoveis.length} imóveis: ${imoveisDestaque.length} destaques e ${imoveisIndisponiveis.length} indisponíveis`);
+          console.log(`Mostrando ${todosImoveis.length} imóveis: ${imoveisDestaque.length} destaques, ${imoveisIndisponiveis.length} indisponíveis e ${pinsGrayAdicionais.length} pins cinza adicionais`);
           
           // Ativar automaticamente o primeiro pin (melhor match)
           if (imoveisDestaque.length > 0) {

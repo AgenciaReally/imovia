@@ -451,21 +451,6 @@ export const SimuladorAprovacaoInicial = ({
           </div>
         </div>
 
-        {/* Termos e Condições */}
-        <div className="flex items-center space-x-2 my-4">
-          <Checkbox 
-            id="termos" 
-            checked={aceitouTermos} 
-            onCheckedChange={(checked) => setAceitouTermos(checked as boolean)}
-          />
-          <Label 
-            htmlFor="termos" 
-            className="text-sm font-normal cursor-pointer"
-          >
-            Concordo com os <a href="https://imovia.ai/termos-e-condicoes/" target="_blank" rel="noopener noreferrer" className="text-[#fe4f17] hover:underline cursor-pointer">termos e condições</a> da simulação e autorizo a consulta.
-          </Label>
-        </div>
-
         <Button 
           onClick={calcularAprovacao} 
           disabled={isLoading || temOutrosEmprestimos === null || !aceitouTermos}

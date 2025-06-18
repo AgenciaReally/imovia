@@ -39,6 +39,13 @@ interface Imovel {
   construtora?: string;
 }
 
+// Interface para as respostas da simulação
+interface RespostaSimulacao {
+  pergunta: string;
+  resposta: string | number | boolean;
+  categoria?: string;
+}
+
 // Props do componente
 interface NewRelatorioModalProps {
   isOpen: boolean;
@@ -46,6 +53,16 @@ interface NewRelatorioModalProps {
   imoveis?: Imovel[];
   isLoading?: boolean;
   valorMaximo?: number;
+  respostasSimulacao?: RespostaSimulacao[];
+  dadosCredito?: {
+    rendaMensal?: number;
+    valorImovel?: number;
+    entradaDisponivel?: number;
+    valorParcelaMaxima?: number;
+    temOutrosEmprestimos?: boolean;
+    score?: number;
+    aprovado?: boolean;
+  };
 }
 
 export default function NewRelatorioModal({ 
@@ -53,7 +70,9 @@ export default function NewRelatorioModal({
   onClose, 
   imoveis = [], 
   isLoading = false,
-  valorMaximo = 0
+  valorMaximo = 0,
+  respostasSimulacao = [],
+  dadosCredito = {}
 }: NewRelatorioModalProps) {
   const reportRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -135,6 +154,122 @@ export default function NewRelatorioModal({
                       maximumFractionDigits: 0
                     }).format(valorMaximo)}
                   </p>
+                </div>
+              </div>
+            )}
+            
+            {/* Seção de Simulação de Crédito */}
+            {dadosCredito && Object.keys(dadosCredito).length > 0 && (
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg border">
+                <h3 className="font-medium text-lg mb-3">Simulação de Crédito</h3>
+                
+                {dadosCredito.aprovado !== undefined && (
+                  <div className={`p-3 mb-4 rounded-md ${dadosCredito.aprovado ? 'bg-green-50 border border-green-100' : 'bg-amber-50 border border-amber-100'}`}>
+                    <p className={`font-medium ${dadosCredito.aprovado ? 'text-green-700' : 'text-amber-700'}`}>
+                      {dadosCredito.aprovado ? 'Pré-aprovado' : 'Requer análise adicional'}
+                    </p>
+                  </div>
+                )}
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {dadosCredito.rendaMensal !== undefined && (
+                    <div>
+                      <p className="text-sm text-gray-500">Renda Mensal</p>
+                      <p className="font-medium">
+                        {new Intl.NumberFormat('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }).format(dadosCredito.rendaMensal)}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {dadosCredito.valorImovel !== undefined && (
+                    <div>
+                      <p className="text-sm text-gray-500">Valor do Imóvel</p>
+                      <p className="font-medium">
+                        {new Intl.NumberFormat('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }).format(dadosCredito.valorImovel)}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {dadosCredito.entradaDisponivel !== undefined && (
+                    <div>
+                      <p className="text-sm text-gray-500">Entrada Disponível</p>
+                      <p className="font-medium">
+                        {new Intl.NumberFormat('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }).format(dadosCredito.entradaDisponivel)}
+                        {dadosCredito.valorImovel && (
+                          <span className="text-xs text-gray-500 ml-1">
+                            ({Math.round((dadosCredito.entradaDisponivel / dadosCredito.valorImovel) * 100)}%)
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {dadosCredito.valorParcelaMaxima !== undefined && (
+                    <div>
+                      <p className="text-sm text-gray-500">Parcela Máxima</p>
+                      <p className="font-medium">
+                        {new Intl.NumberFormat('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }).format(dadosCredito.valorParcelaMaxima)}
+                        {dadosCredito.rendaMensal && (
+                          <span className="text-xs text-gray-500 ml-1">
+                            ({Math.round((dadosCredito.valorParcelaMaxima / dadosCredito.rendaMensal) * 100)}% da renda)
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {dadosCredito.score !== undefined && (
+                    <div>
+                      <p className="text-sm text-gray-500">Score de Crédito</p>
+                      <p className="font-medium">{dadosCredito.score}</p>
+                    </div>
+                  )}
+                  
+                  {dadosCredito.temOutrosEmprestimos !== undefined && (
+                    <div>
+                      <p className="text-sm text-gray-500">Outros Empréstimos</p>
+                      <p className="font-medium">{dadosCredito.temOutrosEmprestimos ? 'Sim' : 'Não'}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+            
+            {/* Respostas do Questionário */}
+            {respostasSimulacao && respostasSimulacao.length > 0 && (
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg border">
+                <h3 className="font-medium text-lg mb-3">Preferências do Imóvel</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
+                  {respostasSimulacao.map((item, index) => (
+                    <div key={index} className="border-b pb-2">
+                      <p className="text-sm text-gray-500">{item.pergunta}</p>
+                      <p className="font-medium">
+                        {typeof item.resposta === 'boolean'
+                          ? (item.resposta ? 'Sim' : 'Não')
+                          : typeof item.resposta === 'number'
+                            ? (item.categoria === 'VALOR' 
+                                ? new Intl.NumberFormat('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                  }).format(item.resposta)
+                                : item.resposta)
+                            : item.resposta}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

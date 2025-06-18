@@ -704,9 +704,74 @@ export default function Home() {
           <NewRelatorioModal 
             isOpen={modalRelatorioAberto} 
             onClose={handleFecharModal}
-            respostas={respostas}
             isLoading={false}
             imoveis={imoveisDestaque}
+            valorMaximo={respostas.valorMaximoImovel || respostas.valorImovel || 0}
+            dadosCredito={{
+              rendaMensal: respostas.rendaMensal || respostas.renda,
+              valorImovel: respostas.valorImovel,
+              entradaDisponivel: respostas.entradaDisponivel,
+              valorParcelaMaxima: respostas.valorParcelaMaxima,
+              temOutrosEmprestimos: respostas.temOutrosEmprestimos,
+              score: respostas.score,
+              aprovado: respostas.aprovado
+            }}
+            respostasSimulacao={[
+              // Dados básicos
+              ...(respostas.tipoImovel ? [{
+                pergunta: 'Tipo de imóvel',
+                resposta: respostas.tipoImovel
+              }] : []),
+              ...(respostas.quartos ? [{
+                pergunta: 'Quantidade de quartos',
+                resposta: respostas.quartos
+              }] : []),
+              ...(respostas.banheiros ? [{
+                pergunta: 'Quantidade de banheiros',
+                resposta: respostas.banheiros
+              }] : []),
+              ...(respostas.area ? [{
+                pergunta: 'Área mínima',
+                resposta: respostas.area,
+                categoria: 'AREA'
+              }] : []),
+              ...(respostas.vagas ? [{
+                pergunta: 'Vagas de garagem',
+                resposta: respostas.vagas
+              }] : []),
+              
+              // Preferências de localização
+              ...(respostas.bairros ? [{
+                pergunta: 'Bairros de interesse',
+                resposta: Array.isArray(respostas.bairros) 
+                  ? respostas.bairros.join(', ')
+                  : respostas.bairros
+              }] : []),
+              ...(respostas.proximidades ? [{
+                pergunta: 'Proximidades desejadas',
+                resposta: Array.isArray(respostas.proximidades) 
+                  ? respostas.proximidades.join(', ')
+                  : respostas.proximidades
+              }] : []),
+              
+              // Características do imóvel
+              ...(respostas.caracteristicas ? [{
+                pergunta: 'Características desejadas',
+                resposta: Array.isArray(respostas.caracteristicas) 
+                  ? respostas.caracteristicas.join(', ')
+                  : respostas.caracteristicas
+              }] : []),
+              
+              // Dados financeiros adicionais
+              ...(respostas.prazoFinanciamento ? [{
+                pergunta: 'Prazo de financiamento',
+                resposta: `${respostas.prazoFinanciamento} anos`
+              }] : []),
+              ...(respostas.fgts ? [{
+                pergunta: 'Utilização de FGTS',
+                resposta: respostas.fgts === 'sim' ? 'Sim' : 'Não'
+              }] : [])
+            ]}
           />
           
           {/* Modal de autenticação */}
