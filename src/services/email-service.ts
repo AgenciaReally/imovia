@@ -42,7 +42,9 @@ const transportadores = {
     secure: true, // porta 465 usa SSL
     auth: {
       user: 'relatorios@imovia.ai',
-      pass: 'Lala147??',
+      // NOTA: Parece que esta senha está expirada ou incorreta. Por favor, atualize com a senha correta.
+      // Erro encontrado: Invalid login: 535 5.7.0 Invalid credentials
+      pass: 'Lala147??', // Senha precisa ser atualizada
     },
     logger: true,
     debug: true
@@ -92,7 +94,7 @@ export async function enviarEmail({ para, assunto, texto, html, dados }: EmailCo
 
     // Configuração do email
     const mailOptions = {
-      from: `"Imovia" <${configAtiva.auth.user}>`,
+      from: `"iMovia" <${configAtiva.auth.user}>`,
       to: para,
       subject: assunto,
       text: texto,

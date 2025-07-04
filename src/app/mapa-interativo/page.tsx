@@ -816,8 +816,10 @@ function MapaInterativoContent() {
                     </div>
                   </Card>
                 ) : (
-                   // Card redesenhado para imóveis disponíveis (pins laranja/destaques)
-                  <Card className="overflow-hidden shadow-xl border-0 bg-white w-64 backdrop-blur-sm">
+                  // Card redesenhado para imóveis disponíveis (pins laranja/destaques)
+                  <Card 
+                    className="overflow-hidden shadow-xl border-0 bg-white w-64 backdrop-blur-sm mx-auto mt-2"
+                  >
                     {/* Imagem de destaque com efeito de gradiente */}
                     <div className="relative h-32 w-full overflow-hidden">
                       <div 

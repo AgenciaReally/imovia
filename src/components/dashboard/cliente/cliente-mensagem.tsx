@@ -104,8 +104,8 @@ export function ClienteMensagem({ cliente, isOpen, onClose }: ClienteMensagemPro
   const templates = [
     {
       titulo: "Boas-vindas",
-      assunto: "Bem-vindo à imovia!",
-      mensagem: `Olá ${cliente.name},\n\nSeja bem-vindo à imovia! Estamos felizes em tê-lo como cliente.\n\nEstamos à disposição para ajudá-lo na busca pelo seu imóvel ideal.\n\nAtenciosamente,\nEquipe imovia`
+      assunto: "Bem-vindo à iMovia!",
+      mensagem: `Olá ${cliente.name},\n\nSeja bem-vindo à iMovia! Estamos felizes em tê-lo como cliente.\n\nEstamos à disposição para ajudá-lo na busca pelo seu imóvel ideal.\n\nAtenciosamente,\nEquipe iMovia`
     },
     {
       titulo: "Agendamento",

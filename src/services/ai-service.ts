@@ -76,7 +76,7 @@ export class AIService {
       
       // Adicionar contexto do sistema e base de conhecimento para a IA
       const systemContent = `
-        Você é um assistente da Imovia, uma plataforma de imóveis integrada com a Orulo.
+        Você é um assistente da iMovia, uma plataforma de imóveis integrada com a Orulo.
         Você deve responder perguntas e executar comandos relacionados ao gerenciamento de imóveis, construtoras e clientes.
         Contexto atual: A plataforma tem 4 imóveis sincronizados da Orulo. Diversas construtoras e clientes potenciais no sistema.
         

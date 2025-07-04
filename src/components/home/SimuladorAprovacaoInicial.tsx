@@ -42,40 +42,7 @@ export const SimuladorAprovacaoInicial = ({
   const comprometimentoRenda = (valorParcelaMaxima / rendaMensal) * 100;
   const valorFinanciamento = valorImovel - entradaDisponivel;
   
-  // Funções para gerar mensagens de feedback
-  const getFeedbackValorImovel = () => {
-    if (valorImovel < 200000) {
-      return {
-        icon: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
-        message: "Imóveis com valores muito baixos podem ter opções limitadas no mercado atual.",
-        color: "bg-yellow-100 text-yellow-800 border-yellow-200"
-      };
-    } else if (valorImovel < 500000) {
-      return {
-        icon: <ThumbsUp className="h-4 w-4 text-green-500" />,
-        message: "Boa faixa de preço para imóveis iniciantes, com diversas opções disponíveis.",
-        color: "bg-green-100 text-green-800 border-green-200"
-      };
-    } else if (valorImovel < 1000000) {
-      return {
-        icon: <ThumbsUp className="h-4 w-4 text-green-500" />,
-        message: "Ótima faixa para imóveis bem localizados e com boa estrutura.",
-        color: "bg-green-100 text-green-800 border-green-200"
-      };
-    } else if (valorImovel < 5000000) {
-      return {
-        icon: <TrendingUp className="h-4 w-4 text-purple-500" />,
-        message: "Imóveis de alto padrão que exigem uma boa estrutura financeira.",
-        color: "bg-purple-100 text-purple-800 border-purple-200"
-      };
-    } else {
-      return {
-        icon: <AlertCircle className="h-4 w-4 text-blue-500" />,
-        message: "Imóvel de luxo. Certifique-se de que sua renda e patrimônio são compatíveis.",
-        color: "bg-blue-100 text-blue-800 border-blue-200"
-      };
-    }
-  };
+
   
   const getFeedbackEntrada = () => {
     if (porcentagemEntrada < 5) {
@@ -176,7 +143,6 @@ export const SimuladorAprovacaoInicial = ({
   };
   
   // Feedback para cada slider
-  const feedbackValorImovel = getFeedbackValorImovel();
   const feedbackEntrada = getFeedbackEntrada();
   const feedbackRendaMensal = getFeedbackRendaMensal();
   const feedbackParcela = getFeedbackParcela();
@@ -279,10 +245,7 @@ export const SimuladorAprovacaoInicial = ({
             <span>Máximo: R$ 50 milhões</span>
           </div>
           
-          <div className={`mt-2 flex items-center gap-2 rounded-lg border p-3 ${feedbackValorImovel.color}`}>
-            {feedbackValorImovel.icon}
-            <span className="text-sm">{feedbackValorImovel.message}</span>
-          </div>
+       
         </div>
 
         {/* Entrada Disponível */}
@@ -303,7 +266,7 @@ export const SimuladorAprovacaoInicial = ({
           <Slider
             id="entradaDisponivel"
             min={0}
-            max={valorImovel * 0.5}
+            max={valorImovel}
             step={5000}
             value={[entradaDisponivel]}
             onValueChange={(value) => setEntradaDisponivel(value[0])}
@@ -311,7 +274,7 @@ export const SimuladorAprovacaoInicial = ({
           />
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>Sem entrada</span>
-            <span>50% do valor</span>
+            <span>100% do valor</span>
           </div>
           
           <div className={`mt-2 flex items-center gap-2 rounded-lg border p-3 ${feedbackEntrada.color}`}>

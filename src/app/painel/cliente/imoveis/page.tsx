@@ -199,64 +199,138 @@ export default function ImoveisClientePage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [imoveis, setImoveis] = useState<Imovel[]>([])
-  const [imoveisFiltrados, setImoveisFiltrados] = useState<Imovel[]>([])
+  const [imoveisRecomendados, setImoveisRecomendados] = useState<Imovel[]>([])
   const [busca, setBusca] = useState("")
-  
-  // Paginação
   const [pagina, setPagina] = useState(1)
-  const [itensPorPagina, setItensPorPagina] = useState(8)
+  const [activeTab, setActiveTab] = useState("recomendados")
+  const itensPorPagina = 8
   const [totalPaginas, setTotalPaginas] = useState(1)
   const [imoveisPaginados, setImoveisPaginados] = useState<Imovel[]>([])
+  const [imoveisFiltrados, setImoveisFiltrados] = useState<Imovel[]>([])
+  
+  // Dados do usuário - em produção viria da sessão ou contexto de autenticação
+  const [nomeUsuario, setNomeUsuario] = useState("Usuário")  
+  
+  // Recuperar nome do usuário do localStorage (simulando autenticação)
+  useEffect(() => {
+    try {
+      const dadosUsuario = localStorage.getItem('imovia-usuario')
+      if (dadosUsuario) {
+        const usuario = JSON.parse(dadosUsuario)
+        if (usuario?.nome) {
+          setNomeUsuario(usuario.nome)
+        }
+      }
+    } catch (e) {
+      console.error('Erro ao recuperar dados do usuário:', e)
+    }
+  }, [])
   
   // Carregar dados dos imóveis
   useEffect(() => {
-    const carregarImoveis = async () => {
-      setLoading(true)
-      try {
-        // Buscar imóveis do cliente na API
-        const response = await fetch('/api/cliente/imoveis')
-        
-        if (!response.ok) {
-          throw new Error('Erro ao buscar imóveis')
-        }
-        
-        const data = await response.json()
-        setImoveis(data)
-        setImoveisFiltrados(data)
-        
-        // Calcular total de páginas
-        setTotalPaginas(Math.ceil(data.length / itensPorPagina))
-      } catch (error) {
-        console.error('Erro ao carregar imóveis:', error)
-        toast({
-          title: "Erro ao carregar imóveis",
-          description: "Não foi possível carregar seus imóveis. Tente novamente mais tarde.",
-          variant: "destructive"
-        })
-      } finally {
-        setLoading(false)
-      }
-    }
-    
     carregarImoveis()
-  }, [itensPorPagina])
-  
+  }, [])
+
   // Filtrar imóveis quando a busca mudar
   useEffect(() => {
     if (busca.trim() === "") {
       setImoveisFiltrados(imoveis)
     } else {
-      const termoBusca = busca.toLowerCase()
-      const filtrados = imoveis.filter(imovel => 
+      const termoBusca = busca.toLowerCase().trim()
+      const filtrados = imoveis.filter((imovel: Imovel) => 
         imovel.titulo.toLowerCase().includes(termoBusca) || 
         imovel.endereco.toLowerCase().includes(termoBusca) ||
-        (imovel.bairro && imovel.bairro.toLowerCase().includes(termoBusca)) ||
-        (imovel.construtora && imovel.construtora.nome.toLowerCase().includes(termoBusca))
+        (imovel.bairro?.toLowerCase().includes(termoBusca) ?? false) ||
+        (imovel.cidade?.toLowerCase().includes(termoBusca) ?? false)
       )
       setImoveisFiltrados(filtrados)
     }
+    setPagina(1)
+  }, [busca, imoveis])
+  
+  // Atualizar imóveis paginados quando a página ou filtros mudarem
+  useEffect(() => {
+    const inicio = (pagina - 1) * itensPorPagina
+    const fim = inicio + itensPorPagina
+    setImoveisPaginados(imoveisFiltrados.slice(inicio, fim))
+    setTotalPaginas(Math.ceil(imoveisFiltrados.length / itensPorPagina))
+  }, [pagina, imoveisFiltrados, itensPorPagina])
+  
+  const carregarImoveis = async () => {
+    setLoading(true)
+    try {
+      // Carregar imóveis recomendados do localStorage
+      let imoveisRecomendadosLocalStorage: Imovel[] = [];
+      try {
+        const savedImoveis = localStorage.getItem('imovia-imoveis-recomendados');
+        if (savedImoveis) {
+          const parsedImoveis = JSON.parse(savedImoveis);
+          if (Array.isArray(parsedImoveis) && parsedImoveis.length > 0) {
+            imoveisRecomendadosLocalStorage = parsedImoveis.map(imovel => ({
+              ...imovel,
+              matchPercentage: 90 + (Math.floor(Math.random() * 10)), // Mostrar match alto para recomendados
+              favorito: false
+            }));
+            console.log('✅ Imóveis recomendados carregados do localStorage:', imoveisRecomendadosLocalStorage.length);
+          }
+        }
+      } catch (storageError) {
+        console.error('Erro ao carregar imóveis recomendados do localStorage:', storageError);
+      }
+      
+      // Salvar imóveis recomendados no state
+      setImoveisRecomendados(imoveisRecomendadosLocalStorage);
+      
+      // TODO: Integrar com a API real
+      // Simulando dados mockados para desenvolvimento
+      const mockImoveis = [...Array(12)].map((_, i) => ({
+          id: `imovel-${i}`,
+          titulo: `Apartamento ${i + 1} - Luxo e Conforto`,
+          descricao: `Lindo apartamento com ${3 + (i % 2)} quartos em localização privilegiada.`,
+          preco: 350000 + (i * 50000),
+          area: 80 + (i * 10),
+          quartos: 3 + (i % 2),
+          banheiros: 2 + (i % 2),
+          vagas: 1 + (i % 2),
+          endereco: `Rua das Flores, ${100 + i}`,
+          bairro: i % 2 === 0 ? "Centro" : "Jardim Europa",
+          cidade: "São Paulo",
+          estado: "SP",
+          tipoImovel: i % 3 === 0 ? "Apartamento" : "Casa",
+          matchPercentage: 70 + (i % 30),
+          favorito: i % 5 === 0
+        }))
+        
+        setImoveis(mockImoveis)
+        setImoveisFiltrados(mockImoveis)
+      } catch (error) {
+        console.error("Erro ao carregar imóveis:", error)
+        toast({
+          title: "Erro ao carregar",
+          description: "Não foi possível carregar os imóveis.",
+          variant: "destructive"
+        })
+        setImoveis([])
+        setImoveisFiltrados([])
+      } finally {
+        setLoading(false)
+      }
+    }
     
-    // Resetar para a primeira página quando filtrar
+  // Filtrar imóveis quando a busca mudar
+  useEffect(() => {
+    if (busca.trim() === "") {
+      setImoveisFiltrados(imoveis)
+    } else {
+      const termoBusca = busca.toLowerCase().trim()
+      const filtrados = imoveis.filter(imovel => 
+        imovel.titulo.toLowerCase().includes(termoBusca) || 
+        imovel.endereco.toLowerCase().includes(termoBusca) ||
+        (imovel.bairro?.toLowerCase().includes(termoBusca) ?? false) ||
+        (imovel.cidade?.toLowerCase().includes(termoBusca) ?? false)
+      )
+      setImoveisFiltrados(filtrados)
+    }
     setPagina(1)
   }, [busca, imoveis])
   
@@ -316,7 +390,7 @@ export default function ImoveisClientePage() {
   }
   
   return (
-    <DashboardLayout userRole="cliente" userName="Cliente">
+    <DashboardLayout userRole="cliente" userName={nomeUsuario}>
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
@@ -348,23 +422,96 @@ export default function ImoveisClientePage() {
           </div>
         </div>
         
-        {/* Tabs de visualização */}
-        <Tabs defaultValue="grid" className="space-y-4">
+        {/* Tabs para tipos de imóveis */}
+        <Tabs 
+          defaultValue={imoveisRecomendados.length > 0 ? "recomendados" : "todos"} 
+          className="space-y-4"
+          onValueChange={(value) => {
+            setActiveTab(value);
+            setPagina(1); // Reset para a primeira página ao trocar de aba
+          }}
+        >
           <TabsList>
-            <TabsTrigger value="grid" className="flex items-center gap-2">
-              <Eye className="h-4 w-4" />
-              Visualização em grade
+            {imoveisRecomendados.length > 0 && (
+              <TabsTrigger value="recomendados" className="flex items-center gap-2">
+                <Heart className="h-4 w-4 text-primary" />
+                Recomendados ({imoveisRecomendados.length})
+              </TabsTrigger>
+            )}
+            <TabsTrigger value="todos" className="flex items-center gap-2">
+              <Building className="h-4 w-4" />
+              Todos os Imóveis
             </TabsTrigger>
           </TabsList>
           
-          <TabsContent value="grid">
+          <TabsContent value="recomendados">
+            {loading ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {Array.from({ length: 3 }).map((_, i) => (
+                  <Skeleton key={i} className="h-[350px] rounded-xl" />
+                ))}
+              </div>
+            ) : imoveisRecomendados.length === 0 ? (
+              <div className="text-center py-16 bg-muted/30 rounded-xl">
+                <Info className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+                <h3 className="text-xl font-medium">Nenhum imóvel recomendado</h3>
+                <p className="text-muted-foreground mt-2 mb-6 max-w-md mx-auto">
+                  Você ainda não tem imóveis recomendados. Faça uma simulação no mapa interativo para receber recomendações personalizadas.
+                </p>
+                <Button 
+                  variant="default" 
+                  size="lg"
+                  onClick={() => router.push('/')}
+                  className="gap-2"
+                >
+                  <RefreshCcw className="h-4 w-4" />
+                  Nova simulação
+                </Button>
+              </div>
+            ) : (
+              <>
+                <motion.div 
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    visible: {
+                      transition: { staggerChildren: 0.05 }
+                    },
+                    hidden: {}
+                  }}
+                >
+                  {imoveisRecomendados.map(imovel => (
+                    <ImovelCard 
+                      key={imovel.id} 
+                      imovel={imovel}
+                      onToggleFavorito={handleToggleFavorito}
+                    />
+                  ))}
+                </motion.div>
+                
+                <div className="mt-8 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                  <h3 className="text-lg font-medium flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-primary" />
+                    Recomendação personalizada
+                  </h3>
+                  <p className="mt-1 text-muted-foreground">
+                    Estes imóveis foram recomendados com base na sua última simulação no mapa interativo.
+                    Para atualizar estas recomendações, faça uma nova simulação.
+                  </p>
+                </div>
+              </>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="todos">
             {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {Array.from({ length: 8 }).map((_, i) => (
                   <Skeleton key={i} className="h-[350px] rounded-xl" />
                 ))}
               </div>
-            ) : imoveisFiltrados.length === 0 ? (
+            ) : imoveis.length === 0 ? (
               <EmptyStateImoveis onResetFiltros={resetFiltros} />
             ) : (
               <>

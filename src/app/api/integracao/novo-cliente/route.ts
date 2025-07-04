@@ -62,15 +62,15 @@ export async function GET(request: NextRequest) {
     // Enviar email com as credenciais
     await enviarEmail({
       para: email,
-      assunto: "Bem-vindo ao Imovia - Suas credenciais de acesso",
+      assunto: "Bem-vindo ao iMovia - Suas credenciais de acesso",
       html: `
-        <h1>Bem-vindo ao Imovia!</h1>
+        <h1>Bem-vindo ao iMovia!</h1>
         <p>Seu cadastro foi realizado com sucesso.</p>
         <p>Utilize as seguintes credenciais para acessar sua conta:</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Senha:</strong> ${senha}</p>
         <p>Recomendamos que você altere sua senha após o primeiro acesso.</p>
-        <p>Atenciosamente,<br/>Equipe Imovia</p>
+        <p>Atenciosamente,<br/>Equipe iMovia</p>
       `
     });
     

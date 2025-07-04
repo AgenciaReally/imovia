@@ -177,16 +177,76 @@ model Match {
 
 // Modelo de relatório
 model Relatorio {
-  id        String   @id @default(cuid())
-  resumo    String
-  pdfUrl    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  resumo      String?
+  pdfUrl      String?
+  dataCriacao DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Dados financeiros
+  rendaMensal          Float?
+  valorParcelaMaxima   Float?
+  temOutrosEmprestimos Boolean? @default(false)
+  valorEntrada         Float?
+  prazoFinanciamento   Int?
+  taxa                 Float?
+  valorImovel          Float?
+  valorFinanciamento   Float?
+  valorParcela         Float?
+
+  // Imóveis recomendados
+  imoveisRecomendados ImoveisRecomendados[]
+
+  // Dados de localização
+  cidade                  String?
+  bairros                 String?
+  localTrabalho           String?
+  distanciaMaximaTrabalho Float?
+
+  // Dados de empreendimento
+  importanciaPisoQuartos String?
+  importanciaAcademia    String?
+  importanciaPiscina     String?
+  tipoPortaria           String?
+  importanciaSalaoFestas String?
+  importanciaPlayground  String?
+  importanciaEspacoPet   String?
+
+  // Dados de proximidades
+  importanciaParques         String?
+  importanciaShopping        String?
+  importanciaRestaurantes    String?
+  importanciaCaminhabilidade String?
+  temPet                     Boolean? @default(false)
+  importanciaEscolas         String?
+  importanciaTransporte      String?
 
   // Relações
   userId  String
   usuario User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   matches Match[]
+}
+
+// Modelo de imóveis recomendados no relatório
+model ImoveisRecomendados {
+  id          String    @id @default(cuid())
+  relatorioId String
+  relatorio   Relatorio @relation(fields: [relatorioId], references: [id], onDelete: Cascade)
+  imovelId    String
+  titulo      String?
+  preco       Float?
+  endereco    String?
+  bairro      String?
+  cidade      String?
+  area        Float?
+  quartos     Int?
+  banheiros   Int?
+  vagas       Int?
+  imageUrl    String?
+  linkImovel  String?
+  dataCriacao DateTime  @default(now())
+
+  @@index([relatorioId])
 }
 
 // Modelo para configurações da aplicação

@@ -68,7 +68,7 @@ export function LeftBar({ userRole = "admin", userName }: LeftBarProps) {
         },
         { 
           icon: <Home className="h-5 w-5" />,
-          label: "Imóveis Imovia",
+          label: "Imóveis iMovia",
           href: "/painel/admin/imoveis",
         },
         { 
@@ -158,11 +158,6 @@ export function LeftBar({ userRole = "admin", userName }: LeftBarProps) {
           label: "Imóveis",
           href: "/painel/cliente/imoveis",
         },
-        { 
-          icon: <Building className="h-5 w-5" />,
-          label: "Construtoras",
-          href: "/painel/cliente/construtoras",
-        }
       ]
     },
     {
@@ -180,11 +175,7 @@ export function LeftBar({ userRole = "admin", userName }: LeftBarProps) {
           label: "Suporte",
           href: "/painel/cliente/suporte",
         },
-        { 
-          icon: <FileText className="h-5 w-5" />,
-          label: "Relatórios",
-          href: "/painel/cliente/relatorios",
-        }
+      
       ]
     },
     {

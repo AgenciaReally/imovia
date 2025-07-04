@@ -356,71 +356,315 @@ export default function Home() {
     setRelatorioLoading(true);
     
     try {
-      // IMPORTANTE: Buscar imóveis destacados antes de abrir o modal
-      // Construir URL com parâmetros baseados nas respostas do usuário
+      // IMPORTANTE: Usar exatamente os mesmos parâmetros que o mapa interativo para garantir consistência
       const valorMaximo = respostas.valorMaximoImovel || respostas.valorImovel;
-      let url = '/api/imoveis?ativo=true';
+      const parametrosUrl = construirParametrosUrl();
       
-      // Adicionar filtros relevantes 
-      if (valorMaximo) url += `&valorMaximo=${valorMaximo}`;
-      if (respostas.quartos) url += `&quartos=${respostas.quartos}`;
-      if (respostas.banheiros) url += `&banheiros=${respostas.banheiros}`;
-      if (respostas.tipoImovel) url += `&tipoImovel=${respostas.tipoImovel}`;
+      console.log('\u2757\ufe0f Usando os mesmos parâmetros do mapa interativo:', parametrosUrl);
       
-      console.log('\u2757\ufe0f Buscando imóveis para o relatório:', url);
-      
+      // Primeiro tentar buscar os imóveis do iframe do mapa interativo
       try {
-        // Buscar imóveis do backend
-        const response = await fetch(url);
-        if (response.ok) {
-          const imoveisData = await response.json();
-          console.log(`\u2705 Encontrados ${imoveisData.length} imóveis para o relatório`);
+        // Acessar o iframe do mapa interativo
+        const mapaFrame = document.querySelector('iframe[src*="mapa-interativo"]');
+        let imoveisDoMapa = [];
+        
+        if (mapaFrame) {
+          // Tenta usar a comunicação de mensagens para obter os imóveis do iframe
+          // Isso seria ideal, mas requer implementação no mapa-interativo/page.tsx
+          console.log('\u2757\ufe0f Tentando obter imóveis do iframe do mapa');
+          // Esta funcionalidade requer implementação adicional em mapa-interativo/page.tsx
+        }
+        
+        // Se não conseguiu obter do iframe, busca diretamente da API com os mesmos parâmetros
+        if (imoveisDoMapa.length === 0) {
+          // IMPORTANTE: Os logs indicam que a API do mapa usa outro formato: { preco: { lte: valor } }
+          // em vez de valorMaximo=valor, vamos ajustar isso
           
-          // Filtrar por valor máximo se necessário
-          let imoveisFiltrados = imoveisData;
-          if (valorMaximo) {
-            imoveisFiltrados = imoveisData.filter((imovel: { preco: number }) => imovel.preco <= valorMaximo);
-            console.log(`\u2705 ${imoveisFiltrados.length} imóveis dentro do orçamento de R$ ${valorMaximo.toLocaleString('pt-BR')}`);
-          }
+          // Construir filtros exatamente como o mapa interativo
+          const valorMaximo = respostas.valorMaximoImovel || respostas.valorImovel;
+          let url = `/api/imoveis?ativo=true`;
           
-          // Pegar os 3 melhores imóveis (ou mais baratos se não houver suficientes no orçamento)
-          if (imoveisFiltrados.length > 0) {
-            // Ordenar por match percentage ou preço se não tiver match
-            imoveisFiltrados.sort((a: { matchPercentage?: number, preco: number }, b: { matchPercentage?: number, preco: number }) => {
-              if (a.matchPercentage && b.matchPercentage) {
-                return b.matchPercentage - a.matchPercentage;
+          // Usar o mesmo formato que aparece nos logs: preco.lte em vez de valorMaximo
+          if (valorMaximo) url += `&preco.lte=${valorMaximo}`;
+          if (respostas.quartos) url += `&quartos=${respostas.quartos}`;
+          if (respostas.banheiros) url += `&banheiros=${respostas.banheiros}`;
+          if (respostas.tipoImovel) url += `&tipoImovel=${respostas.tipoImovel}`;
+          
+          console.log('\u2757\ufe0f Buscando imóveis com filtros CORRIGIDOS para bater com o mapa:', url);
+          
+          const response = await fetch(url);
+          if (response.ok) {
+            const imoveisData = await response.json();
+            console.log(`\u2705 Encontrados ${imoveisData.length} imóveis para o relatório`);
+            
+            // Aplicar o mesmo algoritmo de cálculo de match percentage que o mapa interativo usa
+            const filtros: Record<string, any> = {};
+            if (valorMaximo) filtros.valorMaximo = valorMaximo;
+            if (respostas.quartos) filtros.quartos = respostas.quartos;
+            if (respostas.banheiros) filtros.banheiros = respostas.banheiros;
+            if (respostas.tipoImovel) filtros.tipoImovel = respostas.tipoImovel;
+            
+            // Replicar EXATAMENTE o mesmo algoritmo do mapa interativo
+            const imoveisComMatch = imoveisData.map((imovel: any) => {
+              let pontos = 0;
+              let totalPossivel = 0;
+              
+              // Copiar os mesmos critérios e pesos do mapa interativo
+              const criterios = [
+                { campo: 'quartos', peso: 25 },
+                { campo: 'banheiros', peso: 15 },
+                { campo: 'area', peso: 20 },
+                { campo: 'preco', peso: 30 },
+                { campo: 'bairro', peso: 10 }
+              ];
+              
+              // Aplicar exatamente o mesmo cálculo que o mapa interativo usa
+              criterios.forEach(criterio => {
+                totalPossivel += criterio.peso;
+                
+                switch (criterio.campo) {
+                  case 'quartos':
+                    if (filtros.quartos && imovel.quartos) {
+                      const diff = Math.abs(filtros.quartos - imovel.quartos);
+                      if (diff === 0) pontos += criterio.peso;
+                      else if (diff === 1) pontos += criterio.peso * 0.5;
+                    }
+                    break;
+                    
+                  case 'banheiros':
+                    if (filtros.banheiros && imovel.banheiros) {
+                      const diff = Math.abs(filtros.banheiros - imovel.banheiros);
+                      if (diff === 0) pontos += criterio.peso;
+                      else if (diff === 1) pontos += criterio.peso * 0.5;
+                    }
+                    break;
+                    
+                  case 'area':
+                    if (filtros.area && imovel.area) {
+                      const areaDiff = Math.abs(filtros.area - imovel.area) / filtros.area;
+                      if (areaDiff <= 0.1) pontos += criterio.peso;
+                      else if (areaDiff <= 0.2) pontos += criterio.peso * 0.7;
+                      else if (areaDiff <= 0.3) pontos += criterio.peso * 0.4;
+                    }
+                    break;
+                    
+                  case 'preco':
+                    if (valorMaximo && imovel.preco) {
+                      if (imovel.preco <= valorMaximo) {
+                        pontos += criterio.peso;
+                      } else {
+                        const diff = (imovel.preco - valorMaximo) / valorMaximo;
+                        if (diff <= 0.1) pontos += criterio.peso * 0.7;
+                        else if (diff <= 0.2) pontos += criterio.peso * 0.3;
+                      }
+                    }
+                    break;
+                    
+                  case 'bairro':
+                    if (filtros.bairro && imovel.bairro) {
+                      if (imovel.bairro.toLowerCase().includes(filtros.bairro.toLowerCase())) {
+                        pontos += criterio.peso;
+                      }
+                    }
+                    break;
+                }
+              });
+              
+              // Adicionar pontos para imóveis em destaque (igual ao mapa)
+              if (imovel.destaque) {
+                pontos += 10;
+                totalPossivel += 10;
               }
-              return a.preco - b.preco; // Mais baratos primeiro
+              
+              // Mesmo cálculo final
+              const matchPercentage = Math.min(Math.round((pontos / totalPossivel) * 100), 98);
+              return { ...imovel, matchPercentage };
             });
             
-            // Pegar os 3 primeiros
-            const melhoresImoveis = imoveisFiltrados.slice(0, 3);
-            setImoveisDestaque(melhoresImoveis);
-            console.log('\u2705 3 melhores imóveis selecionados para o relatório!');
-          } else if (imoveisData.length > 0) {
-            // Se não houver imóveis dentro do orçamento, usar os 3 mais baratos disponíveis
-            const imoveisMaisBaratos = [...imoveisData].sort((a: { preco: number }, b: { preco: number }) => a.preco - b.preco).slice(0, 3);
-            setImoveisDestaque(imoveisMaisBaratos);
-            console.log('\u26a0\ufe0f Usando os 3 imóveis mais baratos disponíveis (fora do orçamento)');
+            // Ordenar por match percentage (maior para menor)
+            imoveisComMatch.sort((a: any, b: any) => b.matchPercentage - a.matchPercentage);
+            
+            // Filtrar apenas imóveis com match >= 80% e pegar os 3 primeiros
+            // IMPORTANTE: Exatamente igual à lógica do mapa interativo
+            const imoveisDestacados = imoveisComMatch
+              .filter((imovel: any) => imovel.matchPercentage >= 80)
+              .slice(0, 3)
+              .map((imovel: any) => ({ ...imovel, destaque: true }));
+              
+            if (imoveisDestacados.length > 0) {
+              setImoveisDestaque(imoveisDestacados);
+              console.log(`\u2705 ${imoveisDestacados.length} imóveis destacados com match >= 80% encontrados!`);
+            } else {
+              // Fallback: se não houver imóveis com match >= 80%, pegar os 3 com maior match
+              const melhoresImoveis = imoveisComMatch.slice(0, 3);
+              setImoveisDestaque(melhoresImoveis);
+              console.log('\u26a0\ufe0f Usando os 3 melhores matches disponíveis (todos abaixo de 80%)');  
+            }
           } else {
-            console.warn('\u26d4 Nenhum imóvel encontrado!');
+            console.error('Erro ao buscar imóveis:', response.statusText);
           }
-        } else {
-          console.error('Erro ao buscar imóveis:', response.statusText);
         }
       } catch (error) {
-        console.error('Erro ao buscar imóveis:', error);
+        console.error('Erro ao buscar imóveis do mapa:', error);
+      }
+      
+      // Obter email do usuário logado da sessão (garantindo que sempre teremos um email)
+      let emailUsuario = '';
+      
+      // Verificar se temos o email do usuário logado
+      try {
+        const localUser = localStorage.getItem('user-session');
+        if (localUser) {
+          const userData = JSON.parse(localUser);
+          if (userData && userData.email) {
+            emailUsuario = userData.email;
+            console.log('\u2705 Usando email do usuário logado:', emailUsuario);
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao obter email do usuário logado:', error);
+      }
+      
+      // IMPORTANTE: Verificar se temos os imóveis corretamente
+      console.log('\u2705 Imóveis para enviar no relatório:', JSON.stringify(imoveisDestaque));
+      
+      let imoveisFinais = [...imoveisDestaque]; // Criar uma cópia para manipulação
+      
+      if (!imoveisFinais || imoveisFinais.length === 0) {
+        console.error('\u26a0\ufe0f ALERTA: Não há imóveis para incluir no relatório. Verificando imóveis novamente...');
+        // Tentar recuperar imóveis do mapa interativo novamente
+        try {
+          // Buscar o iframe e garantir que ele existe e tem contentWindow
+          const iframe = document.querySelector('iframe[title="Mapa Interativo"]') as HTMLIFrameElement;
+          // Verificação robusta para contentWindow
+          const iframeWindow = iframe?.contentWindow;
+          if (iframeWindow) {
+            const imoveisSelecionados = await new Promise<any[]>((resolve) => {
+              // Função que será chamada pelo iframe
+              (window as any).receberImoveisSelecionados = (imoveis: any[]) => {
+                resolve(imoveis);
+              };
+              
+              // Pedir ao iframe para enviar os imóveis selecionados - com verificação explícita de null
+              if (iframeWindow) {
+                iframeWindow.postMessage('enviarImoveisSelecionados', '*');
+              }
+              
+              // Timeout caso o iframe não responda
+              setTimeout(() => resolve([]), 2000);
+            });
+            
+            if (imoveisSelecionados.length > 0) {
+              console.log('\u2705 Recuperados imóveis do iframe:', imoveisSelecionados.length, 'imóveis');
+              imoveisFinais = imoveisSelecionados;
+              setImoveisDestaque(imoveisSelecionados); // Atualizar state em vez de modificar diretamente
+            }
+          }
+        } catch (error) {
+          console.error('Erro ao tentar recuperar imóveis do iframe:', error);
+        }
+      }
+      
+      // Salvar imóveis recomendados no localStorage para exibir no painel do cliente
+      try {
+        // Filtrar apenas os imóveis que têm destaque=true para garantir que sejam os mesmos do mapa
+        const imoveisDestaqueReal = (imoveisFinais || []).filter(imovel => imovel.destaque === true);
+        
+        // Log para debugging
+        console.log('✅ Usando apenas imóveis com destaque=true para relatório:', 
+          imoveisDestaqueReal.length > 0 ? imoveisDestaqueReal.length : 'NENHUM ENCONTRADO! Usando todos disponíveis.');
+        
+        // Se não houver imóveis com destaque, usar os primeiros 3 disponíveis
+        const imoveisParaSalvar = imoveisDestaqueReal.length > 0 ? imoveisDestaqueReal : (imoveisFinais || []).slice(0, 3);
+        
+        // Converter para formato simplificado
+        const imoveisSimpificados = imoveisParaSalvar.map(imovel => ({
+          id: imovel.id,
+          titulo: imovel.titulo,
+          descricao: imovel.descricao,
+          preco: imovel.preco,
+          endereco: imovel.endereco,
+          bairro: imovel.bairro,
+          cidade: imovel.cidade,
+          estado: imovel.estado,
+          caracteristicas: imovel.caracteristicas,
+          area: imovel.area,
+          quartos: imovel.quartos,
+          banheiros: imovel.banheiros,
+          vagas: imovel.vagas,
+          fotos: imovel.fotos?.slice(0, 1) || [], // Apenas a primeira foto
+          matchPercentage: imovel.matchPercentage, // Importante: preservar a porcentagem de match
+          dataRecomendacao: new Date().toISOString()
+        }));
+        
+        if (imoveisSimpificados.length > 0) {
+          localStorage.setItem('imovia-imoveis-recomendados', JSON.stringify(imoveisSimpificados));
+          console.log('✅ Imóveis salvos no localStorage com sucesso:', imoveisSimpificados.length);
+        }
+      } catch (error) {
+        console.error('Erro ao salvar imóveis no localStorage:', error);
       }
       
       // Preparar dados para o relatório
       const dadosRelatorio = {
         nome: dadosUsuario.nome,
-        email: dadosUsuario.email || respostas.email,
+        email: emailUsuario || dadosUsuario.email || respostas.email || 'suporte@vyzer.com.br', // Garantir que sempre teremos um email
         telefone: dadosUsuario.telefone || respostas.telefone,
-        // Informações financeiras
-        rendaMensal: respostas.rendaMensal || respostas.renda,
+        // Informações financeiras - garantir que a renda mensal seja passada corretamente
+        // O valor da renda mensal do slider está dentro de simulacaoInicial
+        rendaMensal: Number(
+          respostas.simulacaoInicial?.rendaMensal || // Valor do SimuladorAprovacaoInicial
+          respostas.rendaMensal || // Fallback para outros fluxos
+          respostas.renda || // Compatibilidade com nome alternativo
+          0
+        ), // Converter para número
         valorMaximoImovel: valorMaximo,
-        // Preferências
+        // Dados do simulador de aprovação inicial
+        valorParcelaMaxima: respostas.simulacaoInicial?.valorParcelaMaxima,
+        temOutrosEmprestimos: respostas.simulacaoInicial?.temOutrosEmprestimos,
+        
+        // Dados do simulador de crédito
+        fluxoSimulador: respostas.fluxo,
+        // Campos do fluxo COM_APROVACAO
+        cpf: respostas.cpf,
+        estadoCivil: respostas.estadoCivil,
+        comprovanteRenda: respostas.comprovanteRenda,
+        comprovanteEndereco: respostas.comprovanteEndereco,
+        carteiraTrabalho: respostas.carteiraTrabalho,
+        irpf: respostas.irpf,
+        escolaridade: respostas.escolaridade,
+        outrosCompradores: respostas.outrosCompradores,
+        // Campos do fluxo SEM_APROVACAO
+        rendaMensalFaixa: respostas.rendaMensal, // Este é diferente do rendaMensal numérico
+        outrosFinanciamentos: respostas.outrosFinanciamentos,
+        dataNascimento: respostas.dataNascimento, 
+        fgts: respostas.fgts,
+        prazoFinanciamento: respostas.prazoFinanciamento,
+        
+        // Preferências de localização
+        cidade: respostas.cidade,
+        localTrabalho: respostas.localTrabalho,
+        localEscola: respostas.localEscola,
+        
+        // Preferências de empreendimento
+        importanciaPisoQuartos: respostas.importanciaPisoQuartos,
+        importanciaAcademia: respostas.importanciaAcademia,
+        importanciaPiscina: respostas.importanciaPiscina,
+        tipoPortaria: respostas.tipoPortaria,
+        importanciaSalaoFestas: respostas.importanciaSalaoFestas,
+        importanciaPlayground: respostas.importanciaPlayground,
+        importanciaEspacoPet: respostas.importanciaEspacoPet,
+        
+        // Preferências de proximidades
+        importanciaParques: respostas.importanciaParques,
+        importanciaShoppings: respostas.importanciaShoppings,
+        importanciaRestaurantes: respostas.importanciaRestaurantes,
+        importanciaCaminhabilidade: respostas.importanciaCaminhabilidade,
+        temPet: respostas.temPet,
+        importanciaEscolas: respostas.importanciaEscolas,
+        importanciaTransporte: respostas.importanciaTransporte,
+        
+        // Preferências de imóvel
         tipoImovel: respostas.tipoImovel,
         caracteristicas: Array.isArray(respostas.caracteristicas) 
           ? respostas.caracteristicas 
@@ -431,11 +675,17 @@ export default function Home() {
         proximidades: Array.isArray(respostas.proximidades) 
           ? respostas.proximidades 
           : (respostas.proximidades ? respostas.proximidades.split(',') : []),
-        imoveisRecomendados: imoveisDestaque,
+        // CRUCIAL: Usar imoveisFinais que pode ter sido atualizado com os imóveis do iframe
+        imoveisRecomendados: imoveisFinais || [],
         dataEnvio: new Date().toLocaleDateString('pt-BR')
       };
       
-      console.log('Enviando relatório por email:', dadosRelatorio);
+      // Verificação final antes de enviar
+      if (!dadosRelatorio.imoveisRecomendados || dadosRelatorio.imoveisRecomendados.length === 0) {
+        console.error('\u26a0\ufe0f ALERTA FINAL: Ainda não há imóveis para enviar no relatório!');
+      } else {
+        console.log('\u2705 Enviando relatório por email com', dadosRelatorio.imoveisRecomendados.length, 'imóveis');
+      }
       
       // Enviar email com o relatório
       if (dadosRelatorio.email) {

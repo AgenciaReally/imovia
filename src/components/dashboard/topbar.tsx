@@ -226,56 +226,7 @@ export function Topbar({ userRole = "admin", userName = "Admin" }: TopbarProps) 
       {/* Ações e perfil */}
       <div className="flex items-center space-x-2">
         {/* Barra de pesquisa */}
-        <AnimatePresence>
-          {isSearchOpen ? (
-            <motion.div
-              initial={{ width: 0, opacity: 0 }}
-              animate={{ width: 300, opacity: 1 }}
-              exit={{ width: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="relative hidden md:block"
-            >
-              <Input
-                type="text"
-                placeholder="Pesquisar..."
-                className="pr-8"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                autoFocus
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsSearchOpen(false)}
-                className="absolute right-0 top-0 h-full"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => setIsSearchOpen(true)}
-                    className="h-9 w-9 mr-1 hidden md:flex"
-                  >
-                    <Search className="h-4 w-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="bottom">Pesquisar</TooltipContent>
-              </Tooltip>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
+       
         {/* Toggle de tema (Light/Dark) */}
         <Tooltip>
           <TooltipTrigger asChild>
