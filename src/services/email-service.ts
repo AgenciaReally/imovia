@@ -33,16 +33,33 @@ export interface RespostaRelatorioData {
   mediaPontuacao?: number;
 }
 
+// Obter configurações de email do ambiente (ou usar valores padrão)
+const EMAIL_HOST = process.env.EMAIL_HOST || 'mail.imovia.ai';
+const EMAIL_PORT = parseInt(process.env.EMAIL_PORT || '465', 10);
+const EMAIL_USER = process.env.EMAIL_USER || 'relatorios@imovia.ai';
+const EMAIL_PASS = process.env.EMAIL_PASS || 'Lala147??';
+const EMAIL_SECURE = process.env.EMAIL_SERVER_SECURE !== 'false';
+
+console.log('Configurando email com:', {
+  host: EMAIL_HOST,
+  port: EMAIL_PORT,
+  user: EMAIL_USER,
+  secure: EMAIL_SECURE
+});
+
 // Opções de transportadores SMTP
 const transportadores = {
-  // Configuração da Imovia - atualizada para usar as mesmas credenciais da API de relatório
-  imovia: {
-    host: 'mail.imovia.ai',
-    port: 465,
-    secure: true, // porta 465 usa SSL
+  // Configuração principal (baseada em variáveis de ambiente)
+  principal: {
+    host: EMAIL_HOST,
+    port: EMAIL_PORT,
+    secure: EMAIL_SECURE,
     auth: {
-      user: 'relatorios@imovia.ai',
-      pass: 'Lala147??',
+      user: EMAIL_USER,
+      pass: EMAIL_PASS,
+    },
+    tls: {
+      rejectUnauthorized: false // Aceitar certificados auto-assinados
     },
     logger: true,
     debug: true
@@ -57,13 +74,25 @@ const transportadores = {
       user: 'e2c41b09fd28c4',
       pass: '22f3b3fd0c36ef',
     }
+  },
+  
+  // Configuração do Gmail como fallback
+  gmail: {
+    service: 'gmail',
+    auth: {
+      user: 'agencia.really@gmail.com',
+      pass: 'lwxwapjguolkecgq' // Nova senha de app gerada para o Gmail
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
   }
 };
 
-// Escolher mailtrap para ambiente de desenvolvimento
+// Escolher configuração dependendo do ambiente
 const configAtiva = process.env.NODE_ENV === 'production' 
-  ? transportadores.imovia 
-  : transportadores.mailtrap;
+  ? transportadores.principal 
+  : transportadores.principal; // Usar principal também em dev
 
 // Criar transportador
 // Criar transportador apenas no servidor

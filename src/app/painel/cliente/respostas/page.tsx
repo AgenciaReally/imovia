@@ -296,7 +296,7 @@ export default function RespostasClientePage() {
       const termoBusca = busca.toLowerCase()
       filtradas = filtradas.filter(resposta => 
         resposta.pergunta.texto.toLowerCase().includes(termoBusca) || 
-        resposta.resposta.toLowerCase().includes(termoBusca)
+        (resposta.resposta && resposta.resposta.toLowerCase().includes(termoBusca))
       )
     }
     
