@@ -60,6 +60,8 @@ export default function ClientesPage() {
   const [erro, setErro] = useState<string | null>(null);
   const [filtro, setFiltro] = useState('');
   const [activeTab, setActiveTab] = useState('todos');
+  const [ordenacao, setOrdenacao] = useState<'recentes' | 'antigos' | 'az'>('recentes');
+  const [filtroAdicional, setFiltroAdicional] = useState<string | null>(null);
   const [novoClienteDialogOpen, setNovoClienteDialogOpen] = useState(false);
   
   // Estados para os modais de ações
@@ -94,13 +96,13 @@ export default function ClientesPage() {
     fetchClientes();
   }, []);
   
-  // Filtrar clientes com base no termo de busca e na aba ativa
+  // Filtrar clientes com base no termo de busca, aba ativa e filtros adicionais
   const clientesFiltrados = clientes.filter(cliente => {
     // Filtro de busca (nome, email ou telefone)
     const matchSearch = 
       cliente.name.toLowerCase().includes(filtro.toLowerCase()) ||
       cliente.email.toLowerCase().includes(filtro.toLowerCase()) ||
-      cliente.telefone.toLowerCase().includes(filtro.toLowerCase());
+      (cliente.telefone?.toLowerCase().includes(filtro.toLowerCase()) || false);
       
     // Filtro por aba
     const matchTab = 
@@ -109,7 +111,27 @@ export default function ClientesPage() {
       (activeTab === 'inativos' && cliente.status === 'inativo') ||
       (activeTab === 'pendentes' && cliente.status === 'pendente');
       
-    return matchSearch && matchTab;
+    // Filtros adicionais
+    let matchFiltroAdicional = true;
+    if (filtroAdicional === 'comTelefone') {
+      matchFiltroAdicional = !!cliente.telefone && cliente.telefone.trim().length > 0;
+    } else if (filtroAdicional === 'externo') {
+      matchFiltroAdicional = cliente.origem === 'site_externo';
+    }
+      
+    return matchSearch && matchTab && matchFiltroAdicional;
+  });
+  
+  // Ordenar clientes após filtrar
+  const clientesOrdenados = [...clientesFiltrados].sort((a, b) => {
+    if (ordenacao === 'recentes') {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    } else if (ordenacao === 'antigos') {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    } else if (ordenacao === 'az') {
+      return a.name.localeCompare(b.name);
+    }
+    return 0;
   });
   
   // Gerar as iniciais para o avatar
@@ -171,6 +193,43 @@ export default function ClientesPage() {
     setModoDesativacao(modo);
     setDesativarDialogOpen(true);
   };
+  
+  // Função para exportar clientes para CSV
+  const exportarClientes = (clientes: Cliente[]) => {
+    if (clientes.length === 0) {
+      toast.error('Não há clientes para exportar');
+      return;
+    }
+    
+    // Definir cabeçalhos e preparar dados
+    const cabecalhos = ['Nome', 'E-mail', 'Telefone', 'Status', 'Data de Cadastro'];
+    const dados = clientes.map(cliente => [
+      cliente.name,
+      cliente.email,
+      cliente.telefone || 'Não informado',
+      cliente.status || 'ativo',
+      formatarData(cliente.createdAt)
+    ]);
+    
+    // Converter para formato CSV
+    const csvContent = [
+      cabecalhos.join(','),
+      ...dados.map(linha => linha.join(','))
+    ].join('\n');
+    
+    // Criar blob e link para download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `clientes_imovia_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast.success(`${clientes.length} clientes exportados com sucesso`);
+  };
 
   return (
     <DashboardLayout userRole="admin" userName="Admin Imovia">
@@ -206,28 +265,34 @@ export default function ClientesPage() {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-[200px]">
+                  <DropdownMenuLabel>Ordenar por</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setOrdenacao('recentes')}>
+                    {ordenacao === 'recentes' && '✓ '}Mais recentes
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setOrdenacao('antigos')}>
+                    {ordenacao === 'antigos' && '✓ '}Mais antigos
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setOrdenacao('az')}>
+                    {ordenacao === 'az' && '✓ '}Nomes A-Z
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuLabel>Filtrar por</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    Mais recentes
+                  <DropdownMenuItem onClick={() => setFiltroAdicional(filtroAdicional === 'comTelefone' ? null : 'comTelefone')}>
+                    {filtroAdicional === 'comTelefone' && '✓ '}Apenas com telefone
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Mais antigos
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Nomes A-Z
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    Apenas com telefone
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    Cadastro via site externo
+                  <DropdownMenuItem onClick={() => setFiltroAdicional(filtroAdicional === 'externo' ? null : 'externo')}>
+                    {filtroAdicional === 'externo' && '✓ '}Cadastro via site externo
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               
-              <Button variant="outline" size="sm" className="h-9 gap-1">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="h-9 gap-1"
+                onClick={() => exportarClientes(clientesOrdenados)}
+              >
                 <Download className="h-4 w-4" />
                 Exportar
               </Button>
@@ -303,7 +368,7 @@ export default function ClientesPage() {
                   <p className="text-destructive">{erro}</p>
                 </CardContent>
               </Card>
-            ) : clientesFiltrados.length === 0 ? (
+            ) : clientesOrdenados.length === 0 ? (
               <Card className="border-0 shadow-md">
                 <CardContent className="p-6 text-center">
                   <Users className="h-12 w-12 mx-auto text-muted-foreground opacity-50 mb-3" />
@@ -330,7 +395,7 @@ export default function ClientesPage() {
                     </div>
                     
                     <div className="divide-y">
-                      {clientesFiltrados.map((cliente) => (
+                      {clientesOrdenados.map((cliente) => (
                         <div key={cliente.id} className="grid grid-cols-12 p-3 items-center">
                           <div className="col-span-5 md:col-span-4 flex items-center gap-3">
                             <Avatar className="h-9 w-9">

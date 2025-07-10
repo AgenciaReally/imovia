@@ -1,16 +1,57 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { MapPin, Building, Home, Phone, Bed, Bath, Square, Car, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+// Importar tipos compartilhados
+import { Imovel, PinItem } from "@/types/imovel";
 
 // Componente interno que usa useSearchParams
 function MapaInterativoContent() {
   const searchParams = useSearchParams();
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  
+  // Função para calcular a posição do card de forma que ele não saia do mapa
+  const getCardPosition = (leftPos: string, topPos: string) => {
+    // Converter valores percentuais para números
+    const left = parseFloat(leftPos);
+    const top = parseFloat(topPos);
+    
+    // Definir margens seguras em percentual
+    const SAFE_MARGIN = 15; // 15% de margem segura de cada lado
+    const BOTTOM_SAFE_MARGIN = 25; // Margem maior para a parte inferior
+    
+    // Base - posicionar acima do pin
+    let transformValue = 'translate(-50%, -120%)';
+    
+    // Ajustar quando está perto da borda esquerda
+    if (left < SAFE_MARGIN) {
+      transformValue = 'translate(0%, -120%)';
+    }
+    // Ajustar quando está perto da borda direita
+    else if (left > (100 - SAFE_MARGIN)) {
+      transformValue = 'translate(-100%, -120%)';
+    }
+    
+    // Ajustar quando está perto da borda superior
+    if (top < SAFE_MARGIN) {
+      transformValue = transformValue.replace('-120%', '20%');
+    }
+    // Ajustar quando está perto da borda inferior
+    else if (top > (100 - BOTTOM_SAFE_MARGIN)) {
+      transformValue = transformValue.replace('-120%', '-220%');
+    }
+    
+    return {
+      left: leftPos,
+      top: topPos,
+      transform: transformValue
+    };
+  };
   
   // Localizações fixas dos pins (nas laterais)
   const pinPositions = [
@@ -85,60 +126,7 @@ function MapaInterativoContent() {
     ...gerarPosicoesAleatorias(3, "direita")
   ]; // Posições extras para mais pins cinza
   
-  // Tipagem dos imóveis que vem da API
-  interface Imovel {
-    id: string;
-    idExterno?: string | null;
-    titulo: string;
-    descricao: string;
-    preco: number;
-    area: number;
-    quartos: number;
-    banheiros: number;
-    vagas: number;
-    endereco: string;
-    bairro: string;
-    cidade: string;
-    estado: string;
-    cep: string;
-    latitude?: number;
-    longitude?: number;
-    imagens: string[];
-    fotoPrincipal?: string;
-    construtora?: string;
-    construtoraId?: string;
-    tipoImovel?: string;
-    tipoImovelId?: string;
-    status?: string;
-    dataAtualizacao?: string;
-    caracteristicas?: string[];
-    destaque?: boolean;
-    ativo?: boolean;
-    telefoneContato?: string;
-    matchPercentage?: number; // Campo adicional para armazenar o percentual de match
-    dentroOrcamento?: boolean; // Indica se o imóvel está dentro do orçamento do usuário
-    destacado?: boolean; // Indica se o imóvel deve ser destacado no mapa (pin laranja)
-  }
-  
-  // Gerar pins simulados
-  interface PinItem {
-    id: string;
-    titulo: string;
-    descricao: string;
-    preco: number;
-    area: number;
-    quartos: number;
-    banheiros: number;
-    vagas: number;
-    imagens: string[];
-    fotoPrincipal: string;
-    tipoImovel: string;
-    position: { left: string; top: string };
-    matchPercentage: number;
-    dentroOrcamento?: boolean; // Indica se o imóvel está dentro do orçamento do usuário
-    destaque?: boolean; // Indica se o imóvel deve ser destacado no mapa (pin laranja)
-    indisponivel?: boolean; // Propriedade para marcar pins indisponíveis (pins cinzas)
-  }
+  // Tipos já importados no início do arquivo
   
   const [pins, setPins] = useState<PinItem[]>([]);
   const [pinAtivo, setPinAtivo] = useState<string | null>(null);
@@ -352,6 +340,96 @@ function MapaInterativoContent() {
   };
   
   useEffect(() => {
+    // Comunicação entre o iframe e a página pai
+    const handleMessage = (event: MessageEvent) => {
+      // Verificar origem da mensagem (opcional, para segurança)
+      
+      if (event.data === 'enviarImoveisSelecionados') {
+        // A página pai está solicitando os imóveis selecionados (destacados)
+        // Filtrar apenas os pins que são destaques (pins laranjas)
+        const pinsDestacados = pins.filter(pin => pin.destaque === true);
+        console.log(`📍 Enviando ${pinsDestacados.length} pins destacados para página principal`);
+        
+        // Adicionar log detalhado para debugging
+        pinsDestacados.forEach((pin, index) => {
+          console.log(`📌 Pin destacado ${index + 1}:`, 
+            `ID: ${pin.id}`, 
+            `Título: ${pin.titulo}`,
+            `Match: ${pin.matchPercentage || 0}%`,
+            `Destaque: ${pin.destaque}`
+          );
+        });
+        
+        // Enviar pins destacados para a página principal
+        if (window.parent && window.parent !== window) {
+          try {
+            // Criar objetos simplificados com destaque=true explícito para garantir consistência
+            const imoveisParaEnviar = pinsDestacados.map(pin => ({
+              id: pin.id,
+              titulo: pin.titulo,
+              preco: pin.preco,
+              destaque: true, // Garantir que esta propriedade está explicitamente definida
+              matchPercentage: pin.matchPercentage,
+              telefoneContato: pin.telefoneContato,
+              thumbnail: pin.thumbnail,
+              caracteristicas: pin.caracteristicas,
+              quartos: pin.caracteristicas?.quartos,
+              banheiros: pin.caracteristicas?.banheiros,
+              area: pin.caracteristicas?.area,
+              vagas: pin.caracteristicas?.vagas
+            }));
+            
+            // Chamar a função na página pai com os objetos formatados
+            (window.parent as any).receberPinsDestacados?.(imoveisParaEnviar);
+            console.log('✅ Imóveis destacados enviados com sucesso para a página pai');
+          } catch (error) {
+            console.error('Erro ao enviar pins destacados:', error);
+          }
+        }
+      }
+    };
+    
+    // Adicionar listener
+    window.addEventListener('message', handleMessage);
+    
+    // Enviar pinos destacados assim que o componente montar e os pins forem carregados
+    if (pins.length > 0) {
+      const pinsDestacados = pins.filter(pin => pin.destaque === true);
+      if (pinsDestacados.length > 0 && window.parent && window.parent !== window) {
+        try {
+          console.log(`📍 Enviando automaticamente ${pinsDestacados.length} pins destacados`);
+          
+          // Criar objetos simplificados para envio
+          const imoveisParaEnviar = pinsDestacados.map(pin => ({
+            id: pin.id,
+            titulo: pin.titulo,
+            preco: pin.preco,
+            destaque: true,
+            matchPercentage: pin.matchPercentage,
+            telefoneContato: pin.telefoneContato,
+            thumbnail: pin.thumbnail,
+            caracteristicas: pin.caracteristicas,
+            quartos: pin.caracteristicas?.quartos,
+            banheiros: pin.caracteristicas?.banheiros,
+            area: pin.caracteristicas?.area,
+            vagas: pin.caracteristicas?.vagas
+          }));
+          
+          // Chamar a função na página pai
+          (window.parent as any).receberPinsDestacados?.(imoveisParaEnviar);
+        } catch (error) {
+          console.error('Erro ao enviar pins destacados iniciais:', error);
+        }
+      }
+    }
+    
+    // Remover listener quando componente for desmontado
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [pins]);
+
+  useEffect(() => {
     // Buscar imóveis do banco de dados
     const buscarImoveis = async () => {
       setCarregando(true);
@@ -376,16 +454,16 @@ function MapaInterativoContent() {
           });
           
           // Ordenar imóveis pelo percentual de match (maior para menor)
-          imoveisComMatch.sort((a: any, b: any) => b.matchPercentage - a.matchPercentage);
+          imoveisComMatch.sort((a: any, b: any) => (b.matchPercentage || 0) - (a.matchPercentage || 0));
           
           // Converter os dados do banco para o formato esperado pelo componente
-          let imoveisReais: PinItem[] = imoveisComMatch.map((imovel, index) => {
+          let imoveisReais: PinItem[] = imoveisComMatch.map((imovel: any, index: number) => {
             // Determinar se é um destaque baseado na posição do ranking (TOP 3) e percentual de match
             // Os 3 primeiros imóveis com match acima de 80% são destacados em laranja
-            const destaque = index < 3 && imovel.matchPercentage >= 80;
+            const destaque = index < 3 && (imovel.matchPercentage || 0) >= 80;
             
             // Determinar se é um imóvel indisponível (pin cinza) - quando o match é baixo
-            const indisponivel = imovel.matchPercentage < 70;
+            const indisponivel = (imovel.matchPercentage || 0) < 70;
             
             return {
               id: imovel.id,
@@ -457,7 +535,7 @@ function MapaInterativoContent() {
             // Se houver imóveis dentro do orçamento
             if (imoveisDentroOrcamento.length > 0) {
               // Ordenar imóveis dentro do orçamento por match percentage (decrescente)
-              imoveisDentroOrcamento.sort((a, b) => b.matchPercentage - a.matchPercentage);
+              imoveisDentroOrcamento.sort((a, b) => (b.matchPercentage || 0) - (a.matchPercentage || 0));
               
               // Selecionar os 3 melhores imóveis dentro do orçamento para destacar (laranja)
               const topImoveisDentroOrcamento = imoveisDentroOrcamento.slice(0, 3);
@@ -524,7 +602,7 @@ function MapaInterativoContent() {
             // Se temos imóveis dentro do orçamento para destacar
             if (imoveisDentroOrcamento.length > 0) {
               // Ordenar os imóveis dentro do orçamento por match percentage
-              imoveisDentroOrcamento.sort((a, b) => b.matchPercentage - a.matchPercentage);
+              imoveisDentroOrcamento.sort((a, b) => (b.matchPercentage || 0) - (a.matchPercentage || 0));
               
               // Pegar até 3 imóveis DENTRO do orçamento
               const topDentroOrcamento = imoveisDentroOrcamento.slice(0, 3);
@@ -533,7 +611,7 @@ function MapaInterativoContent() {
               imoveisDestaqueForce = topDentroOrcamento.map((imovel, idx) => ({
                 ...imovel,
                 destaque: true, // SEMPRE true para imóveis dentro do orçamento
-                matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                matchPercentage: Math.max(imovel.matchPercentage || 0, 90 - (idx * 5)),
                 position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
               }));
             }
@@ -572,7 +650,7 @@ function MapaInterativoContent() {
               imoveisDestaqueForce = imoveisReais.slice(0, 3).map((imovel, idx) => ({
                 ...imovel,
                 destaque: true, // SEMPRE true para os 3 primeiros
-                matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                matchPercentage: Math.max(imovel.matchPercentage || 0, 90 - (idx * 5)),
                 position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
               }));
             } 
@@ -582,7 +660,7 @@ function MapaInterativoContent() {
               imoveisDestaqueForce = imoveisReais.map((imovel, idx) => ({
                 ...imovel,
                 destaque: true,
-                matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                matchPercentage: Math.max(imovel.matchPercentage || 0, 90 - (idx * 5)),
                 position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
               }));
             }
@@ -607,11 +685,11 @@ function MapaInterativoContent() {
               
               if (dentroOrcamento.length > 0) {
                 // Destacar até 3 imóveis dentro do orçamento
-                dentroOrcamento.sort((a, b) => b.matchPercentage - a.matchPercentage);
+                dentroOrcamento.sort((a, b) => (b.matchPercentage || 0) - (a.matchPercentage || 0));
                 imoveisDestaque = dentroOrcamento.slice(0, 3).map((imovel, idx) => ({
                   ...imovel,
                   destaque: true,
-                  matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                  matchPercentage: Math.max(imovel.matchPercentage || 0, 90 - (idx * 5)),
                   position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
                 }));
               } else {
@@ -626,11 +704,11 @@ function MapaInterativoContent() {
               }
             } else {
               // Sem filtro de valor, usar os com melhor match
-              const ordenados = [...imoveisReais].sort((a, b) => b.matchPercentage - a.matchPercentage);
+              const ordenados = [...imoveisReais].sort((a, b) => (b.matchPercentage || 0) - (a.matchPercentage || 0));
               imoveisDestaque = ordenados.slice(0, 3).map((imovel, idx) => ({
                 ...imovel,
                 destaque: true,
-                matchPercentage: Math.max(imovel.matchPercentage, 90 - (idx * 5)),
+                matchPercentage: Math.max(imovel.matchPercentage || 0, 90 - (idx * 5)),
                 position: pinPosicoesLaranja[idx % pinPosicoesLaranja.length] // Usar posições aleatórias para pins laranja
               }));
             }
@@ -750,167 +828,187 @@ function MapaInterativoContent() {
           <h1 className="text-lg font-medium text-gray-800">Mapa de Imóveis - Curitiba</h1>
         </div>
         
-        {/* Mini cards dos imóveis sobre os pins */}
+        {/* Card centralizado no meio do mapa */}
         <AnimatePresence>              
-          {pins.map(pin => (
-            pinAtivo === pin.id && (
-              <motion.div 
-                key={pin.id}
-                className="absolute z-[150] w-48"
-                style={{
-                  left: pin.position.left,
-                  top: pin.position.top,
-                  transform: 'translate(-50%, -120%)'
-                }}
-                initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ 
-                  type: 'spring',
-                  stiffness: 500,
-                  damping: 30
-                }}
-              >
-                {/* Verificar se é realmente um pin indisponível (não pode ser um destaque) */}
-                {pin.indisponivel && !pin.destaque ? (
-                  // Card de imóvel indisponível redesenhado para pins cinza
-                  <Card className="overflow-hidden shadow-xl border-0 bg-white/95 backdrop-blur-md w-64">
-                    <div className="p-4 border-b border-gray-100">
-                      <div className="flex items-center justify-center gap-2 mb-2">
-                        <div className="bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center">
-                          <X className="w-4 h-4 text-gray-500" />
+          {pinAtivo && (
+            <motion.div 
+              key="modal-container"
+              className="fixed inset-0 z-[150] flex items-center justify-center px-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {/* Overlay escuro semi-transparente */}
+              <div 
+                className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+                onClick={() => setPinAtivo(null)}
+              />
+              
+              {/* Card centralizado */}
+              {pins.filter(p => p.id === pinAtivo).map(pin => (
+                <motion.div 
+                  key={pin.id}
+                  className="relative z-10 p-2 max-w-[95vw] mx-auto"
+                  initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                  animate={{ scale: 1, y: 0, opacity: 1 }}
+                  exit={{ scale: 0.9, y: 10, opacity: 0 }}
+                  transition={{ 
+                    type: 'spring',
+                    stiffness: 500,
+                    damping: 30
+                  }}
+                >
+                  {/* Verificar se é realmente um pin indisponível (não pode ser um destaque) */}
+                  {pin.indisponivel && !pin.destaque ? (
+                    // Card de imóvel indisponível redesenhado para pins cinza
+                    <Card className="overflow-hidden shadow-xl border-0 bg-white/95 backdrop-blur-md w-80">
+                      <div className="p-4 border-b border-gray-100">
+                        <div className="flex items-center justify-center gap-2 mb-2">
+                          <div className="bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center">
+                            <X className="w-4 h-4 text-gray-500" />
+                          </div>
+                          <span className="font-semibold text-base text-gray-700">Imóvel Indisponível</span>
                         </div>
-                        <span className="font-semibold text-base text-gray-700">Imóvel Indisponível</span>
+                        
+                        <div className="bg-gray-50 rounded-lg p-3 my-3">
+                          <p className="text-gray-600 text-sm">
+                            Este imóvel não está disponível para visualização detalhada no momento.
+                          </p>
+                        </div>
                       </div>
                       
-                      <div className="bg-gray-50 rounded-lg p-3 my-3">
-                        <p className="text-gray-600 text-sm">
-                          Este imóvel não está disponível para visualização detalhada no momento.
-                        </p>
+                      <div className="p-3 bg-gray-50/50">
+                        <div className="flex justify-center gap-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            className="border-gray-300 text-gray-600 hover:bg-gray-100"
+                            onClick={() => setPinAtivo(null)}
+                          >
+                            Fechar
+                          </Button>
+                          
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="text-[#fe4f17] hover:text-[#fe4f17]/90 hover:bg-[#fe4f17]/10"
+                            onClick={() => {
+                              setPinAtivo(null);
+                              // Aqui poderia mostrar imóveis similares
+                            }}
+                          >
+                            Ver Similares
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="p-3 bg-gray-50/50">
-                      <div className="flex justify-center gap-2">
+                    </Card>
+                  ) : (
+                    // Card redesenhado para imóveis disponíveis (pins laranja/destaques)
+                    <Card 
+                      className="overflow-hidden shadow-xl border-0 bg-white w-80 backdrop-blur-sm"
+                    >
+                      {/* Botão para fechar no canto superior direito */}
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="absolute top-1 right-1 h-6 w-6 rounded-full z-10"
+                        onClick={() => setPinAtivo(null)}
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </Button>
+                      
+                      {/* Imagem de destaque com efeito de gradiente */}
+                      <div className="relative h-40 w-full overflow-hidden">
+                        <div 
+                          className="absolute inset-0 bg-center bg-cover" 
+                          style={{ backgroundImage: `url(${pin.thumbnail})` }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                        <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm py-1 px-2 rounded-full shadow-sm">
+                          <p className="text-[#fe4f17] text-xs font-semibold">{pin.titulo}</p>
+                        </div>
+                        
+                        {/* Preço em destaque na parte inferior da imagem */}
+                        <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm py-1 px-2 rounded-lg shadow-sm">
+                          <p className="text-sm font-bold text-gray-800">
+                            {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(pin.preco)}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      <div className="p-4">
+                        {/* Barra de progressão de match */}
+                        <div className="mb-3">
+                          <div className="flex justify-between items-center mb-1.5">
+                            <span className="text-xs font-medium text-gray-600">Match com seu perfil</span>
+                            <span className="text-xs font-bold text-[#fe4f17]">{pin.matchPercentage || 0}%</span>
+                          </div>
+                          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div 
+                              className="h-full bg-[#fe4f17] rounded-full" 
+                              style={{ width: `${pin.matchPercentage || 0}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                        
+                        {/* Características em linha com ícones mais estilizados */}
+                        <div className="grid grid-cols-4 gap-1 text-xs mb-3 bg-gray-50 rounded-lg p-2">
+                          <div className="flex flex-col items-center gap-1 justify-center">
+                            <div className="bg-[#fe4f17]/10 w-8 h-8 rounded-full flex items-center justify-center">
+                              <Bed className="h-4 w-4 text-[#fe4f17]" />
+                            </div>
+                            <span className="font-medium">{pin.caracteristicas?.quartos || pin.quartos || 0}</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-1 justify-center">
+                            <div className="bg-[#fe4f17]/10 w-8 h-8 rounded-full flex items-center justify-center">
+                              <Bath className="h-4 w-4 text-[#fe4f17]" />
+                            </div>
+                            <span className="font-medium">{pin.caracteristicas?.banheiros || pin.banheiros || 0}</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-1 justify-center">
+                            <div className="bg-[#fe4f17]/10 w-8 h-8 rounded-full flex items-center justify-center">
+                              <Square className="h-4 w-4 text-[#fe4f17]" />
+                            </div>
+                            <span className="font-medium">{pin.caracteristicas?.area || pin.area || 0}m²</span>
+                          </div>
+                          <div className="flex flex-col items-center gap-1 justify-center">
+                            <div className="bg-[#fe4f17]/10 w-8 h-8 rounded-full flex items-center justify-center">
+                              <Car className="h-4 w-4 text-[#fe4f17]" />
+                            </div>
+                            <span className="font-medium">{pin.caracteristicas?.vagas || pin.vagas || 0}</span>
+                          </div>
+                        </div>
+                        
+                        {/* Botão de contato mais destacado */}
                         <Button 
                           size="sm" 
-                          variant="outline"
-                          className="border-gray-300 text-gray-600 hover:bg-gray-100"
-                          onClick={() => setPinAtivo(null)}
-                        >
-                          Fechar
-                        </Button>
-                        
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="text-[#fe4f17] hover:text-[#fe4f17]/90 hover:bg-[#fe4f17]/10"
-                          onClick={() => {
-                            setPinAtivo(null);
-                            // Aqui poderia mostrar imóveis similares
+                          className="w-full text-sm font-medium bg-green-600 text-white hover:bg-green-700 gap-1.5 shadow-sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // Verificar se o imóvel tem telefone de contato
+                            if (!pin.telefoneContato) {
+                              alert('Este imóvel não possui telefone de contato cadastrado.');
+                              return;
+                            }
+                            
+                            // Formatar o número de telefone para o WhatsApp (remover caracteres não numéricos)
+                            const telefoneFormatado = pin.telefoneContato.replace(/\D/g, '');
+                            // Mensagem pré-definida para o WhatsApp
+                            const mensagem = `Olá! Vi o imóvel ${pin.titulo} no sistema iMovia e gostaria de mais informações.`;
+                            // Abrir WhatsApp com o número e mensagem
+                            window.open(`https://wa.me/55${telefoneFormatado}?text=${encodeURIComponent(mensagem)}`, '_blank');
                           }}
                         >
-                          Ver Similares
+                          <Phone className="h-3.5 w-3.5" />
+                          Atendimento direto
                         </Button>
                       </div>
-                    </div>
-                  </Card>
-                ) : (
-                  // Card redesenhado para imóveis disponíveis (pins laranja/destaques)
-                  <Card 
-                    className="overflow-hidden shadow-xl border-0 bg-white w-64 backdrop-blur-sm mx-auto mt-2"
-                  >
-                    {/* Imagem de destaque com efeito de gradiente */}
-                    <div className="relative h-32 w-full overflow-hidden">
-                      <div 
-                        className="absolute inset-0 bg-center bg-cover" 
-                        style={{ backgroundImage: `url(${pin.thumbnail})` }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                      <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm py-1 px-2 rounded-full shadow-sm">
-                        <p className="text-[#fe4f17] text-xs font-semibold">{pin.titulo}</p>
-                      </div>
-                      
-                      {/* Preço em destaque na parte inferior da imagem */}
-                      <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm py-1 px-2 rounded-lg shadow-sm">
-                        <p className="text-sm font-bold text-gray-800">
-                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(pin.preco)}
-                        </p>
-                      </div>
-                    </div>
-                    
-                    <div className="p-3">
-                      {/* Barra de progressão de match */}
-                      <div className="mb-3">
-                        <div className="flex justify-between items-center mb-1.5">
-                          <span className="text-xs font-medium text-gray-600">Match com seu perfil</span>
-                          <span className="text-xs font-bold text-[#fe4f17]">{pin.matchPercentage}%</span>
-                        </div>
-                        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-[#fe4f17] rounded-full" 
-                            style={{ width: `${pin.matchPercentage}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                      
-                      {/* Características em linha com ícones mais estilizados */}
-                      <div className="grid grid-cols-4 gap-1 text-xs mb-3 bg-gray-50 rounded-lg p-2">
-                        <div className="flex flex-col items-center gap-1 justify-center">
-                          <div className="bg-[#fe4f17]/10 w-8 h-8 rounded-full flex items-center justify-center">
-                            <Bed className="h-4 w-4 text-[#fe4f17]" />
-                          </div>
-                          <span className="font-medium">{pin.caracteristicas.quartos}</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1 justify-center">
-                          <div className="bg-[#fe4f17]/10 w-8 h-8 rounded-full flex items-center justify-center">
-                            <Bath className="h-4 w-4 text-[#fe4f17]" />
-                          </div>
-                          <span className="font-medium">{pin.caracteristicas.banheiros}</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1 justify-center">
-                          <div className="bg-[#fe4f17]/10 w-8 h-8 rounded-full flex items-center justify-center">
-                            <Square className="h-4 w-4 text-[#fe4f17]" />
-                          </div>
-                          <span className="font-medium">{pin.caracteristicas.area}m²</span>
-                        </div>
-                        <div className="flex flex-col items-center gap-1 justify-center">
-                          <div className="bg-[#fe4f17]/10 w-8 h-8 rounded-full flex items-center justify-center">
-                            <Car className="h-4 w-4 text-[#fe4f17]" />
-                          </div>
-                          <span className="font-medium">{pin.caracteristicas.vagas}</span>
-                        </div>
-                      </div>
-                      
-                      {/* Botão de contato mais destacado */}
-                      <Button 
-                        size="sm" 
-                        className="w-full text-sm font-medium bg-green-600 text-white hover:bg-green-700 gap-1.5 shadow-sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          // Verificar se o imóvel tem telefone de contato
-                          if (!pin.telefoneContato) {
-                            alert('Este imóvel não possui telefone de contato cadastrado.');
-                            return;
-                          }
-                          
-                          // Formatar o número de telefone para o WhatsApp (remover caracteres não numéricos)
-                          const telefoneFormatado = pin.telefoneContato.replace(/\D/g, '');
-                          // Mensagem pré-definida para o WhatsApp
-                          const mensagem = `Olá! Vi o imóvel ${pin.titulo} no sistema iMovia e gostaria de mais informações.`;
-                          // Abrir WhatsApp com o número e mensagem
-                          window.open(`https://wa.me/55${telefoneFormatado}?text=${encodeURIComponent(mensagem)}`, '_blank');
-                        }}
-                      >
-                        <Phone className="h-3.5 w-3.5" />
-                        Atendimento direto
-                      </Button>
-                    </div>
-                  </Card>
-                )}
-              </motion.div>
-            )
-          ))}
+                    </Card>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
         </AnimatePresence>
         
         {/* Pins */}
@@ -955,7 +1053,7 @@ function MapaInterativoContent() {
                            bg-white text-xs font-bold text-orange-600 rounded-full shadow-md"
                   style={{ padding: '0 6px' }}
                 >
-                  {pin.matchPercentage}%
+                  {pin.matchPercentage || 0}%
                 </span>
               )}
             </div>

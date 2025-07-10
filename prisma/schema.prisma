@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
   output   = "../src/generated/prisma"
@@ -11,273 +8,279 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Modelo para tipos de imóveis
 model TipoImovel {
-  id          String    @id @default(cuid())
-  nome        String    @unique   // Nome do tipo (Apartamento, Casa, etc)
-  slug        String    @unique   // Versão simplificada para URLs
-  descricao   String?             // Descrição opcional
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
-  // Relações
-  imoveis     Imovel[]
+  id        String   @id @default(cuid())
+  nome      String   @unique
+  slug      String   @unique
+  descricao String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  imoveis   Imovel[]
 }
 
-// Enum para tipos de usuário
+model User {
+  id            String       @id @default(cuid())
+  name          String
+  email         String       @unique
+  password      String
+  role          UserRole     @default(CLIENTE)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  construtoraId String?
+  telefone      String?
+  relatorios    Relatorio[]
+  respostas     Resposta[]
+  construtora   Construtora? @relation("UsuarioDaConstrutora", fields: [construtoraId], references: [id])
+}
+
+model Construtora {
+  id              String           @id @default(cuid())
+  nome            String
+  cnpj            String           @unique
+  telefone        String
+  email           String           @unique
+  endereco        String
+  ativa           Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  imoveis         Imovel[]
+  imoveisMetadata ImovelMetadata[]
+  usuarios        User[]           @relation("UsuarioDaConstrutora")
+}
+
+model Imovel {
+  id                   String           @id @default(cuid())
+  idExternoAPI         String?          @unique
+  titulo               String
+  descricao            String
+  preco                Float
+  area                 Float
+  quartos              Int
+  banheiros            Int
+  vagas                Int
+  latitude             Float
+  longitude            Float
+  telefoneContato      String?
+  endereco             String
+  caracteristicas      Json?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  construtoraId        String
+  caracteristicasArray String[]
+  destaque             Boolean          @default(false)
+  fotoPrincipal        String?
+  galeriaFotos         String[]
+  status               String?
+  ativo                Boolean          @default(true)
+  tipoImovelId         String?
+  tipoImovelNome       String?
+  construtora          Construtora      @relation(fields: [construtoraId], references: [id], onDelete: Cascade)
+  tipoImovel           TipoImovel?      @relation(fields: [tipoImovelId], references: [id])
+  perguntas            ImovelPergunta[]
+  matches              Match[]
+}
+
+model Pergunta {
+  id             String                @id @default(cuid())
+  texto          String
+  tipo           String
+  opcoes         Json?
+  ordem          Int
+  obrigatoria    Boolean               @default(true)
+  condicional    Json?
+  geradaPorIA    Boolean               @default(false)
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  ativa          Boolean               @default(true)
+  categoria      String
+  fluxo          String
+  pontuacao      Int                   @default(1)
+  configuracaoId String?
+  imoveis        ImovelPergunta[]
+  configuracao   ConfiguracaoPergunta? @relation(fields: [configuracaoId], references: [id])
+  respostas      Resposta[]
+}
+
+model ConfiguracaoPergunta {
+  id                  String     @id @default(cuid())
+  limitePergunta      Int        @default(10)
+  intensidade         Int        @default(70)
+  instrucoesAvancadas String?
+  modeloIA            String     @default("deepseek-r1")
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  perguntas           Pergunta[]
+}
+
+model Resposta {
+  id         String   @id @default(cuid())
+  valor      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  perguntaId String
+  userId     String
+  pergunta   Pergunta @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
+  usuario    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Match {
+  id             String     @id @default(cuid())
+  porcentagem    Float
+  posicaoRanking Int
+  destaque       Boolean    @default(false)
+  criterios      Json
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  imovelId       String
+  relatorioId    String?
+  imovel         Imovel     @relation(fields: [imovelId], references: [id], onDelete: Cascade)
+  relatorio      Relatorio? @relation(fields: [relatorioId], references: [id])
+}
+
+model Relatorio {
+  id                         String                @id @default(cuid())
+  resumo                     String?
+  pdfUrl                     String?
+  updatedAt                  DateTime              @updatedAt
+  userId                     String
+  bairros                    String?
+  cidade                     String?
+  dataCriacao                DateTime              @default(now())
+  distanciaMaximaTrabalho    Float?
+  importanciaAcademia        String?
+  importanciaCaminhabilidade String?
+  importanciaEscolas         String?
+  importanciaEspacoPet       String?
+  importanciaParques         String?
+  importanciaPiscina         String?
+  importanciaPisoQuartos     String?
+  importanciaPlayground      String?
+  importanciaRestaurantes    String?
+  importanciaSalaoFestas     String?
+  importanciaShopping        String?
+  importanciaTransporte      String?
+  localTrabalho              String?
+  prazoFinanciamento         Int?
+  rendaMensal                Float?
+  taxa                       Float?
+  temOutrosEmprestimos       Boolean?              @default(false)
+  temPet                     Boolean?              @default(false)
+  tipoPortaria               String?
+  valorEntrada               Float?
+  valorFinanciamento         Float?
+  valorImovel                Float?
+  valorParcela               Float?
+  valorParcelaMaxima         Float?
+  ImoveisRecomendados        ImoveisRecomendados[]
+  matches                    Match[]
+  usuario                    User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Configuracao {
+  id        String   @id @default(cuid())
+  chave     String   @unique
+  valor     String
+  descricao String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LogIntegracao {
+  id        String   @id @default(cuid())
+  tipo      String
+  status    String
+  request   Json?
+  response  Json?
+  erro      String?
+  createdAt DateTime @default(now())
+}
+
+model ImovelMetadata {
+  id              String       @id @default(cuid())
+  imovelIdExterno String       @unique
+  telefone        String       @default("")
+  observacoes     String       @default("")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  construtoraId   String?
+  construtora     Construtora? @relation(fields: [construtoraId], references: [id])
+}
+
+model ImovelPergunta {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  imovelId   String
+  perguntaId String
+  imovel     Imovel   @relation(fields: [imovelId], references: [id], onDelete: Cascade)
+  pergunta   Pergunta @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
+
+  @@unique([imovelId, perguntaId])
+}
+
+model MensagemContato {
+  id           String   @id @default(cuid())
+  texto        String
+  resposta     String?
+  usuarioNome  String
+  usuarioEmail String
+  status       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model AIConversation {
+  id        String   @id @default(cuid())
+  messages  String
+  userId    String?
+  sessionId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AIActionHistory {
+  id         Int      @id @default(autoincrement())
+  tipo       String
+  acao       String
+  entidade   String
+  idEntidade String?
+  timestamp  DateTime @default(now())
+  status     String
+  detalhes   String?
+}
+
+model AIConfig {
+  id        String   @id @default(cuid())
+  chave     String   @unique
+  valor     String
+  descricao String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ImoveisRecomendados {
+  id          String    @id
+  relatorioId String
+  imovelId    String
+  titulo      String?
+  preco       Float?
+  endereco    String?
+  bairro      String?
+  cidade      String?
+  area        Float?
+  quartos     Int?
+  banheiros   Int?
+  vagas       Int?
+  imageUrl    String?
+  linkImovel  String?
+  dataCriacao DateTime  @default(now())
+  Relatorio   Relatorio @relation(fields: [relatorioId], references: [id], onDelete: Cascade)
+
+  @@index([relatorioId])
+}
+
 enum UserRole {
   ADMIN
   CONSTRUTORA
   CLIENTE
-}
-
-// Modelo de usuário
-model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  password      String
-  telefone      String?   
-  role          UserRole  @default(CLIENTE)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Relações
-  construtoraId String?
-  construtora   Construtora? @relation("UsuarioDaConstrutora", fields: [construtoraId], references: [id])
-  respostas     Resposta[]
-  relatorios    Relatorio[]
-}
-
-// Modelo de construtora
-model Construtora {
-  id            String    @id @default(cuid())
-  nome          String
-  cnpj          String    @unique
-  telefone      String
-  email         String    @unique
-  endereco      String
-  ativa         Boolean   @default(true)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Relações
-  usuarios      User[]    @relation("UsuarioDaConstrutora")
-  imoveis       Imovel[]
-  imoveisMetadata ImovelMetadata[]
-}
-
-// Modelo de imóvel
-model Imovel {
-  id            String    @id @default(cuid())
-  idExternoAPI  String?   @unique // ID da API Orulo
-  titulo        String
-  descricao     String
-  preco         Float
-  area          Float
-  quartos       Int
-  banheiros     Int
-  vagas         Int
-  latitude      Float
-  longitude     Float
-  telefoneContato String?
-  endereco      String
-  fotoPrincipal String?   // URL da foto principal do imóvel
-  galeriaFotos  String[]  // Array de URLs para fotos do imóvel
-  caracteristicas Json?   // Para armazenar características variáveis
-  caracteristicasArray String[] // Lista de características em formato de array
-  
-  // Tipo de imóvel como relação com outra tabela
-  tipoImovelId  String?
-  tipoImovel    TipoImovel? @relation(fields: [tipoImovelId], references: [id])
-  tipoImovelNome String?   // Campo auxiliar para manter compatibilidade
-  status        String?   // Disponível, Vendido, Em construção, etc.
-  ativo         Boolean   @default(true)  // Se o imóvel está ativo ou inativo
-  destaque      Boolean   @default(false) // Imóvel em destaque na página inicial
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Relações
-  construtoraId String
-  construtora   Construtora @relation(fields: [construtoraId], references: [id], onDelete: Cascade)
-  matches       Match[]
-  perguntas     ImovelPergunta[]
-}
-
-// Modelo de perguntas
-model Pergunta {
-  id            String    @id @default(cuid())
-  texto         String
-  tipo          String    // "text", "number", "select", "range", etc.
-  opcoes        Json?     // Para perguntas com opções predefinidas
-  ordem         Int
-  categoria     String    // "CADASTRO", "AVALIACAO_CREDITO", "INFORMACOES_COMPLEMENTARES", "PREFERENCIAS", "IMOVEL_IDEAL", "EMPREENDIMENTO", "PROXIMIDADES"
-  fluxo         String    // "COM_APROVACAO", "SEM_APROVACAO", "AMBOS"
-  pontuacao     Int       @default(1) // Peso da pergunta para cálculo do match
-  obrigatoria   Boolean   @default(true)
-  condicional   Json?     // Condições para mostrar a pergunta
-  geradaPorIA   Boolean   @default(false)
-  ativa         Boolean   @default(true) // Se a pergunta está ativa ou não
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Relações
-  respostas     Resposta[]
-  imoveis       ImovelPergunta[]
-  
-  // Relação com a configuração de perguntas
-  configuracaoId String?
-  configuracao  ConfiguracaoPergunta? @relation(fields: [configuracaoId], references: [id])
-}
-
-// Modelo de configuração de perguntas
-model ConfiguracaoPergunta {
-  id                  String    @id @default(cuid())
-  limitePergunta      Int       @default(10)
-  intensidade         Int       @default(70)
-  instrucoesAvancadas String?   // Instruções adicionais para a IA ao gerar perguntas
-  modeloIA            String    @default("deepseek-r1") // "deepseek-r1" ou "chatgpt"
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-  
-  // Relações
-  perguntas           Pergunta[] // Relação com as perguntas que usam esta configuração
-}
-
-// Modelo de respostas
-model Resposta {
-  id            String    @id @default(cuid())
-  valor         String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Relações
-  perguntaId    String
-  pergunta      Pergunta  @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
-  userId        String
-  usuario       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-// Modelo de match
-model Match {
-  id            String    @id @default(cuid())
-  porcentagem   Float
-  posicaoRanking Int
-  destaque      Boolean   @default(false)
-  criterios     Json      // Armazena os critérios que geraram o match
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Relações
-  imovelId      String
-  imovel        Imovel    @relation(fields: [imovelId], references: [id], onDelete: Cascade)
-  relatorioId   String?
-  relatorio     Relatorio? @relation(fields: [relatorioId], references: [id])
-}
-
-// Modelo de relatório
-model Relatorio {
-  id            String    @id @default(cuid())
-  resumo        String
-  pdfUrl        String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Relações
-  userId        String
-  usuario       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  matches       Match[]
-}
-
-// Modelo para configurações da aplicação
-model Configuracao {
-  id            String    @id @default(cuid())
-  chave         String    @unique
-  valor         String
-  descricao     String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
-
-// Modelo para logs de integração com a API externa
-model LogIntegracao {
-  id            String    @id @default(cuid())
-  tipo          String    // "orulo", "deepseek", etc.
-  status        String    // "success", "error"
-  request       Json?
-  response      Json?
-  erro          String?
-  createdAt     DateTime  @default(now())
-}
-
-// Modelo para metadados adicionais de imóveis da API Orulo
-model ImovelMetadata {
-  id              String    @id @default(cuid())
-  imovelIdExterno String    @unique // ID do imóvel na API externa
-  telefone        String    @default("")
-  observacoes     String    @default("")
-  construtoraId   String?   // Relação opcional com a construtora
-  construtora     Construtora? @relation(fields: [construtoraId], references: [id], onDelete: SetNull)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-}
-
-// Modelo para relação many-to-many entre Imovel e Pergunta
-model ImovelPergunta {
-  id            String    @id @default(cuid())
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  
-  // Relações
-  imovelId      String
-  imovel        Imovel    @relation(fields: [imovelId], references: [id], onDelete: Cascade)
-  perguntaId    String
-  pergunta      Pergunta  @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
-  
-  // Garante que não existam relações duplicadas
-  @@unique([imovelId, perguntaId])
-}
-
-// Modelo para mensagens de contato (FAQ/Suporte)
-model MensagemContato {
-  id            String    @id @default(cuid())
-  texto         String
-  resposta      String?
-  usuarioNome   String
-  usuarioEmail  String
-  status        String    // "AGUARDANDO", "RESPONDIDA", "ARQUIVADA"
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
-
-// Modelo para conversas com a IA
-model AIConversation {
-  id            String    @id @default(cuid())
-  messages      String    // JSON string com histórico de mensagens
-  userId        String?   // Opcional se quisermos associar a conversa a um usuário
-  sessionId     String?   // ID da sessão do browser
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-}
-
-// Modelo para histórico de ações realizadas pela IA
-model AIActionHistory {
-  id            Int       @id @default(autoincrement())
-  tipo          String    // "imovel", "construtora", "cliente", "pergunta"
-  acao          String    // "criar", "editar", "excluir", "consultar", "vincular"
-  entidade      String    // Nome/identificador da entidade
-  idEntidade    String?   // ID da entidade afetada, se aplicável
-  timestamp     DateTime  @default(now())
-  status        String    // "success", "error"
-  detalhes      String?   // Detalhes adicionais ou mensagem de erro
-}
-
-// Modelo para configurações da IA
-model AIConfig {
-  id            String    @id @default(cuid())
-  chave         String    @unique
-  valor         String
-  descricao     String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
 }

@@ -32,6 +32,12 @@ export interface FormularioProximidadesProps {
   onProgress: (progress: number) => void;
   onPerguntaRespondida: (perguntaId: string, resposta: any) => void;
   respostasAnteriores?: Record<string, any>;
+  dadosUsuario?: {
+    nome?: string;
+    email?: string;
+    telefone?: string;
+    userId?: string;
+  };
 }
 
 /**
@@ -41,7 +47,8 @@ export function FormularioProximidades({
   onComplete,
   onProgress,
   onPerguntaRespondida,
-  respostasAnteriores = {}
+  respostasAnteriores = {},
+  dadosUsuario = {}
 }: FormularioProximidadesProps) {
   // Estados para controle de fluxo
   const [etapaAtual, setEtapaAtual] = useState<number>(0);
@@ -88,7 +95,7 @@ export function FormularioProximidades({
   }, [etapaAtual, passoAtual, onProgress]);
   
   // Avançar para o próximo campo ou etapa
-  const avancar = () => {
+  const avancar = async () => {
     const camposEtapaAtual = etapas[etapaAtual].campos;
     
     // Salvar resposta do campo atual
@@ -103,8 +110,89 @@ export function FormularioProximidades({
       setEtapaAtual(etapaAtual + 1);
       setPassoAtual(0);
     } else {
-      // Finalizar fluxo de proximidades
-      finalizarFluxo();
+      // Formulário completo
+      setLoading(true);
+      
+      // Montar objeto com todas as respostas
+      const todasRespostas = {
+        importanciaParques,
+        importanciaShoppings,
+        importanciaRestaurantes,
+        importanciaCaminhabilidade,
+        temPet,
+        importanciaEscolas,
+        importanciaTransporte
+      };
+      
+      // Callback para o componente pai
+      onComplete(todasRespostas);
+      
+      try {
+        // Usar o email recebido diretamente via props
+        let email = dadosUsuario?.email || '';
+        
+        // Caso não tenha email nas props, tenta buscar no localStorage de diferentes chaves
+        if (!email) {
+          // Tenta primeiro na sessão do usuário (onde o sistema realmente armazena)
+          const userSession = localStorage.getItem('user-session');
+          if (userSession) {
+            try {
+              const sessionData = JSON.parse(userSession);
+              email = sessionData.email || '';
+              console.log('Email encontrado na sessão do usuário:', email);
+            } catch (e) {
+              console.error('Erro ao ler sessão do usuário:', e);
+            }
+          }
+          
+          // Se ainda não encontrou, tenta na chave dadosUsuario
+          if (!email) {
+            const dadosArmazenados = localStorage.getItem('dadosUsuario');
+            if (dadosArmazenados) {
+              try {
+                const usuario = JSON.parse(dadosArmazenados);
+                email = usuario.email || '';
+                console.log('Email encontrado em dadosUsuario:', email);
+              } catch (e) {
+                console.error('Erro ao ler dados do localStorage:', e);
+              }
+            }
+          }
+        }
+        
+        // Se tivermos um email, enviamos a tag para o Active Campaign
+        if (email) {
+          console.log('Enviando tag "completo" para o Active Campaign para o email:', email);
+          
+          const response = await fetch('/api/activecampaign', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email,
+              tag: 'completo'
+            })
+          });
+          
+          const data = await response.json();
+          
+          if (data.success) {
+            console.log('Tag enviada com sucesso para o Active Campaign:', data.message);
+          } else {
+            console.error('Erro ao enviar tag para o Active Campaign:', data.message);
+          }
+        } else {
+          console.warn('Email não encontrado no localStorage. Tag "completo" não enviada ao Active Campaign.');
+        }
+      } catch (error) {
+        console.error('Erro ao enviar tag para o Active Campaign:', error);
+      } finally {
+        // Simular tempo de processamento
+        setTimeout(() => {
+          setLoading(false);
+        }, 1500);
+      }
     }
   };
   

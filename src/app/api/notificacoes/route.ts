@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 
 // Instância do Prisma com singleton para evitar múltiplas conexões
 import { prisma } from '@/lib/prisma';
@@ -112,7 +111,7 @@ export async function GET(request: NextRequest) {
     // 4. Últimas solicitações de relatório
     try {
       const ultimosRelatorios = await prisma.relatorio.findMany({
-        orderBy: { createdAt: 'desc' },
+        orderBy: { dataCriacao: 'desc' },
         take: 3,
         include: {
           usuario: true
@@ -127,7 +126,7 @@ export async function GET(request: NextRequest) {
           title: "Relatório solicitado",
           message: `${nomeUsuario} solicitou um relatório personalizado`,
           read: false,
-          createdAt: relatorio.createdAt || new Date(),
+          createdAt: relatorio.dataCriacao || new Date(),
           type: 'info',
           entityType: 'relatorio',
           entityId: relatorio.id,

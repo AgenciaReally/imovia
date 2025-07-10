@@ -179,23 +179,8 @@ export default function ClienteDashboard() {
           </div>
           
           <div className="flex items-center gap-2">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="h-9 gap-1" 
-              onClick={() => router.push('/painel/cliente/relatorios')}
-            >
-              <Activity className="h-4 w-4" />
-              Relatórios
-            </Button>
-            <Button 
-              size="sm" 
-              className="h-9 gap-1"
-              onClick={() => router.push('/painel/cliente/configuracoes')}
-            >
-              <Settings className="h-4 w-4" />
-              Configurações
-            </Button>
+           
+          
           </div>
         </div>
         
@@ -324,107 +309,7 @@ export default function ClienteDashboard() {
           </Card>
         </motion.div>
         
-        {/* Gráficos de estatísticas e construtoras */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Tipos de imóveis */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Card className="border-0 shadow-md h-full">
-              <CardHeader>
-                <CardTitle>Tipos de Imóveis</CardTitle>
-                <CardDescription>Distribuição por tipo de imóvel compatível</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {carregando ? (
-                  <div className="w-full h-[250px] flex items-center justify-center">
-                    <div className="h-8 w-8 animate-spin text-primary rounded-full border-2 border-primary border-t-transparent" />
-                  </div>
-                ) : (
-                  <div className="h-[250px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart
-                        data={dados?.graficos.estatisticasTiposImoveis || []}
-                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                      >
-                        <CartesianGrid strokeDasharray="3 3" opacity={0.2} vertical={false} />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <RechartsTooltip 
-                          formatter={(value: number) => [`${value} imóveis`, 'Quantidade']}
-                          contentStyle={{ 
-                            backgroundColor: "#fff", 
-                            border: "none", 
-                            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                            borderRadius: "0.375rem",
-                            padding: "0.75rem"
-                          }} 
-                        />
-                        <Bar dataKey="valor" fill="#8884d8" radius={[4, 4, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
-          
-          {/* Construtoras */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            <Card className="border-0 shadow-md h-full">
-              <CardHeader>
-                <CardTitle>Construtoras</CardTitle>
-                <CardDescription>Distribuição de imóveis por construtora</CardDescription>
-              </CardHeader>
-              <CardContent>
-                {carregando ? (
-                  <div className="w-full h-[250px] flex items-center justify-center">
-                    <div className="h-8 w-8 animate-spin text-primary rounded-full border-2 border-primary border-t-transparent" />
-                  </div>
-                ) : (
-                  <div className="h-[250px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie
-                          data={dados?.graficos.estatisticasConstrutoras || []}
-                          cx="50%"
-                          cy="50%"
-                          labelLine={false}
-                          outerRadius={80}
-                          fill="#8884d8"
-                          dataKey="value"
-                          nameKey="name"
-                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                        >
-                          {dados?.graficos.estatisticasConstrutoras?.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                        <Legend />
-                        <RechartsTooltip 
-                          formatter={(value: number, name: string) => [`${value} imóveis`, name]}
-                          contentStyle={{ 
-                            backgroundColor: "#fff", 
-                            border: "none", 
-                            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                            borderRadius: "0.375rem",
-                            padding: "0.75rem"
-                          }} 
-                        />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
+       
       </div>
     </DashboardLayout>
   );

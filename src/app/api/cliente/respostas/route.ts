@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
         }
       },
       orderBy: {
-        dataResposta: 'desc'
+        createdAt: 'desc'
       }
     });
     

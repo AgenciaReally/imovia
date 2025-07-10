@@ -208,27 +208,12 @@ export default function ImoveisClientePage() {
   const [imoveisPaginados, setImoveisPaginados] = useState<Imovel[]>([])
   const [imoveisFiltrados, setImoveisFiltrados] = useState<Imovel[]>([])
   
-  // Dados do usuário - em produção viria da sessão ou contexto de autenticação
-  const [nomeUsuario, setNomeUsuario] = useState("Usuário")  
+  // Dados do usuário - obtidos da API
+  const [userName, setUserName] = useState("Cliente")
   
-  // Recuperar nome do usuário do localStorage (simulando autenticação)
+  // Carregar dados dos imóveis e do usuário
   useEffect(() => {
-    try {
-      const dadosUsuario = localStorage.getItem('imovia-usuario')
-      if (dadosUsuario) {
-        const usuario = JSON.parse(dadosUsuario)
-        if (usuario?.nome) {
-          setNomeUsuario(usuario.nome)
-        }
-      }
-    } catch (e) {
-      console.error('Erro ao recuperar dados do usuário:', e)
-    }
-  }, [])
-  
-  // Carregar dados dos imóveis
-  useEffect(() => {
-    carregarImoveis()
+    carregarDados()
   }, [])
 
   // Filtrar imóveis quando a busca mudar
@@ -256,7 +241,22 @@ export default function ImoveisClientePage() {
     setTotalPaginas(Math.ceil(imoveisFiltrados.length / itensPorPagina))
   }, [pagina, imoveisFiltrados, itensPorPagina])
   
-  const carregarImoveis = async () => {
+  const carregarDados = async () => {
+    // Buscar informações do usuário
+    try {
+      const userResponse = await fetch('/api/cliente/dashboard')
+      if (userResponse.ok) {
+        const { data } = await userResponse.json()
+        // Atualizar o nome do usuário com o retornado pela API
+        if (data?.userName) {
+          setUserName(data.userName)
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados do usuário:', error)
+    }
+    
+    // Buscar imóveis
     setLoading(true)
     try {
       // Carregar imóveis recomendados do localStorage
@@ -390,7 +390,7 @@ export default function ImoveisClientePage() {
   }
   
   return (
-    <DashboardLayout userRole="cliente" userName={nomeUsuario}>
+    <DashboardLayout userRole="cliente" userName={userName}>
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>

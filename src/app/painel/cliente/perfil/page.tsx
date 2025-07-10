@@ -13,6 +13,7 @@ import { SegurancaForm } from "@/components/cliente/seguranca-form"
 export default function PerfilClientePage() {
   const [loading, setLoading] = useState(true)
   const [usuario, setUsuario] = useState<any>(null)
+  const [userName, setUserName] = useState("Cliente")
   
   // Carregar dados do usuário
   useEffect(() => {
@@ -27,6 +28,11 @@ export default function PerfilClientePage() {
         
         const data = await response.json()
         setUsuario(data)
+        
+        // Atualizar o nome do usuário para a topbar
+        if (data?.nome || data?.name) {
+          setUserName(data?.nome || data?.name)
+        }
       } catch (error) {
         console.error('Erro ao carregar perfil:', error)
         toast({
@@ -109,7 +115,7 @@ export default function PerfilClientePage() {
   }
   
   return (
-    <DashboardLayout userRole="cliente" userName="Cliente">
+    <DashboardLayout userRole="cliente" userName={userName}>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Meu Perfil</h1>

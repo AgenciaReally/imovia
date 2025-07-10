@@ -23,7 +23,7 @@ export interface Session {
 export async function getServerSession(): Promise<Session | null> {
   try {
     // Obter o token do cookie
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get('auth-token')?.value;
 
     if (!token) {
@@ -42,7 +42,7 @@ export async function getServerSession(): Promise<Session | null> {
     // Retornar os dados do usuário
     return {
       user: {
-        id: payload.id || payload.sub as string,
+        id: (payload.id as string) || (payload.sub as string),
         email: payload.email as string,
         name: payload.name as string,
         role: payload.role as string

@@ -35,16 +35,14 @@ export interface RespostaRelatorioData {
 
 // Opções de transportadores SMTP
 const transportadores = {
-  // Configuração da Imovia
+  // Configuração da Imovia - atualizada para usar as mesmas credenciais da API de relatório
   imovia: {
     host: 'mail.imovia.ai',
     port: 465,
     secure: true, // porta 465 usa SSL
     auth: {
       user: 'relatorios@imovia.ai',
-      // NOTA: Parece que esta senha está expirada ou incorreta. Por favor, atualize com a senha correta.
-      // Erro encontrado: Invalid login: 535 5.7.0 Invalid credentials
-      pass: 'Lala147??', // Senha precisa ser atualizada
+      pass: 'Lala147??',
     },
     logger: true,
     debug: true

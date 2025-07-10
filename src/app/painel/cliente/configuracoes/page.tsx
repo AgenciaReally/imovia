@@ -25,11 +25,28 @@ export default function ConfiguracoesClientePage() {
     notificacoesNovoImovel: true,
     notificacoesAtualizacoes: true
   })
+  const [userName, setUserName] = useState("Cliente")
   
-  // Carregar configurações do usuário
+  // Carregar configurações do usuário e informações do perfil
   useEffect(() => {
-    const carregarConfiguracoes = async () => {
+    const carregarDados = async () => {
       setLoading(true)
+      
+      // Buscar informações do usuário para a topbar
+      try {
+        const userResponse = await fetch('/api/cliente/dashboard')
+        if (userResponse.ok) {
+          const { data } = await userResponse.json()
+          // Atualizar o nome do usuário com o retornado pela API
+          if (data?.userName) {
+            setUserName(data.userName)
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados do usuário:', error)
+      }
+      
+      // Buscar configurações
       try {
         const response = await fetch('/api/cliente/configuracoes')
         
@@ -51,7 +68,7 @@ export default function ConfiguracoesClientePage() {
       }
     }
     
-    carregarConfiguracoes()
+    carregarDados()
   }, [])
   
   // Atualizar configuração
@@ -105,7 +122,7 @@ export default function ConfiguracoesClientePage() {
   }
   
   return (
-    <DashboardLayout userRole="cliente" userName="Cliente">
+    <DashboardLayout userRole="cliente" userName={userName}>
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Configurações</h1>

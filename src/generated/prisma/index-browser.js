@@ -134,11 +134,11 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   email: 'email',
   password: 'password',
-  telefone: 'telefone',
   role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  construtoraId: 'construtoraId'
+  construtoraId: 'construtoraId',
+  telefone: 'telefone'
 };
 
 exports.Prisma.ConstrutoraScalarFieldEnum = {
@@ -167,18 +167,18 @@ exports.Prisma.ImovelScalarFieldEnum = {
   longitude: 'longitude',
   telefoneContato: 'telefoneContato',
   endereco: 'endereco',
-  fotoPrincipal: 'fotoPrincipal',
-  galeriaFotos: 'galeriaFotos',
   caracteristicas: 'caracteristicas',
-  caracteristicasArray: 'caracteristicasArray',
-  tipoImovelId: 'tipoImovelId',
-  tipoImovelNome: 'tipoImovelNome',
-  status: 'status',
-  ativo: 'ativo',
-  destaque: 'destaque',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  construtoraId: 'construtoraId'
+  construtoraId: 'construtoraId',
+  caracteristicasArray: 'caracteristicasArray',
+  destaque: 'destaque',
+  fotoPrincipal: 'fotoPrincipal',
+  galeriaFotos: 'galeriaFotos',
+  status: 'status',
+  ativo: 'ativo',
+  tipoImovelId: 'tipoImovelId',
+  tipoImovelNome: 'tipoImovelNome'
 };
 
 exports.Prisma.PerguntaScalarFieldEnum = {
@@ -187,15 +187,15 @@ exports.Prisma.PerguntaScalarFieldEnum = {
   tipo: 'tipo',
   opcoes: 'opcoes',
   ordem: 'ordem',
-  categoria: 'categoria',
-  fluxo: 'fluxo',
-  pontuacao: 'pontuacao',
   obrigatoria: 'obrigatoria',
   condicional: 'condicional',
   geradaPorIA: 'geradaPorIA',
-  ativa: 'ativa',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  ativa: 'ativa',
+  categoria: 'categoria',
+  fluxo: 'fluxo',
+  pontuacao: 'pontuacao',
   configuracaoId: 'configuracaoId'
 };
 
@@ -234,54 +234,36 @@ exports.Prisma.RelatorioScalarFieldEnum = {
   id: 'id',
   resumo: 'resumo',
   pdfUrl: 'pdfUrl',
-  dataCriacao: 'dataCriacao',
   updatedAt: 'updatedAt',
-  rendaMensal: 'rendaMensal',
-  valorParcelaMaxima: 'valorParcelaMaxima',
-  temOutrosEmprestimos: 'temOutrosEmprestimos',
-  valorEntrada: 'valorEntrada',
-  prazoFinanciamento: 'prazoFinanciamento',
-  taxa: 'taxa',
-  valorImovel: 'valorImovel',
-  valorFinanciamento: 'valorFinanciamento',
-  valorParcela: 'valorParcela',
-  cidade: 'cidade',
+  userId: 'userId',
   bairros: 'bairros',
-  localTrabalho: 'localTrabalho',
+  cidade: 'cidade',
+  dataCriacao: 'dataCriacao',
   distanciaMaximaTrabalho: 'distanciaMaximaTrabalho',
-  importanciaPisoQuartos: 'importanciaPisoQuartos',
   importanciaAcademia: 'importanciaAcademia',
-  importanciaPiscina: 'importanciaPiscina',
-  tipoPortaria: 'tipoPortaria',
-  importanciaSalaoFestas: 'importanciaSalaoFestas',
-  importanciaPlayground: 'importanciaPlayground',
+  importanciaCaminhabilidade: 'importanciaCaminhabilidade',
+  importanciaEscolas: 'importanciaEscolas',
   importanciaEspacoPet: 'importanciaEspacoPet',
   importanciaParques: 'importanciaParques',
-  importanciaShopping: 'importanciaShopping',
+  importanciaPiscina: 'importanciaPiscina',
+  importanciaPisoQuartos: 'importanciaPisoQuartos',
+  importanciaPlayground: 'importanciaPlayground',
   importanciaRestaurantes: 'importanciaRestaurantes',
-  importanciaCaminhabilidade: 'importanciaCaminhabilidade',
-  temPet: 'temPet',
-  importanciaEscolas: 'importanciaEscolas',
+  importanciaSalaoFestas: 'importanciaSalaoFestas',
+  importanciaShopping: 'importanciaShopping',
   importanciaTransporte: 'importanciaTransporte',
-  userId: 'userId'
-};
-
-exports.Prisma.ImoveisRecomendadosScalarFieldEnum = {
-  id: 'id',
-  relatorioId: 'relatorioId',
-  imovelId: 'imovelId',
-  titulo: 'titulo',
-  preco: 'preco',
-  endereco: 'endereco',
-  bairro: 'bairro',
-  cidade: 'cidade',
-  area: 'area',
-  quartos: 'quartos',
-  banheiros: 'banheiros',
-  vagas: 'vagas',
-  imageUrl: 'imageUrl',
-  linkImovel: 'linkImovel',
-  dataCriacao: 'dataCriacao'
+  localTrabalho: 'localTrabalho',
+  prazoFinanciamento: 'prazoFinanciamento',
+  rendaMensal: 'rendaMensal',
+  taxa: 'taxa',
+  temOutrosEmprestimos: 'temOutrosEmprestimos',
+  temPet: 'temPet',
+  tipoPortaria: 'tipoPortaria',
+  valorEntrada: 'valorEntrada',
+  valorFinanciamento: 'valorFinanciamento',
+  valorImovel: 'valorImovel',
+  valorParcela: 'valorParcela',
+  valorParcelaMaxima: 'valorParcelaMaxima'
 };
 
 exports.Prisma.ConfiguracaoScalarFieldEnum = {
@@ -308,9 +290,9 @@ exports.Prisma.ImovelMetadataScalarFieldEnum = {
   imovelIdExterno: 'imovelIdExterno',
   telefone: 'telefone',
   observacoes: 'observacoes',
-  construtoraId: 'construtoraId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  construtoraId: 'construtoraId'
 };
 
 exports.Prisma.ImovelPerguntaScalarFieldEnum = {
@@ -361,6 +343,24 @@ exports.Prisma.AIConfigScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ImoveisRecomendadosScalarFieldEnum = {
+  id: 'id',
+  relatorioId: 'relatorioId',
+  imovelId: 'imovelId',
+  titulo: 'titulo',
+  preco: 'preco',
+  endereco: 'endereco',
+  bairro: 'bairro',
+  cidade: 'cidade',
+  area: 'area',
+  quartos: 'quartos',
+  banheiros: 'banheiros',
+  vagas: 'vagas',
+  imageUrl: 'imageUrl',
+  linkImovel: 'linkImovel',
+  dataCriacao: 'dataCriacao'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -406,7 +406,6 @@ exports.Prisma.ModelName = {
   Resposta: 'Resposta',
   Match: 'Match',
   Relatorio: 'Relatorio',
-  ImoveisRecomendados: 'ImoveisRecomendados',
   Configuracao: 'Configuracao',
   LogIntegracao: 'LogIntegracao',
   ImovelMetadata: 'ImovelMetadata',
@@ -414,7 +413,8 @@ exports.Prisma.ModelName = {
   MensagemContato: 'MensagemContato',
   AIConversation: 'AIConversation',
   AIActionHistory: 'AIActionHistory',
-  AIConfig: 'AIConfig'
+  AIConfig: 'AIConfig',
+  ImoveisRecomendados: 'ImoveisRecomendados'
 };
 
 /**

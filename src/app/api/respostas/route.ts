@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getServerSession } from '@/lib/session';
 
 // Função temporária para criar ou obter usuário para testes
 async function criarOuObterUsuarioTemporario() {
@@ -22,6 +23,22 @@ async function criarOuObterUsuarioTemporario() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    
+    // Tentar obter usuário da sessão atual
+    let usuarioSessao = null;
+    try {
+      const session = await getServerSession();
+      if (session?.user) {
+        usuarioSessao = session.user;
+        console.log('Usuário autenticado encontrado na sessão:', {
+          id: usuarioSessao.id,
+          email: usuarioSessao.email,
+          name: usuarioSessao.name
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao verificar sessão:', error);
+    }
 
     // Verificar se o body é um array de respostas
     if (!Array.isArray(body)) {
@@ -56,8 +73,14 @@ export async function POST(request: Request) {
           ? JSON.stringify(valorResposta) 
           : String(valorResposta);
 
-        // Determinar qual usuário usar
+        // Determinar qual usuário usar (prioridade: session > parâmetro > email > temporário)
         let userId = usuarioId;
+        
+        // Se tiver usuário na sessão, usar ele com prioridade
+        if (usuarioSessao?.id && !userId) {
+          userId = usuarioSessao.id;
+          console.log(`Usando usuário da sessão autenticada: ${userId}`);
+        }
         
         // Se não tiver ID de usuário, mas tiver email, tentar encontrar por email
         if (!userId && usuarioEmail) {

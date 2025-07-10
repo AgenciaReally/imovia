@@ -13,10 +13,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { toast } from "sonner"
-import { Loader2, Mail, Phone, Send } from "lucide-react"
+import { Loader2, Mail, Send } from "lucide-react"
 
 // Interface para as propriedades do componente
 interface ClienteMensagemProps {
@@ -31,7 +30,6 @@ interface ClienteMensagemProps {
 }
 
 export function ClienteMensagem({ cliente, isOpen, onClose }: ClienteMensagemProps) {
-  const [activeTab, setActiveTab] = useState<"email" | "sms">("email")
   const [assunto, setAssunto] = useState("")
   const [mensagem, setMensagem] = useState("")
   const [enviando, setEnviando] = useState(false)
@@ -47,8 +45,8 @@ export function ClienteMensagem({ cliente, isOpen, onClose }: ClienteMensagemPro
   // Função para enviar a mensagem
   const enviarMensagem = async () => {
     // Validações básicas
-    if (activeTab === "email" && !assunto.trim()) {
-      toast.error("O assunto é obrigatório para emails")
+    if (!assunto.trim()) {
+      toast.error("O assunto é obrigatório")
       return
     }
     
@@ -65,10 +63,10 @@ export function ClienteMensagem({ cliente, isOpen, onClose }: ClienteMensagemPro
       // Preparar dados para envio
       const dadosMensagem = {
         clienteId: cliente.id,
-        tipo: activeTab,
+        tipo: "email",
         assunto: assunto,
         mensagem: mensagem,
-        destinatario: activeTab === "email" ? cliente.email : cliente.telefone
+        destinatario: cliente.email
       }
       
       // Enviar para a API
@@ -125,7 +123,7 @@ export function ClienteMensagem({ cliente, isOpen, onClose }: ClienteMensagemPro
         <DialogHeader>
           <DialogTitle>Enviar Mensagem</DialogTitle>
           <DialogDescription>
-            Envie uma mensagem para o cliente por email ou SMS
+            Envie uma mensagem para o cliente por email
           </DialogDescription>
         </DialogHeader>
         
@@ -140,91 +138,62 @@ export function ClienteMensagem({ cliente, isOpen, onClose }: ClienteMensagemPro
           </div>
         </div>
         
-        <Tabs defaultValue="email" onValueChange={(value) => setActiveTab(value as "email" | "sms")}>
-          <TabsList className="mb-4">
-            <TabsTrigger value="email" className="flex items-center gap-2">
-              <Mail className="h-4 w-4" />
-              Email
-            </TabsTrigger>
-            <TabsTrigger 
-              value="sms" 
-              className="flex items-center gap-2"
-              disabled={!cliente.telefone}
-            >
-              <Phone className="h-4 w-4" />
-              SMS
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="email" className="space-y-4">
-            <div className="grid grid-cols-[1fr_auto] gap-4">
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="assunto">Assunto</Label>
-                  <Input
-                    id="assunto"
-                    placeholder="Assunto do email"
-                    value={assunto}
-                    onChange={(e) => setAssunto(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="mensagem-email">Mensagem</Label>
-                  <Textarea
-                    id="mensagem-email"
-                    placeholder="Digite sua mensagem..."
-                    className="min-h-[200px]"
-                    value={mensagem}
-                    onChange={(e) => setMensagem(e.target.value)}
-                  />
-                </div>
-              </div>
-              
-              <div className="w-40 border-l pl-4">
-                <Label className="mb-2 block">Templates</Label>
-                <div className="space-y-2">
-                  {templates.map((template, index) => (
-                    <Button
-                      key={index}
-                      variant="outline"
-                      size="sm"
-                      className="w-full justify-start"
-                      onClick={() => {
-                        setAssunto(template.assunto)
-                        setMensagem(template.mensagem)
-                      }}
-                    >
-                      {template.titulo}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="sms" className="space-y-4">
+        <div className="grid grid-cols-[1fr_auto] gap-4">
+          <div className="space-y-4">
             <div>
-              <Label htmlFor="mensagem-sms">Mensagem SMS</Label>
+              <Label htmlFor="assunto">Assunto</Label>
+              <Input
+                id="assunto"
+                value={assunto}
+                onChange={(e) => setAssunto(e.target.value)}
+                placeholder="Assunto do email"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="mensagem">Mensagem</Label>
               <Textarea
-                id="mensagem-sms"
-                placeholder="Digite sua mensagem SMS..."
-                className="min-h-[100px]"
-                maxLength={160}
+                id="mensagem"
                 value={mensagem}
                 onChange={(e) => setMensagem(e.target.value)}
+                placeholder="Digite sua mensagem aqui"
+                className="min-h-[200px]"
               />
-              <p className="text-xs text-muted-foreground mt-1">
-                {mensagem.length}/160 caracteres
-              </p>
             </div>
-          </TabsContent>
-        </Tabs>
+          </div>
+          
+          <div className="w-40 border-l pl-4">
+            <Label className="mb-2 block">Templates</Label>
+            <div className="space-y-2">
+              {templates.map((template, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-start"
+                  onClick={() => {
+                    setAssunto(template.assunto)
+                    setMensagem(template.mensagem)
+                  }}
+                >
+                  {template.titulo}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
         
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={onClose}>
+        <DialogFooter className="pt-4">
+          <Button
+            variant="outline"
+            onClick={onClose}
+          >
             Cancelar
           </Button>
-          <Button onClick={enviarMensagem} disabled={enviando}>
+          <Button
+            onClick={enviarMensagem}
+            disabled={enviando}
+          >
             {enviando ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

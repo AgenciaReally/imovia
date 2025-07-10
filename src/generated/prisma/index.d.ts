@@ -59,11 +59,6 @@ export type Match = $Result.DefaultSelection<Prisma.$MatchPayload>
  */
 export type Relatorio = $Result.DefaultSelection<Prisma.$RelatorioPayload>
 /**
- * Model ImoveisRecomendados
- * 
- */
-export type ImoveisRecomendados = $Result.DefaultSelection<Prisma.$ImoveisRecomendadosPayload>
-/**
  * Model Configuracao
  * 
  */
@@ -103,6 +98,11 @@ export type AIActionHistory = $Result.DefaultSelection<Prisma.$AIActionHistoryPa
  * 
  */
 export type AIConfig = $Result.DefaultSelection<Prisma.$AIConfigPayload>
+/**
+ * Model ImoveisRecomendados
+ * 
+ */
+export type ImoveisRecomendados = $Result.DefaultSelection<Prisma.$ImoveisRecomendadosPayload>
 
 /**
  * Enums
@@ -338,16 +338,6 @@ export class PrismaClient<
   get relatorio(): Prisma.RelatorioDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.imoveisRecomendados`: Exposes CRUD operations for the **ImoveisRecomendados** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more ImoveisRecomendados
-    * const imoveisRecomendados = await prisma.imoveisRecomendados.findMany()
-    * ```
-    */
-  get imoveisRecomendados(): Prisma.ImoveisRecomendadosDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.configuracao`: Exposes CRUD operations for the **Configuracao** model.
     * Example usage:
     * ```ts
@@ -426,6 +416,16 @@ export class PrismaClient<
     * ```
     */
   get aIConfig(): Prisma.AIConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.imoveisRecomendados`: Exposes CRUD operations for the **ImoveisRecomendados** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ImoveisRecomendados
+    * const imoveisRecomendados = await prisma.imoveisRecomendados.findMany()
+    * ```
+    */
+  get imoveisRecomendados(): Prisma.ImoveisRecomendadosDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -875,7 +875,6 @@ export namespace Prisma {
     Resposta: 'Resposta',
     Match: 'Match',
     Relatorio: 'Relatorio',
-    ImoveisRecomendados: 'ImoveisRecomendados',
     Configuracao: 'Configuracao',
     LogIntegracao: 'LogIntegracao',
     ImovelMetadata: 'ImovelMetadata',
@@ -883,7 +882,8 @@ export namespace Prisma {
     MensagemContato: 'MensagemContato',
     AIConversation: 'AIConversation',
     AIActionHistory: 'AIActionHistory',
-    AIConfig: 'AIConfig'
+    AIConfig: 'AIConfig',
+    ImoveisRecomendados: 'ImoveisRecomendados'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -902,7 +902,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tipoImovel" | "user" | "construtora" | "imovel" | "pergunta" | "configuracaoPergunta" | "resposta" | "match" | "relatorio" | "imoveisRecomendados" | "configuracao" | "logIntegracao" | "imovelMetadata" | "imovelPergunta" | "mensagemContato" | "aIConversation" | "aIActionHistory" | "aIConfig"
+      modelProps: "tipoImovel" | "user" | "construtora" | "imovel" | "pergunta" | "configuracaoPergunta" | "resposta" | "match" | "relatorio" | "configuracao" | "logIntegracao" | "imovelMetadata" | "imovelPergunta" | "mensagemContato" | "aIConversation" | "aIActionHistory" | "aIConfig" | "imoveisRecomendados"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1572,80 +1572,6 @@ export namespace Prisma {
           }
         }
       }
-      ImoveisRecomendados: {
-        payload: Prisma.$ImoveisRecomendadosPayload<ExtArgs>
-        fields: Prisma.ImoveisRecomendadosFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ImoveisRecomendadosFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ImoveisRecomendadosFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
-          }
-          findFirst: {
-            args: Prisma.ImoveisRecomendadosFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ImoveisRecomendadosFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
-          }
-          findMany: {
-            args: Prisma.ImoveisRecomendadosFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>[]
-          }
-          create: {
-            args: Prisma.ImoveisRecomendadosCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
-          }
-          createMany: {
-            args: Prisma.ImoveisRecomendadosCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.ImoveisRecomendadosCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>[]
-          }
-          delete: {
-            args: Prisma.ImoveisRecomendadosDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
-          }
-          update: {
-            args: Prisma.ImoveisRecomendadosUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
-          }
-          deleteMany: {
-            args: Prisma.ImoveisRecomendadosDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ImoveisRecomendadosUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.ImoveisRecomendadosUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>[]
-          }
-          upsert: {
-            args: Prisma.ImoveisRecomendadosUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
-          }
-          aggregate: {
-            args: Prisma.ImoveisRecomendadosAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateImoveisRecomendados>
-          }
-          groupBy: {
-            args: Prisma.ImoveisRecomendadosGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ImoveisRecomendadosGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ImoveisRecomendadosCountArgs<ExtArgs>
-            result: $Utils.Optional<ImoveisRecomendadosCountAggregateOutputType> | number
-          }
-        }
-      }
       Configuracao: {
         payload: Prisma.$ConfiguracaoPayload<ExtArgs>
         fields: Prisma.ConfiguracaoFieldRefs
@@ -2238,6 +2164,80 @@ export namespace Prisma {
           }
         }
       }
+      ImoveisRecomendados: {
+        payload: Prisma.$ImoveisRecomendadosPayload<ExtArgs>
+        fields: Prisma.ImoveisRecomendadosFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ImoveisRecomendadosFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ImoveisRecomendadosFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
+          }
+          findFirst: {
+            args: Prisma.ImoveisRecomendadosFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ImoveisRecomendadosFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
+          }
+          findMany: {
+            args: Prisma.ImoveisRecomendadosFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>[]
+          }
+          create: {
+            args: Prisma.ImoveisRecomendadosCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
+          }
+          createMany: {
+            args: Prisma.ImoveisRecomendadosCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ImoveisRecomendadosCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>[]
+          }
+          delete: {
+            args: Prisma.ImoveisRecomendadosDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
+          }
+          update: {
+            args: Prisma.ImoveisRecomendadosUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
+          }
+          deleteMany: {
+            args: Prisma.ImoveisRecomendadosDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ImoveisRecomendadosUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ImoveisRecomendadosUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>[]
+          }
+          upsert: {
+            args: Prisma.ImoveisRecomendadosUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ImoveisRecomendadosPayload>
+          }
+          aggregate: {
+            args: Prisma.ImoveisRecomendadosAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateImoveisRecomendados>
+          }
+          groupBy: {
+            args: Prisma.ImoveisRecomendadosGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ImoveisRecomendadosGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ImoveisRecomendadosCountArgs<ExtArgs>
+            result: $Utils.Optional<ImoveisRecomendadosCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2331,7 +2331,6 @@ export namespace Prisma {
     resposta?: RespostaOmit
     match?: MatchOmit
     relatorio?: RelatorioOmit
-    imoveisRecomendados?: ImoveisRecomendadosOmit
     configuracao?: ConfiguracaoOmit
     logIntegracao?: LogIntegracaoOmit
     imovelMetadata?: ImovelMetadataOmit
@@ -2340,6 +2339,7 @@ export namespace Prisma {
     aIConversation?: AIConversationOmit
     aIActionHistory?: AIActionHistoryOmit
     aIConfig?: AIConfigOmit
+    imoveisRecomendados?: ImoveisRecomendadosOmit
   }
 
   /* Types for Logging */
@@ -2465,13 +2465,13 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    respostas: number
     relatorios: number
+    respostas: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    respostas?: boolean | UserCountOutputTypeCountRespostasArgs
     relatorios?: boolean | UserCountOutputTypeCountRelatoriosArgs
+    respostas?: boolean | UserCountOutputTypeCountRespostasArgs
   }
 
   // Custom InputTypes
@@ -2488,15 +2488,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountRespostasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RespostaWhereInput
+  export type UserCountOutputTypeCountRelatoriosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RelatorioWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountRelatoriosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RelatorioWhereInput
+  export type UserCountOutputTypeCountRespostasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RespostaWhereInput
   }
 
 
@@ -2505,15 +2505,15 @@ export namespace Prisma {
    */
 
   export type ConstrutoraCountOutputType = {
-    usuarios: number
     imoveis: number
     imoveisMetadata: number
+    usuarios: number
   }
 
   export type ConstrutoraCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    usuarios?: boolean | ConstrutoraCountOutputTypeCountUsuariosArgs
     imoveis?: boolean | ConstrutoraCountOutputTypeCountImoveisArgs
     imoveisMetadata?: boolean | ConstrutoraCountOutputTypeCountImoveisMetadataArgs
+    usuarios?: boolean | ConstrutoraCountOutputTypeCountUsuariosArgs
   }
 
   // Custom InputTypes
@@ -2530,13 +2530,6 @@ export namespace Prisma {
   /**
    * ConstrutoraCountOutputType without action
    */
-  export type ConstrutoraCountOutputTypeCountUsuariosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserWhereInput
-  }
-
-  /**
-   * ConstrutoraCountOutputType without action
-   */
   export type ConstrutoraCountOutputTypeCountImoveisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ImovelWhereInput
   }
@@ -2548,19 +2541,26 @@ export namespace Prisma {
     where?: ImovelMetadataWhereInput
   }
 
+  /**
+   * ConstrutoraCountOutputType without action
+   */
+  export type ConstrutoraCountOutputTypeCountUsuariosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWhereInput
+  }
+
 
   /**
    * Count Type ImovelCountOutputType
    */
 
   export type ImovelCountOutputType = {
-    matches: number
     perguntas: number
+    matches: number
   }
 
   export type ImovelCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    matches?: boolean | ImovelCountOutputTypeCountMatchesArgs
     perguntas?: boolean | ImovelCountOutputTypeCountPerguntasArgs
+    matches?: boolean | ImovelCountOutputTypeCountMatchesArgs
   }
 
   // Custom InputTypes
@@ -2577,15 +2577,15 @@ export namespace Prisma {
   /**
    * ImovelCountOutputType without action
    */
-  export type ImovelCountOutputTypeCountMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: MatchWhereInput
+  export type ImovelCountOutputTypeCountPerguntasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ImovelPerguntaWhereInput
   }
 
   /**
    * ImovelCountOutputType without action
    */
-  export type ImovelCountOutputTypeCountPerguntasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ImovelPerguntaWhereInput
+  export type ImovelCountOutputTypeCountMatchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MatchWhereInput
   }
 
 
@@ -2594,13 +2594,13 @@ export namespace Prisma {
    */
 
   export type PerguntaCountOutputType = {
-    respostas: number
     imoveis: number
+    respostas: number
   }
 
   export type PerguntaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    respostas?: boolean | PerguntaCountOutputTypeCountRespostasArgs
     imoveis?: boolean | PerguntaCountOutputTypeCountImoveisArgs
+    respostas?: boolean | PerguntaCountOutputTypeCountRespostasArgs
   }
 
   // Custom InputTypes
@@ -2617,15 +2617,15 @@ export namespace Prisma {
   /**
    * PerguntaCountOutputType without action
    */
-  export type PerguntaCountOutputTypeCountRespostasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: RespostaWhereInput
+  export type PerguntaCountOutputTypeCountImoveisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ImovelPerguntaWhereInput
   }
 
   /**
    * PerguntaCountOutputType without action
    */
-  export type PerguntaCountOutputTypeCountImoveisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ImovelPerguntaWhereInput
+  export type PerguntaCountOutputTypeCountRespostasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RespostaWhereInput
   }
 
 
@@ -2665,12 +2665,12 @@ export namespace Prisma {
    */
 
   export type RelatorioCountOutputType = {
-    imoveisRecomendados: number
+    ImoveisRecomendados: number
     matches: number
   }
 
   export type RelatorioCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    imoveisRecomendados?: boolean | RelatorioCountOutputTypeCountImoveisRecomendadosArgs
+    ImoveisRecomendados?: boolean | RelatorioCountOutputTypeCountImoveisRecomendadosArgs
     matches?: boolean | RelatorioCountOutputTypeCountMatchesArgs
   }
 
@@ -3802,11 +3802,11 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password: string | null
-    telefone: string | null
     role: $Enums.UserRole | null
     createdAt: Date | null
     updatedAt: Date | null
     construtoraId: string | null
+    telefone: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3814,11 +3814,11 @@ export namespace Prisma {
     name: string | null
     email: string | null
     password: string | null
-    telefone: string | null
     role: $Enums.UserRole | null
     createdAt: Date | null
     updatedAt: Date | null
     construtoraId: string | null
+    telefone: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3826,11 +3826,11 @@ export namespace Prisma {
     name: number
     email: number
     password: number
-    telefone: number
     role: number
     createdAt: number
     updatedAt: number
     construtoraId: number
+    telefone: number
     _all: number
   }
 
@@ -3840,11 +3840,11 @@ export namespace Prisma {
     name?: true
     email?: true
     password?: true
-    telefone?: true
     role?: true
     createdAt?: true
     updatedAt?: true
     construtoraId?: true
+    telefone?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3852,11 +3852,11 @@ export namespace Prisma {
     name?: true
     email?: true
     password?: true
-    telefone?: true
     role?: true
     createdAt?: true
     updatedAt?: true
     construtoraId?: true
+    telefone?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3864,11 +3864,11 @@ export namespace Prisma {
     name?: true
     email?: true
     password?: true
-    telefone?: true
     role?: true
     createdAt?: true
     updatedAt?: true
     construtoraId?: true
+    telefone?: true
     _all?: true
   }
 
@@ -3949,11 +3949,11 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    telefone: string | null
     role: $Enums.UserRole
     createdAt: Date
     updatedAt: Date
     construtoraId: string | null
+    telefone: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -3978,14 +3978,14 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
-    telefone?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
-    construtora?: boolean | User$construtoraArgs<ExtArgs>
-    respostas?: boolean | User$respostasArgs<ExtArgs>
+    telefone?: boolean
     relatorios?: boolean | User$relatoriosArgs<ExtArgs>
+    respostas?: boolean | User$respostasArgs<ExtArgs>
+    construtora?: boolean | User$construtoraArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3994,11 +3994,11 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
-    telefone?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
+    telefone?: boolean
     construtora?: boolean | User$construtoraArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4007,11 +4007,11 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
-    telefone?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
+    telefone?: boolean
     construtora?: boolean | User$construtoraArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4020,18 +4020,18 @@ export namespace Prisma {
     name?: boolean
     email?: boolean
     password?: boolean
-    telefone?: boolean
     role?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
+    telefone?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "telefone" | "role" | "createdAt" | "updatedAt" | "construtoraId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "createdAt" | "updatedAt" | "construtoraId" | "telefone", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    construtora?: boolean | User$construtoraArgs<ExtArgs>
-    respostas?: boolean | User$respostasArgs<ExtArgs>
     relatorios?: boolean | User$relatoriosArgs<ExtArgs>
+    respostas?: boolean | User$respostasArgs<ExtArgs>
+    construtora?: boolean | User$construtoraArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4044,20 +4044,20 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      construtora: Prisma.$ConstrutoraPayload<ExtArgs> | null
-      respostas: Prisma.$RespostaPayload<ExtArgs>[]
       relatorios: Prisma.$RelatorioPayload<ExtArgs>[]
+      respostas: Prisma.$RespostaPayload<ExtArgs>[]
+      construtora: Prisma.$ConstrutoraPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       email: string
       password: string
-      telefone: string | null
       role: $Enums.UserRole
       createdAt: Date
       updatedAt: Date
       construtoraId: string | null
+      telefone: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4452,9 +4452,9 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    construtora<T extends User$construtoraArgs<ExtArgs> = {}>(args?: Subset<T, User$construtoraArgs<ExtArgs>>): Prisma__ConstrutoraClient<$Result.GetResult<Prisma.$ConstrutoraPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    respostas<T extends User$respostasArgs<ExtArgs> = {}>(args?: Subset<T, User$respostasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RespostaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     relatorios<T extends User$relatoriosArgs<ExtArgs> = {}>(args?: Subset<T, User$relatoriosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RelatorioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    respostas<T extends User$respostasArgs<ExtArgs> = {}>(args?: Subset<T, User$respostasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RespostaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    construtora<T extends User$construtoraArgs<ExtArgs> = {}>(args?: Subset<T, User$construtoraArgs<ExtArgs>>): Prisma__ConstrutoraClient<$Result.GetResult<Prisma.$ConstrutoraPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4488,11 +4488,11 @@ export namespace Prisma {
     readonly name: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
-    readonly telefone: FieldRef<"User", 'String'>
     readonly role: FieldRef<"User", 'UserRole'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly construtoraId: FieldRef<"User", 'String'>
+    readonly telefone: FieldRef<"User", 'String'>
   }
     
 
@@ -4889,22 +4889,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.construtora
+   * User.relatorios
    */
-  export type User$construtoraArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$relatoriosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Construtora
+     * Select specific fields to fetch from the Relatorio
      */
-    select?: ConstrutoraSelect<ExtArgs> | null
+    select?: RelatorioSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Construtora
+     * Omit specific fields from the Relatorio
      */
-    omit?: ConstrutoraOmit<ExtArgs> | null
+    omit?: RelatorioOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ConstrutoraInclude<ExtArgs> | null
-    where?: ConstrutoraWhereInput
+    include?: RelatorioInclude<ExtArgs> | null
+    where?: RelatorioWhereInput
+    orderBy?: RelatorioOrderByWithRelationInput | RelatorioOrderByWithRelationInput[]
+    cursor?: RelatorioWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RelatorioScalarFieldEnum | RelatorioScalarFieldEnum[]
   }
 
   /**
@@ -4932,27 +4937,22 @@ export namespace Prisma {
   }
 
   /**
-   * User.relatorios
+   * User.construtora
    */
-  export type User$relatoriosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$construtoraArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Relatorio
+     * Select specific fields to fetch from the Construtora
      */
-    select?: RelatorioSelect<ExtArgs> | null
+    select?: ConstrutoraSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Relatorio
+     * Omit specific fields from the Construtora
      */
-    omit?: RelatorioOmit<ExtArgs> | null
+    omit?: ConstrutoraOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: RelatorioInclude<ExtArgs> | null
-    where?: RelatorioWhereInput
-    orderBy?: RelatorioOrderByWithRelationInput | RelatorioOrderByWithRelationInput[]
-    cursor?: RelatorioWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RelatorioScalarFieldEnum | RelatorioScalarFieldEnum[]
+    include?: ConstrutoraInclude<ExtArgs> | null
+    where?: ConstrutoraWhereInput
   }
 
   /**
@@ -5170,9 +5170,9 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    usuarios?: boolean | Construtora$usuariosArgs<ExtArgs>
     imoveis?: boolean | Construtora$imoveisArgs<ExtArgs>
     imoveisMetadata?: boolean | Construtora$imoveisMetadataArgs<ExtArgs>
+    usuarios?: boolean | Construtora$usuariosArgs<ExtArgs>
     _count?: boolean | ConstrutoraCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["construtora"]>
 
@@ -5214,9 +5214,9 @@ export namespace Prisma {
 
   export type ConstrutoraOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "cnpj" | "telefone" | "email" | "endereco" | "ativa" | "createdAt" | "updatedAt", ExtArgs["result"]["construtora"]>
   export type ConstrutoraInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    usuarios?: boolean | Construtora$usuariosArgs<ExtArgs>
     imoveis?: boolean | Construtora$imoveisArgs<ExtArgs>
     imoveisMetadata?: boolean | Construtora$imoveisMetadataArgs<ExtArgs>
+    usuarios?: boolean | Construtora$usuariosArgs<ExtArgs>
     _count?: boolean | ConstrutoraCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ConstrutoraIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5225,9 +5225,9 @@ export namespace Prisma {
   export type $ConstrutoraPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Construtora"
     objects: {
-      usuarios: Prisma.$UserPayload<ExtArgs>[]
       imoveis: Prisma.$ImovelPayload<ExtArgs>[]
       imoveisMetadata: Prisma.$ImovelMetadataPayload<ExtArgs>[]
+      usuarios: Prisma.$UserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5633,9 +5633,9 @@ export namespace Prisma {
    */
   export interface Prisma__ConstrutoraClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    usuarios<T extends Construtora$usuariosArgs<ExtArgs> = {}>(args?: Subset<T, Construtora$usuariosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     imoveis<T extends Construtora$imoveisArgs<ExtArgs> = {}>(args?: Subset<T, Construtora$imoveisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImovelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     imoveisMetadata<T extends Construtora$imoveisMetadataArgs<ExtArgs> = {}>(args?: Subset<T, Construtora$imoveisMetadataArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImovelMetadataPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    usuarios<T extends Construtora$usuariosArgs<ExtArgs> = {}>(args?: Subset<T, Construtora$usuariosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6062,30 +6062,6 @@ export namespace Prisma {
   }
 
   /**
-   * Construtora.usuarios
-   */
-  export type Construtora$usuariosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
-    cursor?: UserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
-  }
-
-  /**
    * Construtora.imoveis
    */
   export type Construtora$imoveisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6131,6 +6107,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ImovelMetadataScalarFieldEnum | ImovelMetadataScalarFieldEnum[]
+  }
+
+  /**
+   * Construtora.usuarios
+   */
+  export type Construtora$usuariosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+    orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
+    cursor?: UserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
   }
 
   /**
@@ -6198,15 +6198,15 @@ export namespace Prisma {
     longitude: number | null
     telefoneContato: string | null
     endereco: string | null
-    fotoPrincipal: string | null
-    tipoImovelId: string | null
-    tipoImovelNome: string | null
-    status: string | null
-    ativo: boolean | null
-    destaque: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     construtoraId: string | null
+    destaque: boolean | null
+    fotoPrincipal: string | null
+    status: string | null
+    ativo: boolean | null
+    tipoImovelId: string | null
+    tipoImovelNome: string | null
   }
 
   export type ImovelMaxAggregateOutputType = {
@@ -6223,15 +6223,15 @@ export namespace Prisma {
     longitude: number | null
     telefoneContato: string | null
     endereco: string | null
-    fotoPrincipal: string | null
-    tipoImovelId: string | null
-    tipoImovelNome: string | null
-    status: string | null
-    ativo: boolean | null
-    destaque: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     construtoraId: string | null
+    destaque: boolean | null
+    fotoPrincipal: string | null
+    status: string | null
+    ativo: boolean | null
+    tipoImovelId: string | null
+    tipoImovelNome: string | null
   }
 
   export type ImovelCountAggregateOutputType = {
@@ -6248,18 +6248,18 @@ export namespace Prisma {
     longitude: number
     telefoneContato: number
     endereco: number
-    fotoPrincipal: number
-    galeriaFotos: number
     caracteristicas: number
-    caracteristicasArray: number
-    tipoImovelId: number
-    tipoImovelNome: number
-    status: number
-    ativo: number
-    destaque: number
     createdAt: number
     updatedAt: number
     construtoraId: number
+    caracteristicasArray: number
+    destaque: number
+    fotoPrincipal: number
+    galeriaFotos: number
+    status: number
+    ativo: number
+    tipoImovelId: number
+    tipoImovelNome: number
     _all: number
   }
 
@@ -6298,15 +6298,15 @@ export namespace Prisma {
     longitude?: true
     telefoneContato?: true
     endereco?: true
-    fotoPrincipal?: true
-    tipoImovelId?: true
-    tipoImovelNome?: true
-    status?: true
-    ativo?: true
-    destaque?: true
     createdAt?: true
     updatedAt?: true
     construtoraId?: true
+    destaque?: true
+    fotoPrincipal?: true
+    status?: true
+    ativo?: true
+    tipoImovelId?: true
+    tipoImovelNome?: true
   }
 
   export type ImovelMaxAggregateInputType = {
@@ -6323,15 +6323,15 @@ export namespace Prisma {
     longitude?: true
     telefoneContato?: true
     endereco?: true
-    fotoPrincipal?: true
-    tipoImovelId?: true
-    tipoImovelNome?: true
-    status?: true
-    ativo?: true
-    destaque?: true
     createdAt?: true
     updatedAt?: true
     construtoraId?: true
+    destaque?: true
+    fotoPrincipal?: true
+    status?: true
+    ativo?: true
+    tipoImovelId?: true
+    tipoImovelNome?: true
   }
 
   export type ImovelCountAggregateInputType = {
@@ -6348,18 +6348,18 @@ export namespace Prisma {
     longitude?: true
     telefoneContato?: true
     endereco?: true
-    fotoPrincipal?: true
-    galeriaFotos?: true
     caracteristicas?: true
-    caracteristicasArray?: true
-    tipoImovelId?: true
-    tipoImovelNome?: true
-    status?: true
-    ativo?: true
-    destaque?: true
     createdAt?: true
     updatedAt?: true
     construtoraId?: true
+    caracteristicasArray?: true
+    destaque?: true
+    fotoPrincipal?: true
+    galeriaFotos?: true
+    status?: true
+    ativo?: true
+    tipoImovelId?: true
+    tipoImovelNome?: true
     _all?: true
   }
 
@@ -6463,18 +6463,18 @@ export namespace Prisma {
     longitude: number
     telefoneContato: string | null
     endereco: string
-    fotoPrincipal: string | null
-    galeriaFotos: string[]
     caracteristicas: JsonValue | null
-    caracteristicasArray: string[]
-    tipoImovelId: string | null
-    tipoImovelNome: string | null
-    status: string | null
-    ativo: boolean
-    destaque: boolean
     createdAt: Date
     updatedAt: Date
     construtoraId: string
+    caracteristicasArray: string[]
+    destaque: boolean
+    fotoPrincipal: string | null
+    galeriaFotos: string[]
+    status: string | null
+    ativo: boolean
+    tipoImovelId: string | null
+    tipoImovelNome: string | null
     _count: ImovelCountAggregateOutputType | null
     _avg: ImovelAvgAggregateOutputType | null
     _sum: ImovelSumAggregateOutputType | null
@@ -6510,22 +6510,22 @@ export namespace Prisma {
     longitude?: boolean
     telefoneContato?: boolean
     endereco?: boolean
-    fotoPrincipal?: boolean
-    galeriaFotos?: boolean
     caracteristicas?: boolean
-    caracteristicasArray?: boolean
-    tipoImovelId?: boolean
-    tipoImovelNome?: boolean
-    status?: boolean
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
-    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
+    caracteristicasArray?: boolean
+    destaque?: boolean
+    fotoPrincipal?: boolean
+    galeriaFotos?: boolean
+    status?: boolean
+    ativo?: boolean
+    tipoImovelId?: boolean
+    tipoImovelNome?: boolean
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
-    matches?: boolean | Imovel$matchesArgs<ExtArgs>
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     perguntas?: boolean | Imovel$perguntasArgs<ExtArgs>
+    matches?: boolean | Imovel$matchesArgs<ExtArgs>
     _count?: boolean | ImovelCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["imovel"]>
 
@@ -6543,20 +6543,20 @@ export namespace Prisma {
     longitude?: boolean
     telefoneContato?: boolean
     endereco?: boolean
-    fotoPrincipal?: boolean
-    galeriaFotos?: boolean
     caracteristicas?: boolean
-    caracteristicasArray?: boolean
-    tipoImovelId?: boolean
-    tipoImovelNome?: boolean
-    status?: boolean
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
-    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
+    caracteristicasArray?: boolean
+    destaque?: boolean
+    fotoPrincipal?: boolean
+    galeriaFotos?: boolean
+    status?: boolean
+    ativo?: boolean
+    tipoImovelId?: boolean
+    tipoImovelNome?: boolean
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
   }, ExtArgs["result"]["imovel"]>
 
   export type ImovelSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6573,20 +6573,20 @@ export namespace Prisma {
     longitude?: boolean
     telefoneContato?: boolean
     endereco?: boolean
-    fotoPrincipal?: boolean
-    galeriaFotos?: boolean
     caracteristicas?: boolean
-    caracteristicasArray?: boolean
-    tipoImovelId?: boolean
-    tipoImovelNome?: boolean
-    status?: boolean
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
-    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
+    caracteristicasArray?: boolean
+    destaque?: boolean
+    fotoPrincipal?: boolean
+    galeriaFotos?: boolean
+    status?: boolean
+    ativo?: boolean
+    tipoImovelId?: boolean
+    tipoImovelNome?: boolean
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
   }, ExtArgs["result"]["imovel"]>
 
   export type ImovelSelectScalar = {
@@ -6603,44 +6603,44 @@ export namespace Prisma {
     longitude?: boolean
     telefoneContato?: boolean
     endereco?: boolean
-    fotoPrincipal?: boolean
-    galeriaFotos?: boolean
     caracteristicas?: boolean
-    caracteristicasArray?: boolean
-    tipoImovelId?: boolean
-    tipoImovelNome?: boolean
-    status?: boolean
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     construtoraId?: boolean
+    caracteristicasArray?: boolean
+    destaque?: boolean
+    fotoPrincipal?: boolean
+    galeriaFotos?: boolean
+    status?: boolean
+    ativo?: boolean
+    tipoImovelId?: boolean
+    tipoImovelNome?: boolean
   }
 
-  export type ImovelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idExternoAPI" | "titulo" | "descricao" | "preco" | "area" | "quartos" | "banheiros" | "vagas" | "latitude" | "longitude" | "telefoneContato" | "endereco" | "fotoPrincipal" | "galeriaFotos" | "caracteristicas" | "caracteristicasArray" | "tipoImovelId" | "tipoImovelNome" | "status" | "ativo" | "destaque" | "createdAt" | "updatedAt" | "construtoraId", ExtArgs["result"]["imovel"]>
+  export type ImovelOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idExternoAPI" | "titulo" | "descricao" | "preco" | "area" | "quartos" | "banheiros" | "vagas" | "latitude" | "longitude" | "telefoneContato" | "endereco" | "caracteristicas" | "createdAt" | "updatedAt" | "construtoraId" | "caracteristicasArray" | "destaque" | "fotoPrincipal" | "galeriaFotos" | "status" | "ativo" | "tipoImovelId" | "tipoImovelNome", ExtArgs["result"]["imovel"]>
   export type ImovelInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
-    matches?: boolean | Imovel$matchesArgs<ExtArgs>
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     perguntas?: boolean | Imovel$perguntasArgs<ExtArgs>
+    matches?: boolean | Imovel$matchesArgs<ExtArgs>
     _count?: boolean | ImovelCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ImovelIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
   }
   export type ImovelIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
     construtora?: boolean | ConstrutoraDefaultArgs<ExtArgs>
+    tipoImovel?: boolean | Imovel$tipoImovelArgs<ExtArgs>
   }
 
   export type $ImovelPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Imovel"
     objects: {
-      tipoImovel: Prisma.$TipoImovelPayload<ExtArgs> | null
       construtora: Prisma.$ConstrutoraPayload<ExtArgs>
-      matches: Prisma.$MatchPayload<ExtArgs>[]
+      tipoImovel: Prisma.$TipoImovelPayload<ExtArgs> | null
       perguntas: Prisma.$ImovelPerguntaPayload<ExtArgs>[]
+      matches: Prisma.$MatchPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6656,18 +6656,18 @@ export namespace Prisma {
       longitude: number
       telefoneContato: string | null
       endereco: string
-      fotoPrincipal: string | null
-      galeriaFotos: string[]
       caracteristicas: Prisma.JsonValue | null
-      caracteristicasArray: string[]
-      tipoImovelId: string | null
-      tipoImovelNome: string | null
-      status: string | null
-      ativo: boolean
-      destaque: boolean
       createdAt: Date
       updatedAt: Date
       construtoraId: string
+      caracteristicasArray: string[]
+      destaque: boolean
+      fotoPrincipal: string | null
+      galeriaFotos: string[]
+      status: string | null
+      ativo: boolean
+      tipoImovelId: string | null
+      tipoImovelNome: string | null
     }, ExtArgs["result"]["imovel"]>
     composites: {}
   }
@@ -7062,10 +7062,10 @@ export namespace Prisma {
    */
   export interface Prisma__ImovelClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    tipoImovel<T extends Imovel$tipoImovelArgs<ExtArgs> = {}>(args?: Subset<T, Imovel$tipoImovelArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     construtora<T extends ConstrutoraDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConstrutoraDefaultArgs<ExtArgs>>): Prisma__ConstrutoraClient<$Result.GetResult<Prisma.$ConstrutoraPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    matches<T extends Imovel$matchesArgs<ExtArgs> = {}>(args?: Subset<T, Imovel$matchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tipoImovel<T extends Imovel$tipoImovelArgs<ExtArgs> = {}>(args?: Subset<T, Imovel$tipoImovelArgs<ExtArgs>>): Prisma__TipoImovelClient<$Result.GetResult<Prisma.$TipoImovelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     perguntas<T extends Imovel$perguntasArgs<ExtArgs> = {}>(args?: Subset<T, Imovel$perguntasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImovelPerguntaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    matches<T extends Imovel$matchesArgs<ExtArgs> = {}>(args?: Subset<T, Imovel$matchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7108,18 +7108,18 @@ export namespace Prisma {
     readonly longitude: FieldRef<"Imovel", 'Float'>
     readonly telefoneContato: FieldRef<"Imovel", 'String'>
     readonly endereco: FieldRef<"Imovel", 'String'>
-    readonly fotoPrincipal: FieldRef<"Imovel", 'String'>
-    readonly galeriaFotos: FieldRef<"Imovel", 'String[]'>
     readonly caracteristicas: FieldRef<"Imovel", 'Json'>
-    readonly caracteristicasArray: FieldRef<"Imovel", 'String[]'>
-    readonly tipoImovelId: FieldRef<"Imovel", 'String'>
-    readonly tipoImovelNome: FieldRef<"Imovel", 'String'>
-    readonly status: FieldRef<"Imovel", 'String'>
-    readonly ativo: FieldRef<"Imovel", 'Boolean'>
-    readonly destaque: FieldRef<"Imovel", 'Boolean'>
     readonly createdAt: FieldRef<"Imovel", 'DateTime'>
     readonly updatedAt: FieldRef<"Imovel", 'DateTime'>
     readonly construtoraId: FieldRef<"Imovel", 'String'>
+    readonly caracteristicasArray: FieldRef<"Imovel", 'String[]'>
+    readonly destaque: FieldRef<"Imovel", 'Boolean'>
+    readonly fotoPrincipal: FieldRef<"Imovel", 'String'>
+    readonly galeriaFotos: FieldRef<"Imovel", 'String[]'>
+    readonly status: FieldRef<"Imovel", 'String'>
+    readonly ativo: FieldRef<"Imovel", 'Boolean'>
+    readonly tipoImovelId: FieldRef<"Imovel", 'String'>
+    readonly tipoImovelNome: FieldRef<"Imovel", 'String'>
   }
     
 
@@ -7535,30 +7535,6 @@ export namespace Prisma {
   }
 
   /**
-   * Imovel.matches
-   */
-  export type Imovel$matchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Match
-     */
-    select?: MatchSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Match
-     */
-    omit?: MatchOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: MatchInclude<ExtArgs> | null
-    where?: MatchWhereInput
-    orderBy?: MatchOrderByWithRelationInput | MatchOrderByWithRelationInput[]
-    cursor?: MatchWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: MatchScalarFieldEnum | MatchScalarFieldEnum[]
-  }
-
-  /**
    * Imovel.perguntas
    */
   export type Imovel$perguntasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7580,6 +7556,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ImovelPerguntaScalarFieldEnum | ImovelPerguntaScalarFieldEnum[]
+  }
+
+  /**
+   * Imovel.matches
+   */
+  export type Imovel$matchesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Match
+     */
+    select?: MatchSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Match
+     */
+    omit?: MatchOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MatchInclude<ExtArgs> | null
+    where?: MatchWhereInput
+    orderBy?: MatchOrderByWithRelationInput | MatchOrderByWithRelationInput[]
+    cursor?: MatchWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MatchScalarFieldEnum | MatchScalarFieldEnum[]
   }
 
   /**
@@ -7628,14 +7628,14 @@ export namespace Prisma {
     texto: string | null
     tipo: string | null
     ordem: number | null
+    obrigatoria: boolean | null
+    geradaPorIA: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    ativa: boolean | null
     categoria: string | null
     fluxo: string | null
     pontuacao: number | null
-    obrigatoria: boolean | null
-    geradaPorIA: boolean | null
-    ativa: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
     configuracaoId: string | null
   }
 
@@ -7644,14 +7644,14 @@ export namespace Prisma {
     texto: string | null
     tipo: string | null
     ordem: number | null
+    obrigatoria: boolean | null
+    geradaPorIA: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    ativa: boolean | null
     categoria: string | null
     fluxo: string | null
     pontuacao: number | null
-    obrigatoria: boolean | null
-    geradaPorIA: boolean | null
-    ativa: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
     configuracaoId: string | null
   }
 
@@ -7661,15 +7661,15 @@ export namespace Prisma {
     tipo: number
     opcoes: number
     ordem: number
-    categoria: number
-    fluxo: number
-    pontuacao: number
     obrigatoria: number
     condicional: number
     geradaPorIA: number
-    ativa: number
     createdAt: number
     updatedAt: number
+    ativa: number
+    categoria: number
+    fluxo: number
+    pontuacao: number
     configuracaoId: number
     _all: number
   }
@@ -7690,14 +7690,14 @@ export namespace Prisma {
     texto?: true
     tipo?: true
     ordem?: true
+    obrigatoria?: true
+    geradaPorIA?: true
+    createdAt?: true
+    updatedAt?: true
+    ativa?: true
     categoria?: true
     fluxo?: true
     pontuacao?: true
-    obrigatoria?: true
-    geradaPorIA?: true
-    ativa?: true
-    createdAt?: true
-    updatedAt?: true
     configuracaoId?: true
   }
 
@@ -7706,14 +7706,14 @@ export namespace Prisma {
     texto?: true
     tipo?: true
     ordem?: true
+    obrigatoria?: true
+    geradaPorIA?: true
+    createdAt?: true
+    updatedAt?: true
+    ativa?: true
     categoria?: true
     fluxo?: true
     pontuacao?: true
-    obrigatoria?: true
-    geradaPorIA?: true
-    ativa?: true
-    createdAt?: true
-    updatedAt?: true
     configuracaoId?: true
   }
 
@@ -7723,15 +7723,15 @@ export namespace Prisma {
     tipo?: true
     opcoes?: true
     ordem?: true
-    categoria?: true
-    fluxo?: true
-    pontuacao?: true
     obrigatoria?: true
     condicional?: true
     geradaPorIA?: true
-    ativa?: true
     createdAt?: true
     updatedAt?: true
+    ativa?: true
+    categoria?: true
+    fluxo?: true
+    pontuacao?: true
     configuracaoId?: true
     _all?: true
   }
@@ -7828,15 +7828,15 @@ export namespace Prisma {
     tipo: string
     opcoes: JsonValue | null
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao: number
     obrigatoria: boolean
     condicional: JsonValue | null
     geradaPorIA: boolean
-    ativa: boolean
     createdAt: Date
     updatedAt: Date
+    ativa: boolean
+    categoria: string
+    fluxo: string
+    pontuacao: number
     configuracaoId: string | null
     _count: PerguntaCountAggregateOutputType | null
     _avg: PerguntaAvgAggregateOutputType | null
@@ -7865,19 +7865,19 @@ export namespace Prisma {
     tipo?: boolean
     opcoes?: boolean
     ordem?: boolean
-    categoria?: boolean
-    fluxo?: boolean
-    pontuacao?: boolean
     obrigatoria?: boolean
     condicional?: boolean
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    ativa?: boolean
+    categoria?: boolean
+    fluxo?: boolean
+    pontuacao?: boolean
     configuracaoId?: boolean
-    respostas?: boolean | Pergunta$respostasArgs<ExtArgs>
     imoveis?: boolean | Pergunta$imoveisArgs<ExtArgs>
     configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
+    respostas?: boolean | Pergunta$respostasArgs<ExtArgs>
     _count?: boolean | PerguntaCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pergunta"]>
 
@@ -7887,15 +7887,15 @@ export namespace Prisma {
     tipo?: boolean
     opcoes?: boolean
     ordem?: boolean
-    categoria?: boolean
-    fluxo?: boolean
-    pontuacao?: boolean
     obrigatoria?: boolean
     condicional?: boolean
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    ativa?: boolean
+    categoria?: boolean
+    fluxo?: boolean
+    pontuacao?: boolean
     configuracaoId?: boolean
     configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
   }, ExtArgs["result"]["pergunta"]>
@@ -7906,15 +7906,15 @@ export namespace Prisma {
     tipo?: boolean
     opcoes?: boolean
     ordem?: boolean
-    categoria?: boolean
-    fluxo?: boolean
-    pontuacao?: boolean
     obrigatoria?: boolean
     condicional?: boolean
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    ativa?: boolean
+    categoria?: boolean
+    fluxo?: boolean
+    pontuacao?: boolean
     configuracaoId?: boolean
     configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
   }, ExtArgs["result"]["pergunta"]>
@@ -7925,23 +7925,23 @@ export namespace Prisma {
     tipo?: boolean
     opcoes?: boolean
     ordem?: boolean
-    categoria?: boolean
-    fluxo?: boolean
-    pontuacao?: boolean
     obrigatoria?: boolean
     condicional?: boolean
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    ativa?: boolean
+    categoria?: boolean
+    fluxo?: boolean
+    pontuacao?: boolean
     configuracaoId?: boolean
   }
 
-  export type PerguntaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "texto" | "tipo" | "opcoes" | "ordem" | "categoria" | "fluxo" | "pontuacao" | "obrigatoria" | "condicional" | "geradaPorIA" | "ativa" | "createdAt" | "updatedAt" | "configuracaoId", ExtArgs["result"]["pergunta"]>
+  export type PerguntaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "texto" | "tipo" | "opcoes" | "ordem" | "obrigatoria" | "condicional" | "geradaPorIA" | "createdAt" | "updatedAt" | "ativa" | "categoria" | "fluxo" | "pontuacao" | "configuracaoId", ExtArgs["result"]["pergunta"]>
   export type PerguntaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    respostas?: boolean | Pergunta$respostasArgs<ExtArgs>
     imoveis?: boolean | Pergunta$imoveisArgs<ExtArgs>
     configuracao?: boolean | Pergunta$configuracaoArgs<ExtArgs>
+    respostas?: boolean | Pergunta$respostasArgs<ExtArgs>
     _count?: boolean | PerguntaCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PerguntaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7954,9 +7954,9 @@ export namespace Prisma {
   export type $PerguntaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Pergunta"
     objects: {
-      respostas: Prisma.$RespostaPayload<ExtArgs>[]
       imoveis: Prisma.$ImovelPerguntaPayload<ExtArgs>[]
       configuracao: Prisma.$ConfiguracaoPerguntaPayload<ExtArgs> | null
+      respostas: Prisma.$RespostaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7964,15 +7964,15 @@ export namespace Prisma {
       tipo: string
       opcoes: Prisma.JsonValue | null
       ordem: number
-      categoria: string
-      fluxo: string
-      pontuacao: number
       obrigatoria: boolean
       condicional: Prisma.JsonValue | null
       geradaPorIA: boolean
-      ativa: boolean
       createdAt: Date
       updatedAt: Date
+      ativa: boolean
+      categoria: string
+      fluxo: string
+      pontuacao: number
       configuracaoId: string | null
     }, ExtArgs["result"]["pergunta"]>
     composites: {}
@@ -8368,9 +8368,9 @@ export namespace Prisma {
    */
   export interface Prisma__PerguntaClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    respostas<T extends Pergunta$respostasArgs<ExtArgs> = {}>(args?: Subset<T, Pergunta$respostasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RespostaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     imoveis<T extends Pergunta$imoveisArgs<ExtArgs> = {}>(args?: Subset<T, Pergunta$imoveisArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImovelPerguntaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     configuracao<T extends Pergunta$configuracaoArgs<ExtArgs> = {}>(args?: Subset<T, Pergunta$configuracaoArgs<ExtArgs>>): Prisma__ConfiguracaoPerguntaClient<$Result.GetResult<Prisma.$ConfiguracaoPerguntaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    respostas<T extends Pergunta$respostasArgs<ExtArgs> = {}>(args?: Subset<T, Pergunta$respostasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RespostaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8405,15 +8405,15 @@ export namespace Prisma {
     readonly tipo: FieldRef<"Pergunta", 'String'>
     readonly opcoes: FieldRef<"Pergunta", 'Json'>
     readonly ordem: FieldRef<"Pergunta", 'Int'>
-    readonly categoria: FieldRef<"Pergunta", 'String'>
-    readonly fluxo: FieldRef<"Pergunta", 'String'>
-    readonly pontuacao: FieldRef<"Pergunta", 'Int'>
     readonly obrigatoria: FieldRef<"Pergunta", 'Boolean'>
     readonly condicional: FieldRef<"Pergunta", 'Json'>
     readonly geradaPorIA: FieldRef<"Pergunta", 'Boolean'>
-    readonly ativa: FieldRef<"Pergunta", 'Boolean'>
     readonly createdAt: FieldRef<"Pergunta", 'DateTime'>
     readonly updatedAt: FieldRef<"Pergunta", 'DateTime'>
+    readonly ativa: FieldRef<"Pergunta", 'Boolean'>
+    readonly categoria: FieldRef<"Pergunta", 'String'>
+    readonly fluxo: FieldRef<"Pergunta", 'String'>
+    readonly pontuacao: FieldRef<"Pergunta", 'Int'>
     readonly configuracaoId: FieldRef<"Pergunta", 'String'>
   }
     
@@ -8811,30 +8811,6 @@ export namespace Prisma {
   }
 
   /**
-   * Pergunta.respostas
-   */
-  export type Pergunta$respostasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Resposta
-     */
-    select?: RespostaSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Resposta
-     */
-    omit?: RespostaOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: RespostaInclude<ExtArgs> | null
-    where?: RespostaWhereInput
-    orderBy?: RespostaOrderByWithRelationInput | RespostaOrderByWithRelationInput[]
-    cursor?: RespostaWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: RespostaScalarFieldEnum | RespostaScalarFieldEnum[]
-  }
-
-  /**
    * Pergunta.imoveis
    */
   export type Pergunta$imoveisArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8875,6 +8851,30 @@ export namespace Prisma {
      */
     include?: ConfiguracaoPerguntaInclude<ExtArgs> | null
     where?: ConfiguracaoPerguntaWhereInput
+  }
+
+  /**
+   * Pergunta.respostas
+   */
+  export type Pergunta$respostasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Resposta
+     */
+    select?: RespostaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Resposta
+     */
+    omit?: RespostaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RespostaInclude<ExtArgs> | null
+    where?: RespostaWhereInput
+    orderBy?: RespostaOrderByWithRelationInput | RespostaOrderByWithRelationInput[]
+    cursor?: RespostaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RespostaScalarFieldEnum | RespostaScalarFieldEnum[]
   }
 
   /**
@@ -12293,269 +12293,269 @@ export namespace Prisma {
   }
 
   export type RelatorioAvgAggregateOutputType = {
-    rendaMensal: number | null
-    valorParcelaMaxima: number | null
-    valorEntrada: number | null
-    prazoFinanciamento: number | null
-    taxa: number | null
-    valorImovel: number | null
-    valorFinanciamento: number | null
-    valorParcela: number | null
     distanciaMaximaTrabalho: number | null
+    prazoFinanciamento: number | null
+    rendaMensal: number | null
+    taxa: number | null
+    valorEntrada: number | null
+    valorFinanciamento: number | null
+    valorImovel: number | null
+    valorParcela: number | null
+    valorParcelaMaxima: number | null
   }
 
   export type RelatorioSumAggregateOutputType = {
-    rendaMensal: number | null
-    valorParcelaMaxima: number | null
-    valorEntrada: number | null
-    prazoFinanciamento: number | null
-    taxa: number | null
-    valorImovel: number | null
-    valorFinanciamento: number | null
-    valorParcela: number | null
     distanciaMaximaTrabalho: number | null
+    prazoFinanciamento: number | null
+    rendaMensal: number | null
+    taxa: number | null
+    valorEntrada: number | null
+    valorFinanciamento: number | null
+    valorImovel: number | null
+    valorParcela: number | null
+    valorParcelaMaxima: number | null
   }
 
   export type RelatorioMinAggregateOutputType = {
     id: string | null
     resumo: string | null
     pdfUrl: string | null
-    dataCriacao: Date | null
     updatedAt: Date | null
-    rendaMensal: number | null
-    valorParcelaMaxima: number | null
-    temOutrosEmprestimos: boolean | null
-    valorEntrada: number | null
-    prazoFinanciamento: number | null
-    taxa: number | null
-    valorImovel: number | null
-    valorFinanciamento: number | null
-    valorParcela: number | null
-    cidade: string | null
+    userId: string | null
     bairros: string | null
-    localTrabalho: string | null
+    cidade: string | null
+    dataCriacao: Date | null
     distanciaMaximaTrabalho: number | null
-    importanciaPisoQuartos: string | null
     importanciaAcademia: string | null
-    importanciaPiscina: string | null
-    tipoPortaria: string | null
-    importanciaSalaoFestas: string | null
-    importanciaPlayground: string | null
+    importanciaCaminhabilidade: string | null
+    importanciaEscolas: string | null
     importanciaEspacoPet: string | null
     importanciaParques: string | null
-    importanciaShopping: string | null
+    importanciaPiscina: string | null
+    importanciaPisoQuartos: string | null
+    importanciaPlayground: string | null
     importanciaRestaurantes: string | null
-    importanciaCaminhabilidade: string | null
-    temPet: boolean | null
-    importanciaEscolas: string | null
+    importanciaSalaoFestas: string | null
+    importanciaShopping: string | null
     importanciaTransporte: string | null
-    userId: string | null
+    localTrabalho: string | null
+    prazoFinanciamento: number | null
+    rendaMensal: number | null
+    taxa: number | null
+    temOutrosEmprestimos: boolean | null
+    temPet: boolean | null
+    tipoPortaria: string | null
+    valorEntrada: number | null
+    valorFinanciamento: number | null
+    valorImovel: number | null
+    valorParcela: number | null
+    valorParcelaMaxima: number | null
   }
 
   export type RelatorioMaxAggregateOutputType = {
     id: string | null
     resumo: string | null
     pdfUrl: string | null
-    dataCriacao: Date | null
     updatedAt: Date | null
-    rendaMensal: number | null
-    valorParcelaMaxima: number | null
-    temOutrosEmprestimos: boolean | null
-    valorEntrada: number | null
-    prazoFinanciamento: number | null
-    taxa: number | null
-    valorImovel: number | null
-    valorFinanciamento: number | null
-    valorParcela: number | null
-    cidade: string | null
+    userId: string | null
     bairros: string | null
-    localTrabalho: string | null
+    cidade: string | null
+    dataCriacao: Date | null
     distanciaMaximaTrabalho: number | null
-    importanciaPisoQuartos: string | null
     importanciaAcademia: string | null
-    importanciaPiscina: string | null
-    tipoPortaria: string | null
-    importanciaSalaoFestas: string | null
-    importanciaPlayground: string | null
+    importanciaCaminhabilidade: string | null
+    importanciaEscolas: string | null
     importanciaEspacoPet: string | null
     importanciaParques: string | null
-    importanciaShopping: string | null
+    importanciaPiscina: string | null
+    importanciaPisoQuartos: string | null
+    importanciaPlayground: string | null
     importanciaRestaurantes: string | null
-    importanciaCaminhabilidade: string | null
-    temPet: boolean | null
-    importanciaEscolas: string | null
+    importanciaSalaoFestas: string | null
+    importanciaShopping: string | null
     importanciaTransporte: string | null
-    userId: string | null
+    localTrabalho: string | null
+    prazoFinanciamento: number | null
+    rendaMensal: number | null
+    taxa: number | null
+    temOutrosEmprestimos: boolean | null
+    temPet: boolean | null
+    tipoPortaria: string | null
+    valorEntrada: number | null
+    valorFinanciamento: number | null
+    valorImovel: number | null
+    valorParcela: number | null
+    valorParcelaMaxima: number | null
   }
 
   export type RelatorioCountAggregateOutputType = {
     id: number
     resumo: number
     pdfUrl: number
-    dataCriacao: number
     updatedAt: number
-    rendaMensal: number
-    valorParcelaMaxima: number
-    temOutrosEmprestimos: number
-    valorEntrada: number
-    prazoFinanciamento: number
-    taxa: number
-    valorImovel: number
-    valorFinanciamento: number
-    valorParcela: number
-    cidade: number
+    userId: number
     bairros: number
-    localTrabalho: number
+    cidade: number
+    dataCriacao: number
     distanciaMaximaTrabalho: number
-    importanciaPisoQuartos: number
     importanciaAcademia: number
-    importanciaPiscina: number
-    tipoPortaria: number
-    importanciaSalaoFestas: number
-    importanciaPlayground: number
+    importanciaCaminhabilidade: number
+    importanciaEscolas: number
     importanciaEspacoPet: number
     importanciaParques: number
-    importanciaShopping: number
+    importanciaPiscina: number
+    importanciaPisoQuartos: number
+    importanciaPlayground: number
     importanciaRestaurantes: number
-    importanciaCaminhabilidade: number
-    temPet: number
-    importanciaEscolas: number
+    importanciaSalaoFestas: number
+    importanciaShopping: number
     importanciaTransporte: number
-    userId: number
+    localTrabalho: number
+    prazoFinanciamento: number
+    rendaMensal: number
+    taxa: number
+    temOutrosEmprestimos: number
+    temPet: number
+    tipoPortaria: number
+    valorEntrada: number
+    valorFinanciamento: number
+    valorImovel: number
+    valorParcela: number
+    valorParcelaMaxima: number
     _all: number
   }
 
 
   export type RelatorioAvgAggregateInputType = {
-    rendaMensal?: true
-    valorParcelaMaxima?: true
-    valorEntrada?: true
-    prazoFinanciamento?: true
-    taxa?: true
-    valorImovel?: true
-    valorFinanciamento?: true
-    valorParcela?: true
     distanciaMaximaTrabalho?: true
+    prazoFinanciamento?: true
+    rendaMensal?: true
+    taxa?: true
+    valorEntrada?: true
+    valorFinanciamento?: true
+    valorImovel?: true
+    valorParcela?: true
+    valorParcelaMaxima?: true
   }
 
   export type RelatorioSumAggregateInputType = {
-    rendaMensal?: true
-    valorParcelaMaxima?: true
-    valorEntrada?: true
-    prazoFinanciamento?: true
-    taxa?: true
-    valorImovel?: true
-    valorFinanciamento?: true
-    valorParcela?: true
     distanciaMaximaTrabalho?: true
+    prazoFinanciamento?: true
+    rendaMensal?: true
+    taxa?: true
+    valorEntrada?: true
+    valorFinanciamento?: true
+    valorImovel?: true
+    valorParcela?: true
+    valorParcelaMaxima?: true
   }
 
   export type RelatorioMinAggregateInputType = {
     id?: true
     resumo?: true
     pdfUrl?: true
-    dataCriacao?: true
     updatedAt?: true
-    rendaMensal?: true
-    valorParcelaMaxima?: true
-    temOutrosEmprestimos?: true
-    valorEntrada?: true
-    prazoFinanciamento?: true
-    taxa?: true
-    valorImovel?: true
-    valorFinanciamento?: true
-    valorParcela?: true
-    cidade?: true
+    userId?: true
     bairros?: true
-    localTrabalho?: true
+    cidade?: true
+    dataCriacao?: true
     distanciaMaximaTrabalho?: true
-    importanciaPisoQuartos?: true
     importanciaAcademia?: true
-    importanciaPiscina?: true
-    tipoPortaria?: true
-    importanciaSalaoFestas?: true
-    importanciaPlayground?: true
+    importanciaCaminhabilidade?: true
+    importanciaEscolas?: true
     importanciaEspacoPet?: true
     importanciaParques?: true
-    importanciaShopping?: true
+    importanciaPiscina?: true
+    importanciaPisoQuartos?: true
+    importanciaPlayground?: true
     importanciaRestaurantes?: true
-    importanciaCaminhabilidade?: true
-    temPet?: true
-    importanciaEscolas?: true
+    importanciaSalaoFestas?: true
+    importanciaShopping?: true
     importanciaTransporte?: true
-    userId?: true
+    localTrabalho?: true
+    prazoFinanciamento?: true
+    rendaMensal?: true
+    taxa?: true
+    temOutrosEmprestimos?: true
+    temPet?: true
+    tipoPortaria?: true
+    valorEntrada?: true
+    valorFinanciamento?: true
+    valorImovel?: true
+    valorParcela?: true
+    valorParcelaMaxima?: true
   }
 
   export type RelatorioMaxAggregateInputType = {
     id?: true
     resumo?: true
     pdfUrl?: true
-    dataCriacao?: true
     updatedAt?: true
-    rendaMensal?: true
-    valorParcelaMaxima?: true
-    temOutrosEmprestimos?: true
-    valorEntrada?: true
-    prazoFinanciamento?: true
-    taxa?: true
-    valorImovel?: true
-    valorFinanciamento?: true
-    valorParcela?: true
-    cidade?: true
+    userId?: true
     bairros?: true
-    localTrabalho?: true
+    cidade?: true
+    dataCriacao?: true
     distanciaMaximaTrabalho?: true
-    importanciaPisoQuartos?: true
     importanciaAcademia?: true
-    importanciaPiscina?: true
-    tipoPortaria?: true
-    importanciaSalaoFestas?: true
-    importanciaPlayground?: true
+    importanciaCaminhabilidade?: true
+    importanciaEscolas?: true
     importanciaEspacoPet?: true
     importanciaParques?: true
-    importanciaShopping?: true
+    importanciaPiscina?: true
+    importanciaPisoQuartos?: true
+    importanciaPlayground?: true
     importanciaRestaurantes?: true
-    importanciaCaminhabilidade?: true
-    temPet?: true
-    importanciaEscolas?: true
+    importanciaSalaoFestas?: true
+    importanciaShopping?: true
     importanciaTransporte?: true
-    userId?: true
+    localTrabalho?: true
+    prazoFinanciamento?: true
+    rendaMensal?: true
+    taxa?: true
+    temOutrosEmprestimos?: true
+    temPet?: true
+    tipoPortaria?: true
+    valorEntrada?: true
+    valorFinanciamento?: true
+    valorImovel?: true
+    valorParcela?: true
+    valorParcelaMaxima?: true
   }
 
   export type RelatorioCountAggregateInputType = {
     id?: true
     resumo?: true
     pdfUrl?: true
-    dataCriacao?: true
     updatedAt?: true
-    rendaMensal?: true
-    valorParcelaMaxima?: true
-    temOutrosEmprestimos?: true
-    valorEntrada?: true
-    prazoFinanciamento?: true
-    taxa?: true
-    valorImovel?: true
-    valorFinanciamento?: true
-    valorParcela?: true
-    cidade?: true
+    userId?: true
     bairros?: true
-    localTrabalho?: true
+    cidade?: true
+    dataCriacao?: true
     distanciaMaximaTrabalho?: true
-    importanciaPisoQuartos?: true
     importanciaAcademia?: true
-    importanciaPiscina?: true
-    tipoPortaria?: true
-    importanciaSalaoFestas?: true
-    importanciaPlayground?: true
+    importanciaCaminhabilidade?: true
+    importanciaEscolas?: true
     importanciaEspacoPet?: true
     importanciaParques?: true
-    importanciaShopping?: true
+    importanciaPiscina?: true
+    importanciaPisoQuartos?: true
+    importanciaPlayground?: true
     importanciaRestaurantes?: true
-    importanciaCaminhabilidade?: true
-    temPet?: true
-    importanciaEscolas?: true
+    importanciaSalaoFestas?: true
+    importanciaShopping?: true
     importanciaTransporte?: true
-    userId?: true
+    localTrabalho?: true
+    prazoFinanciamento?: true
+    rendaMensal?: true
+    taxa?: true
+    temOutrosEmprestimos?: true
+    temPet?: true
+    tipoPortaria?: true
+    valorEntrada?: true
+    valorFinanciamento?: true
+    valorImovel?: true
+    valorParcela?: true
+    valorParcelaMaxima?: true
     _all?: true
   }
 
@@ -12649,36 +12649,36 @@ export namespace Prisma {
     id: string
     resumo: string | null
     pdfUrl: string | null
-    dataCriacao: Date
     updatedAt: Date
-    rendaMensal: number | null
-    valorParcelaMaxima: number | null
-    temOutrosEmprestimos: boolean | null
-    valorEntrada: number | null
-    prazoFinanciamento: number | null
-    taxa: number | null
-    valorImovel: number | null
-    valorFinanciamento: number | null
-    valorParcela: number | null
-    cidade: string | null
+    userId: string
     bairros: string | null
-    localTrabalho: string | null
+    cidade: string | null
+    dataCriacao: Date
     distanciaMaximaTrabalho: number | null
-    importanciaPisoQuartos: string | null
     importanciaAcademia: string | null
-    importanciaPiscina: string | null
-    tipoPortaria: string | null
-    importanciaSalaoFestas: string | null
-    importanciaPlayground: string | null
+    importanciaCaminhabilidade: string | null
+    importanciaEscolas: string | null
     importanciaEspacoPet: string | null
     importanciaParques: string | null
-    importanciaShopping: string | null
+    importanciaPiscina: string | null
+    importanciaPisoQuartos: string | null
+    importanciaPlayground: string | null
     importanciaRestaurantes: string | null
-    importanciaCaminhabilidade: string | null
-    temPet: boolean | null
-    importanciaEscolas: string | null
+    importanciaSalaoFestas: string | null
+    importanciaShopping: string | null
     importanciaTransporte: string | null
-    userId: string
+    localTrabalho: string | null
+    prazoFinanciamento: number | null
+    rendaMensal: number | null
+    taxa: number | null
+    temOutrosEmprestimos: boolean | null
+    temPet: boolean | null
+    tipoPortaria: string | null
+    valorEntrada: number | null
+    valorFinanciamento: number | null
+    valorImovel: number | null
+    valorParcela: number | null
+    valorParcelaMaxima: number | null
     _count: RelatorioCountAggregateOutputType | null
     _avg: RelatorioAvgAggregateOutputType | null
     _sum: RelatorioSumAggregateOutputType | null
@@ -12704,39 +12704,39 @@ export namespace Prisma {
     id?: boolean
     resumo?: boolean
     pdfUrl?: boolean
-    dataCriacao?: boolean
     updatedAt?: boolean
-    rendaMensal?: boolean
-    valorParcelaMaxima?: boolean
-    temOutrosEmprestimos?: boolean
-    valorEntrada?: boolean
-    prazoFinanciamento?: boolean
-    taxa?: boolean
-    valorImovel?: boolean
-    valorFinanciamento?: boolean
-    valorParcela?: boolean
-    cidade?: boolean
+    userId?: boolean
     bairros?: boolean
-    localTrabalho?: boolean
+    cidade?: boolean
+    dataCriacao?: boolean
     distanciaMaximaTrabalho?: boolean
-    importanciaPisoQuartos?: boolean
     importanciaAcademia?: boolean
-    importanciaPiscina?: boolean
-    tipoPortaria?: boolean
-    importanciaSalaoFestas?: boolean
-    importanciaPlayground?: boolean
+    importanciaCaminhabilidade?: boolean
+    importanciaEscolas?: boolean
     importanciaEspacoPet?: boolean
     importanciaParques?: boolean
-    importanciaShopping?: boolean
+    importanciaPiscina?: boolean
+    importanciaPisoQuartos?: boolean
+    importanciaPlayground?: boolean
     importanciaRestaurantes?: boolean
-    importanciaCaminhabilidade?: boolean
-    temPet?: boolean
-    importanciaEscolas?: boolean
+    importanciaSalaoFestas?: boolean
+    importanciaShopping?: boolean
     importanciaTransporte?: boolean
-    userId?: boolean
-    imoveisRecomendados?: boolean | Relatorio$imoveisRecomendadosArgs<ExtArgs>
-    usuario?: boolean | UserDefaultArgs<ExtArgs>
+    localTrabalho?: boolean
+    prazoFinanciamento?: boolean
+    rendaMensal?: boolean
+    taxa?: boolean
+    temOutrosEmprestimos?: boolean
+    temPet?: boolean
+    tipoPortaria?: boolean
+    valorEntrada?: boolean
+    valorFinanciamento?: boolean
+    valorImovel?: boolean
+    valorParcela?: boolean
+    valorParcelaMaxima?: boolean
+    ImoveisRecomendados?: boolean | Relatorio$ImoveisRecomendadosArgs<ExtArgs>
     matches?: boolean | Relatorio$matchesArgs<ExtArgs>
+    usuario?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | RelatorioCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["relatorio"]>
 
@@ -12744,36 +12744,36 @@ export namespace Prisma {
     id?: boolean
     resumo?: boolean
     pdfUrl?: boolean
-    dataCriacao?: boolean
     updatedAt?: boolean
-    rendaMensal?: boolean
-    valorParcelaMaxima?: boolean
-    temOutrosEmprestimos?: boolean
-    valorEntrada?: boolean
-    prazoFinanciamento?: boolean
-    taxa?: boolean
-    valorImovel?: boolean
-    valorFinanciamento?: boolean
-    valorParcela?: boolean
-    cidade?: boolean
+    userId?: boolean
     bairros?: boolean
-    localTrabalho?: boolean
+    cidade?: boolean
+    dataCriacao?: boolean
     distanciaMaximaTrabalho?: boolean
-    importanciaPisoQuartos?: boolean
     importanciaAcademia?: boolean
-    importanciaPiscina?: boolean
-    tipoPortaria?: boolean
-    importanciaSalaoFestas?: boolean
-    importanciaPlayground?: boolean
+    importanciaCaminhabilidade?: boolean
+    importanciaEscolas?: boolean
     importanciaEspacoPet?: boolean
     importanciaParques?: boolean
-    importanciaShopping?: boolean
+    importanciaPiscina?: boolean
+    importanciaPisoQuartos?: boolean
+    importanciaPlayground?: boolean
     importanciaRestaurantes?: boolean
-    importanciaCaminhabilidade?: boolean
-    temPet?: boolean
-    importanciaEscolas?: boolean
+    importanciaSalaoFestas?: boolean
+    importanciaShopping?: boolean
     importanciaTransporte?: boolean
-    userId?: boolean
+    localTrabalho?: boolean
+    prazoFinanciamento?: boolean
+    rendaMensal?: boolean
+    taxa?: boolean
+    temOutrosEmprestimos?: boolean
+    temPet?: boolean
+    tipoPortaria?: boolean
+    valorEntrada?: boolean
+    valorFinanciamento?: boolean
+    valorImovel?: boolean
+    valorParcela?: boolean
+    valorParcelaMaxima?: boolean
     usuario?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["relatorio"]>
 
@@ -12781,36 +12781,36 @@ export namespace Prisma {
     id?: boolean
     resumo?: boolean
     pdfUrl?: boolean
-    dataCriacao?: boolean
     updatedAt?: boolean
-    rendaMensal?: boolean
-    valorParcelaMaxima?: boolean
-    temOutrosEmprestimos?: boolean
-    valorEntrada?: boolean
-    prazoFinanciamento?: boolean
-    taxa?: boolean
-    valorImovel?: boolean
-    valorFinanciamento?: boolean
-    valorParcela?: boolean
-    cidade?: boolean
+    userId?: boolean
     bairros?: boolean
-    localTrabalho?: boolean
+    cidade?: boolean
+    dataCriacao?: boolean
     distanciaMaximaTrabalho?: boolean
-    importanciaPisoQuartos?: boolean
     importanciaAcademia?: boolean
-    importanciaPiscina?: boolean
-    tipoPortaria?: boolean
-    importanciaSalaoFestas?: boolean
-    importanciaPlayground?: boolean
+    importanciaCaminhabilidade?: boolean
+    importanciaEscolas?: boolean
     importanciaEspacoPet?: boolean
     importanciaParques?: boolean
-    importanciaShopping?: boolean
+    importanciaPiscina?: boolean
+    importanciaPisoQuartos?: boolean
+    importanciaPlayground?: boolean
     importanciaRestaurantes?: boolean
-    importanciaCaminhabilidade?: boolean
-    temPet?: boolean
-    importanciaEscolas?: boolean
+    importanciaSalaoFestas?: boolean
+    importanciaShopping?: boolean
     importanciaTransporte?: boolean
-    userId?: boolean
+    localTrabalho?: boolean
+    prazoFinanciamento?: boolean
+    rendaMensal?: boolean
+    taxa?: boolean
+    temOutrosEmprestimos?: boolean
+    temPet?: boolean
+    tipoPortaria?: boolean
+    valorEntrada?: boolean
+    valorFinanciamento?: boolean
+    valorImovel?: boolean
+    valorParcela?: boolean
+    valorParcelaMaxima?: boolean
     usuario?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["relatorio"]>
 
@@ -12818,43 +12818,43 @@ export namespace Prisma {
     id?: boolean
     resumo?: boolean
     pdfUrl?: boolean
-    dataCriacao?: boolean
     updatedAt?: boolean
-    rendaMensal?: boolean
-    valorParcelaMaxima?: boolean
-    temOutrosEmprestimos?: boolean
-    valorEntrada?: boolean
-    prazoFinanciamento?: boolean
-    taxa?: boolean
-    valorImovel?: boolean
-    valorFinanciamento?: boolean
-    valorParcela?: boolean
-    cidade?: boolean
+    userId?: boolean
     bairros?: boolean
-    localTrabalho?: boolean
+    cidade?: boolean
+    dataCriacao?: boolean
     distanciaMaximaTrabalho?: boolean
-    importanciaPisoQuartos?: boolean
     importanciaAcademia?: boolean
-    importanciaPiscina?: boolean
-    tipoPortaria?: boolean
-    importanciaSalaoFestas?: boolean
-    importanciaPlayground?: boolean
+    importanciaCaminhabilidade?: boolean
+    importanciaEscolas?: boolean
     importanciaEspacoPet?: boolean
     importanciaParques?: boolean
-    importanciaShopping?: boolean
+    importanciaPiscina?: boolean
+    importanciaPisoQuartos?: boolean
+    importanciaPlayground?: boolean
     importanciaRestaurantes?: boolean
-    importanciaCaminhabilidade?: boolean
-    temPet?: boolean
-    importanciaEscolas?: boolean
+    importanciaSalaoFestas?: boolean
+    importanciaShopping?: boolean
     importanciaTransporte?: boolean
-    userId?: boolean
+    localTrabalho?: boolean
+    prazoFinanciamento?: boolean
+    rendaMensal?: boolean
+    taxa?: boolean
+    temOutrosEmprestimos?: boolean
+    temPet?: boolean
+    tipoPortaria?: boolean
+    valorEntrada?: boolean
+    valorFinanciamento?: boolean
+    valorImovel?: boolean
+    valorParcela?: boolean
+    valorParcelaMaxima?: boolean
   }
 
-  export type RelatorioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "resumo" | "pdfUrl" | "dataCriacao" | "updatedAt" | "rendaMensal" | "valorParcelaMaxima" | "temOutrosEmprestimos" | "valorEntrada" | "prazoFinanciamento" | "taxa" | "valorImovel" | "valorFinanciamento" | "valorParcela" | "cidade" | "bairros" | "localTrabalho" | "distanciaMaximaTrabalho" | "importanciaPisoQuartos" | "importanciaAcademia" | "importanciaPiscina" | "tipoPortaria" | "importanciaSalaoFestas" | "importanciaPlayground" | "importanciaEspacoPet" | "importanciaParques" | "importanciaShopping" | "importanciaRestaurantes" | "importanciaCaminhabilidade" | "temPet" | "importanciaEscolas" | "importanciaTransporte" | "userId", ExtArgs["result"]["relatorio"]>
+  export type RelatorioOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "resumo" | "pdfUrl" | "updatedAt" | "userId" | "bairros" | "cidade" | "dataCriacao" | "distanciaMaximaTrabalho" | "importanciaAcademia" | "importanciaCaminhabilidade" | "importanciaEscolas" | "importanciaEspacoPet" | "importanciaParques" | "importanciaPiscina" | "importanciaPisoQuartos" | "importanciaPlayground" | "importanciaRestaurantes" | "importanciaSalaoFestas" | "importanciaShopping" | "importanciaTransporte" | "localTrabalho" | "prazoFinanciamento" | "rendaMensal" | "taxa" | "temOutrosEmprestimos" | "temPet" | "tipoPortaria" | "valorEntrada" | "valorFinanciamento" | "valorImovel" | "valorParcela" | "valorParcelaMaxima", ExtArgs["result"]["relatorio"]>
   export type RelatorioInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    imoveisRecomendados?: boolean | Relatorio$imoveisRecomendadosArgs<ExtArgs>
-    usuario?: boolean | UserDefaultArgs<ExtArgs>
+    ImoveisRecomendados?: boolean | Relatorio$ImoveisRecomendadosArgs<ExtArgs>
     matches?: boolean | Relatorio$matchesArgs<ExtArgs>
+    usuario?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | RelatorioCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RelatorioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12867,44 +12867,44 @@ export namespace Prisma {
   export type $RelatorioPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Relatorio"
     objects: {
-      imoveisRecomendados: Prisma.$ImoveisRecomendadosPayload<ExtArgs>[]
-      usuario: Prisma.$UserPayload<ExtArgs>
+      ImoveisRecomendados: Prisma.$ImoveisRecomendadosPayload<ExtArgs>[]
       matches: Prisma.$MatchPayload<ExtArgs>[]
+      usuario: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       resumo: string | null
       pdfUrl: string | null
-      dataCriacao: Date
       updatedAt: Date
-      rendaMensal: number | null
-      valorParcelaMaxima: number | null
-      temOutrosEmprestimos: boolean | null
-      valorEntrada: number | null
-      prazoFinanciamento: number | null
-      taxa: number | null
-      valorImovel: number | null
-      valorFinanciamento: number | null
-      valorParcela: number | null
-      cidade: string | null
+      userId: string
       bairros: string | null
-      localTrabalho: string | null
+      cidade: string | null
+      dataCriacao: Date
       distanciaMaximaTrabalho: number | null
-      importanciaPisoQuartos: string | null
       importanciaAcademia: string | null
-      importanciaPiscina: string | null
-      tipoPortaria: string | null
-      importanciaSalaoFestas: string | null
-      importanciaPlayground: string | null
+      importanciaCaminhabilidade: string | null
+      importanciaEscolas: string | null
       importanciaEspacoPet: string | null
       importanciaParques: string | null
-      importanciaShopping: string | null
+      importanciaPiscina: string | null
+      importanciaPisoQuartos: string | null
+      importanciaPlayground: string | null
       importanciaRestaurantes: string | null
-      importanciaCaminhabilidade: string | null
-      temPet: boolean | null
-      importanciaEscolas: string | null
+      importanciaSalaoFestas: string | null
+      importanciaShopping: string | null
       importanciaTransporte: string | null
-      userId: string
+      localTrabalho: string | null
+      prazoFinanciamento: number | null
+      rendaMensal: number | null
+      taxa: number | null
+      temOutrosEmprestimos: boolean | null
+      temPet: boolean | null
+      tipoPortaria: string | null
+      valorEntrada: number | null
+      valorFinanciamento: number | null
+      valorImovel: number | null
+      valorParcela: number | null
+      valorParcelaMaxima: number | null
     }, ExtArgs["result"]["relatorio"]>
     composites: {}
   }
@@ -13299,9 +13299,9 @@ export namespace Prisma {
    */
   export interface Prisma__RelatorioClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    imoveisRecomendados<T extends Relatorio$imoveisRecomendadosArgs<ExtArgs> = {}>(args?: Subset<T, Relatorio$imoveisRecomendadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    usuario<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    ImoveisRecomendados<T extends Relatorio$ImoveisRecomendadosArgs<ExtArgs> = {}>(args?: Subset<T, Relatorio$ImoveisRecomendadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     matches<T extends Relatorio$matchesArgs<ExtArgs> = {}>(args?: Subset<T, Relatorio$matchesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    usuario<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13334,36 +13334,36 @@ export namespace Prisma {
     readonly id: FieldRef<"Relatorio", 'String'>
     readonly resumo: FieldRef<"Relatorio", 'String'>
     readonly pdfUrl: FieldRef<"Relatorio", 'String'>
-    readonly dataCriacao: FieldRef<"Relatorio", 'DateTime'>
     readonly updatedAt: FieldRef<"Relatorio", 'DateTime'>
-    readonly rendaMensal: FieldRef<"Relatorio", 'Float'>
-    readonly valorParcelaMaxima: FieldRef<"Relatorio", 'Float'>
-    readonly temOutrosEmprestimos: FieldRef<"Relatorio", 'Boolean'>
-    readonly valorEntrada: FieldRef<"Relatorio", 'Float'>
-    readonly prazoFinanciamento: FieldRef<"Relatorio", 'Int'>
-    readonly taxa: FieldRef<"Relatorio", 'Float'>
-    readonly valorImovel: FieldRef<"Relatorio", 'Float'>
-    readonly valorFinanciamento: FieldRef<"Relatorio", 'Float'>
-    readonly valorParcela: FieldRef<"Relatorio", 'Float'>
-    readonly cidade: FieldRef<"Relatorio", 'String'>
+    readonly userId: FieldRef<"Relatorio", 'String'>
     readonly bairros: FieldRef<"Relatorio", 'String'>
-    readonly localTrabalho: FieldRef<"Relatorio", 'String'>
+    readonly cidade: FieldRef<"Relatorio", 'String'>
+    readonly dataCriacao: FieldRef<"Relatorio", 'DateTime'>
     readonly distanciaMaximaTrabalho: FieldRef<"Relatorio", 'Float'>
-    readonly importanciaPisoQuartos: FieldRef<"Relatorio", 'String'>
     readonly importanciaAcademia: FieldRef<"Relatorio", 'String'>
-    readonly importanciaPiscina: FieldRef<"Relatorio", 'String'>
-    readonly tipoPortaria: FieldRef<"Relatorio", 'String'>
-    readonly importanciaSalaoFestas: FieldRef<"Relatorio", 'String'>
-    readonly importanciaPlayground: FieldRef<"Relatorio", 'String'>
+    readonly importanciaCaminhabilidade: FieldRef<"Relatorio", 'String'>
+    readonly importanciaEscolas: FieldRef<"Relatorio", 'String'>
     readonly importanciaEspacoPet: FieldRef<"Relatorio", 'String'>
     readonly importanciaParques: FieldRef<"Relatorio", 'String'>
-    readonly importanciaShopping: FieldRef<"Relatorio", 'String'>
+    readonly importanciaPiscina: FieldRef<"Relatorio", 'String'>
+    readonly importanciaPisoQuartos: FieldRef<"Relatorio", 'String'>
+    readonly importanciaPlayground: FieldRef<"Relatorio", 'String'>
     readonly importanciaRestaurantes: FieldRef<"Relatorio", 'String'>
-    readonly importanciaCaminhabilidade: FieldRef<"Relatorio", 'String'>
-    readonly temPet: FieldRef<"Relatorio", 'Boolean'>
-    readonly importanciaEscolas: FieldRef<"Relatorio", 'String'>
+    readonly importanciaSalaoFestas: FieldRef<"Relatorio", 'String'>
+    readonly importanciaShopping: FieldRef<"Relatorio", 'String'>
     readonly importanciaTransporte: FieldRef<"Relatorio", 'String'>
-    readonly userId: FieldRef<"Relatorio", 'String'>
+    readonly localTrabalho: FieldRef<"Relatorio", 'String'>
+    readonly prazoFinanciamento: FieldRef<"Relatorio", 'Int'>
+    readonly rendaMensal: FieldRef<"Relatorio", 'Float'>
+    readonly taxa: FieldRef<"Relatorio", 'Float'>
+    readonly temOutrosEmprestimos: FieldRef<"Relatorio", 'Boolean'>
+    readonly temPet: FieldRef<"Relatorio", 'Boolean'>
+    readonly tipoPortaria: FieldRef<"Relatorio", 'String'>
+    readonly valorEntrada: FieldRef<"Relatorio", 'Float'>
+    readonly valorFinanciamento: FieldRef<"Relatorio", 'Float'>
+    readonly valorImovel: FieldRef<"Relatorio", 'Float'>
+    readonly valorParcela: FieldRef<"Relatorio", 'Float'>
+    readonly valorParcelaMaxima: FieldRef<"Relatorio", 'Float'>
   }
     
 
@@ -13760,9 +13760,9 @@ export namespace Prisma {
   }
 
   /**
-   * Relatorio.imoveisRecomendados
+   * Relatorio.ImoveisRecomendados
    */
-  export type Relatorio$imoveisRecomendadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Relatorio$ImoveisRecomendadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the ImoveisRecomendados
      */
@@ -13823,1244 +13823,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: RelatorioInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model ImoveisRecomendados
-   */
-
-  export type AggregateImoveisRecomendados = {
-    _count: ImoveisRecomendadosCountAggregateOutputType | null
-    _avg: ImoveisRecomendadosAvgAggregateOutputType | null
-    _sum: ImoveisRecomendadosSumAggregateOutputType | null
-    _min: ImoveisRecomendadosMinAggregateOutputType | null
-    _max: ImoveisRecomendadosMaxAggregateOutputType | null
-  }
-
-  export type ImoveisRecomendadosAvgAggregateOutputType = {
-    preco: number | null
-    area: number | null
-    quartos: number | null
-    banheiros: number | null
-    vagas: number | null
-  }
-
-  export type ImoveisRecomendadosSumAggregateOutputType = {
-    preco: number | null
-    area: number | null
-    quartos: number | null
-    banheiros: number | null
-    vagas: number | null
-  }
-
-  export type ImoveisRecomendadosMinAggregateOutputType = {
-    id: string | null
-    relatorioId: string | null
-    imovelId: string | null
-    titulo: string | null
-    preco: number | null
-    endereco: string | null
-    bairro: string | null
-    cidade: string | null
-    area: number | null
-    quartos: number | null
-    banheiros: number | null
-    vagas: number | null
-    imageUrl: string | null
-    linkImovel: string | null
-    dataCriacao: Date | null
-  }
-
-  export type ImoveisRecomendadosMaxAggregateOutputType = {
-    id: string | null
-    relatorioId: string | null
-    imovelId: string | null
-    titulo: string | null
-    preco: number | null
-    endereco: string | null
-    bairro: string | null
-    cidade: string | null
-    area: number | null
-    quartos: number | null
-    banheiros: number | null
-    vagas: number | null
-    imageUrl: string | null
-    linkImovel: string | null
-    dataCriacao: Date | null
-  }
-
-  export type ImoveisRecomendadosCountAggregateOutputType = {
-    id: number
-    relatorioId: number
-    imovelId: number
-    titulo: number
-    preco: number
-    endereco: number
-    bairro: number
-    cidade: number
-    area: number
-    quartos: number
-    banheiros: number
-    vagas: number
-    imageUrl: number
-    linkImovel: number
-    dataCriacao: number
-    _all: number
-  }
-
-
-  export type ImoveisRecomendadosAvgAggregateInputType = {
-    preco?: true
-    area?: true
-    quartos?: true
-    banheiros?: true
-    vagas?: true
-  }
-
-  export type ImoveisRecomendadosSumAggregateInputType = {
-    preco?: true
-    area?: true
-    quartos?: true
-    banheiros?: true
-    vagas?: true
-  }
-
-  export type ImoveisRecomendadosMinAggregateInputType = {
-    id?: true
-    relatorioId?: true
-    imovelId?: true
-    titulo?: true
-    preco?: true
-    endereco?: true
-    bairro?: true
-    cidade?: true
-    area?: true
-    quartos?: true
-    banheiros?: true
-    vagas?: true
-    imageUrl?: true
-    linkImovel?: true
-    dataCriacao?: true
-  }
-
-  export type ImoveisRecomendadosMaxAggregateInputType = {
-    id?: true
-    relatorioId?: true
-    imovelId?: true
-    titulo?: true
-    preco?: true
-    endereco?: true
-    bairro?: true
-    cidade?: true
-    area?: true
-    quartos?: true
-    banheiros?: true
-    vagas?: true
-    imageUrl?: true
-    linkImovel?: true
-    dataCriacao?: true
-  }
-
-  export type ImoveisRecomendadosCountAggregateInputType = {
-    id?: true
-    relatorioId?: true
-    imovelId?: true
-    titulo?: true
-    preco?: true
-    endereco?: true
-    bairro?: true
-    cidade?: true
-    area?: true
-    quartos?: true
-    banheiros?: true
-    vagas?: true
-    imageUrl?: true
-    linkImovel?: true
-    dataCriacao?: true
-    _all?: true
-  }
-
-  export type ImoveisRecomendadosAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ImoveisRecomendados to aggregate.
-     */
-    where?: ImoveisRecomendadosWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ImoveisRecomendados to fetch.
-     */
-    orderBy?: ImoveisRecomendadosOrderByWithRelationInput | ImoveisRecomendadosOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ImoveisRecomendadosWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ImoveisRecomendados from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ImoveisRecomendados.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ImoveisRecomendados
-    **/
-    _count?: true | ImoveisRecomendadosCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: ImoveisRecomendadosAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: ImoveisRecomendadosSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ImoveisRecomendadosMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ImoveisRecomendadosMaxAggregateInputType
-  }
-
-  export type GetImoveisRecomendadosAggregateType<T extends ImoveisRecomendadosAggregateArgs> = {
-        [P in keyof T & keyof AggregateImoveisRecomendados]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateImoveisRecomendados[P]>
-      : GetScalarType<T[P], AggregateImoveisRecomendados[P]>
-  }
-
-
-
-
-  export type ImoveisRecomendadosGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ImoveisRecomendadosWhereInput
-    orderBy?: ImoveisRecomendadosOrderByWithAggregationInput | ImoveisRecomendadosOrderByWithAggregationInput[]
-    by: ImoveisRecomendadosScalarFieldEnum[] | ImoveisRecomendadosScalarFieldEnum
-    having?: ImoveisRecomendadosScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ImoveisRecomendadosCountAggregateInputType | true
-    _avg?: ImoveisRecomendadosAvgAggregateInputType
-    _sum?: ImoveisRecomendadosSumAggregateInputType
-    _min?: ImoveisRecomendadosMinAggregateInputType
-    _max?: ImoveisRecomendadosMaxAggregateInputType
-  }
-
-  export type ImoveisRecomendadosGroupByOutputType = {
-    id: string
-    relatorioId: string
-    imovelId: string
-    titulo: string | null
-    preco: number | null
-    endereco: string | null
-    bairro: string | null
-    cidade: string | null
-    area: number | null
-    quartos: number | null
-    banheiros: number | null
-    vagas: number | null
-    imageUrl: string | null
-    linkImovel: string | null
-    dataCriacao: Date
-    _count: ImoveisRecomendadosCountAggregateOutputType | null
-    _avg: ImoveisRecomendadosAvgAggregateOutputType | null
-    _sum: ImoveisRecomendadosSumAggregateOutputType | null
-    _min: ImoveisRecomendadosMinAggregateOutputType | null
-    _max: ImoveisRecomendadosMaxAggregateOutputType | null
-  }
-
-  type GetImoveisRecomendadosGroupByPayload<T extends ImoveisRecomendadosGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ImoveisRecomendadosGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ImoveisRecomendadosGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ImoveisRecomendadosGroupByOutputType[P]>
-            : GetScalarType<T[P], ImoveisRecomendadosGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ImoveisRecomendadosSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    relatorioId?: boolean
-    imovelId?: boolean
-    titulo?: boolean
-    preco?: boolean
-    endereco?: boolean
-    bairro?: boolean
-    cidade?: boolean
-    area?: boolean
-    quartos?: boolean
-    banheiros?: boolean
-    vagas?: boolean
-    imageUrl?: boolean
-    linkImovel?: boolean
-    dataCriacao?: boolean
-    relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["imoveisRecomendados"]>
-
-  export type ImoveisRecomendadosSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    relatorioId?: boolean
-    imovelId?: boolean
-    titulo?: boolean
-    preco?: boolean
-    endereco?: boolean
-    bairro?: boolean
-    cidade?: boolean
-    area?: boolean
-    quartos?: boolean
-    banheiros?: boolean
-    vagas?: boolean
-    imageUrl?: boolean
-    linkImovel?: boolean
-    dataCriacao?: boolean
-    relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["imoveisRecomendados"]>
-
-  export type ImoveisRecomendadosSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    relatorioId?: boolean
-    imovelId?: boolean
-    titulo?: boolean
-    preco?: boolean
-    endereco?: boolean
-    bairro?: boolean
-    cidade?: boolean
-    area?: boolean
-    quartos?: boolean
-    banheiros?: boolean
-    vagas?: boolean
-    imageUrl?: boolean
-    linkImovel?: boolean
-    dataCriacao?: boolean
-    relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["imoveisRecomendados"]>
-
-  export type ImoveisRecomendadosSelectScalar = {
-    id?: boolean
-    relatorioId?: boolean
-    imovelId?: boolean
-    titulo?: boolean
-    preco?: boolean
-    endereco?: boolean
-    bairro?: boolean
-    cidade?: boolean
-    area?: boolean
-    quartos?: boolean
-    banheiros?: boolean
-    vagas?: boolean
-    imageUrl?: boolean
-    linkImovel?: boolean
-    dataCriacao?: boolean
-  }
-
-  export type ImoveisRecomendadosOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "relatorioId" | "imovelId" | "titulo" | "preco" | "endereco" | "bairro" | "cidade" | "area" | "quartos" | "banheiros" | "vagas" | "imageUrl" | "linkImovel" | "dataCriacao", ExtArgs["result"]["imoveisRecomendados"]>
-  export type ImoveisRecomendadosInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
-  }
-  export type ImoveisRecomendadosIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
-  }
-  export type ImoveisRecomendadosIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
-  }
-
-  export type $ImoveisRecomendadosPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ImoveisRecomendados"
-    objects: {
-      relatorio: Prisma.$RelatorioPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      relatorioId: string
-      imovelId: string
-      titulo: string | null
-      preco: number | null
-      endereco: string | null
-      bairro: string | null
-      cidade: string | null
-      area: number | null
-      quartos: number | null
-      banheiros: number | null
-      vagas: number | null
-      imageUrl: string | null
-      linkImovel: string | null
-      dataCriacao: Date
-    }, ExtArgs["result"]["imoveisRecomendados"]>
-    composites: {}
-  }
-
-  type ImoveisRecomendadosGetPayload<S extends boolean | null | undefined | ImoveisRecomendadosDefaultArgs> = $Result.GetResult<Prisma.$ImoveisRecomendadosPayload, S>
-
-  type ImoveisRecomendadosCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ImoveisRecomendadosFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ImoveisRecomendadosCountAggregateInputType | true
-    }
-
-  export interface ImoveisRecomendadosDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ImoveisRecomendados'], meta: { name: 'ImoveisRecomendados' } }
-    /**
-     * Find zero or one ImoveisRecomendados that matches the filter.
-     * @param {ImoveisRecomendadosFindUniqueArgs} args - Arguments to find a ImoveisRecomendados
-     * @example
-     * // Get one ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ImoveisRecomendadosFindUniqueArgs>(args: SelectSubset<T, ImoveisRecomendadosFindUniqueArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one ImoveisRecomendados that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ImoveisRecomendadosFindUniqueOrThrowArgs} args - Arguments to find a ImoveisRecomendados
-     * @example
-     * // Get one ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ImoveisRecomendadosFindUniqueOrThrowArgs>(args: SelectSubset<T, ImoveisRecomendadosFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ImoveisRecomendados that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImoveisRecomendadosFindFirstArgs} args - Arguments to find a ImoveisRecomendados
-     * @example
-     * // Get one ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ImoveisRecomendadosFindFirstArgs>(args?: SelectSubset<T, ImoveisRecomendadosFindFirstArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ImoveisRecomendados that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImoveisRecomendadosFindFirstOrThrowArgs} args - Arguments to find a ImoveisRecomendados
-     * @example
-     * // Get one ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ImoveisRecomendadosFindFirstOrThrowArgs>(args?: SelectSubset<T, ImoveisRecomendadosFindFirstOrThrowArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more ImoveisRecomendados that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImoveisRecomendadosFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.findMany()
-     * 
-     * // Get first 10 ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const imoveisRecomendadosWithIdOnly = await prisma.imoveisRecomendados.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends ImoveisRecomendadosFindManyArgs>(args?: SelectSubset<T, ImoveisRecomendadosFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a ImoveisRecomendados.
-     * @param {ImoveisRecomendadosCreateArgs} args - Arguments to create a ImoveisRecomendados.
-     * @example
-     * // Create one ImoveisRecomendados
-     * const ImoveisRecomendados = await prisma.imoveisRecomendados.create({
-     *   data: {
-     *     // ... data to create a ImoveisRecomendados
-     *   }
-     * })
-     * 
-     */
-    create<T extends ImoveisRecomendadosCreateArgs>(args: SelectSubset<T, ImoveisRecomendadosCreateArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many ImoveisRecomendados.
-     * @param {ImoveisRecomendadosCreateManyArgs} args - Arguments to create many ImoveisRecomendados.
-     * @example
-     * // Create many ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ImoveisRecomendadosCreateManyArgs>(args?: SelectSubset<T, ImoveisRecomendadosCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many ImoveisRecomendados and returns the data saved in the database.
-     * @param {ImoveisRecomendadosCreateManyAndReturnArgs} args - Arguments to create many ImoveisRecomendados.
-     * @example
-     * // Create many ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many ImoveisRecomendados and only return the `id`
-     * const imoveisRecomendadosWithIdOnly = await prisma.imoveisRecomendados.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends ImoveisRecomendadosCreateManyAndReturnArgs>(args?: SelectSubset<T, ImoveisRecomendadosCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a ImoveisRecomendados.
-     * @param {ImoveisRecomendadosDeleteArgs} args - Arguments to delete one ImoveisRecomendados.
-     * @example
-     * // Delete one ImoveisRecomendados
-     * const ImoveisRecomendados = await prisma.imoveisRecomendados.delete({
-     *   where: {
-     *     // ... filter to delete one ImoveisRecomendados
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ImoveisRecomendadosDeleteArgs>(args: SelectSubset<T, ImoveisRecomendadosDeleteArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one ImoveisRecomendados.
-     * @param {ImoveisRecomendadosUpdateArgs} args - Arguments to update one ImoveisRecomendados.
-     * @example
-     * // Update one ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ImoveisRecomendadosUpdateArgs>(args: SelectSubset<T, ImoveisRecomendadosUpdateArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more ImoveisRecomendados.
-     * @param {ImoveisRecomendadosDeleteManyArgs} args - Arguments to filter ImoveisRecomendados to delete.
-     * @example
-     * // Delete a few ImoveisRecomendados
-     * const { count } = await prisma.imoveisRecomendados.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ImoveisRecomendadosDeleteManyArgs>(args?: SelectSubset<T, ImoveisRecomendadosDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ImoveisRecomendados.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImoveisRecomendadosUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ImoveisRecomendadosUpdateManyArgs>(args: SelectSubset<T, ImoveisRecomendadosUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ImoveisRecomendados and returns the data updated in the database.
-     * @param {ImoveisRecomendadosUpdateManyAndReturnArgs} args - Arguments to update many ImoveisRecomendados.
-     * @example
-     * // Update many ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more ImoveisRecomendados and only return the `id`
-     * const imoveisRecomendadosWithIdOnly = await prisma.imoveisRecomendados.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends ImoveisRecomendadosUpdateManyAndReturnArgs>(args: SelectSubset<T, ImoveisRecomendadosUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one ImoveisRecomendados.
-     * @param {ImoveisRecomendadosUpsertArgs} args - Arguments to update or create a ImoveisRecomendados.
-     * @example
-     * // Update or create a ImoveisRecomendados
-     * const imoveisRecomendados = await prisma.imoveisRecomendados.upsert({
-     *   create: {
-     *     // ... data to create a ImoveisRecomendados
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ImoveisRecomendados we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ImoveisRecomendadosUpsertArgs>(args: SelectSubset<T, ImoveisRecomendadosUpsertArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of ImoveisRecomendados.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImoveisRecomendadosCountArgs} args - Arguments to filter ImoveisRecomendados to count.
-     * @example
-     * // Count the number of ImoveisRecomendados
-     * const count = await prisma.imoveisRecomendados.count({
-     *   where: {
-     *     // ... the filter for the ImoveisRecomendados we want to count
-     *   }
-     * })
-    **/
-    count<T extends ImoveisRecomendadosCountArgs>(
-      args?: Subset<T, ImoveisRecomendadosCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ImoveisRecomendadosCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ImoveisRecomendados.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImoveisRecomendadosAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ImoveisRecomendadosAggregateArgs>(args: Subset<T, ImoveisRecomendadosAggregateArgs>): Prisma.PrismaPromise<GetImoveisRecomendadosAggregateType<T>>
-
-    /**
-     * Group by ImoveisRecomendados.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ImoveisRecomendadosGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ImoveisRecomendadosGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ImoveisRecomendadosGroupByArgs['orderBy'] }
-        : { orderBy?: ImoveisRecomendadosGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ImoveisRecomendadosGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetImoveisRecomendadosGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ImoveisRecomendados model
-   */
-  readonly fields: ImoveisRecomendadosFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ImoveisRecomendados.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ImoveisRecomendadosClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    relatorio<T extends RelatorioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelatorioDefaultArgs<ExtArgs>>): Prisma__RelatorioClient<$Result.GetResult<Prisma.$RelatorioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the ImoveisRecomendados model
-   */
-  interface ImoveisRecomendadosFieldRefs {
-    readonly id: FieldRef<"ImoveisRecomendados", 'String'>
-    readonly relatorioId: FieldRef<"ImoveisRecomendados", 'String'>
-    readonly imovelId: FieldRef<"ImoveisRecomendados", 'String'>
-    readonly titulo: FieldRef<"ImoveisRecomendados", 'String'>
-    readonly preco: FieldRef<"ImoveisRecomendados", 'Float'>
-    readonly endereco: FieldRef<"ImoveisRecomendados", 'String'>
-    readonly bairro: FieldRef<"ImoveisRecomendados", 'String'>
-    readonly cidade: FieldRef<"ImoveisRecomendados", 'String'>
-    readonly area: FieldRef<"ImoveisRecomendados", 'Float'>
-    readonly quartos: FieldRef<"ImoveisRecomendados", 'Int'>
-    readonly banheiros: FieldRef<"ImoveisRecomendados", 'Int'>
-    readonly vagas: FieldRef<"ImoveisRecomendados", 'Int'>
-    readonly imageUrl: FieldRef<"ImoveisRecomendados", 'String'>
-    readonly linkImovel: FieldRef<"ImoveisRecomendados", 'String'>
-    readonly dataCriacao: FieldRef<"ImoveisRecomendados", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * ImoveisRecomendados findUnique
-   */
-  export type ImoveisRecomendadosFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
-    /**
-     * Filter, which ImoveisRecomendados to fetch.
-     */
-    where: ImoveisRecomendadosWhereUniqueInput
-  }
-
-  /**
-   * ImoveisRecomendados findUniqueOrThrow
-   */
-  export type ImoveisRecomendadosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
-    /**
-     * Filter, which ImoveisRecomendados to fetch.
-     */
-    where: ImoveisRecomendadosWhereUniqueInput
-  }
-
-  /**
-   * ImoveisRecomendados findFirst
-   */
-  export type ImoveisRecomendadosFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
-    /**
-     * Filter, which ImoveisRecomendados to fetch.
-     */
-    where?: ImoveisRecomendadosWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ImoveisRecomendados to fetch.
-     */
-    orderBy?: ImoveisRecomendadosOrderByWithRelationInput | ImoveisRecomendadosOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ImoveisRecomendados.
-     */
-    cursor?: ImoveisRecomendadosWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ImoveisRecomendados from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ImoveisRecomendados.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ImoveisRecomendados.
-     */
-    distinct?: ImoveisRecomendadosScalarFieldEnum | ImoveisRecomendadosScalarFieldEnum[]
-  }
-
-  /**
-   * ImoveisRecomendados findFirstOrThrow
-   */
-  export type ImoveisRecomendadosFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
-    /**
-     * Filter, which ImoveisRecomendados to fetch.
-     */
-    where?: ImoveisRecomendadosWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ImoveisRecomendados to fetch.
-     */
-    orderBy?: ImoveisRecomendadosOrderByWithRelationInput | ImoveisRecomendadosOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ImoveisRecomendados.
-     */
-    cursor?: ImoveisRecomendadosWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ImoveisRecomendados from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ImoveisRecomendados.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ImoveisRecomendados.
-     */
-    distinct?: ImoveisRecomendadosScalarFieldEnum | ImoveisRecomendadosScalarFieldEnum[]
-  }
-
-  /**
-   * ImoveisRecomendados findMany
-   */
-  export type ImoveisRecomendadosFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
-    /**
-     * Filter, which ImoveisRecomendados to fetch.
-     */
-    where?: ImoveisRecomendadosWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ImoveisRecomendados to fetch.
-     */
-    orderBy?: ImoveisRecomendadosOrderByWithRelationInput | ImoveisRecomendadosOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ImoveisRecomendados.
-     */
-    cursor?: ImoveisRecomendadosWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ImoveisRecomendados from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ImoveisRecomendados.
-     */
-    skip?: number
-    distinct?: ImoveisRecomendadosScalarFieldEnum | ImoveisRecomendadosScalarFieldEnum[]
-  }
-
-  /**
-   * ImoveisRecomendados create
-   */
-  export type ImoveisRecomendadosCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
-    /**
-     * The data needed to create a ImoveisRecomendados.
-     */
-    data: XOR<ImoveisRecomendadosCreateInput, ImoveisRecomendadosUncheckedCreateInput>
-  }
-
-  /**
-   * ImoveisRecomendados createMany
-   */
-  export type ImoveisRecomendadosCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ImoveisRecomendados.
-     */
-    data: ImoveisRecomendadosCreateManyInput | ImoveisRecomendadosCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * ImoveisRecomendados createManyAndReturn
-   */
-  export type ImoveisRecomendadosCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * The data used to create many ImoveisRecomendados.
-     */
-    data: ImoveisRecomendadosCreateManyInput | ImoveisRecomendadosCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * ImoveisRecomendados update
-   */
-  export type ImoveisRecomendadosUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
-    /**
-     * The data needed to update a ImoveisRecomendados.
-     */
-    data: XOR<ImoveisRecomendadosUpdateInput, ImoveisRecomendadosUncheckedUpdateInput>
-    /**
-     * Choose, which ImoveisRecomendados to update.
-     */
-    where: ImoveisRecomendadosWhereUniqueInput
-  }
-
-  /**
-   * ImoveisRecomendados updateMany
-   */
-  export type ImoveisRecomendadosUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ImoveisRecomendados.
-     */
-    data: XOR<ImoveisRecomendadosUpdateManyMutationInput, ImoveisRecomendadosUncheckedUpdateManyInput>
-    /**
-     * Filter which ImoveisRecomendados to update
-     */
-    where?: ImoveisRecomendadosWhereInput
-    /**
-     * Limit how many ImoveisRecomendados to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * ImoveisRecomendados updateManyAndReturn
-   */
-  export type ImoveisRecomendadosUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * The data used to update ImoveisRecomendados.
-     */
-    data: XOR<ImoveisRecomendadosUpdateManyMutationInput, ImoveisRecomendadosUncheckedUpdateManyInput>
-    /**
-     * Filter which ImoveisRecomendados to update
-     */
-    where?: ImoveisRecomendadosWhereInput
-    /**
-     * Limit how many ImoveisRecomendados to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * ImoveisRecomendados upsert
-   */
-  export type ImoveisRecomendadosUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
-    /**
-     * The filter to search for the ImoveisRecomendados to update in case it exists.
-     */
-    where: ImoveisRecomendadosWhereUniqueInput
-    /**
-     * In case the ImoveisRecomendados found by the `where` argument doesn't exist, create a new ImoveisRecomendados with this data.
-     */
-    create: XOR<ImoveisRecomendadosCreateInput, ImoveisRecomendadosUncheckedCreateInput>
-    /**
-     * In case the ImoveisRecomendados was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ImoveisRecomendadosUpdateInput, ImoveisRecomendadosUncheckedUpdateInput>
-  }
-
-  /**
-   * ImoveisRecomendados delete
-   */
-  export type ImoveisRecomendadosDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
-    /**
-     * Filter which ImoveisRecomendados to delete.
-     */
-    where: ImoveisRecomendadosWhereUniqueInput
-  }
-
-  /**
-   * ImoveisRecomendados deleteMany
-   */
-  export type ImoveisRecomendadosDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ImoveisRecomendados to delete
-     */
-    where?: ImoveisRecomendadosWhereInput
-    /**
-     * Limit how many ImoveisRecomendados to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ImoveisRecomendados without action
-   */
-  export type ImoveisRecomendadosDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ImoveisRecomendados
-     */
-    select?: ImoveisRecomendadosSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ImoveisRecomendados
-     */
-    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ImoveisRecomendadosInclude<ExtArgs> | null
   }
 
 
@@ -17100,9 +15862,9 @@ export namespace Prisma {
     imovelIdExterno: string | null
     telefone: string | null
     observacoes: string | null
-    construtoraId: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    construtoraId: string | null
   }
 
   export type ImovelMetadataMaxAggregateOutputType = {
@@ -17110,9 +15872,9 @@ export namespace Prisma {
     imovelIdExterno: string | null
     telefone: string | null
     observacoes: string | null
-    construtoraId: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    construtoraId: string | null
   }
 
   export type ImovelMetadataCountAggregateOutputType = {
@@ -17120,9 +15882,9 @@ export namespace Prisma {
     imovelIdExterno: number
     telefone: number
     observacoes: number
-    construtoraId: number
     createdAt: number
     updatedAt: number
+    construtoraId: number
     _all: number
   }
 
@@ -17132,9 +15894,9 @@ export namespace Prisma {
     imovelIdExterno?: true
     telefone?: true
     observacoes?: true
-    construtoraId?: true
     createdAt?: true
     updatedAt?: true
+    construtoraId?: true
   }
 
   export type ImovelMetadataMaxAggregateInputType = {
@@ -17142,9 +15904,9 @@ export namespace Prisma {
     imovelIdExterno?: true
     telefone?: true
     observacoes?: true
-    construtoraId?: true
     createdAt?: true
     updatedAt?: true
+    construtoraId?: true
   }
 
   export type ImovelMetadataCountAggregateInputType = {
@@ -17152,9 +15914,9 @@ export namespace Prisma {
     imovelIdExterno?: true
     telefone?: true
     observacoes?: true
-    construtoraId?: true
     createdAt?: true
     updatedAt?: true
+    construtoraId?: true
     _all?: true
   }
 
@@ -17235,9 +15997,9 @@ export namespace Prisma {
     imovelIdExterno: string
     telefone: string
     observacoes: string
-    construtoraId: string | null
     createdAt: Date
     updatedAt: Date
+    construtoraId: string | null
     _count: ImovelMetadataCountAggregateOutputType | null
     _min: ImovelMetadataMinAggregateOutputType | null
     _max: ImovelMetadataMaxAggregateOutputType | null
@@ -17262,9 +16024,9 @@ export namespace Prisma {
     imovelIdExterno?: boolean
     telefone?: boolean
     observacoes?: boolean
-    construtoraId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    construtoraId?: boolean
     construtora?: boolean | ImovelMetadata$construtoraArgs<ExtArgs>
   }, ExtArgs["result"]["imovelMetadata"]>
 
@@ -17273,9 +16035,9 @@ export namespace Prisma {
     imovelIdExterno?: boolean
     telefone?: boolean
     observacoes?: boolean
-    construtoraId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    construtoraId?: boolean
     construtora?: boolean | ImovelMetadata$construtoraArgs<ExtArgs>
   }, ExtArgs["result"]["imovelMetadata"]>
 
@@ -17284,9 +16046,9 @@ export namespace Prisma {
     imovelIdExterno?: boolean
     telefone?: boolean
     observacoes?: boolean
-    construtoraId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    construtoraId?: boolean
     construtora?: boolean | ImovelMetadata$construtoraArgs<ExtArgs>
   }, ExtArgs["result"]["imovelMetadata"]>
 
@@ -17295,12 +16057,12 @@ export namespace Prisma {
     imovelIdExterno?: boolean
     telefone?: boolean
     observacoes?: boolean
-    construtoraId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    construtoraId?: boolean
   }
 
-  export type ImovelMetadataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "imovelIdExterno" | "telefone" | "observacoes" | "construtoraId" | "createdAt" | "updatedAt", ExtArgs["result"]["imovelMetadata"]>
+  export type ImovelMetadataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "imovelIdExterno" | "telefone" | "observacoes" | "createdAt" | "updatedAt" | "construtoraId", ExtArgs["result"]["imovelMetadata"]>
   export type ImovelMetadataInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     construtora?: boolean | ImovelMetadata$construtoraArgs<ExtArgs>
   }
@@ -17321,9 +16083,9 @@ export namespace Prisma {
       imovelIdExterno: string
       telefone: string
       observacoes: string
-      construtoraId: string | null
       createdAt: Date
       updatedAt: Date
+      construtoraId: string | null
     }, ExtArgs["result"]["imovelMetadata"]>
     composites: {}
   }
@@ -17752,9 +16514,9 @@ export namespace Prisma {
     readonly imovelIdExterno: FieldRef<"ImovelMetadata", 'String'>
     readonly telefone: FieldRef<"ImovelMetadata", 'String'>
     readonly observacoes: FieldRef<"ImovelMetadata", 'String'>
-    readonly construtoraId: FieldRef<"ImovelMetadata", 'String'>
     readonly createdAt: FieldRef<"ImovelMetadata", 'DateTime'>
     readonly updatedAt: FieldRef<"ImovelMetadata", 'DateTime'>
+    readonly construtoraId: FieldRef<"ImovelMetadata", 'String'>
   }
     
 
@@ -23373,6 +22135,1244 @@ export namespace Prisma {
 
 
   /**
+   * Model ImoveisRecomendados
+   */
+
+  export type AggregateImoveisRecomendados = {
+    _count: ImoveisRecomendadosCountAggregateOutputType | null
+    _avg: ImoveisRecomendadosAvgAggregateOutputType | null
+    _sum: ImoveisRecomendadosSumAggregateOutputType | null
+    _min: ImoveisRecomendadosMinAggregateOutputType | null
+    _max: ImoveisRecomendadosMaxAggregateOutputType | null
+  }
+
+  export type ImoveisRecomendadosAvgAggregateOutputType = {
+    preco: number | null
+    area: number | null
+    quartos: number | null
+    banheiros: number | null
+    vagas: number | null
+  }
+
+  export type ImoveisRecomendadosSumAggregateOutputType = {
+    preco: number | null
+    area: number | null
+    quartos: number | null
+    banheiros: number | null
+    vagas: number | null
+  }
+
+  export type ImoveisRecomendadosMinAggregateOutputType = {
+    id: string | null
+    relatorioId: string | null
+    imovelId: string | null
+    titulo: string | null
+    preco: number | null
+    endereco: string | null
+    bairro: string | null
+    cidade: string | null
+    area: number | null
+    quartos: number | null
+    banheiros: number | null
+    vagas: number | null
+    imageUrl: string | null
+    linkImovel: string | null
+    dataCriacao: Date | null
+  }
+
+  export type ImoveisRecomendadosMaxAggregateOutputType = {
+    id: string | null
+    relatorioId: string | null
+    imovelId: string | null
+    titulo: string | null
+    preco: number | null
+    endereco: string | null
+    bairro: string | null
+    cidade: string | null
+    area: number | null
+    quartos: number | null
+    banheiros: number | null
+    vagas: number | null
+    imageUrl: string | null
+    linkImovel: string | null
+    dataCriacao: Date | null
+  }
+
+  export type ImoveisRecomendadosCountAggregateOutputType = {
+    id: number
+    relatorioId: number
+    imovelId: number
+    titulo: number
+    preco: number
+    endereco: number
+    bairro: number
+    cidade: number
+    area: number
+    quartos: number
+    banheiros: number
+    vagas: number
+    imageUrl: number
+    linkImovel: number
+    dataCriacao: number
+    _all: number
+  }
+
+
+  export type ImoveisRecomendadosAvgAggregateInputType = {
+    preco?: true
+    area?: true
+    quartos?: true
+    banheiros?: true
+    vagas?: true
+  }
+
+  export type ImoveisRecomendadosSumAggregateInputType = {
+    preco?: true
+    area?: true
+    quartos?: true
+    banheiros?: true
+    vagas?: true
+  }
+
+  export type ImoveisRecomendadosMinAggregateInputType = {
+    id?: true
+    relatorioId?: true
+    imovelId?: true
+    titulo?: true
+    preco?: true
+    endereco?: true
+    bairro?: true
+    cidade?: true
+    area?: true
+    quartos?: true
+    banheiros?: true
+    vagas?: true
+    imageUrl?: true
+    linkImovel?: true
+    dataCriacao?: true
+  }
+
+  export type ImoveisRecomendadosMaxAggregateInputType = {
+    id?: true
+    relatorioId?: true
+    imovelId?: true
+    titulo?: true
+    preco?: true
+    endereco?: true
+    bairro?: true
+    cidade?: true
+    area?: true
+    quartos?: true
+    banheiros?: true
+    vagas?: true
+    imageUrl?: true
+    linkImovel?: true
+    dataCriacao?: true
+  }
+
+  export type ImoveisRecomendadosCountAggregateInputType = {
+    id?: true
+    relatorioId?: true
+    imovelId?: true
+    titulo?: true
+    preco?: true
+    endereco?: true
+    bairro?: true
+    cidade?: true
+    area?: true
+    quartos?: true
+    banheiros?: true
+    vagas?: true
+    imageUrl?: true
+    linkImovel?: true
+    dataCriacao?: true
+    _all?: true
+  }
+
+  export type ImoveisRecomendadosAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ImoveisRecomendados to aggregate.
+     */
+    where?: ImoveisRecomendadosWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImoveisRecomendados to fetch.
+     */
+    orderBy?: ImoveisRecomendadosOrderByWithRelationInput | ImoveisRecomendadosOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ImoveisRecomendadosWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImoveisRecomendados from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImoveisRecomendados.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ImoveisRecomendados
+    **/
+    _count?: true | ImoveisRecomendadosCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ImoveisRecomendadosAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ImoveisRecomendadosSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ImoveisRecomendadosMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ImoveisRecomendadosMaxAggregateInputType
+  }
+
+  export type GetImoveisRecomendadosAggregateType<T extends ImoveisRecomendadosAggregateArgs> = {
+        [P in keyof T & keyof AggregateImoveisRecomendados]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateImoveisRecomendados[P]>
+      : GetScalarType<T[P], AggregateImoveisRecomendados[P]>
+  }
+
+
+
+
+  export type ImoveisRecomendadosGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ImoveisRecomendadosWhereInput
+    orderBy?: ImoveisRecomendadosOrderByWithAggregationInput | ImoveisRecomendadosOrderByWithAggregationInput[]
+    by: ImoveisRecomendadosScalarFieldEnum[] | ImoveisRecomendadosScalarFieldEnum
+    having?: ImoveisRecomendadosScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ImoveisRecomendadosCountAggregateInputType | true
+    _avg?: ImoveisRecomendadosAvgAggregateInputType
+    _sum?: ImoveisRecomendadosSumAggregateInputType
+    _min?: ImoveisRecomendadosMinAggregateInputType
+    _max?: ImoveisRecomendadosMaxAggregateInputType
+  }
+
+  export type ImoveisRecomendadosGroupByOutputType = {
+    id: string
+    relatorioId: string
+    imovelId: string
+    titulo: string | null
+    preco: number | null
+    endereco: string | null
+    bairro: string | null
+    cidade: string | null
+    area: number | null
+    quartos: number | null
+    banheiros: number | null
+    vagas: number | null
+    imageUrl: string | null
+    linkImovel: string | null
+    dataCriacao: Date
+    _count: ImoveisRecomendadosCountAggregateOutputType | null
+    _avg: ImoveisRecomendadosAvgAggregateOutputType | null
+    _sum: ImoveisRecomendadosSumAggregateOutputType | null
+    _min: ImoveisRecomendadosMinAggregateOutputType | null
+    _max: ImoveisRecomendadosMaxAggregateOutputType | null
+  }
+
+  type GetImoveisRecomendadosGroupByPayload<T extends ImoveisRecomendadosGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ImoveisRecomendadosGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ImoveisRecomendadosGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ImoveisRecomendadosGroupByOutputType[P]>
+            : GetScalarType<T[P], ImoveisRecomendadosGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ImoveisRecomendadosSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relatorioId?: boolean
+    imovelId?: boolean
+    titulo?: boolean
+    preco?: boolean
+    endereco?: boolean
+    bairro?: boolean
+    cidade?: boolean
+    area?: boolean
+    quartos?: boolean
+    banheiros?: boolean
+    vagas?: boolean
+    imageUrl?: boolean
+    linkImovel?: boolean
+    dataCriacao?: boolean
+    Relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["imoveisRecomendados"]>
+
+  export type ImoveisRecomendadosSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relatorioId?: boolean
+    imovelId?: boolean
+    titulo?: boolean
+    preco?: boolean
+    endereco?: boolean
+    bairro?: boolean
+    cidade?: boolean
+    area?: boolean
+    quartos?: boolean
+    banheiros?: boolean
+    vagas?: boolean
+    imageUrl?: boolean
+    linkImovel?: boolean
+    dataCriacao?: boolean
+    Relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["imoveisRecomendados"]>
+
+  export type ImoveisRecomendadosSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    relatorioId?: boolean
+    imovelId?: boolean
+    titulo?: boolean
+    preco?: boolean
+    endereco?: boolean
+    bairro?: boolean
+    cidade?: boolean
+    area?: boolean
+    quartos?: boolean
+    banheiros?: boolean
+    vagas?: boolean
+    imageUrl?: boolean
+    linkImovel?: boolean
+    dataCriacao?: boolean
+    Relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["imoveisRecomendados"]>
+
+  export type ImoveisRecomendadosSelectScalar = {
+    id?: boolean
+    relatorioId?: boolean
+    imovelId?: boolean
+    titulo?: boolean
+    preco?: boolean
+    endereco?: boolean
+    bairro?: boolean
+    cidade?: boolean
+    area?: boolean
+    quartos?: boolean
+    banheiros?: boolean
+    vagas?: boolean
+    imageUrl?: boolean
+    linkImovel?: boolean
+    dataCriacao?: boolean
+  }
+
+  export type ImoveisRecomendadosOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "relatorioId" | "imovelId" | "titulo" | "preco" | "endereco" | "bairro" | "cidade" | "area" | "quartos" | "banheiros" | "vagas" | "imageUrl" | "linkImovel" | "dataCriacao", ExtArgs["result"]["imoveisRecomendados"]>
+  export type ImoveisRecomendadosInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
+  }
+  export type ImoveisRecomendadosIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
+  }
+  export type ImoveisRecomendadosIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    Relatorio?: boolean | RelatorioDefaultArgs<ExtArgs>
+  }
+
+  export type $ImoveisRecomendadosPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ImoveisRecomendados"
+    objects: {
+      Relatorio: Prisma.$RelatorioPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      relatorioId: string
+      imovelId: string
+      titulo: string | null
+      preco: number | null
+      endereco: string | null
+      bairro: string | null
+      cidade: string | null
+      area: number | null
+      quartos: number | null
+      banheiros: number | null
+      vagas: number | null
+      imageUrl: string | null
+      linkImovel: string | null
+      dataCriacao: Date
+    }, ExtArgs["result"]["imoveisRecomendados"]>
+    composites: {}
+  }
+
+  type ImoveisRecomendadosGetPayload<S extends boolean | null | undefined | ImoveisRecomendadosDefaultArgs> = $Result.GetResult<Prisma.$ImoveisRecomendadosPayload, S>
+
+  type ImoveisRecomendadosCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ImoveisRecomendadosFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ImoveisRecomendadosCountAggregateInputType | true
+    }
+
+  export interface ImoveisRecomendadosDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ImoveisRecomendados'], meta: { name: 'ImoveisRecomendados' } }
+    /**
+     * Find zero or one ImoveisRecomendados that matches the filter.
+     * @param {ImoveisRecomendadosFindUniqueArgs} args - Arguments to find a ImoveisRecomendados
+     * @example
+     * // Get one ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ImoveisRecomendadosFindUniqueArgs>(args: SelectSubset<T, ImoveisRecomendadosFindUniqueArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ImoveisRecomendados that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ImoveisRecomendadosFindUniqueOrThrowArgs} args - Arguments to find a ImoveisRecomendados
+     * @example
+     * // Get one ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ImoveisRecomendadosFindUniqueOrThrowArgs>(args: SelectSubset<T, ImoveisRecomendadosFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ImoveisRecomendados that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImoveisRecomendadosFindFirstArgs} args - Arguments to find a ImoveisRecomendados
+     * @example
+     * // Get one ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ImoveisRecomendadosFindFirstArgs>(args?: SelectSubset<T, ImoveisRecomendadosFindFirstArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ImoveisRecomendados that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImoveisRecomendadosFindFirstOrThrowArgs} args - Arguments to find a ImoveisRecomendados
+     * @example
+     * // Get one ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ImoveisRecomendadosFindFirstOrThrowArgs>(args?: SelectSubset<T, ImoveisRecomendadosFindFirstOrThrowArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ImoveisRecomendados that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImoveisRecomendadosFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.findMany()
+     * 
+     * // Get first 10 ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const imoveisRecomendadosWithIdOnly = await prisma.imoveisRecomendados.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ImoveisRecomendadosFindManyArgs>(args?: SelectSubset<T, ImoveisRecomendadosFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ImoveisRecomendados.
+     * @param {ImoveisRecomendadosCreateArgs} args - Arguments to create a ImoveisRecomendados.
+     * @example
+     * // Create one ImoveisRecomendados
+     * const ImoveisRecomendados = await prisma.imoveisRecomendados.create({
+     *   data: {
+     *     // ... data to create a ImoveisRecomendados
+     *   }
+     * })
+     * 
+     */
+    create<T extends ImoveisRecomendadosCreateArgs>(args: SelectSubset<T, ImoveisRecomendadosCreateArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ImoveisRecomendados.
+     * @param {ImoveisRecomendadosCreateManyArgs} args - Arguments to create many ImoveisRecomendados.
+     * @example
+     * // Create many ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ImoveisRecomendadosCreateManyArgs>(args?: SelectSubset<T, ImoveisRecomendadosCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ImoveisRecomendados and returns the data saved in the database.
+     * @param {ImoveisRecomendadosCreateManyAndReturnArgs} args - Arguments to create many ImoveisRecomendados.
+     * @example
+     * // Create many ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ImoveisRecomendados and only return the `id`
+     * const imoveisRecomendadosWithIdOnly = await prisma.imoveisRecomendados.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ImoveisRecomendadosCreateManyAndReturnArgs>(args?: SelectSubset<T, ImoveisRecomendadosCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ImoveisRecomendados.
+     * @param {ImoveisRecomendadosDeleteArgs} args - Arguments to delete one ImoveisRecomendados.
+     * @example
+     * // Delete one ImoveisRecomendados
+     * const ImoveisRecomendados = await prisma.imoveisRecomendados.delete({
+     *   where: {
+     *     // ... filter to delete one ImoveisRecomendados
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ImoveisRecomendadosDeleteArgs>(args: SelectSubset<T, ImoveisRecomendadosDeleteArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ImoveisRecomendados.
+     * @param {ImoveisRecomendadosUpdateArgs} args - Arguments to update one ImoveisRecomendados.
+     * @example
+     * // Update one ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ImoveisRecomendadosUpdateArgs>(args: SelectSubset<T, ImoveisRecomendadosUpdateArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ImoveisRecomendados.
+     * @param {ImoveisRecomendadosDeleteManyArgs} args - Arguments to filter ImoveisRecomendados to delete.
+     * @example
+     * // Delete a few ImoveisRecomendados
+     * const { count } = await prisma.imoveisRecomendados.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ImoveisRecomendadosDeleteManyArgs>(args?: SelectSubset<T, ImoveisRecomendadosDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ImoveisRecomendados.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImoveisRecomendadosUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ImoveisRecomendadosUpdateManyArgs>(args: SelectSubset<T, ImoveisRecomendadosUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ImoveisRecomendados and returns the data updated in the database.
+     * @param {ImoveisRecomendadosUpdateManyAndReturnArgs} args - Arguments to update many ImoveisRecomendados.
+     * @example
+     * // Update many ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ImoveisRecomendados and only return the `id`
+     * const imoveisRecomendadosWithIdOnly = await prisma.imoveisRecomendados.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ImoveisRecomendadosUpdateManyAndReturnArgs>(args: SelectSubset<T, ImoveisRecomendadosUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ImoveisRecomendados.
+     * @param {ImoveisRecomendadosUpsertArgs} args - Arguments to update or create a ImoveisRecomendados.
+     * @example
+     * // Update or create a ImoveisRecomendados
+     * const imoveisRecomendados = await prisma.imoveisRecomendados.upsert({
+     *   create: {
+     *     // ... data to create a ImoveisRecomendados
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ImoveisRecomendados we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ImoveisRecomendadosUpsertArgs>(args: SelectSubset<T, ImoveisRecomendadosUpsertArgs<ExtArgs>>): Prisma__ImoveisRecomendadosClient<$Result.GetResult<Prisma.$ImoveisRecomendadosPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ImoveisRecomendados.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImoveisRecomendadosCountArgs} args - Arguments to filter ImoveisRecomendados to count.
+     * @example
+     * // Count the number of ImoveisRecomendados
+     * const count = await prisma.imoveisRecomendados.count({
+     *   where: {
+     *     // ... the filter for the ImoveisRecomendados we want to count
+     *   }
+     * })
+    **/
+    count<T extends ImoveisRecomendadosCountArgs>(
+      args?: Subset<T, ImoveisRecomendadosCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ImoveisRecomendadosCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ImoveisRecomendados.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImoveisRecomendadosAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ImoveisRecomendadosAggregateArgs>(args: Subset<T, ImoveisRecomendadosAggregateArgs>): Prisma.PrismaPromise<GetImoveisRecomendadosAggregateType<T>>
+
+    /**
+     * Group by ImoveisRecomendados.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ImoveisRecomendadosGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ImoveisRecomendadosGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ImoveisRecomendadosGroupByArgs['orderBy'] }
+        : { orderBy?: ImoveisRecomendadosGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ImoveisRecomendadosGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetImoveisRecomendadosGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ImoveisRecomendados model
+   */
+  readonly fields: ImoveisRecomendadosFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ImoveisRecomendados.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ImoveisRecomendadosClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    Relatorio<T extends RelatorioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RelatorioDefaultArgs<ExtArgs>>): Prisma__RelatorioClient<$Result.GetResult<Prisma.$RelatorioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ImoveisRecomendados model
+   */
+  interface ImoveisRecomendadosFieldRefs {
+    readonly id: FieldRef<"ImoveisRecomendados", 'String'>
+    readonly relatorioId: FieldRef<"ImoveisRecomendados", 'String'>
+    readonly imovelId: FieldRef<"ImoveisRecomendados", 'String'>
+    readonly titulo: FieldRef<"ImoveisRecomendados", 'String'>
+    readonly preco: FieldRef<"ImoveisRecomendados", 'Float'>
+    readonly endereco: FieldRef<"ImoveisRecomendados", 'String'>
+    readonly bairro: FieldRef<"ImoveisRecomendados", 'String'>
+    readonly cidade: FieldRef<"ImoveisRecomendados", 'String'>
+    readonly area: FieldRef<"ImoveisRecomendados", 'Float'>
+    readonly quartos: FieldRef<"ImoveisRecomendados", 'Int'>
+    readonly banheiros: FieldRef<"ImoveisRecomendados", 'Int'>
+    readonly vagas: FieldRef<"ImoveisRecomendados", 'Int'>
+    readonly imageUrl: FieldRef<"ImoveisRecomendados", 'String'>
+    readonly linkImovel: FieldRef<"ImoveisRecomendados", 'String'>
+    readonly dataCriacao: FieldRef<"ImoveisRecomendados", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ImoveisRecomendados findUnique
+   */
+  export type ImoveisRecomendadosFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+    /**
+     * Filter, which ImoveisRecomendados to fetch.
+     */
+    where: ImoveisRecomendadosWhereUniqueInput
+  }
+
+  /**
+   * ImoveisRecomendados findUniqueOrThrow
+   */
+  export type ImoveisRecomendadosFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+    /**
+     * Filter, which ImoveisRecomendados to fetch.
+     */
+    where: ImoveisRecomendadosWhereUniqueInput
+  }
+
+  /**
+   * ImoveisRecomendados findFirst
+   */
+  export type ImoveisRecomendadosFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+    /**
+     * Filter, which ImoveisRecomendados to fetch.
+     */
+    where?: ImoveisRecomendadosWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImoveisRecomendados to fetch.
+     */
+    orderBy?: ImoveisRecomendadosOrderByWithRelationInput | ImoveisRecomendadosOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ImoveisRecomendados.
+     */
+    cursor?: ImoveisRecomendadosWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImoveisRecomendados from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImoveisRecomendados.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ImoveisRecomendados.
+     */
+    distinct?: ImoveisRecomendadosScalarFieldEnum | ImoveisRecomendadosScalarFieldEnum[]
+  }
+
+  /**
+   * ImoveisRecomendados findFirstOrThrow
+   */
+  export type ImoveisRecomendadosFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+    /**
+     * Filter, which ImoveisRecomendados to fetch.
+     */
+    where?: ImoveisRecomendadosWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImoveisRecomendados to fetch.
+     */
+    orderBy?: ImoveisRecomendadosOrderByWithRelationInput | ImoveisRecomendadosOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ImoveisRecomendados.
+     */
+    cursor?: ImoveisRecomendadosWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImoveisRecomendados from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImoveisRecomendados.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ImoveisRecomendados.
+     */
+    distinct?: ImoveisRecomendadosScalarFieldEnum | ImoveisRecomendadosScalarFieldEnum[]
+  }
+
+  /**
+   * ImoveisRecomendados findMany
+   */
+  export type ImoveisRecomendadosFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+    /**
+     * Filter, which ImoveisRecomendados to fetch.
+     */
+    where?: ImoveisRecomendadosWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ImoveisRecomendados to fetch.
+     */
+    orderBy?: ImoveisRecomendadosOrderByWithRelationInput | ImoveisRecomendadosOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ImoveisRecomendados.
+     */
+    cursor?: ImoveisRecomendadosWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ImoveisRecomendados from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ImoveisRecomendados.
+     */
+    skip?: number
+    distinct?: ImoveisRecomendadosScalarFieldEnum | ImoveisRecomendadosScalarFieldEnum[]
+  }
+
+  /**
+   * ImoveisRecomendados create
+   */
+  export type ImoveisRecomendadosCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ImoveisRecomendados.
+     */
+    data: XOR<ImoveisRecomendadosCreateInput, ImoveisRecomendadosUncheckedCreateInput>
+  }
+
+  /**
+   * ImoveisRecomendados createMany
+   */
+  export type ImoveisRecomendadosCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ImoveisRecomendados.
+     */
+    data: ImoveisRecomendadosCreateManyInput | ImoveisRecomendadosCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ImoveisRecomendados createManyAndReturn
+   */
+  export type ImoveisRecomendadosCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * The data used to create many ImoveisRecomendados.
+     */
+    data: ImoveisRecomendadosCreateManyInput | ImoveisRecomendadosCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ImoveisRecomendados update
+   */
+  export type ImoveisRecomendadosUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ImoveisRecomendados.
+     */
+    data: XOR<ImoveisRecomendadosUpdateInput, ImoveisRecomendadosUncheckedUpdateInput>
+    /**
+     * Choose, which ImoveisRecomendados to update.
+     */
+    where: ImoveisRecomendadosWhereUniqueInput
+  }
+
+  /**
+   * ImoveisRecomendados updateMany
+   */
+  export type ImoveisRecomendadosUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ImoveisRecomendados.
+     */
+    data: XOR<ImoveisRecomendadosUpdateManyMutationInput, ImoveisRecomendadosUncheckedUpdateManyInput>
+    /**
+     * Filter which ImoveisRecomendados to update
+     */
+    where?: ImoveisRecomendadosWhereInput
+    /**
+     * Limit how many ImoveisRecomendados to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ImoveisRecomendados updateManyAndReturn
+   */
+  export type ImoveisRecomendadosUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * The data used to update ImoveisRecomendados.
+     */
+    data: XOR<ImoveisRecomendadosUpdateManyMutationInput, ImoveisRecomendadosUncheckedUpdateManyInput>
+    /**
+     * Filter which ImoveisRecomendados to update
+     */
+    where?: ImoveisRecomendadosWhereInput
+    /**
+     * Limit how many ImoveisRecomendados to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ImoveisRecomendados upsert
+   */
+  export type ImoveisRecomendadosUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ImoveisRecomendados to update in case it exists.
+     */
+    where: ImoveisRecomendadosWhereUniqueInput
+    /**
+     * In case the ImoveisRecomendados found by the `where` argument doesn't exist, create a new ImoveisRecomendados with this data.
+     */
+    create: XOR<ImoveisRecomendadosCreateInput, ImoveisRecomendadosUncheckedCreateInput>
+    /**
+     * In case the ImoveisRecomendados was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ImoveisRecomendadosUpdateInput, ImoveisRecomendadosUncheckedUpdateInput>
+  }
+
+  /**
+   * ImoveisRecomendados delete
+   */
+  export type ImoveisRecomendadosDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+    /**
+     * Filter which ImoveisRecomendados to delete.
+     */
+    where: ImoveisRecomendadosWhereUniqueInput
+  }
+
+  /**
+   * ImoveisRecomendados deleteMany
+   */
+  export type ImoveisRecomendadosDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ImoveisRecomendados to delete
+     */
+    where?: ImoveisRecomendadosWhereInput
+    /**
+     * Limit how many ImoveisRecomendados to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ImoveisRecomendados without action
+   */
+  export type ImoveisRecomendadosDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ImoveisRecomendados
+     */
+    select?: ImoveisRecomendadosSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ImoveisRecomendados
+     */
+    omit?: ImoveisRecomendadosOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ImoveisRecomendadosInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -23403,11 +23403,11 @@ export namespace Prisma {
     name: 'name',
     email: 'email',
     password: 'password',
-    telefone: 'telefone',
     role: 'role',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    construtoraId: 'construtoraId'
+    construtoraId: 'construtoraId',
+    telefone: 'telefone'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -23442,18 +23442,18 @@ export namespace Prisma {
     longitude: 'longitude',
     telefoneContato: 'telefoneContato',
     endereco: 'endereco',
-    fotoPrincipal: 'fotoPrincipal',
-    galeriaFotos: 'galeriaFotos',
     caracteristicas: 'caracteristicas',
-    caracteristicasArray: 'caracteristicasArray',
-    tipoImovelId: 'tipoImovelId',
-    tipoImovelNome: 'tipoImovelNome',
-    status: 'status',
-    ativo: 'ativo',
-    destaque: 'destaque',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    construtoraId: 'construtoraId'
+    construtoraId: 'construtoraId',
+    caracteristicasArray: 'caracteristicasArray',
+    destaque: 'destaque',
+    fotoPrincipal: 'fotoPrincipal',
+    galeriaFotos: 'galeriaFotos',
+    status: 'status',
+    ativo: 'ativo',
+    tipoImovelId: 'tipoImovelId',
+    tipoImovelNome: 'tipoImovelNome'
   };
 
   export type ImovelScalarFieldEnum = (typeof ImovelScalarFieldEnum)[keyof typeof ImovelScalarFieldEnum]
@@ -23465,15 +23465,15 @@ export namespace Prisma {
     tipo: 'tipo',
     opcoes: 'opcoes',
     ordem: 'ordem',
-    categoria: 'categoria',
-    fluxo: 'fluxo',
-    pontuacao: 'pontuacao',
     obrigatoria: 'obrigatoria',
     condicional: 'condicional',
     geradaPorIA: 'geradaPorIA',
-    ativa: 'ativa',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    ativa: 'ativa',
+    categoria: 'categoria',
+    fluxo: 'fluxo',
+    pontuacao: 'pontuacao',
     configuracaoId: 'configuracaoId'
   };
 
@@ -23524,60 +23524,39 @@ export namespace Prisma {
     id: 'id',
     resumo: 'resumo',
     pdfUrl: 'pdfUrl',
-    dataCriacao: 'dataCriacao',
     updatedAt: 'updatedAt',
-    rendaMensal: 'rendaMensal',
-    valorParcelaMaxima: 'valorParcelaMaxima',
-    temOutrosEmprestimos: 'temOutrosEmprestimos',
-    valorEntrada: 'valorEntrada',
-    prazoFinanciamento: 'prazoFinanciamento',
-    taxa: 'taxa',
-    valorImovel: 'valorImovel',
-    valorFinanciamento: 'valorFinanciamento',
-    valorParcela: 'valorParcela',
-    cidade: 'cidade',
+    userId: 'userId',
     bairros: 'bairros',
-    localTrabalho: 'localTrabalho',
+    cidade: 'cidade',
+    dataCriacao: 'dataCriacao',
     distanciaMaximaTrabalho: 'distanciaMaximaTrabalho',
-    importanciaPisoQuartos: 'importanciaPisoQuartos',
     importanciaAcademia: 'importanciaAcademia',
-    importanciaPiscina: 'importanciaPiscina',
-    tipoPortaria: 'tipoPortaria',
-    importanciaSalaoFestas: 'importanciaSalaoFestas',
-    importanciaPlayground: 'importanciaPlayground',
+    importanciaCaminhabilidade: 'importanciaCaminhabilidade',
+    importanciaEscolas: 'importanciaEscolas',
     importanciaEspacoPet: 'importanciaEspacoPet',
     importanciaParques: 'importanciaParques',
-    importanciaShopping: 'importanciaShopping',
+    importanciaPiscina: 'importanciaPiscina',
+    importanciaPisoQuartos: 'importanciaPisoQuartos',
+    importanciaPlayground: 'importanciaPlayground',
     importanciaRestaurantes: 'importanciaRestaurantes',
-    importanciaCaminhabilidade: 'importanciaCaminhabilidade',
-    temPet: 'temPet',
-    importanciaEscolas: 'importanciaEscolas',
+    importanciaSalaoFestas: 'importanciaSalaoFestas',
+    importanciaShopping: 'importanciaShopping',
     importanciaTransporte: 'importanciaTransporte',
-    userId: 'userId'
+    localTrabalho: 'localTrabalho',
+    prazoFinanciamento: 'prazoFinanciamento',
+    rendaMensal: 'rendaMensal',
+    taxa: 'taxa',
+    temOutrosEmprestimos: 'temOutrosEmprestimos',
+    temPet: 'temPet',
+    tipoPortaria: 'tipoPortaria',
+    valorEntrada: 'valorEntrada',
+    valorFinanciamento: 'valorFinanciamento',
+    valorImovel: 'valorImovel',
+    valorParcela: 'valorParcela',
+    valorParcelaMaxima: 'valorParcelaMaxima'
   };
 
   export type RelatorioScalarFieldEnum = (typeof RelatorioScalarFieldEnum)[keyof typeof RelatorioScalarFieldEnum]
-
-
-  export const ImoveisRecomendadosScalarFieldEnum: {
-    id: 'id',
-    relatorioId: 'relatorioId',
-    imovelId: 'imovelId',
-    titulo: 'titulo',
-    preco: 'preco',
-    endereco: 'endereco',
-    bairro: 'bairro',
-    cidade: 'cidade',
-    area: 'area',
-    quartos: 'quartos',
-    banheiros: 'banheiros',
-    vagas: 'vagas',
-    imageUrl: 'imageUrl',
-    linkImovel: 'linkImovel',
-    dataCriacao: 'dataCriacao'
-  };
-
-  export type ImoveisRecomendadosScalarFieldEnum = (typeof ImoveisRecomendadosScalarFieldEnum)[keyof typeof ImoveisRecomendadosScalarFieldEnum]
 
 
   export const ConfiguracaoScalarFieldEnum: {
@@ -23610,9 +23589,9 @@ export namespace Prisma {
     imovelIdExterno: 'imovelIdExterno',
     telefone: 'telefone',
     observacoes: 'observacoes',
-    construtoraId: 'construtoraId',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    construtoraId: 'construtoraId'
   };
 
   export type ImovelMetadataScalarFieldEnum = (typeof ImovelMetadataScalarFieldEnum)[keyof typeof ImovelMetadataScalarFieldEnum]
@@ -23679,6 +23658,27 @@ export namespace Prisma {
   };
 
   export type AIConfigScalarFieldEnum = (typeof AIConfigScalarFieldEnum)[keyof typeof AIConfigScalarFieldEnum]
+
+
+  export const ImoveisRecomendadosScalarFieldEnum: {
+    id: 'id',
+    relatorioId: 'relatorioId',
+    imovelId: 'imovelId',
+    titulo: 'titulo',
+    preco: 'preco',
+    endereco: 'endereco',
+    bairro: 'bairro',
+    cidade: 'cidade',
+    area: 'area',
+    quartos: 'quartos',
+    banheiros: 'banheiros',
+    vagas: 'vagas',
+    imageUrl: 'imageUrl',
+    linkImovel: 'linkImovel',
+    dataCriacao: 'dataCriacao'
+  };
+
+  export type ImoveisRecomendadosScalarFieldEnum = (typeof ImoveisRecomendadosScalarFieldEnum)[keyof typeof ImoveisRecomendadosScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -23896,14 +23896,14 @@ export namespace Prisma {
     name?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
-    telefone?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     construtoraId?: StringNullableFilter<"User"> | string | null
-    construtora?: XOR<ConstrutoraNullableScalarRelationFilter, ConstrutoraWhereInput> | null
-    respostas?: RespostaListRelationFilter
+    telefone?: StringNullableFilter<"User"> | string | null
     relatorios?: RelatorioListRelationFilter
+    respostas?: RespostaListRelationFilter
+    construtora?: XOR<ConstrutoraNullableScalarRelationFilter, ConstrutoraWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -23911,14 +23911,14 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    telefone?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrderInput | SortOrder
-    construtora?: ConstrutoraOrderByWithRelationInput
-    respostas?: RespostaOrderByRelationAggregateInput
+    telefone?: SortOrderInput | SortOrder
     relatorios?: RelatorioOrderByRelationAggregateInput
+    respostas?: RespostaOrderByRelationAggregateInput
+    construtora?: ConstrutoraOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -23929,14 +23929,14 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
-    telefone?: StringNullableFilter<"User"> | string | null
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     construtoraId?: StringNullableFilter<"User"> | string | null
-    construtora?: XOR<ConstrutoraNullableScalarRelationFilter, ConstrutoraWhereInput> | null
-    respostas?: RespostaListRelationFilter
+    telefone?: StringNullableFilter<"User"> | string | null
     relatorios?: RelatorioListRelationFilter
+    respostas?: RespostaListRelationFilter
+    construtora?: XOR<ConstrutoraNullableScalarRelationFilter, ConstrutoraWhereInput> | null
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -23944,11 +23944,11 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    telefone?: SortOrderInput | SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrderInput | SortOrder
+    telefone?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -23962,11 +23962,11 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
-    telefone?: StringNullableWithAggregatesFilter<"User"> | string | null
     role?: EnumUserRoleWithAggregatesFilter<"User"> | $Enums.UserRole
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     construtoraId?: StringNullableWithAggregatesFilter<"User"> | string | null
+    telefone?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type ConstrutoraWhereInput = {
@@ -23982,9 +23982,9 @@ export namespace Prisma {
     ativa?: BoolFilter<"Construtora"> | boolean
     createdAt?: DateTimeFilter<"Construtora"> | Date | string
     updatedAt?: DateTimeFilter<"Construtora"> | Date | string
-    usuarios?: UserListRelationFilter
     imoveis?: ImovelListRelationFilter
     imoveisMetadata?: ImovelMetadataListRelationFilter
+    usuarios?: UserListRelationFilter
   }
 
   export type ConstrutoraOrderByWithRelationInput = {
@@ -23997,9 +23997,9 @@ export namespace Prisma {
     ativa?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    usuarios?: UserOrderByRelationAggregateInput
     imoveis?: ImovelOrderByRelationAggregateInput
     imoveisMetadata?: ImovelMetadataOrderByRelationAggregateInput
+    usuarios?: UserOrderByRelationAggregateInput
   }
 
   export type ConstrutoraWhereUniqueInput = Prisma.AtLeast<{
@@ -24015,9 +24015,9 @@ export namespace Prisma {
     ativa?: BoolFilter<"Construtora"> | boolean
     createdAt?: DateTimeFilter<"Construtora"> | Date | string
     updatedAt?: DateTimeFilter<"Construtora"> | Date | string
-    usuarios?: UserListRelationFilter
     imoveis?: ImovelListRelationFilter
     imoveisMetadata?: ImovelMetadataListRelationFilter
+    usuarios?: UserListRelationFilter
   }, "id" | "cnpj" | "email">
 
   export type ConstrutoraOrderByWithAggregationInput = {
@@ -24067,22 +24067,22 @@ export namespace Prisma {
     longitude?: FloatFilter<"Imovel"> | number
     telefoneContato?: StringNullableFilter<"Imovel"> | string | null
     endereco?: StringFilter<"Imovel"> | string
-    fotoPrincipal?: StringNullableFilter<"Imovel"> | string | null
-    galeriaFotos?: StringNullableListFilter<"Imovel">
     caracteristicas?: JsonNullableFilter<"Imovel">
-    caracteristicasArray?: StringNullableListFilter<"Imovel">
-    tipoImovelId?: StringNullableFilter<"Imovel"> | string | null
-    tipoImovelNome?: StringNullableFilter<"Imovel"> | string | null
-    status?: StringNullableFilter<"Imovel"> | string | null
-    ativo?: BoolFilter<"Imovel"> | boolean
-    destaque?: BoolFilter<"Imovel"> | boolean
     createdAt?: DateTimeFilter<"Imovel"> | Date | string
     updatedAt?: DateTimeFilter<"Imovel"> | Date | string
     construtoraId?: StringFilter<"Imovel"> | string
-    tipoImovel?: XOR<TipoImovelNullableScalarRelationFilter, TipoImovelWhereInput> | null
+    caracteristicasArray?: StringNullableListFilter<"Imovel">
+    destaque?: BoolFilter<"Imovel"> | boolean
+    fotoPrincipal?: StringNullableFilter<"Imovel"> | string | null
+    galeriaFotos?: StringNullableListFilter<"Imovel">
+    status?: StringNullableFilter<"Imovel"> | string | null
+    ativo?: BoolFilter<"Imovel"> | boolean
+    tipoImovelId?: StringNullableFilter<"Imovel"> | string | null
+    tipoImovelNome?: StringNullableFilter<"Imovel"> | string | null
     construtora?: XOR<ConstrutoraScalarRelationFilter, ConstrutoraWhereInput>
-    matches?: MatchListRelationFilter
+    tipoImovel?: XOR<TipoImovelNullableScalarRelationFilter, TipoImovelWhereInput> | null
     perguntas?: ImovelPerguntaListRelationFilter
+    matches?: MatchListRelationFilter
   }
 
   export type ImovelOrderByWithRelationInput = {
@@ -24099,22 +24099,22 @@ export namespace Prisma {
     longitude?: SortOrder
     telefoneContato?: SortOrderInput | SortOrder
     endereco?: SortOrder
-    fotoPrincipal?: SortOrderInput | SortOrder
-    galeriaFotos?: SortOrder
     caracteristicas?: SortOrderInput | SortOrder
-    caracteristicasArray?: SortOrder
-    tipoImovelId?: SortOrderInput | SortOrder
-    tipoImovelNome?: SortOrderInput | SortOrder
-    status?: SortOrderInput | SortOrder
-    ativo?: SortOrder
-    destaque?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrder
-    tipoImovel?: TipoImovelOrderByWithRelationInput
+    caracteristicasArray?: SortOrder
+    destaque?: SortOrder
+    fotoPrincipal?: SortOrderInput | SortOrder
+    galeriaFotos?: SortOrder
+    status?: SortOrderInput | SortOrder
+    ativo?: SortOrder
+    tipoImovelId?: SortOrderInput | SortOrder
+    tipoImovelNome?: SortOrderInput | SortOrder
     construtora?: ConstrutoraOrderByWithRelationInput
-    matches?: MatchOrderByRelationAggregateInput
+    tipoImovel?: TipoImovelOrderByWithRelationInput
     perguntas?: ImovelPerguntaOrderByRelationAggregateInput
+    matches?: MatchOrderByRelationAggregateInput
   }
 
   export type ImovelWhereUniqueInput = Prisma.AtLeast<{
@@ -24134,22 +24134,22 @@ export namespace Prisma {
     longitude?: FloatFilter<"Imovel"> | number
     telefoneContato?: StringNullableFilter<"Imovel"> | string | null
     endereco?: StringFilter<"Imovel"> | string
-    fotoPrincipal?: StringNullableFilter<"Imovel"> | string | null
-    galeriaFotos?: StringNullableListFilter<"Imovel">
     caracteristicas?: JsonNullableFilter<"Imovel">
-    caracteristicasArray?: StringNullableListFilter<"Imovel">
-    tipoImovelId?: StringNullableFilter<"Imovel"> | string | null
-    tipoImovelNome?: StringNullableFilter<"Imovel"> | string | null
-    status?: StringNullableFilter<"Imovel"> | string | null
-    ativo?: BoolFilter<"Imovel"> | boolean
-    destaque?: BoolFilter<"Imovel"> | boolean
     createdAt?: DateTimeFilter<"Imovel"> | Date | string
     updatedAt?: DateTimeFilter<"Imovel"> | Date | string
     construtoraId?: StringFilter<"Imovel"> | string
-    tipoImovel?: XOR<TipoImovelNullableScalarRelationFilter, TipoImovelWhereInput> | null
+    caracteristicasArray?: StringNullableListFilter<"Imovel">
+    destaque?: BoolFilter<"Imovel"> | boolean
+    fotoPrincipal?: StringNullableFilter<"Imovel"> | string | null
+    galeriaFotos?: StringNullableListFilter<"Imovel">
+    status?: StringNullableFilter<"Imovel"> | string | null
+    ativo?: BoolFilter<"Imovel"> | boolean
+    tipoImovelId?: StringNullableFilter<"Imovel"> | string | null
+    tipoImovelNome?: StringNullableFilter<"Imovel"> | string | null
     construtora?: XOR<ConstrutoraScalarRelationFilter, ConstrutoraWhereInput>
-    matches?: MatchListRelationFilter
+    tipoImovel?: XOR<TipoImovelNullableScalarRelationFilter, TipoImovelWhereInput> | null
     perguntas?: ImovelPerguntaListRelationFilter
+    matches?: MatchListRelationFilter
   }, "id" | "idExternoAPI">
 
   export type ImovelOrderByWithAggregationInput = {
@@ -24166,18 +24166,18 @@ export namespace Prisma {
     longitude?: SortOrder
     telefoneContato?: SortOrderInput | SortOrder
     endereco?: SortOrder
-    fotoPrincipal?: SortOrderInput | SortOrder
-    galeriaFotos?: SortOrder
     caracteristicas?: SortOrderInput | SortOrder
-    caracteristicasArray?: SortOrder
-    tipoImovelId?: SortOrderInput | SortOrder
-    tipoImovelNome?: SortOrderInput | SortOrder
-    status?: SortOrderInput | SortOrder
-    ativo?: SortOrder
-    destaque?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrder
+    caracteristicasArray?: SortOrder
+    destaque?: SortOrder
+    fotoPrincipal?: SortOrderInput | SortOrder
+    galeriaFotos?: SortOrder
+    status?: SortOrderInput | SortOrder
+    ativo?: SortOrder
+    tipoImovelId?: SortOrderInput | SortOrder
+    tipoImovelNome?: SortOrderInput | SortOrder
     _count?: ImovelCountOrderByAggregateInput
     _avg?: ImovelAvgOrderByAggregateInput
     _max?: ImovelMaxOrderByAggregateInput
@@ -24202,18 +24202,18 @@ export namespace Prisma {
     longitude?: FloatWithAggregatesFilter<"Imovel"> | number
     telefoneContato?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
     endereco?: StringWithAggregatesFilter<"Imovel"> | string
-    fotoPrincipal?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
-    galeriaFotos?: StringNullableListFilter<"Imovel">
     caracteristicas?: JsonNullableWithAggregatesFilter<"Imovel">
-    caracteristicasArray?: StringNullableListFilter<"Imovel">
-    tipoImovelId?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
-    tipoImovelNome?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
-    status?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
-    ativo?: BoolWithAggregatesFilter<"Imovel"> | boolean
-    destaque?: BoolWithAggregatesFilter<"Imovel"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Imovel"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Imovel"> | Date | string
     construtoraId?: StringWithAggregatesFilter<"Imovel"> | string
+    caracteristicasArray?: StringNullableListFilter<"Imovel">
+    destaque?: BoolWithAggregatesFilter<"Imovel"> | boolean
+    fotoPrincipal?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
+    galeriaFotos?: StringNullableListFilter<"Imovel">
+    status?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
+    ativo?: BoolWithAggregatesFilter<"Imovel"> | boolean
+    tipoImovelId?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
+    tipoImovelNome?: StringNullableWithAggregatesFilter<"Imovel"> | string | null
   }
 
   export type PerguntaWhereInput = {
@@ -24225,19 +24225,19 @@ export namespace Prisma {
     tipo?: StringFilter<"Pergunta"> | string
     opcoes?: JsonNullableFilter<"Pergunta">
     ordem?: IntFilter<"Pergunta"> | number
-    categoria?: StringFilter<"Pergunta"> | string
-    fluxo?: StringFilter<"Pergunta"> | string
-    pontuacao?: IntFilter<"Pergunta"> | number
     obrigatoria?: BoolFilter<"Pergunta"> | boolean
     condicional?: JsonNullableFilter<"Pergunta">
     geradaPorIA?: BoolFilter<"Pergunta"> | boolean
-    ativa?: BoolFilter<"Pergunta"> | boolean
     createdAt?: DateTimeFilter<"Pergunta"> | Date | string
     updatedAt?: DateTimeFilter<"Pergunta"> | Date | string
+    ativa?: BoolFilter<"Pergunta"> | boolean
+    categoria?: StringFilter<"Pergunta"> | string
+    fluxo?: StringFilter<"Pergunta"> | string
+    pontuacao?: IntFilter<"Pergunta"> | number
     configuracaoId?: StringNullableFilter<"Pergunta"> | string | null
-    respostas?: RespostaListRelationFilter
     imoveis?: ImovelPerguntaListRelationFilter
     configuracao?: XOR<ConfiguracaoPerguntaNullableScalarRelationFilter, ConfiguracaoPerguntaWhereInput> | null
+    respostas?: RespostaListRelationFilter
   }
 
   export type PerguntaOrderByWithRelationInput = {
@@ -24246,19 +24246,19 @@ export namespace Prisma {
     tipo?: SortOrder
     opcoes?: SortOrderInput | SortOrder
     ordem?: SortOrder
-    categoria?: SortOrder
-    fluxo?: SortOrder
-    pontuacao?: SortOrder
     obrigatoria?: SortOrder
     condicional?: SortOrderInput | SortOrder
     geradaPorIA?: SortOrder
-    ativa?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    ativa?: SortOrder
+    categoria?: SortOrder
+    fluxo?: SortOrder
+    pontuacao?: SortOrder
     configuracaoId?: SortOrderInput | SortOrder
-    respostas?: RespostaOrderByRelationAggregateInput
     imoveis?: ImovelPerguntaOrderByRelationAggregateInput
     configuracao?: ConfiguracaoPerguntaOrderByWithRelationInput
+    respostas?: RespostaOrderByRelationAggregateInput
   }
 
   export type PerguntaWhereUniqueInput = Prisma.AtLeast<{
@@ -24270,19 +24270,19 @@ export namespace Prisma {
     tipo?: StringFilter<"Pergunta"> | string
     opcoes?: JsonNullableFilter<"Pergunta">
     ordem?: IntFilter<"Pergunta"> | number
-    categoria?: StringFilter<"Pergunta"> | string
-    fluxo?: StringFilter<"Pergunta"> | string
-    pontuacao?: IntFilter<"Pergunta"> | number
     obrigatoria?: BoolFilter<"Pergunta"> | boolean
     condicional?: JsonNullableFilter<"Pergunta">
     geradaPorIA?: BoolFilter<"Pergunta"> | boolean
-    ativa?: BoolFilter<"Pergunta"> | boolean
     createdAt?: DateTimeFilter<"Pergunta"> | Date | string
     updatedAt?: DateTimeFilter<"Pergunta"> | Date | string
+    ativa?: BoolFilter<"Pergunta"> | boolean
+    categoria?: StringFilter<"Pergunta"> | string
+    fluxo?: StringFilter<"Pergunta"> | string
+    pontuacao?: IntFilter<"Pergunta"> | number
     configuracaoId?: StringNullableFilter<"Pergunta"> | string | null
-    respostas?: RespostaListRelationFilter
     imoveis?: ImovelPerguntaListRelationFilter
     configuracao?: XOR<ConfiguracaoPerguntaNullableScalarRelationFilter, ConfiguracaoPerguntaWhereInput> | null
+    respostas?: RespostaListRelationFilter
   }, "id">
 
   export type PerguntaOrderByWithAggregationInput = {
@@ -24291,15 +24291,15 @@ export namespace Prisma {
     tipo?: SortOrder
     opcoes?: SortOrderInput | SortOrder
     ordem?: SortOrder
-    categoria?: SortOrder
-    fluxo?: SortOrder
-    pontuacao?: SortOrder
     obrigatoria?: SortOrder
     condicional?: SortOrderInput | SortOrder
     geradaPorIA?: SortOrder
-    ativa?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    ativa?: SortOrder
+    categoria?: SortOrder
+    fluxo?: SortOrder
+    pontuacao?: SortOrder
     configuracaoId?: SortOrderInput | SortOrder
     _count?: PerguntaCountOrderByAggregateInput
     _avg?: PerguntaAvgOrderByAggregateInput
@@ -24317,15 +24317,15 @@ export namespace Prisma {
     tipo?: StringWithAggregatesFilter<"Pergunta"> | string
     opcoes?: JsonNullableWithAggregatesFilter<"Pergunta">
     ordem?: IntWithAggregatesFilter<"Pergunta"> | number
-    categoria?: StringWithAggregatesFilter<"Pergunta"> | string
-    fluxo?: StringWithAggregatesFilter<"Pergunta"> | string
-    pontuacao?: IntWithAggregatesFilter<"Pergunta"> | number
     obrigatoria?: BoolWithAggregatesFilter<"Pergunta"> | boolean
     condicional?: JsonNullableWithAggregatesFilter<"Pergunta">
     geradaPorIA?: BoolWithAggregatesFilter<"Pergunta"> | boolean
-    ativa?: BoolWithAggregatesFilter<"Pergunta"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Pergunta"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Pergunta"> | Date | string
+    ativa?: BoolWithAggregatesFilter<"Pergunta"> | boolean
+    categoria?: StringWithAggregatesFilter<"Pergunta"> | string
+    fluxo?: StringWithAggregatesFilter<"Pergunta"> | string
+    pontuacao?: IntWithAggregatesFilter<"Pergunta"> | number
     configuracaoId?: StringNullableWithAggregatesFilter<"Pergunta"> | string | null
   }
 
@@ -24546,78 +24546,78 @@ export namespace Prisma {
     id?: StringFilter<"Relatorio"> | string
     resumo?: StringNullableFilter<"Relatorio"> | string | null
     pdfUrl?: StringNullableFilter<"Relatorio"> | string | null
-    dataCriacao?: DateTimeFilter<"Relatorio"> | Date | string
     updatedAt?: DateTimeFilter<"Relatorio"> | Date | string
-    rendaMensal?: FloatNullableFilter<"Relatorio"> | number | null
-    valorParcelaMaxima?: FloatNullableFilter<"Relatorio"> | number | null
-    temOutrosEmprestimos?: BoolNullableFilter<"Relatorio"> | boolean | null
-    valorEntrada?: FloatNullableFilter<"Relatorio"> | number | null
-    prazoFinanciamento?: IntNullableFilter<"Relatorio"> | number | null
-    taxa?: FloatNullableFilter<"Relatorio"> | number | null
-    valorImovel?: FloatNullableFilter<"Relatorio"> | number | null
-    valorFinanciamento?: FloatNullableFilter<"Relatorio"> | number | null
-    valorParcela?: FloatNullableFilter<"Relatorio"> | number | null
-    cidade?: StringNullableFilter<"Relatorio"> | string | null
+    userId?: StringFilter<"Relatorio"> | string
     bairros?: StringNullableFilter<"Relatorio"> | string | null
-    localTrabalho?: StringNullableFilter<"Relatorio"> | string | null
+    cidade?: StringNullableFilter<"Relatorio"> | string | null
+    dataCriacao?: DateTimeFilter<"Relatorio"> | Date | string
     distanciaMaximaTrabalho?: FloatNullableFilter<"Relatorio"> | number | null
-    importanciaPisoQuartos?: StringNullableFilter<"Relatorio"> | string | null
     importanciaAcademia?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaPiscina?: StringNullableFilter<"Relatorio"> | string | null
-    tipoPortaria?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaSalaoFestas?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaPlayground?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaCaminhabilidade?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaEscolas?: StringNullableFilter<"Relatorio"> | string | null
     importanciaEspacoPet?: StringNullableFilter<"Relatorio"> | string | null
     importanciaParques?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaShopping?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaPiscina?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaPisoQuartos?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaPlayground?: StringNullableFilter<"Relatorio"> | string | null
     importanciaRestaurantes?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaCaminhabilidade?: StringNullableFilter<"Relatorio"> | string | null
-    temPet?: BoolNullableFilter<"Relatorio"> | boolean | null
-    importanciaEscolas?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaSalaoFestas?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaShopping?: StringNullableFilter<"Relatorio"> | string | null
     importanciaTransporte?: StringNullableFilter<"Relatorio"> | string | null
-    userId?: StringFilter<"Relatorio"> | string
-    imoveisRecomendados?: ImoveisRecomendadosListRelationFilter
-    usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
+    localTrabalho?: StringNullableFilter<"Relatorio"> | string | null
+    prazoFinanciamento?: IntNullableFilter<"Relatorio"> | number | null
+    rendaMensal?: FloatNullableFilter<"Relatorio"> | number | null
+    taxa?: FloatNullableFilter<"Relatorio"> | number | null
+    temOutrosEmprestimos?: BoolNullableFilter<"Relatorio"> | boolean | null
+    temPet?: BoolNullableFilter<"Relatorio"> | boolean | null
+    tipoPortaria?: StringNullableFilter<"Relatorio"> | string | null
+    valorEntrada?: FloatNullableFilter<"Relatorio"> | number | null
+    valorFinanciamento?: FloatNullableFilter<"Relatorio"> | number | null
+    valorImovel?: FloatNullableFilter<"Relatorio"> | number | null
+    valorParcela?: FloatNullableFilter<"Relatorio"> | number | null
+    valorParcelaMaxima?: FloatNullableFilter<"Relatorio"> | number | null
+    ImoveisRecomendados?: ImoveisRecomendadosListRelationFilter
     matches?: MatchListRelationFilter
+    usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type RelatorioOrderByWithRelationInput = {
     id?: SortOrder
     resumo?: SortOrderInput | SortOrder
     pdfUrl?: SortOrderInput | SortOrder
-    dataCriacao?: SortOrder
     updatedAt?: SortOrder
-    rendaMensal?: SortOrderInput | SortOrder
-    valorParcelaMaxima?: SortOrderInput | SortOrder
-    temOutrosEmprestimos?: SortOrderInput | SortOrder
-    valorEntrada?: SortOrderInput | SortOrder
-    prazoFinanciamento?: SortOrderInput | SortOrder
-    taxa?: SortOrderInput | SortOrder
-    valorImovel?: SortOrderInput | SortOrder
-    valorFinanciamento?: SortOrderInput | SortOrder
-    valorParcela?: SortOrderInput | SortOrder
-    cidade?: SortOrderInput | SortOrder
+    userId?: SortOrder
     bairros?: SortOrderInput | SortOrder
-    localTrabalho?: SortOrderInput | SortOrder
+    cidade?: SortOrderInput | SortOrder
+    dataCriacao?: SortOrder
     distanciaMaximaTrabalho?: SortOrderInput | SortOrder
-    importanciaPisoQuartos?: SortOrderInput | SortOrder
     importanciaAcademia?: SortOrderInput | SortOrder
-    importanciaPiscina?: SortOrderInput | SortOrder
-    tipoPortaria?: SortOrderInput | SortOrder
-    importanciaSalaoFestas?: SortOrderInput | SortOrder
-    importanciaPlayground?: SortOrderInput | SortOrder
+    importanciaCaminhabilidade?: SortOrderInput | SortOrder
+    importanciaEscolas?: SortOrderInput | SortOrder
     importanciaEspacoPet?: SortOrderInput | SortOrder
     importanciaParques?: SortOrderInput | SortOrder
-    importanciaShopping?: SortOrderInput | SortOrder
+    importanciaPiscina?: SortOrderInput | SortOrder
+    importanciaPisoQuartos?: SortOrderInput | SortOrder
+    importanciaPlayground?: SortOrderInput | SortOrder
     importanciaRestaurantes?: SortOrderInput | SortOrder
-    importanciaCaminhabilidade?: SortOrderInput | SortOrder
-    temPet?: SortOrderInput | SortOrder
-    importanciaEscolas?: SortOrderInput | SortOrder
+    importanciaSalaoFestas?: SortOrderInput | SortOrder
+    importanciaShopping?: SortOrderInput | SortOrder
     importanciaTransporte?: SortOrderInput | SortOrder
-    userId?: SortOrder
-    imoveisRecomendados?: ImoveisRecomendadosOrderByRelationAggregateInput
-    usuario?: UserOrderByWithRelationInput
+    localTrabalho?: SortOrderInput | SortOrder
+    prazoFinanciamento?: SortOrderInput | SortOrder
+    rendaMensal?: SortOrderInput | SortOrder
+    taxa?: SortOrderInput | SortOrder
+    temOutrosEmprestimos?: SortOrderInput | SortOrder
+    temPet?: SortOrderInput | SortOrder
+    tipoPortaria?: SortOrderInput | SortOrder
+    valorEntrada?: SortOrderInput | SortOrder
+    valorFinanciamento?: SortOrderInput | SortOrder
+    valorImovel?: SortOrderInput | SortOrder
+    valorParcela?: SortOrderInput | SortOrder
+    valorParcelaMaxima?: SortOrderInput | SortOrder
+    ImoveisRecomendados?: ImoveisRecomendadosOrderByRelationAggregateInput
     matches?: MatchOrderByRelationAggregateInput
+    usuario?: UserOrderByWithRelationInput
   }
 
   export type RelatorioWhereUniqueInput = Prisma.AtLeast<{
@@ -24627,75 +24627,75 @@ export namespace Prisma {
     NOT?: RelatorioWhereInput | RelatorioWhereInput[]
     resumo?: StringNullableFilter<"Relatorio"> | string | null
     pdfUrl?: StringNullableFilter<"Relatorio"> | string | null
-    dataCriacao?: DateTimeFilter<"Relatorio"> | Date | string
     updatedAt?: DateTimeFilter<"Relatorio"> | Date | string
-    rendaMensal?: FloatNullableFilter<"Relatorio"> | number | null
-    valorParcelaMaxima?: FloatNullableFilter<"Relatorio"> | number | null
-    temOutrosEmprestimos?: BoolNullableFilter<"Relatorio"> | boolean | null
-    valorEntrada?: FloatNullableFilter<"Relatorio"> | number | null
-    prazoFinanciamento?: IntNullableFilter<"Relatorio"> | number | null
-    taxa?: FloatNullableFilter<"Relatorio"> | number | null
-    valorImovel?: FloatNullableFilter<"Relatorio"> | number | null
-    valorFinanciamento?: FloatNullableFilter<"Relatorio"> | number | null
-    valorParcela?: FloatNullableFilter<"Relatorio"> | number | null
-    cidade?: StringNullableFilter<"Relatorio"> | string | null
+    userId?: StringFilter<"Relatorio"> | string
     bairros?: StringNullableFilter<"Relatorio"> | string | null
-    localTrabalho?: StringNullableFilter<"Relatorio"> | string | null
+    cidade?: StringNullableFilter<"Relatorio"> | string | null
+    dataCriacao?: DateTimeFilter<"Relatorio"> | Date | string
     distanciaMaximaTrabalho?: FloatNullableFilter<"Relatorio"> | number | null
-    importanciaPisoQuartos?: StringNullableFilter<"Relatorio"> | string | null
     importanciaAcademia?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaPiscina?: StringNullableFilter<"Relatorio"> | string | null
-    tipoPortaria?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaSalaoFestas?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaPlayground?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaCaminhabilidade?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaEscolas?: StringNullableFilter<"Relatorio"> | string | null
     importanciaEspacoPet?: StringNullableFilter<"Relatorio"> | string | null
     importanciaParques?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaShopping?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaPiscina?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaPisoQuartos?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaPlayground?: StringNullableFilter<"Relatorio"> | string | null
     importanciaRestaurantes?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaCaminhabilidade?: StringNullableFilter<"Relatorio"> | string | null
-    temPet?: BoolNullableFilter<"Relatorio"> | boolean | null
-    importanciaEscolas?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaSalaoFestas?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaShopping?: StringNullableFilter<"Relatorio"> | string | null
     importanciaTransporte?: StringNullableFilter<"Relatorio"> | string | null
-    userId?: StringFilter<"Relatorio"> | string
-    imoveisRecomendados?: ImoveisRecomendadosListRelationFilter
-    usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
+    localTrabalho?: StringNullableFilter<"Relatorio"> | string | null
+    prazoFinanciamento?: IntNullableFilter<"Relatorio"> | number | null
+    rendaMensal?: FloatNullableFilter<"Relatorio"> | number | null
+    taxa?: FloatNullableFilter<"Relatorio"> | number | null
+    temOutrosEmprestimos?: BoolNullableFilter<"Relatorio"> | boolean | null
+    temPet?: BoolNullableFilter<"Relatorio"> | boolean | null
+    tipoPortaria?: StringNullableFilter<"Relatorio"> | string | null
+    valorEntrada?: FloatNullableFilter<"Relatorio"> | number | null
+    valorFinanciamento?: FloatNullableFilter<"Relatorio"> | number | null
+    valorImovel?: FloatNullableFilter<"Relatorio"> | number | null
+    valorParcela?: FloatNullableFilter<"Relatorio"> | number | null
+    valorParcelaMaxima?: FloatNullableFilter<"Relatorio"> | number | null
+    ImoveisRecomendados?: ImoveisRecomendadosListRelationFilter
     matches?: MatchListRelationFilter
+    usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type RelatorioOrderByWithAggregationInput = {
     id?: SortOrder
     resumo?: SortOrderInput | SortOrder
     pdfUrl?: SortOrderInput | SortOrder
-    dataCriacao?: SortOrder
     updatedAt?: SortOrder
-    rendaMensal?: SortOrderInput | SortOrder
-    valorParcelaMaxima?: SortOrderInput | SortOrder
-    temOutrosEmprestimos?: SortOrderInput | SortOrder
-    valorEntrada?: SortOrderInput | SortOrder
-    prazoFinanciamento?: SortOrderInput | SortOrder
-    taxa?: SortOrderInput | SortOrder
-    valorImovel?: SortOrderInput | SortOrder
-    valorFinanciamento?: SortOrderInput | SortOrder
-    valorParcela?: SortOrderInput | SortOrder
-    cidade?: SortOrderInput | SortOrder
+    userId?: SortOrder
     bairros?: SortOrderInput | SortOrder
-    localTrabalho?: SortOrderInput | SortOrder
+    cidade?: SortOrderInput | SortOrder
+    dataCriacao?: SortOrder
     distanciaMaximaTrabalho?: SortOrderInput | SortOrder
-    importanciaPisoQuartos?: SortOrderInput | SortOrder
     importanciaAcademia?: SortOrderInput | SortOrder
-    importanciaPiscina?: SortOrderInput | SortOrder
-    tipoPortaria?: SortOrderInput | SortOrder
-    importanciaSalaoFestas?: SortOrderInput | SortOrder
-    importanciaPlayground?: SortOrderInput | SortOrder
+    importanciaCaminhabilidade?: SortOrderInput | SortOrder
+    importanciaEscolas?: SortOrderInput | SortOrder
     importanciaEspacoPet?: SortOrderInput | SortOrder
     importanciaParques?: SortOrderInput | SortOrder
-    importanciaShopping?: SortOrderInput | SortOrder
+    importanciaPiscina?: SortOrderInput | SortOrder
+    importanciaPisoQuartos?: SortOrderInput | SortOrder
+    importanciaPlayground?: SortOrderInput | SortOrder
     importanciaRestaurantes?: SortOrderInput | SortOrder
-    importanciaCaminhabilidade?: SortOrderInput | SortOrder
-    temPet?: SortOrderInput | SortOrder
-    importanciaEscolas?: SortOrderInput | SortOrder
+    importanciaSalaoFestas?: SortOrderInput | SortOrder
+    importanciaShopping?: SortOrderInput | SortOrder
     importanciaTransporte?: SortOrderInput | SortOrder
-    userId?: SortOrder
+    localTrabalho?: SortOrderInput | SortOrder
+    prazoFinanciamento?: SortOrderInput | SortOrder
+    rendaMensal?: SortOrderInput | SortOrder
+    taxa?: SortOrderInput | SortOrder
+    temOutrosEmprestimos?: SortOrderInput | SortOrder
+    temPet?: SortOrderInput | SortOrder
+    tipoPortaria?: SortOrderInput | SortOrder
+    valorEntrada?: SortOrderInput | SortOrder
+    valorFinanciamento?: SortOrderInput | SortOrder
+    valorImovel?: SortOrderInput | SortOrder
+    valorParcela?: SortOrderInput | SortOrder
+    valorParcelaMaxima?: SortOrderInput | SortOrder
     _count?: RelatorioCountOrderByAggregateInput
     _avg?: RelatorioAvgOrderByAggregateInput
     _max?: RelatorioMaxOrderByAggregateInput
@@ -24710,143 +24710,36 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Relatorio"> | string
     resumo?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
     pdfUrl?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    dataCriacao?: DateTimeWithAggregatesFilter<"Relatorio"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Relatorio"> | Date | string
-    rendaMensal?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
-    valorParcelaMaxima?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
-    temOutrosEmprestimos?: BoolNullableWithAggregatesFilter<"Relatorio"> | boolean | null
-    valorEntrada?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
-    prazoFinanciamento?: IntNullableWithAggregatesFilter<"Relatorio"> | number | null
-    taxa?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
-    valorImovel?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
-    valorFinanciamento?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
-    valorParcela?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
-    cidade?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    userId?: StringWithAggregatesFilter<"Relatorio"> | string
     bairros?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    localTrabalho?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    cidade?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    dataCriacao?: DateTimeWithAggregatesFilter<"Relatorio"> | Date | string
     distanciaMaximaTrabalho?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
-    importanciaPisoQuartos?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
     importanciaAcademia?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    importanciaPiscina?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    tipoPortaria?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    importanciaSalaoFestas?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    importanciaPlayground?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    importanciaCaminhabilidade?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    importanciaEscolas?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
     importanciaEspacoPet?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
     importanciaParques?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    importanciaShopping?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    importanciaPiscina?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    importanciaPisoQuartos?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    importanciaPlayground?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
     importanciaRestaurantes?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    importanciaCaminhabilidade?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    temPet?: BoolNullableWithAggregatesFilter<"Relatorio"> | boolean | null
-    importanciaEscolas?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    importanciaSalaoFestas?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    importanciaShopping?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
     importanciaTransporte?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
-    userId?: StringWithAggregatesFilter<"Relatorio"> | string
-  }
-
-  export type ImoveisRecomendadosWhereInput = {
-    AND?: ImoveisRecomendadosWhereInput | ImoveisRecomendadosWhereInput[]
-    OR?: ImoveisRecomendadosWhereInput[]
-    NOT?: ImoveisRecomendadosWhereInput | ImoveisRecomendadosWhereInput[]
-    id?: StringFilter<"ImoveisRecomendados"> | string
-    relatorioId?: StringFilter<"ImoveisRecomendados"> | string
-    imovelId?: StringFilter<"ImoveisRecomendados"> | string
-    titulo?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    preco?: FloatNullableFilter<"ImoveisRecomendados"> | number | null
-    endereco?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    bairro?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    cidade?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    area?: FloatNullableFilter<"ImoveisRecomendados"> | number | null
-    quartos?: IntNullableFilter<"ImoveisRecomendados"> | number | null
-    banheiros?: IntNullableFilter<"ImoveisRecomendados"> | number | null
-    vagas?: IntNullableFilter<"ImoveisRecomendados"> | number | null
-    imageUrl?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    linkImovel?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    dataCriacao?: DateTimeFilter<"ImoveisRecomendados"> | Date | string
-    relatorio?: XOR<RelatorioScalarRelationFilter, RelatorioWhereInput>
-  }
-
-  export type ImoveisRecomendadosOrderByWithRelationInput = {
-    id?: SortOrder
-    relatorioId?: SortOrder
-    imovelId?: SortOrder
-    titulo?: SortOrderInput | SortOrder
-    preco?: SortOrderInput | SortOrder
-    endereco?: SortOrderInput | SortOrder
-    bairro?: SortOrderInput | SortOrder
-    cidade?: SortOrderInput | SortOrder
-    area?: SortOrderInput | SortOrder
-    quartos?: SortOrderInput | SortOrder
-    banheiros?: SortOrderInput | SortOrder
-    vagas?: SortOrderInput | SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    linkImovel?: SortOrderInput | SortOrder
-    dataCriacao?: SortOrder
-    relatorio?: RelatorioOrderByWithRelationInput
-  }
-
-  export type ImoveisRecomendadosWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: ImoveisRecomendadosWhereInput | ImoveisRecomendadosWhereInput[]
-    OR?: ImoveisRecomendadosWhereInput[]
-    NOT?: ImoveisRecomendadosWhereInput | ImoveisRecomendadosWhereInput[]
-    relatorioId?: StringFilter<"ImoveisRecomendados"> | string
-    imovelId?: StringFilter<"ImoveisRecomendados"> | string
-    titulo?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    preco?: FloatNullableFilter<"ImoveisRecomendados"> | number | null
-    endereco?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    bairro?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    cidade?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    area?: FloatNullableFilter<"ImoveisRecomendados"> | number | null
-    quartos?: IntNullableFilter<"ImoveisRecomendados"> | number | null
-    banheiros?: IntNullableFilter<"ImoveisRecomendados"> | number | null
-    vagas?: IntNullableFilter<"ImoveisRecomendados"> | number | null
-    imageUrl?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    linkImovel?: StringNullableFilter<"ImoveisRecomendados"> | string | null
-    dataCriacao?: DateTimeFilter<"ImoveisRecomendados"> | Date | string
-    relatorio?: XOR<RelatorioScalarRelationFilter, RelatorioWhereInput>
-  }, "id">
-
-  export type ImoveisRecomendadosOrderByWithAggregationInput = {
-    id?: SortOrder
-    relatorioId?: SortOrder
-    imovelId?: SortOrder
-    titulo?: SortOrderInput | SortOrder
-    preco?: SortOrderInput | SortOrder
-    endereco?: SortOrderInput | SortOrder
-    bairro?: SortOrderInput | SortOrder
-    cidade?: SortOrderInput | SortOrder
-    area?: SortOrderInput | SortOrder
-    quartos?: SortOrderInput | SortOrder
-    banheiros?: SortOrderInput | SortOrder
-    vagas?: SortOrderInput | SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    linkImovel?: SortOrderInput | SortOrder
-    dataCriacao?: SortOrder
-    _count?: ImoveisRecomendadosCountOrderByAggregateInput
-    _avg?: ImoveisRecomendadosAvgOrderByAggregateInput
-    _max?: ImoveisRecomendadosMaxOrderByAggregateInput
-    _min?: ImoveisRecomendadosMinOrderByAggregateInput
-    _sum?: ImoveisRecomendadosSumOrderByAggregateInput
-  }
-
-  export type ImoveisRecomendadosScalarWhereWithAggregatesInput = {
-    AND?: ImoveisRecomendadosScalarWhereWithAggregatesInput | ImoveisRecomendadosScalarWhereWithAggregatesInput[]
-    OR?: ImoveisRecomendadosScalarWhereWithAggregatesInput[]
-    NOT?: ImoveisRecomendadosScalarWhereWithAggregatesInput | ImoveisRecomendadosScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"ImoveisRecomendados"> | string
-    relatorioId?: StringWithAggregatesFilter<"ImoveisRecomendados"> | string
-    imovelId?: StringWithAggregatesFilter<"ImoveisRecomendados"> | string
-    titulo?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
-    preco?: FloatNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
-    endereco?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
-    bairro?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
-    cidade?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
-    area?: FloatNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
-    quartos?: IntNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
-    banheiros?: IntNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
-    vagas?: IntNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
-    imageUrl?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
-    linkImovel?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
-    dataCriacao?: DateTimeWithAggregatesFilter<"ImoveisRecomendados"> | Date | string
+    localTrabalho?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    prazoFinanciamento?: IntNullableWithAggregatesFilter<"Relatorio"> | number | null
+    rendaMensal?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
+    taxa?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
+    temOutrosEmprestimos?: BoolNullableWithAggregatesFilter<"Relatorio"> | boolean | null
+    temPet?: BoolNullableWithAggregatesFilter<"Relatorio"> | boolean | null
+    tipoPortaria?: StringNullableWithAggregatesFilter<"Relatorio"> | string | null
+    valorEntrada?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
+    valorFinanciamento?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
+    valorImovel?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
+    valorParcela?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
+    valorParcelaMaxima?: FloatNullableWithAggregatesFilter<"Relatorio"> | number | null
   }
 
   export type ConfiguracaoWhereInput = {
@@ -24976,9 +24869,9 @@ export namespace Prisma {
     imovelIdExterno?: StringFilter<"ImovelMetadata"> | string
     telefone?: StringFilter<"ImovelMetadata"> | string
     observacoes?: StringFilter<"ImovelMetadata"> | string
-    construtoraId?: StringNullableFilter<"ImovelMetadata"> | string | null
     createdAt?: DateTimeFilter<"ImovelMetadata"> | Date | string
     updatedAt?: DateTimeFilter<"ImovelMetadata"> | Date | string
+    construtoraId?: StringNullableFilter<"ImovelMetadata"> | string | null
     construtora?: XOR<ConstrutoraNullableScalarRelationFilter, ConstrutoraWhereInput> | null
   }
 
@@ -24987,9 +24880,9 @@ export namespace Prisma {
     imovelIdExterno?: SortOrder
     telefone?: SortOrder
     observacoes?: SortOrder
-    construtoraId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    construtoraId?: SortOrderInput | SortOrder
     construtora?: ConstrutoraOrderByWithRelationInput
   }
 
@@ -25001,9 +24894,9 @@ export namespace Prisma {
     NOT?: ImovelMetadataWhereInput | ImovelMetadataWhereInput[]
     telefone?: StringFilter<"ImovelMetadata"> | string
     observacoes?: StringFilter<"ImovelMetadata"> | string
-    construtoraId?: StringNullableFilter<"ImovelMetadata"> | string | null
     createdAt?: DateTimeFilter<"ImovelMetadata"> | Date | string
     updatedAt?: DateTimeFilter<"ImovelMetadata"> | Date | string
+    construtoraId?: StringNullableFilter<"ImovelMetadata"> | string | null
     construtora?: XOR<ConstrutoraNullableScalarRelationFilter, ConstrutoraWhereInput> | null
   }, "id" | "imovelIdExterno">
 
@@ -25012,9 +24905,9 @@ export namespace Prisma {
     imovelIdExterno?: SortOrder
     telefone?: SortOrder
     observacoes?: SortOrder
-    construtoraId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    construtoraId?: SortOrderInput | SortOrder
     _count?: ImovelMetadataCountOrderByAggregateInput
     _max?: ImovelMetadataMaxOrderByAggregateInput
     _min?: ImovelMetadataMinOrderByAggregateInput
@@ -25028,9 +24921,9 @@ export namespace Prisma {
     imovelIdExterno?: StringWithAggregatesFilter<"ImovelMetadata"> | string
     telefone?: StringWithAggregatesFilter<"ImovelMetadata"> | string
     observacoes?: StringWithAggregatesFilter<"ImovelMetadata"> | string
-    construtoraId?: StringNullableWithAggregatesFilter<"ImovelMetadata"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"ImovelMetadata"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ImovelMetadata"> | Date | string
+    construtoraId?: StringNullableWithAggregatesFilter<"ImovelMetadata"> | string | null
   }
 
   export type ImovelPerguntaWhereInput = {
@@ -25342,6 +25235,113 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"AIConfig"> | Date | string
   }
 
+  export type ImoveisRecomendadosWhereInput = {
+    AND?: ImoveisRecomendadosWhereInput | ImoveisRecomendadosWhereInput[]
+    OR?: ImoveisRecomendadosWhereInput[]
+    NOT?: ImoveisRecomendadosWhereInput | ImoveisRecomendadosWhereInput[]
+    id?: StringFilter<"ImoveisRecomendados"> | string
+    relatorioId?: StringFilter<"ImoveisRecomendados"> | string
+    imovelId?: StringFilter<"ImoveisRecomendados"> | string
+    titulo?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    preco?: FloatNullableFilter<"ImoveisRecomendados"> | number | null
+    endereco?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    bairro?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    cidade?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    area?: FloatNullableFilter<"ImoveisRecomendados"> | number | null
+    quartos?: IntNullableFilter<"ImoveisRecomendados"> | number | null
+    banheiros?: IntNullableFilter<"ImoveisRecomendados"> | number | null
+    vagas?: IntNullableFilter<"ImoveisRecomendados"> | number | null
+    imageUrl?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    linkImovel?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    dataCriacao?: DateTimeFilter<"ImoveisRecomendados"> | Date | string
+    Relatorio?: XOR<RelatorioScalarRelationFilter, RelatorioWhereInput>
+  }
+
+  export type ImoveisRecomendadosOrderByWithRelationInput = {
+    id?: SortOrder
+    relatorioId?: SortOrder
+    imovelId?: SortOrder
+    titulo?: SortOrderInput | SortOrder
+    preco?: SortOrderInput | SortOrder
+    endereco?: SortOrderInput | SortOrder
+    bairro?: SortOrderInput | SortOrder
+    cidade?: SortOrderInput | SortOrder
+    area?: SortOrderInput | SortOrder
+    quartos?: SortOrderInput | SortOrder
+    banheiros?: SortOrderInput | SortOrder
+    vagas?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    linkImovel?: SortOrderInput | SortOrder
+    dataCriacao?: SortOrder
+    Relatorio?: RelatorioOrderByWithRelationInput
+  }
+
+  export type ImoveisRecomendadosWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ImoveisRecomendadosWhereInput | ImoveisRecomendadosWhereInput[]
+    OR?: ImoveisRecomendadosWhereInput[]
+    NOT?: ImoveisRecomendadosWhereInput | ImoveisRecomendadosWhereInput[]
+    relatorioId?: StringFilter<"ImoveisRecomendados"> | string
+    imovelId?: StringFilter<"ImoveisRecomendados"> | string
+    titulo?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    preco?: FloatNullableFilter<"ImoveisRecomendados"> | number | null
+    endereco?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    bairro?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    cidade?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    area?: FloatNullableFilter<"ImoveisRecomendados"> | number | null
+    quartos?: IntNullableFilter<"ImoveisRecomendados"> | number | null
+    banheiros?: IntNullableFilter<"ImoveisRecomendados"> | number | null
+    vagas?: IntNullableFilter<"ImoveisRecomendados"> | number | null
+    imageUrl?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    linkImovel?: StringNullableFilter<"ImoveisRecomendados"> | string | null
+    dataCriacao?: DateTimeFilter<"ImoveisRecomendados"> | Date | string
+    Relatorio?: XOR<RelatorioScalarRelationFilter, RelatorioWhereInput>
+  }, "id">
+
+  export type ImoveisRecomendadosOrderByWithAggregationInput = {
+    id?: SortOrder
+    relatorioId?: SortOrder
+    imovelId?: SortOrder
+    titulo?: SortOrderInput | SortOrder
+    preco?: SortOrderInput | SortOrder
+    endereco?: SortOrderInput | SortOrder
+    bairro?: SortOrderInput | SortOrder
+    cidade?: SortOrderInput | SortOrder
+    area?: SortOrderInput | SortOrder
+    quartos?: SortOrderInput | SortOrder
+    banheiros?: SortOrderInput | SortOrder
+    vagas?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    linkImovel?: SortOrderInput | SortOrder
+    dataCriacao?: SortOrder
+    _count?: ImoveisRecomendadosCountOrderByAggregateInput
+    _avg?: ImoveisRecomendadosAvgOrderByAggregateInput
+    _max?: ImoveisRecomendadosMaxOrderByAggregateInput
+    _min?: ImoveisRecomendadosMinOrderByAggregateInput
+    _sum?: ImoveisRecomendadosSumOrderByAggregateInput
+  }
+
+  export type ImoveisRecomendadosScalarWhereWithAggregatesInput = {
+    AND?: ImoveisRecomendadosScalarWhereWithAggregatesInput | ImoveisRecomendadosScalarWhereWithAggregatesInput[]
+    OR?: ImoveisRecomendadosScalarWhereWithAggregatesInput[]
+    NOT?: ImoveisRecomendadosScalarWhereWithAggregatesInput | ImoveisRecomendadosScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ImoveisRecomendados"> | string
+    relatorioId?: StringWithAggregatesFilter<"ImoveisRecomendados"> | string
+    imovelId?: StringWithAggregatesFilter<"ImoveisRecomendados"> | string
+    titulo?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
+    preco?: FloatNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
+    endereco?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
+    bairro?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
+    cidade?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
+    area?: FloatNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
+    quartos?: IntNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
+    banheiros?: IntNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
+    vagas?: IntNullableWithAggregatesFilter<"ImoveisRecomendados"> | number | null
+    imageUrl?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
+    linkImovel?: StringNullableWithAggregatesFilter<"ImoveisRecomendados"> | string | null
+    dataCriacao?: DateTimeWithAggregatesFilter<"ImoveisRecomendados"> | Date | string
+  }
+
   export type TipoImovelCreateInput = {
     id?: string
     nome: string
@@ -25414,13 +25414,13 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    telefone?: string | null
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
-    construtora?: ConstrutoraCreateNestedOneWithoutUsuariosInput
-    respostas?: RespostaCreateNestedManyWithoutUsuarioInput
+    telefone?: string | null
     relatorios?: RelatorioCreateNestedManyWithoutUsuarioInput
+    respostas?: RespostaCreateNestedManyWithoutUsuarioInput
+    construtora?: ConstrutoraCreateNestedOneWithoutUsuariosInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -25428,13 +25428,13 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    telefone?: string | null
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
     construtoraId?: string | null
-    respostas?: RespostaUncheckedCreateNestedManyWithoutUsuarioInput
+    telefone?: string | null
     relatorios?: RelatorioUncheckedCreateNestedManyWithoutUsuarioInput
+    respostas?: RespostaUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserUpdateInput = {
@@ -25442,13 +25442,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    construtora?: ConstrutoraUpdateOneWithoutUsuariosNestedInput
-    respostas?: RespostaUpdateManyWithoutUsuarioNestedInput
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     relatorios?: RelatorioUpdateManyWithoutUsuarioNestedInput
+    respostas?: RespostaUpdateManyWithoutUsuarioNestedInput
+    construtora?: ConstrutoraUpdateOneWithoutUsuariosNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -25456,13 +25456,13 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     construtoraId?: NullableStringFieldUpdateOperationsInput | string | null
-    respostas?: RespostaUncheckedUpdateManyWithoutUsuarioNestedInput
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     relatorios?: RelatorioUncheckedUpdateManyWithoutUsuarioNestedInput
+    respostas?: RespostaUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -25470,11 +25470,11 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    telefone?: string | null
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
     construtoraId?: string | null
+    telefone?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -25482,10 +25482,10 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -25493,11 +25493,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     construtoraId?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ConstrutoraCreateInput = {
@@ -25510,9 +25510,9 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    usuarios?: UserCreateNestedManyWithoutConstrutoraInput
     imoveis?: ImovelCreateNestedManyWithoutConstrutoraInput
     imoveisMetadata?: ImovelMetadataCreateNestedManyWithoutConstrutoraInput
+    usuarios?: UserCreateNestedManyWithoutConstrutoraInput
   }
 
   export type ConstrutoraUncheckedCreateInput = {
@@ -25525,9 +25525,9 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    usuarios?: UserUncheckedCreateNestedManyWithoutConstrutoraInput
     imoveis?: ImovelUncheckedCreateNestedManyWithoutConstrutoraInput
     imoveisMetadata?: ImovelMetadataUncheckedCreateNestedManyWithoutConstrutoraInput
+    usuarios?: UserUncheckedCreateNestedManyWithoutConstrutoraInput
   }
 
   export type ConstrutoraUpdateInput = {
@@ -25540,9 +25540,9 @@ export namespace Prisma {
     ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usuarios?: UserUpdateManyWithoutConstrutoraNestedInput
     imoveis?: ImovelUpdateManyWithoutConstrutoraNestedInput
     imoveisMetadata?: ImovelMetadataUpdateManyWithoutConstrutoraNestedInput
+    usuarios?: UserUpdateManyWithoutConstrutoraNestedInput
   }
 
   export type ConstrutoraUncheckedUpdateInput = {
@@ -25555,9 +25555,9 @@ export namespace Prisma {
     ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usuarios?: UserUncheckedUpdateManyWithoutConstrutoraNestedInput
     imoveis?: ImovelUncheckedUpdateManyWithoutConstrutoraNestedInput
     imoveisMetadata?: ImovelMetadataUncheckedUpdateManyWithoutConstrutoraNestedInput
+    usuarios?: UserUncheckedUpdateManyWithoutConstrutoraNestedInput
   }
 
   export type ConstrutoraCreateManyInput = {
@@ -25610,20 +25610,20 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelNome?: string | null
     construtora: ConstrutoraCreateNestedOneWithoutImoveisInput
-    matches?: MatchCreateNestedManyWithoutImovelInput
+    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
     perguntas?: ImovelPerguntaCreateNestedManyWithoutImovelInput
+    matches?: MatchCreateNestedManyWithoutImovelInput
   }
 
   export type ImovelUncheckedCreateInput = {
@@ -25640,20 +25640,20 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelId?: string | null
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     construtoraId: string
-    matches?: MatchUncheckedCreateNestedManyWithoutImovelInput
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     perguntas?: ImovelPerguntaUncheckedCreateNestedManyWithoutImovelInput
+    matches?: MatchUncheckedCreateNestedManyWithoutImovelInput
   }
 
   export type ImovelUpdateInput = {
@@ -25670,20 +25670,20 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     construtora?: ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput
-    matches?: MatchUpdateManyWithoutImovelNestedInput
+    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
     perguntas?: ImovelPerguntaUpdateManyWithoutImovelNestedInput
+    matches?: MatchUpdateManyWithoutImovelNestedInput
   }
 
   export type ImovelUncheckedUpdateInput = {
@@ -25700,20 +25700,20 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     construtoraId?: StringFieldUpdateOperationsInput | string
-    matches?: MatchUncheckedUpdateManyWithoutImovelNestedInput
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     perguntas?: ImovelPerguntaUncheckedUpdateManyWithoutImovelNestedInput
+    matches?: MatchUncheckedUpdateManyWithoutImovelNestedInput
   }
 
   export type ImovelCreateManyInput = {
@@ -25730,18 +25730,18 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelId?: string | null
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     construtoraId: string
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
   }
 
   export type ImovelUpdateManyMutationInput = {
@@ -25758,16 +25758,16 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ImovelUncheckedUpdateManyInput = {
@@ -25784,18 +25784,18 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     construtoraId?: StringFieldUpdateOperationsInput | string
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PerguntaCreateInput = {
@@ -25804,18 +25804,18 @@ export namespace Prisma {
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    respostas?: RespostaCreateNestedManyWithoutPerguntaInput
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
     imoveis?: ImovelPerguntaCreateNestedManyWithoutPerguntaInput
     configuracao?: ConfiguracaoPerguntaCreateNestedOneWithoutPerguntasInput
+    respostas?: RespostaCreateNestedManyWithoutPerguntaInput
   }
 
   export type PerguntaUncheckedCreateInput = {
@@ -25824,18 +25824,18 @@ export namespace Prisma {
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
     configuracaoId?: string | null
-    respostas?: RespostaUncheckedCreateNestedManyWithoutPerguntaInput
     imoveis?: ImovelPerguntaUncheckedCreateNestedManyWithoutPerguntaInput
+    respostas?: RespostaUncheckedCreateNestedManyWithoutPerguntaInput
   }
 
   export type PerguntaUpdateInput = {
@@ -25844,18 +25844,18 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    respostas?: RespostaUpdateManyWithoutPerguntaNestedInput
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
     imoveis?: ImovelPerguntaUpdateManyWithoutPerguntaNestedInput
     configuracao?: ConfiguracaoPerguntaUpdateOneWithoutPerguntasNestedInput
+    respostas?: RespostaUpdateManyWithoutPerguntaNestedInput
   }
 
   export type PerguntaUncheckedUpdateInput = {
@@ -25864,18 +25864,18 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
     configuracaoId?: NullableStringFieldUpdateOperationsInput | string | null
-    respostas?: RespostaUncheckedUpdateManyWithoutPerguntaNestedInput
     imoveis?: ImovelPerguntaUncheckedUpdateManyWithoutPerguntaNestedInput
+    respostas?: RespostaUncheckedUpdateManyWithoutPerguntaNestedInput
   }
 
   export type PerguntaCreateManyInput = {
@@ -25884,15 +25884,15 @@ export namespace Prisma {
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
     configuracaoId?: string | null
   }
 
@@ -25902,15 +25902,15 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
   }
 
   export type PerguntaUncheckedUpdateManyInput = {
@@ -25919,15 +25919,15 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
     configuracaoId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -26152,75 +26152,75 @@ export namespace Prisma {
     id?: string
     resumo?: string | null
     pdfUrl?: string | null
-    dataCriacao?: Date | string
     updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
     bairros?: string | null
-    localTrabalho?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
     distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
     importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
     importanciaEspacoPet?: string | null
     importanciaParques?: string | null
-    importanciaShopping?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
     importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
     importanciaTransporte?: string | null
-    imoveisRecomendados?: ImoveisRecomendadosCreateNestedManyWithoutRelatorioInput
-    usuario: UserCreateNestedOneWithoutRelatoriosInput
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
+    ImoveisRecomendados?: ImoveisRecomendadosCreateNestedManyWithoutRelatorioInput
     matches?: MatchCreateNestedManyWithoutRelatorioInput
+    usuario: UserCreateNestedOneWithoutRelatoriosInput
   }
 
   export type RelatorioUncheckedCreateInput = {
     id?: string
     resumo?: string | null
     pdfUrl?: string | null
-    dataCriacao?: Date | string
     updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
+    userId: string
     bairros?: string | null
-    localTrabalho?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
     distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
     importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
     importanciaEspacoPet?: string | null
     importanciaParques?: string | null
-    importanciaShopping?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
     importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
     importanciaTransporte?: string | null
-    userId: string
-    imoveisRecomendados?: ImoveisRecomendadosUncheckedCreateNestedManyWithoutRelatorioInput
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
+    ImoveisRecomendados?: ImoveisRecomendadosUncheckedCreateNestedManyWithoutRelatorioInput
     matches?: MatchUncheckedCreateNestedManyWithoutRelatorioInput
   }
 
@@ -26228,75 +26228,75 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     resumo?: NullableStringFieldUpdateOperationsInput | string | null
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
     bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-    imoveisRecomendados?: ImoveisRecomendadosUpdateManyWithoutRelatorioNestedInput
-    usuario?: UserUpdateOneRequiredWithoutRelatoriosNestedInput
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
+    ImoveisRecomendados?: ImoveisRecomendadosUpdateManyWithoutRelatorioNestedInput
     matches?: MatchUpdateManyWithoutRelatorioNestedInput
+    usuario?: UserUpdateOneRequiredWithoutRelatoriosNestedInput
   }
 
   export type RelatorioUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     resumo?: NullableStringFieldUpdateOperationsInput | string | null
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
     bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: StringFieldUpdateOperationsInput | string
-    imoveisRecomendados?: ImoveisRecomendadosUncheckedUpdateManyWithoutRelatorioNestedInput
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
+    ImoveisRecomendados?: ImoveisRecomendadosUncheckedUpdateManyWithoutRelatorioNestedInput
     matches?: MatchUncheckedUpdateManyWithoutRelatorioNestedInput
   }
 
@@ -26304,232 +26304,107 @@ export namespace Prisma {
     id?: string
     resumo?: string | null
     pdfUrl?: string | null
-    dataCriacao?: Date | string
     updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
+    userId: string
     bairros?: string | null
-    localTrabalho?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
     distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
     importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
     importanciaEspacoPet?: string | null
     importanciaParques?: string | null
-    importanciaShopping?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
     importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
     importanciaTransporte?: string | null
-    userId: string
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
   }
 
   export type RelatorioUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     resumo?: NullableStringFieldUpdateOperationsInput | string | null
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
     bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type RelatorioUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     resumo?: NullableStringFieldUpdateOperationsInput | string | null
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
     bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ImoveisRecomendadosCreateInput = {
-    id?: string
-    imovelId: string
-    titulo?: string | null
-    preco?: number | null
-    endereco?: string | null
-    bairro?: string | null
-    cidade?: string | null
-    area?: number | null
-    quartos?: number | null
-    banheiros?: number | null
-    vagas?: number | null
-    imageUrl?: string | null
-    linkImovel?: string | null
-    dataCriacao?: Date | string
-    relatorio: RelatorioCreateNestedOneWithoutImoveisRecomendadosInput
-  }
-
-  export type ImoveisRecomendadosUncheckedCreateInput = {
-    id?: string
-    relatorioId: string
-    imovelId: string
-    titulo?: string | null
-    preco?: number | null
-    endereco?: string | null
-    bairro?: string | null
-    cidade?: string | null
-    area?: number | null
-    quartos?: number | null
-    banheiros?: number | null
-    vagas?: number | null
-    imageUrl?: string | null
-    linkImovel?: string | null
-    dataCriacao?: Date | string
-  }
-
-  export type ImoveisRecomendadosUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    imovelId?: StringFieldUpdateOperationsInput | string
-    titulo?: NullableStringFieldUpdateOperationsInput | string | null
-    preco?: NullableFloatFieldUpdateOperationsInput | number | null
-    endereco?: NullableStringFieldUpdateOperationsInput | string | null
-    bairro?: NullableStringFieldUpdateOperationsInput | string | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
-    area?: NullableFloatFieldUpdateOperationsInput | number | null
-    quartos?: NullableIntFieldUpdateOperationsInput | number | null
-    banheiros?: NullableIntFieldUpdateOperationsInput | number | null
-    vagas?: NullableIntFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    linkImovel?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
-    relatorio?: RelatorioUpdateOneRequiredWithoutImoveisRecomendadosNestedInput
-  }
-
-  export type ImoveisRecomendadosUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    relatorioId?: StringFieldUpdateOperationsInput | string
-    imovelId?: StringFieldUpdateOperationsInput | string
-    titulo?: NullableStringFieldUpdateOperationsInput | string | null
-    preco?: NullableFloatFieldUpdateOperationsInput | number | null
-    endereco?: NullableStringFieldUpdateOperationsInput | string | null
-    bairro?: NullableStringFieldUpdateOperationsInput | string | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
-    area?: NullableFloatFieldUpdateOperationsInput | number | null
-    quartos?: NullableIntFieldUpdateOperationsInput | number | null
-    banheiros?: NullableIntFieldUpdateOperationsInput | number | null
-    vagas?: NullableIntFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    linkImovel?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ImoveisRecomendadosCreateManyInput = {
-    id?: string
-    relatorioId: string
-    imovelId: string
-    titulo?: string | null
-    preco?: number | null
-    endereco?: string | null
-    bairro?: string | null
-    cidade?: string | null
-    area?: number | null
-    quartos?: number | null
-    banheiros?: number | null
-    vagas?: number | null
-    imageUrl?: string | null
-    linkImovel?: string | null
-    dataCriacao?: Date | string
-  }
-
-  export type ImoveisRecomendadosUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    imovelId?: StringFieldUpdateOperationsInput | string
-    titulo?: NullableStringFieldUpdateOperationsInput | string | null
-    preco?: NullableFloatFieldUpdateOperationsInput | number | null
-    endereco?: NullableStringFieldUpdateOperationsInput | string | null
-    bairro?: NullableStringFieldUpdateOperationsInput | string | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
-    area?: NullableFloatFieldUpdateOperationsInput | number | null
-    quartos?: NullableIntFieldUpdateOperationsInput | number | null
-    banheiros?: NullableIntFieldUpdateOperationsInput | number | null
-    vagas?: NullableIntFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    linkImovel?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ImoveisRecomendadosUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    relatorioId?: StringFieldUpdateOperationsInput | string
-    imovelId?: StringFieldUpdateOperationsInput | string
-    titulo?: NullableStringFieldUpdateOperationsInput | string | null
-    preco?: NullableFloatFieldUpdateOperationsInput | number | null
-    endereco?: NullableStringFieldUpdateOperationsInput | string | null
-    bairro?: NullableStringFieldUpdateOperationsInput | string | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
-    area?: NullableFloatFieldUpdateOperationsInput | number | null
-    quartos?: NullableIntFieldUpdateOperationsInput | number | null
-    banheiros?: NullableIntFieldUpdateOperationsInput | number | null
-    vagas?: NullableIntFieldUpdateOperationsInput | number | null
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    linkImovel?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type ConfiguracaoCreateInput = {
@@ -26680,9 +26555,9 @@ export namespace Prisma {
     imovelIdExterno: string
     telefone?: string
     observacoes?: string
-    construtoraId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    construtoraId?: string | null
   }
 
   export type ImovelMetadataUpdateInput = {
@@ -26700,9 +26575,9 @@ export namespace Prisma {
     imovelIdExterno?: StringFieldUpdateOperationsInput | string
     telefone?: StringFieldUpdateOperationsInput | string
     observacoes?: StringFieldUpdateOperationsInput | string
-    construtoraId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    construtoraId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ImovelMetadataCreateManyInput = {
@@ -26710,9 +26585,9 @@ export namespace Prisma {
     imovelIdExterno: string
     telefone?: string
     observacoes?: string
-    construtoraId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    construtoraId?: string | null
   }
 
   export type ImovelMetadataUpdateManyMutationInput = {
@@ -26729,9 +26604,9 @@ export namespace Prisma {
     imovelIdExterno?: StringFieldUpdateOperationsInput | string
     telefone?: StringFieldUpdateOperationsInput | string
     observacoes?: StringFieldUpdateOperationsInput | string
-    construtoraId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    construtoraId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ImovelPerguntaCreateInput = {
@@ -27065,6 +26940,131 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ImoveisRecomendadosCreateInput = {
+    id: string
+    imovelId: string
+    titulo?: string | null
+    preco?: number | null
+    endereco?: string | null
+    bairro?: string | null
+    cidade?: string | null
+    area?: number | null
+    quartos?: number | null
+    banheiros?: number | null
+    vagas?: number | null
+    imageUrl?: string | null
+    linkImovel?: string | null
+    dataCriacao?: Date | string
+    Relatorio: RelatorioCreateNestedOneWithoutImoveisRecomendadosInput
+  }
+
+  export type ImoveisRecomendadosUncheckedCreateInput = {
+    id: string
+    relatorioId: string
+    imovelId: string
+    titulo?: string | null
+    preco?: number | null
+    endereco?: string | null
+    bairro?: string | null
+    cidade?: string | null
+    area?: number | null
+    quartos?: number | null
+    banheiros?: number | null
+    vagas?: number | null
+    imageUrl?: string | null
+    linkImovel?: string | null
+    dataCriacao?: Date | string
+  }
+
+  export type ImoveisRecomendadosUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    imovelId?: StringFieldUpdateOperationsInput | string
+    titulo?: NullableStringFieldUpdateOperationsInput | string | null
+    preco?: NullableFloatFieldUpdateOperationsInput | number | null
+    endereco?: NullableStringFieldUpdateOperationsInput | string | null
+    bairro?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    area?: NullableFloatFieldUpdateOperationsInput | number | null
+    quartos?: NullableIntFieldUpdateOperationsInput | number | null
+    banheiros?: NullableIntFieldUpdateOperationsInput | number | null
+    vagas?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    Relatorio?: RelatorioUpdateOneRequiredWithoutImoveisRecomendadosNestedInput
+  }
+
+  export type ImoveisRecomendadosUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relatorioId?: StringFieldUpdateOperationsInput | string
+    imovelId?: StringFieldUpdateOperationsInput | string
+    titulo?: NullableStringFieldUpdateOperationsInput | string | null
+    preco?: NullableFloatFieldUpdateOperationsInput | number | null
+    endereco?: NullableStringFieldUpdateOperationsInput | string | null
+    bairro?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    area?: NullableFloatFieldUpdateOperationsInput | number | null
+    quartos?: NullableIntFieldUpdateOperationsInput | number | null
+    banheiros?: NullableIntFieldUpdateOperationsInput | number | null
+    vagas?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImoveisRecomendadosCreateManyInput = {
+    id: string
+    relatorioId: string
+    imovelId: string
+    titulo?: string | null
+    preco?: number | null
+    endereco?: string | null
+    bairro?: string | null
+    cidade?: string | null
+    area?: number | null
+    quartos?: number | null
+    banheiros?: number | null
+    vagas?: number | null
+    imageUrl?: string | null
+    linkImovel?: string | null
+    dataCriacao?: Date | string
+  }
+
+  export type ImoveisRecomendadosUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    imovelId?: StringFieldUpdateOperationsInput | string
+    titulo?: NullableStringFieldUpdateOperationsInput | string | null
+    preco?: NullableFloatFieldUpdateOperationsInput | number | null
+    endereco?: NullableStringFieldUpdateOperationsInput | string | null
+    bairro?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    area?: NullableFloatFieldUpdateOperationsInput | number | null
+    quartos?: NullableIntFieldUpdateOperationsInput | number | null
+    banheiros?: NullableIntFieldUpdateOperationsInput | number | null
+    vagas?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ImoveisRecomendadosUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    relatorioId?: StringFieldUpdateOperationsInput | string
+    imovelId?: StringFieldUpdateOperationsInput | string
+    titulo?: NullableStringFieldUpdateOperationsInput | string | null
+    preco?: NullableFloatFieldUpdateOperationsInput | number | null
+    endereco?: NullableStringFieldUpdateOperationsInput | string | null
+    bairro?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    area?: NullableFloatFieldUpdateOperationsInput | number | null
+    quartos?: NullableIntFieldUpdateOperationsInput | number | null
+    banheiros?: NullableIntFieldUpdateOperationsInput | number | null
+    vagas?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkImovel?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -27205,9 +27205,10 @@ export namespace Prisma {
     not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
   }
 
-  export type ConstrutoraNullableScalarRelationFilter = {
-    is?: ConstrutoraWhereInput | null
-    isNot?: ConstrutoraWhereInput | null
+  export type RelatorioListRelationFilter = {
+    every?: RelatorioWhereInput
+    some?: RelatorioWhereInput
+    none?: RelatorioWhereInput
   }
 
   export type RespostaListRelationFilter = {
@@ -27216,17 +27217,16 @@ export namespace Prisma {
     none?: RespostaWhereInput
   }
 
-  export type RelatorioListRelationFilter = {
-    every?: RelatorioWhereInput
-    some?: RelatorioWhereInput
-    none?: RelatorioWhereInput
-  }
-
-  export type RespostaOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type ConstrutoraNullableScalarRelationFilter = {
+    is?: ConstrutoraWhereInput | null
+    isNot?: ConstrutoraWhereInput | null
   }
 
   export type RelatorioOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type RespostaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -27235,11 +27235,11 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    telefone?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrder
+    telefone?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -27247,11 +27247,11 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    telefone?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrder
+    telefone?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -27259,11 +27259,11 @@ export namespace Prisma {
     name?: SortOrder
     email?: SortOrder
     password?: SortOrder
-    telefone?: SortOrder
     role?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrder
+    telefone?: SortOrder
   }
 
   export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -27281,23 +27281,23 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type UserListRelationFilter = {
-    every?: UserWhereInput
-    some?: UserWhereInput
-    none?: UserWhereInput
-  }
-
   export type ImovelMetadataListRelationFilter = {
     every?: ImovelMetadataWhereInput
     some?: ImovelMetadataWhereInput
     none?: ImovelMetadataWhereInput
   }
 
-  export type UserOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type UserListRelationFilter = {
+    every?: UserWhereInput
+    some?: UserWhereInput
+    none?: UserWhereInput
   }
 
   export type ImovelMetadataOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -27366,14 +27366,6 @@ export namespace Prisma {
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
   }
-
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
   export type JsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
@@ -27398,9 +27390,12 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type TipoImovelNullableScalarRelationFilter = {
-    is?: TipoImovelWhereInput | null
-    isNot?: TipoImovelWhereInput | null
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
   }
 
   export type ConstrutoraScalarRelationFilter = {
@@ -27408,10 +27403,9 @@ export namespace Prisma {
     isNot?: ConstrutoraWhereInput
   }
 
-  export type MatchListRelationFilter = {
-    every?: MatchWhereInput
-    some?: MatchWhereInput
-    none?: MatchWhereInput
+  export type TipoImovelNullableScalarRelationFilter = {
+    is?: TipoImovelWhereInput | null
+    isNot?: TipoImovelWhereInput | null
   }
 
   export type ImovelPerguntaListRelationFilter = {
@@ -27420,11 +27414,17 @@ export namespace Prisma {
     none?: ImovelPerguntaWhereInput
   }
 
-  export type MatchOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type MatchListRelationFilter = {
+    every?: MatchWhereInput
+    some?: MatchWhereInput
+    none?: MatchWhereInput
   }
 
   export type ImovelPerguntaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MatchOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -27442,18 +27442,18 @@ export namespace Prisma {
     longitude?: SortOrder
     telefoneContato?: SortOrder
     endereco?: SortOrder
-    fotoPrincipal?: SortOrder
-    galeriaFotos?: SortOrder
     caracteristicas?: SortOrder
-    caracteristicasArray?: SortOrder
-    tipoImovelId?: SortOrder
-    tipoImovelNome?: SortOrder
-    status?: SortOrder
-    ativo?: SortOrder
-    destaque?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrder
+    caracteristicasArray?: SortOrder
+    destaque?: SortOrder
+    fotoPrincipal?: SortOrder
+    galeriaFotos?: SortOrder
+    status?: SortOrder
+    ativo?: SortOrder
+    tipoImovelId?: SortOrder
+    tipoImovelNome?: SortOrder
   }
 
   export type ImovelAvgOrderByAggregateInput = {
@@ -27480,15 +27480,15 @@ export namespace Prisma {
     longitude?: SortOrder
     telefoneContato?: SortOrder
     endereco?: SortOrder
-    fotoPrincipal?: SortOrder
-    tipoImovelId?: SortOrder
-    tipoImovelNome?: SortOrder
-    status?: SortOrder
-    ativo?: SortOrder
-    destaque?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrder
+    destaque?: SortOrder
+    fotoPrincipal?: SortOrder
+    status?: SortOrder
+    ativo?: SortOrder
+    tipoImovelId?: SortOrder
+    tipoImovelNome?: SortOrder
   }
 
   export type ImovelMinOrderByAggregateInput = {
@@ -27505,15 +27505,15 @@ export namespace Prisma {
     longitude?: SortOrder
     telefoneContato?: SortOrder
     endereco?: SortOrder
-    fotoPrincipal?: SortOrder
-    tipoImovelId?: SortOrder
-    tipoImovelNome?: SortOrder
-    status?: SortOrder
-    ativo?: SortOrder
-    destaque?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     construtoraId?: SortOrder
+    destaque?: SortOrder
+    fotoPrincipal?: SortOrder
+    status?: SortOrder
+    ativo?: SortOrder
+    tipoImovelId?: SortOrder
+    tipoImovelNome?: SortOrder
   }
 
   export type ImovelSumOrderByAggregateInput = {
@@ -27595,15 +27595,15 @@ export namespace Prisma {
     tipo?: SortOrder
     opcoes?: SortOrder
     ordem?: SortOrder
-    categoria?: SortOrder
-    fluxo?: SortOrder
-    pontuacao?: SortOrder
     obrigatoria?: SortOrder
     condicional?: SortOrder
     geradaPorIA?: SortOrder
-    ativa?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    ativa?: SortOrder
+    categoria?: SortOrder
+    fluxo?: SortOrder
+    pontuacao?: SortOrder
     configuracaoId?: SortOrder
   }
 
@@ -27617,14 +27617,14 @@ export namespace Prisma {
     texto?: SortOrder
     tipo?: SortOrder
     ordem?: SortOrder
+    obrigatoria?: SortOrder
+    geradaPorIA?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    ativa?: SortOrder
     categoria?: SortOrder
     fluxo?: SortOrder
     pontuacao?: SortOrder
-    obrigatoria?: SortOrder
-    geradaPorIA?: SortOrder
-    ativa?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     configuracaoId?: SortOrder
   }
 
@@ -27633,14 +27633,14 @@ export namespace Prisma {
     texto?: SortOrder
     tipo?: SortOrder
     ordem?: SortOrder
+    obrigatoria?: SortOrder
+    geradaPorIA?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    ativa?: SortOrder
     categoria?: SortOrder
     fluxo?: SortOrder
     pontuacao?: SortOrder
-    obrigatoria?: SortOrder
-    geradaPorIA?: SortOrder
-    ativa?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
     configuracaoId?: SortOrder
   }
 
@@ -27850,11 +27850,6 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type BoolNullableFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
-  }
-
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -27864,6 +27859,11 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
   }
 
   export type ImoveisRecomendadosListRelationFilter = {
@@ -27880,132 +27880,132 @@ export namespace Prisma {
     id?: SortOrder
     resumo?: SortOrder
     pdfUrl?: SortOrder
-    dataCriacao?: SortOrder
     updatedAt?: SortOrder
-    rendaMensal?: SortOrder
-    valorParcelaMaxima?: SortOrder
-    temOutrosEmprestimos?: SortOrder
-    valorEntrada?: SortOrder
-    prazoFinanciamento?: SortOrder
-    taxa?: SortOrder
-    valorImovel?: SortOrder
-    valorFinanciamento?: SortOrder
-    valorParcela?: SortOrder
-    cidade?: SortOrder
+    userId?: SortOrder
     bairros?: SortOrder
-    localTrabalho?: SortOrder
+    cidade?: SortOrder
+    dataCriacao?: SortOrder
     distanciaMaximaTrabalho?: SortOrder
-    importanciaPisoQuartos?: SortOrder
     importanciaAcademia?: SortOrder
-    importanciaPiscina?: SortOrder
-    tipoPortaria?: SortOrder
-    importanciaSalaoFestas?: SortOrder
-    importanciaPlayground?: SortOrder
+    importanciaCaminhabilidade?: SortOrder
+    importanciaEscolas?: SortOrder
     importanciaEspacoPet?: SortOrder
     importanciaParques?: SortOrder
-    importanciaShopping?: SortOrder
+    importanciaPiscina?: SortOrder
+    importanciaPisoQuartos?: SortOrder
+    importanciaPlayground?: SortOrder
     importanciaRestaurantes?: SortOrder
-    importanciaCaminhabilidade?: SortOrder
-    temPet?: SortOrder
-    importanciaEscolas?: SortOrder
+    importanciaSalaoFestas?: SortOrder
+    importanciaShopping?: SortOrder
     importanciaTransporte?: SortOrder
-    userId?: SortOrder
+    localTrabalho?: SortOrder
+    prazoFinanciamento?: SortOrder
+    rendaMensal?: SortOrder
+    taxa?: SortOrder
+    temOutrosEmprestimos?: SortOrder
+    temPet?: SortOrder
+    tipoPortaria?: SortOrder
+    valorEntrada?: SortOrder
+    valorFinanciamento?: SortOrder
+    valorImovel?: SortOrder
+    valorParcela?: SortOrder
+    valorParcelaMaxima?: SortOrder
   }
 
   export type RelatorioAvgOrderByAggregateInput = {
-    rendaMensal?: SortOrder
-    valorParcelaMaxima?: SortOrder
-    valorEntrada?: SortOrder
-    prazoFinanciamento?: SortOrder
-    taxa?: SortOrder
-    valorImovel?: SortOrder
-    valorFinanciamento?: SortOrder
-    valorParcela?: SortOrder
     distanciaMaximaTrabalho?: SortOrder
+    prazoFinanciamento?: SortOrder
+    rendaMensal?: SortOrder
+    taxa?: SortOrder
+    valorEntrada?: SortOrder
+    valorFinanciamento?: SortOrder
+    valorImovel?: SortOrder
+    valorParcela?: SortOrder
+    valorParcelaMaxima?: SortOrder
   }
 
   export type RelatorioMaxOrderByAggregateInput = {
     id?: SortOrder
     resumo?: SortOrder
     pdfUrl?: SortOrder
-    dataCriacao?: SortOrder
     updatedAt?: SortOrder
-    rendaMensal?: SortOrder
-    valorParcelaMaxima?: SortOrder
-    temOutrosEmprestimos?: SortOrder
-    valorEntrada?: SortOrder
-    prazoFinanciamento?: SortOrder
-    taxa?: SortOrder
-    valorImovel?: SortOrder
-    valorFinanciamento?: SortOrder
-    valorParcela?: SortOrder
-    cidade?: SortOrder
+    userId?: SortOrder
     bairros?: SortOrder
-    localTrabalho?: SortOrder
+    cidade?: SortOrder
+    dataCriacao?: SortOrder
     distanciaMaximaTrabalho?: SortOrder
-    importanciaPisoQuartos?: SortOrder
     importanciaAcademia?: SortOrder
-    importanciaPiscina?: SortOrder
-    tipoPortaria?: SortOrder
-    importanciaSalaoFestas?: SortOrder
-    importanciaPlayground?: SortOrder
+    importanciaCaminhabilidade?: SortOrder
+    importanciaEscolas?: SortOrder
     importanciaEspacoPet?: SortOrder
     importanciaParques?: SortOrder
-    importanciaShopping?: SortOrder
+    importanciaPiscina?: SortOrder
+    importanciaPisoQuartos?: SortOrder
+    importanciaPlayground?: SortOrder
     importanciaRestaurantes?: SortOrder
-    importanciaCaminhabilidade?: SortOrder
-    temPet?: SortOrder
-    importanciaEscolas?: SortOrder
+    importanciaSalaoFestas?: SortOrder
+    importanciaShopping?: SortOrder
     importanciaTransporte?: SortOrder
-    userId?: SortOrder
+    localTrabalho?: SortOrder
+    prazoFinanciamento?: SortOrder
+    rendaMensal?: SortOrder
+    taxa?: SortOrder
+    temOutrosEmprestimos?: SortOrder
+    temPet?: SortOrder
+    tipoPortaria?: SortOrder
+    valorEntrada?: SortOrder
+    valorFinanciamento?: SortOrder
+    valorImovel?: SortOrder
+    valorParcela?: SortOrder
+    valorParcelaMaxima?: SortOrder
   }
 
   export type RelatorioMinOrderByAggregateInput = {
     id?: SortOrder
     resumo?: SortOrder
     pdfUrl?: SortOrder
-    dataCriacao?: SortOrder
     updatedAt?: SortOrder
-    rendaMensal?: SortOrder
-    valorParcelaMaxima?: SortOrder
-    temOutrosEmprestimos?: SortOrder
-    valorEntrada?: SortOrder
-    prazoFinanciamento?: SortOrder
-    taxa?: SortOrder
-    valorImovel?: SortOrder
-    valorFinanciamento?: SortOrder
-    valorParcela?: SortOrder
-    cidade?: SortOrder
+    userId?: SortOrder
     bairros?: SortOrder
-    localTrabalho?: SortOrder
+    cidade?: SortOrder
+    dataCriacao?: SortOrder
     distanciaMaximaTrabalho?: SortOrder
-    importanciaPisoQuartos?: SortOrder
     importanciaAcademia?: SortOrder
-    importanciaPiscina?: SortOrder
-    tipoPortaria?: SortOrder
-    importanciaSalaoFestas?: SortOrder
-    importanciaPlayground?: SortOrder
+    importanciaCaminhabilidade?: SortOrder
+    importanciaEscolas?: SortOrder
     importanciaEspacoPet?: SortOrder
     importanciaParques?: SortOrder
-    importanciaShopping?: SortOrder
+    importanciaPiscina?: SortOrder
+    importanciaPisoQuartos?: SortOrder
+    importanciaPlayground?: SortOrder
     importanciaRestaurantes?: SortOrder
-    importanciaCaminhabilidade?: SortOrder
-    temPet?: SortOrder
-    importanciaEscolas?: SortOrder
+    importanciaSalaoFestas?: SortOrder
+    importanciaShopping?: SortOrder
     importanciaTransporte?: SortOrder
-    userId?: SortOrder
+    localTrabalho?: SortOrder
+    prazoFinanciamento?: SortOrder
+    rendaMensal?: SortOrder
+    taxa?: SortOrder
+    temOutrosEmprestimos?: SortOrder
+    temPet?: SortOrder
+    tipoPortaria?: SortOrder
+    valorEntrada?: SortOrder
+    valorFinanciamento?: SortOrder
+    valorImovel?: SortOrder
+    valorParcela?: SortOrder
+    valorParcelaMaxima?: SortOrder
   }
 
   export type RelatorioSumOrderByAggregateInput = {
-    rendaMensal?: SortOrder
-    valorParcelaMaxima?: SortOrder
-    valorEntrada?: SortOrder
-    prazoFinanciamento?: SortOrder
-    taxa?: SortOrder
-    valorImovel?: SortOrder
-    valorFinanciamento?: SortOrder
-    valorParcela?: SortOrder
     distanciaMaximaTrabalho?: SortOrder
+    prazoFinanciamento?: SortOrder
+    rendaMensal?: SortOrder
+    taxa?: SortOrder
+    valorEntrada?: SortOrder
+    valorFinanciamento?: SortOrder
+    valorImovel?: SortOrder
+    valorParcela?: SortOrder
+    valorParcelaMaxima?: SortOrder
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -28024,14 +28024,6 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -28048,79 +28040,12 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
-  export type RelatorioScalarRelationFilter = {
-    is?: RelatorioWhereInput
-    isNot?: RelatorioWhereInput
-  }
-
-  export type ImoveisRecomendadosCountOrderByAggregateInput = {
-    id?: SortOrder
-    relatorioId?: SortOrder
-    imovelId?: SortOrder
-    titulo?: SortOrder
-    preco?: SortOrder
-    endereco?: SortOrder
-    bairro?: SortOrder
-    cidade?: SortOrder
-    area?: SortOrder
-    quartos?: SortOrder
-    banheiros?: SortOrder
-    vagas?: SortOrder
-    imageUrl?: SortOrder
-    linkImovel?: SortOrder
-    dataCriacao?: SortOrder
-  }
-
-  export type ImoveisRecomendadosAvgOrderByAggregateInput = {
-    preco?: SortOrder
-    area?: SortOrder
-    quartos?: SortOrder
-    banheiros?: SortOrder
-    vagas?: SortOrder
-  }
-
-  export type ImoveisRecomendadosMaxOrderByAggregateInput = {
-    id?: SortOrder
-    relatorioId?: SortOrder
-    imovelId?: SortOrder
-    titulo?: SortOrder
-    preco?: SortOrder
-    endereco?: SortOrder
-    bairro?: SortOrder
-    cidade?: SortOrder
-    area?: SortOrder
-    quartos?: SortOrder
-    banheiros?: SortOrder
-    vagas?: SortOrder
-    imageUrl?: SortOrder
-    linkImovel?: SortOrder
-    dataCriacao?: SortOrder
-  }
-
-  export type ImoveisRecomendadosMinOrderByAggregateInput = {
-    id?: SortOrder
-    relatorioId?: SortOrder
-    imovelId?: SortOrder
-    titulo?: SortOrder
-    preco?: SortOrder
-    endereco?: SortOrder
-    bairro?: SortOrder
-    cidade?: SortOrder
-    area?: SortOrder
-    quartos?: SortOrder
-    banheiros?: SortOrder
-    vagas?: SortOrder
-    imageUrl?: SortOrder
-    linkImovel?: SortOrder
-    dataCriacao?: SortOrder
-  }
-
-  export type ImoveisRecomendadosSumOrderByAggregateInput = {
-    preco?: SortOrder
-    area?: SortOrder
-    quartos?: SortOrder
-    banheiros?: SortOrder
-    vagas?: SortOrder
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type ConfiguracaoCountOrderByAggregateInput = {
@@ -28181,9 +28106,9 @@ export namespace Prisma {
     imovelIdExterno?: SortOrder
     telefone?: SortOrder
     observacoes?: SortOrder
-    construtoraId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    construtoraId?: SortOrder
   }
 
   export type ImovelMetadataMaxOrderByAggregateInput = {
@@ -28191,9 +28116,9 @@ export namespace Prisma {
     imovelIdExterno?: SortOrder
     telefone?: SortOrder
     observacoes?: SortOrder
-    construtoraId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    construtoraId?: SortOrder
   }
 
   export type ImovelMetadataMinOrderByAggregateInput = {
@@ -28201,9 +28126,9 @@ export namespace Prisma {
     imovelIdExterno?: SortOrder
     telefone?: SortOrder
     observacoes?: SortOrder
-    construtoraId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    construtoraId?: SortOrder
   }
 
   export type ImovelPerguntaImovelIdPerguntaIdCompoundUniqueInput = {
@@ -28363,6 +28288,81 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type RelatorioScalarRelationFilter = {
+    is?: RelatorioWhereInput
+    isNot?: RelatorioWhereInput
+  }
+
+  export type ImoveisRecomendadosCountOrderByAggregateInput = {
+    id?: SortOrder
+    relatorioId?: SortOrder
+    imovelId?: SortOrder
+    titulo?: SortOrder
+    preco?: SortOrder
+    endereco?: SortOrder
+    bairro?: SortOrder
+    cidade?: SortOrder
+    area?: SortOrder
+    quartos?: SortOrder
+    banheiros?: SortOrder
+    vagas?: SortOrder
+    imageUrl?: SortOrder
+    linkImovel?: SortOrder
+    dataCriacao?: SortOrder
+  }
+
+  export type ImoveisRecomendadosAvgOrderByAggregateInput = {
+    preco?: SortOrder
+    area?: SortOrder
+    quartos?: SortOrder
+    banheiros?: SortOrder
+    vagas?: SortOrder
+  }
+
+  export type ImoveisRecomendadosMaxOrderByAggregateInput = {
+    id?: SortOrder
+    relatorioId?: SortOrder
+    imovelId?: SortOrder
+    titulo?: SortOrder
+    preco?: SortOrder
+    endereco?: SortOrder
+    bairro?: SortOrder
+    cidade?: SortOrder
+    area?: SortOrder
+    quartos?: SortOrder
+    banheiros?: SortOrder
+    vagas?: SortOrder
+    imageUrl?: SortOrder
+    linkImovel?: SortOrder
+    dataCriacao?: SortOrder
+  }
+
+  export type ImoveisRecomendadosMinOrderByAggregateInput = {
+    id?: SortOrder
+    relatorioId?: SortOrder
+    imovelId?: SortOrder
+    titulo?: SortOrder
+    preco?: SortOrder
+    endereco?: SortOrder
+    bairro?: SortOrder
+    cidade?: SortOrder
+    area?: SortOrder
+    quartos?: SortOrder
+    banheiros?: SortOrder
+    vagas?: SortOrder
+    imageUrl?: SortOrder
+    linkImovel?: SortOrder
+    dataCriacao?: SortOrder
+  }
+
+  export type ImoveisRecomendadosSumOrderByAggregateInput = {
+    preco?: SortOrder
+    area?: SortOrder
+    quartos?: SortOrder
+    banheiros?: SortOrder
+    vagas?: SortOrder
+  }
+
   export type ImovelCreateNestedManyWithoutTipoImovelInput = {
     create?: XOR<ImovelCreateWithoutTipoImovelInput, ImovelUncheckedCreateWithoutTipoImovelInput> | ImovelCreateWithoutTipoImovelInput[] | ImovelUncheckedCreateWithoutTipoImovelInput[]
     connectOrCreate?: ImovelCreateOrConnectWithoutTipoImovelInput | ImovelCreateOrConnectWithoutTipoImovelInput[]
@@ -28417,10 +28417,11 @@ export namespace Prisma {
     deleteMany?: ImovelScalarWhereInput | ImovelScalarWhereInput[]
   }
 
-  export type ConstrutoraCreateNestedOneWithoutUsuariosInput = {
-    create?: XOR<ConstrutoraCreateWithoutUsuariosInput, ConstrutoraUncheckedCreateWithoutUsuariosInput>
-    connectOrCreate?: ConstrutoraCreateOrConnectWithoutUsuariosInput
-    connect?: ConstrutoraWhereUniqueInput
+  export type RelatorioCreateNestedManyWithoutUsuarioInput = {
+    create?: XOR<RelatorioCreateWithoutUsuarioInput, RelatorioUncheckedCreateWithoutUsuarioInput> | RelatorioCreateWithoutUsuarioInput[] | RelatorioUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: RelatorioCreateOrConnectWithoutUsuarioInput | RelatorioCreateOrConnectWithoutUsuarioInput[]
+    createMany?: RelatorioCreateManyUsuarioInputEnvelope
+    connect?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
   }
 
   export type RespostaCreateNestedManyWithoutUsuarioInput = {
@@ -28430,7 +28431,13 @@ export namespace Prisma {
     connect?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
   }
 
-  export type RelatorioCreateNestedManyWithoutUsuarioInput = {
+  export type ConstrutoraCreateNestedOneWithoutUsuariosInput = {
+    create?: XOR<ConstrutoraCreateWithoutUsuariosInput, ConstrutoraUncheckedCreateWithoutUsuariosInput>
+    connectOrCreate?: ConstrutoraCreateOrConnectWithoutUsuariosInput
+    connect?: ConstrutoraWhereUniqueInput
+  }
+
+  export type RelatorioUncheckedCreateNestedManyWithoutUsuarioInput = {
     create?: XOR<RelatorioCreateWithoutUsuarioInput, RelatorioUncheckedCreateWithoutUsuarioInput> | RelatorioCreateWithoutUsuarioInput[] | RelatorioUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: RelatorioCreateOrConnectWithoutUsuarioInput | RelatorioCreateOrConnectWithoutUsuarioInput[]
     createMany?: RelatorioCreateManyUsuarioInputEnvelope
@@ -28444,25 +28451,22 @@ export namespace Prisma {
     connect?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
   }
 
-  export type RelatorioUncheckedCreateNestedManyWithoutUsuarioInput = {
-    create?: XOR<RelatorioCreateWithoutUsuarioInput, RelatorioUncheckedCreateWithoutUsuarioInput> | RelatorioCreateWithoutUsuarioInput[] | RelatorioUncheckedCreateWithoutUsuarioInput[]
-    connectOrCreate?: RelatorioCreateOrConnectWithoutUsuarioInput | RelatorioCreateOrConnectWithoutUsuarioInput[]
-    createMany?: RelatorioCreateManyUsuarioInputEnvelope
-    connect?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
-  }
-
   export type EnumUserRoleFieldUpdateOperationsInput = {
     set?: $Enums.UserRole
   }
 
-  export type ConstrutoraUpdateOneWithoutUsuariosNestedInput = {
-    create?: XOR<ConstrutoraCreateWithoutUsuariosInput, ConstrutoraUncheckedCreateWithoutUsuariosInput>
-    connectOrCreate?: ConstrutoraCreateOrConnectWithoutUsuariosInput
-    upsert?: ConstrutoraUpsertWithoutUsuariosInput
-    disconnect?: ConstrutoraWhereInput | boolean
-    delete?: ConstrutoraWhereInput | boolean
-    connect?: ConstrutoraWhereUniqueInput
-    update?: XOR<XOR<ConstrutoraUpdateToOneWithWhereWithoutUsuariosInput, ConstrutoraUpdateWithoutUsuariosInput>, ConstrutoraUncheckedUpdateWithoutUsuariosInput>
+  export type RelatorioUpdateManyWithoutUsuarioNestedInput = {
+    create?: XOR<RelatorioCreateWithoutUsuarioInput, RelatorioUncheckedCreateWithoutUsuarioInput> | RelatorioCreateWithoutUsuarioInput[] | RelatorioUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: RelatorioCreateOrConnectWithoutUsuarioInput | RelatorioCreateOrConnectWithoutUsuarioInput[]
+    upsert?: RelatorioUpsertWithWhereUniqueWithoutUsuarioInput | RelatorioUpsertWithWhereUniqueWithoutUsuarioInput[]
+    createMany?: RelatorioCreateManyUsuarioInputEnvelope
+    set?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
+    disconnect?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
+    delete?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
+    connect?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
+    update?: RelatorioUpdateWithWhereUniqueWithoutUsuarioInput | RelatorioUpdateWithWhereUniqueWithoutUsuarioInput[]
+    updateMany?: RelatorioUpdateManyWithWhereWithoutUsuarioInput | RelatorioUpdateManyWithWhereWithoutUsuarioInput[]
+    deleteMany?: RelatorioScalarWhereInput | RelatorioScalarWhereInput[]
   }
 
   export type RespostaUpdateManyWithoutUsuarioNestedInput = {
@@ -28479,7 +28483,17 @@ export namespace Prisma {
     deleteMany?: RespostaScalarWhereInput | RespostaScalarWhereInput[]
   }
 
-  export type RelatorioUpdateManyWithoutUsuarioNestedInput = {
+  export type ConstrutoraUpdateOneWithoutUsuariosNestedInput = {
+    create?: XOR<ConstrutoraCreateWithoutUsuariosInput, ConstrutoraUncheckedCreateWithoutUsuariosInput>
+    connectOrCreate?: ConstrutoraCreateOrConnectWithoutUsuariosInput
+    upsert?: ConstrutoraUpsertWithoutUsuariosInput
+    disconnect?: ConstrutoraWhereInput | boolean
+    delete?: ConstrutoraWhereInput | boolean
+    connect?: ConstrutoraWhereUniqueInput
+    update?: XOR<XOR<ConstrutoraUpdateToOneWithWhereWithoutUsuariosInput, ConstrutoraUpdateWithoutUsuariosInput>, ConstrutoraUncheckedUpdateWithoutUsuariosInput>
+  }
+
+  export type RelatorioUncheckedUpdateManyWithoutUsuarioNestedInput = {
     create?: XOR<RelatorioCreateWithoutUsuarioInput, RelatorioUncheckedCreateWithoutUsuarioInput> | RelatorioCreateWithoutUsuarioInput[] | RelatorioUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: RelatorioCreateOrConnectWithoutUsuarioInput | RelatorioCreateOrConnectWithoutUsuarioInput[]
     upsert?: RelatorioUpsertWithWhereUniqueWithoutUsuarioInput | RelatorioUpsertWithWhereUniqueWithoutUsuarioInput[]
@@ -28507,27 +28521,6 @@ export namespace Prisma {
     deleteMany?: RespostaScalarWhereInput | RespostaScalarWhereInput[]
   }
 
-  export type RelatorioUncheckedUpdateManyWithoutUsuarioNestedInput = {
-    create?: XOR<RelatorioCreateWithoutUsuarioInput, RelatorioUncheckedCreateWithoutUsuarioInput> | RelatorioCreateWithoutUsuarioInput[] | RelatorioUncheckedCreateWithoutUsuarioInput[]
-    connectOrCreate?: RelatorioCreateOrConnectWithoutUsuarioInput | RelatorioCreateOrConnectWithoutUsuarioInput[]
-    upsert?: RelatorioUpsertWithWhereUniqueWithoutUsuarioInput | RelatorioUpsertWithWhereUniqueWithoutUsuarioInput[]
-    createMany?: RelatorioCreateManyUsuarioInputEnvelope
-    set?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
-    disconnect?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
-    delete?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
-    connect?: RelatorioWhereUniqueInput | RelatorioWhereUniqueInput[]
-    update?: RelatorioUpdateWithWhereUniqueWithoutUsuarioInput | RelatorioUpdateWithWhereUniqueWithoutUsuarioInput[]
-    updateMany?: RelatorioUpdateManyWithWhereWithoutUsuarioInput | RelatorioUpdateManyWithWhereWithoutUsuarioInput[]
-    deleteMany?: RelatorioScalarWhereInput | RelatorioScalarWhereInput[]
-  }
-
-  export type UserCreateNestedManyWithoutConstrutoraInput = {
-    create?: XOR<UserCreateWithoutConstrutoraInput, UserUncheckedCreateWithoutConstrutoraInput> | UserCreateWithoutConstrutoraInput[] | UserUncheckedCreateWithoutConstrutoraInput[]
-    connectOrCreate?: UserCreateOrConnectWithoutConstrutoraInput | UserCreateOrConnectWithoutConstrutoraInput[]
-    createMany?: UserCreateManyConstrutoraInputEnvelope
-    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-  }
-
   export type ImovelCreateNestedManyWithoutConstrutoraInput = {
     create?: XOR<ImovelCreateWithoutConstrutoraInput, ImovelUncheckedCreateWithoutConstrutoraInput> | ImovelCreateWithoutConstrutoraInput[] | ImovelUncheckedCreateWithoutConstrutoraInput[]
     connectOrCreate?: ImovelCreateOrConnectWithoutConstrutoraInput | ImovelCreateOrConnectWithoutConstrutoraInput[]
@@ -28542,7 +28535,7 @@ export namespace Prisma {
     connect?: ImovelMetadataWhereUniqueInput | ImovelMetadataWhereUniqueInput[]
   }
 
-  export type UserUncheckedCreateNestedManyWithoutConstrutoraInput = {
+  export type UserCreateNestedManyWithoutConstrutoraInput = {
     create?: XOR<UserCreateWithoutConstrutoraInput, UserUncheckedCreateWithoutConstrutoraInput> | UserCreateWithoutConstrutoraInput[] | UserUncheckedCreateWithoutConstrutoraInput[]
     connectOrCreate?: UserCreateOrConnectWithoutConstrutoraInput | UserCreateOrConnectWithoutConstrutoraInput[]
     createMany?: UserCreateManyConstrutoraInputEnvelope
@@ -28563,22 +28556,15 @@ export namespace Prisma {
     connect?: ImovelMetadataWhereUniqueInput | ImovelMetadataWhereUniqueInput[]
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type UserUpdateManyWithoutConstrutoraNestedInput = {
+  export type UserUncheckedCreateNestedManyWithoutConstrutoraInput = {
     create?: XOR<UserCreateWithoutConstrutoraInput, UserUncheckedCreateWithoutConstrutoraInput> | UserCreateWithoutConstrutoraInput[] | UserUncheckedCreateWithoutConstrutoraInput[]
     connectOrCreate?: UserCreateOrConnectWithoutConstrutoraInput | UserCreateOrConnectWithoutConstrutoraInput[]
-    upsert?: UserUpsertWithWhereUniqueWithoutConstrutoraInput | UserUpsertWithWhereUniqueWithoutConstrutoraInput[]
     createMany?: UserCreateManyConstrutoraInputEnvelope
-    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
-    update?: UserUpdateWithWhereUniqueWithoutConstrutoraInput | UserUpdateWithWhereUniqueWithoutConstrutoraInput[]
-    updateMany?: UserUpdateManyWithWhereWithoutConstrutoraInput | UserUpdateManyWithWhereWithoutConstrutoraInput[]
-    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type ImovelUpdateManyWithoutConstrutoraNestedInput = {
@@ -28609,7 +28595,7 @@ export namespace Prisma {
     deleteMany?: ImovelMetadataScalarWhereInput | ImovelMetadataScalarWhereInput[]
   }
 
-  export type UserUncheckedUpdateManyWithoutConstrutoraNestedInput = {
+  export type UserUpdateManyWithoutConstrutoraNestedInput = {
     create?: XOR<UserCreateWithoutConstrutoraInput, UserUncheckedCreateWithoutConstrutoraInput> | UserCreateWithoutConstrutoraInput[] | UserUncheckedCreateWithoutConstrutoraInput[]
     connectOrCreate?: UserCreateOrConnectWithoutConstrutoraInput | UserCreateOrConnectWithoutConstrutoraInput[]
     upsert?: UserUpsertWithWhereUniqueWithoutConstrutoraInput | UserUpsertWithWhereUniqueWithoutConstrutoraInput[]
@@ -28651,18 +28637,26 @@ export namespace Prisma {
     deleteMany?: ImovelMetadataScalarWhereInput | ImovelMetadataScalarWhereInput[]
   }
 
-  export type ImovelCreategaleriaFotosInput = {
-    set: string[]
+  export type UserUncheckedUpdateManyWithoutConstrutoraNestedInput = {
+    create?: XOR<UserCreateWithoutConstrutoraInput, UserUncheckedCreateWithoutConstrutoraInput> | UserCreateWithoutConstrutoraInput[] | UserUncheckedCreateWithoutConstrutoraInput[]
+    connectOrCreate?: UserCreateOrConnectWithoutConstrutoraInput | UserCreateOrConnectWithoutConstrutoraInput[]
+    upsert?: UserUpsertWithWhereUniqueWithoutConstrutoraInput | UserUpsertWithWhereUniqueWithoutConstrutoraInput[]
+    createMany?: UserCreateManyConstrutoraInputEnvelope
+    set?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    disconnect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    delete?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+    update?: UserUpdateWithWhereUniqueWithoutConstrutoraInput | UserUpdateWithWhereUniqueWithoutConstrutoraInput[]
+    updateMany?: UserUpdateManyWithWhereWithoutConstrutoraInput | UserUpdateManyWithWhereWithoutConstrutoraInput[]
+    deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
   export type ImovelCreatecaracteristicasArrayInput = {
     set: string[]
   }
 
-  export type TipoImovelCreateNestedOneWithoutImoveisInput = {
-    create?: XOR<TipoImovelCreateWithoutImoveisInput, TipoImovelUncheckedCreateWithoutImoveisInput>
-    connectOrCreate?: TipoImovelCreateOrConnectWithoutImoveisInput
-    connect?: TipoImovelWhereUniqueInput
+  export type ImovelCreategaleriaFotosInput = {
+    set: string[]
   }
 
   export type ConstrutoraCreateNestedOneWithoutImoveisInput = {
@@ -28671,11 +28665,10 @@ export namespace Prisma {
     connect?: ConstrutoraWhereUniqueInput
   }
 
-  export type MatchCreateNestedManyWithoutImovelInput = {
-    create?: XOR<MatchCreateWithoutImovelInput, MatchUncheckedCreateWithoutImovelInput> | MatchCreateWithoutImovelInput[] | MatchUncheckedCreateWithoutImovelInput[]
-    connectOrCreate?: MatchCreateOrConnectWithoutImovelInput | MatchCreateOrConnectWithoutImovelInput[]
-    createMany?: MatchCreateManyImovelInputEnvelope
-    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+  export type TipoImovelCreateNestedOneWithoutImoveisInput = {
+    create?: XOR<TipoImovelCreateWithoutImoveisInput, TipoImovelUncheckedCreateWithoutImoveisInput>
+    connectOrCreate?: TipoImovelCreateOrConnectWithoutImoveisInput
+    connect?: TipoImovelWhereUniqueInput
   }
 
   export type ImovelPerguntaCreateNestedManyWithoutImovelInput = {
@@ -28685,7 +28678,7 @@ export namespace Prisma {
     connect?: ImovelPerguntaWhereUniqueInput | ImovelPerguntaWhereUniqueInput[]
   }
 
-  export type MatchUncheckedCreateNestedManyWithoutImovelInput = {
+  export type MatchCreateNestedManyWithoutImovelInput = {
     create?: XOR<MatchCreateWithoutImovelInput, MatchUncheckedCreateWithoutImovelInput> | MatchCreateWithoutImovelInput[] | MatchUncheckedCreateWithoutImovelInput[]
     connectOrCreate?: MatchCreateOrConnectWithoutImovelInput | MatchCreateOrConnectWithoutImovelInput[]
     createMany?: MatchCreateManyImovelInputEnvelope
@@ -28697,6 +28690,13 @@ export namespace Prisma {
     connectOrCreate?: ImovelPerguntaCreateOrConnectWithoutImovelInput | ImovelPerguntaCreateOrConnectWithoutImovelInput[]
     createMany?: ImovelPerguntaCreateManyImovelInputEnvelope
     connect?: ImovelPerguntaWhereUniqueInput | ImovelPerguntaWhereUniqueInput[]
+  }
+
+  export type MatchUncheckedCreateNestedManyWithoutImovelInput = {
+    create?: XOR<MatchCreateWithoutImovelInput, MatchUncheckedCreateWithoutImovelInput> | MatchCreateWithoutImovelInput[] | MatchUncheckedCreateWithoutImovelInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutImovelInput | MatchCreateOrConnectWithoutImovelInput[]
+    createMany?: MatchCreateManyImovelInputEnvelope
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
   }
 
   export type FloatFieldUpdateOperationsInput = {
@@ -28715,24 +28715,14 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type ImovelUpdategaleriaFotosInput = {
-    set?: string[]
-    push?: string | string[]
-  }
-
   export type ImovelUpdatecaracteristicasArrayInput = {
     set?: string[]
     push?: string | string[]
   }
 
-  export type TipoImovelUpdateOneWithoutImoveisNestedInput = {
-    create?: XOR<TipoImovelCreateWithoutImoveisInput, TipoImovelUncheckedCreateWithoutImoveisInput>
-    connectOrCreate?: TipoImovelCreateOrConnectWithoutImoveisInput
-    upsert?: TipoImovelUpsertWithoutImoveisInput
-    disconnect?: TipoImovelWhereInput | boolean
-    delete?: TipoImovelWhereInput | boolean
-    connect?: TipoImovelWhereUniqueInput
-    update?: XOR<XOR<TipoImovelUpdateToOneWithWhereWithoutImoveisInput, TipoImovelUpdateWithoutImoveisInput>, TipoImovelUncheckedUpdateWithoutImoveisInput>
+  export type ImovelUpdategaleriaFotosInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput = {
@@ -28743,18 +28733,14 @@ export namespace Prisma {
     update?: XOR<XOR<ConstrutoraUpdateToOneWithWhereWithoutImoveisInput, ConstrutoraUpdateWithoutImoveisInput>, ConstrutoraUncheckedUpdateWithoutImoveisInput>
   }
 
-  export type MatchUpdateManyWithoutImovelNestedInput = {
-    create?: XOR<MatchCreateWithoutImovelInput, MatchUncheckedCreateWithoutImovelInput> | MatchCreateWithoutImovelInput[] | MatchUncheckedCreateWithoutImovelInput[]
-    connectOrCreate?: MatchCreateOrConnectWithoutImovelInput | MatchCreateOrConnectWithoutImovelInput[]
-    upsert?: MatchUpsertWithWhereUniqueWithoutImovelInput | MatchUpsertWithWhereUniqueWithoutImovelInput[]
-    createMany?: MatchCreateManyImovelInputEnvelope
-    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
-    update?: MatchUpdateWithWhereUniqueWithoutImovelInput | MatchUpdateWithWhereUniqueWithoutImovelInput[]
-    updateMany?: MatchUpdateManyWithWhereWithoutImovelInput | MatchUpdateManyWithWhereWithoutImovelInput[]
-    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
+  export type TipoImovelUpdateOneWithoutImoveisNestedInput = {
+    create?: XOR<TipoImovelCreateWithoutImoveisInput, TipoImovelUncheckedCreateWithoutImoveisInput>
+    connectOrCreate?: TipoImovelCreateOrConnectWithoutImoveisInput
+    upsert?: TipoImovelUpsertWithoutImoveisInput
+    disconnect?: TipoImovelWhereInput | boolean
+    delete?: TipoImovelWhereInput | boolean
+    connect?: TipoImovelWhereUniqueInput
+    update?: XOR<XOR<TipoImovelUpdateToOneWithWhereWithoutImoveisInput, TipoImovelUpdateWithoutImoveisInput>, TipoImovelUncheckedUpdateWithoutImoveisInput>
   }
 
   export type ImovelPerguntaUpdateManyWithoutImovelNestedInput = {
@@ -28771,7 +28757,7 @@ export namespace Prisma {
     deleteMany?: ImovelPerguntaScalarWhereInput | ImovelPerguntaScalarWhereInput[]
   }
 
-  export type MatchUncheckedUpdateManyWithoutImovelNestedInput = {
+  export type MatchUpdateManyWithoutImovelNestedInput = {
     create?: XOR<MatchCreateWithoutImovelInput, MatchUncheckedCreateWithoutImovelInput> | MatchCreateWithoutImovelInput[] | MatchUncheckedCreateWithoutImovelInput[]
     connectOrCreate?: MatchCreateOrConnectWithoutImovelInput | MatchCreateOrConnectWithoutImovelInput[]
     upsert?: MatchUpsertWithWhereUniqueWithoutImovelInput | MatchUpsertWithWhereUniqueWithoutImovelInput[]
@@ -28799,11 +28785,18 @@ export namespace Prisma {
     deleteMany?: ImovelPerguntaScalarWhereInput | ImovelPerguntaScalarWhereInput[]
   }
 
-  export type RespostaCreateNestedManyWithoutPerguntaInput = {
-    create?: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput> | RespostaCreateWithoutPerguntaInput[] | RespostaUncheckedCreateWithoutPerguntaInput[]
-    connectOrCreate?: RespostaCreateOrConnectWithoutPerguntaInput | RespostaCreateOrConnectWithoutPerguntaInput[]
-    createMany?: RespostaCreateManyPerguntaInputEnvelope
-    connect?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
+  export type MatchUncheckedUpdateManyWithoutImovelNestedInput = {
+    create?: XOR<MatchCreateWithoutImovelInput, MatchUncheckedCreateWithoutImovelInput> | MatchCreateWithoutImovelInput[] | MatchUncheckedCreateWithoutImovelInput[]
+    connectOrCreate?: MatchCreateOrConnectWithoutImovelInput | MatchCreateOrConnectWithoutImovelInput[]
+    upsert?: MatchUpsertWithWhereUniqueWithoutImovelInput | MatchUpsertWithWhereUniqueWithoutImovelInput[]
+    createMany?: MatchCreateManyImovelInputEnvelope
+    set?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    disconnect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    delete?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+    update?: MatchUpdateWithWhereUniqueWithoutImovelInput | MatchUpdateWithWhereUniqueWithoutImovelInput[]
+    updateMany?: MatchUpdateManyWithWhereWithoutImovelInput | MatchUpdateManyWithWhereWithoutImovelInput[]
+    deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
   }
 
   export type ImovelPerguntaCreateNestedManyWithoutPerguntaInput = {
@@ -28819,7 +28812,7 @@ export namespace Prisma {
     connect?: ConfiguracaoPerguntaWhereUniqueInput
   }
 
-  export type RespostaUncheckedCreateNestedManyWithoutPerguntaInput = {
+  export type RespostaCreateNestedManyWithoutPerguntaInput = {
     create?: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput> | RespostaCreateWithoutPerguntaInput[] | RespostaUncheckedCreateWithoutPerguntaInput[]
     connectOrCreate?: RespostaCreateOrConnectWithoutPerguntaInput | RespostaCreateOrConnectWithoutPerguntaInput[]
     createMany?: RespostaCreateManyPerguntaInputEnvelope
@@ -28833,18 +28826,11 @@ export namespace Prisma {
     connect?: ImovelPerguntaWhereUniqueInput | ImovelPerguntaWhereUniqueInput[]
   }
 
-  export type RespostaUpdateManyWithoutPerguntaNestedInput = {
+  export type RespostaUncheckedCreateNestedManyWithoutPerguntaInput = {
     create?: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput> | RespostaCreateWithoutPerguntaInput[] | RespostaUncheckedCreateWithoutPerguntaInput[]
     connectOrCreate?: RespostaCreateOrConnectWithoutPerguntaInput | RespostaCreateOrConnectWithoutPerguntaInput[]
-    upsert?: RespostaUpsertWithWhereUniqueWithoutPerguntaInput | RespostaUpsertWithWhereUniqueWithoutPerguntaInput[]
     createMany?: RespostaCreateManyPerguntaInputEnvelope
-    set?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
-    disconnect?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
-    delete?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
     connect?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
-    update?: RespostaUpdateWithWhereUniqueWithoutPerguntaInput | RespostaUpdateWithWhereUniqueWithoutPerguntaInput[]
-    updateMany?: RespostaUpdateManyWithWhereWithoutPerguntaInput | RespostaUpdateManyWithWhereWithoutPerguntaInput[]
-    deleteMany?: RespostaScalarWhereInput | RespostaScalarWhereInput[]
   }
 
   export type ImovelPerguntaUpdateManyWithoutPerguntaNestedInput = {
@@ -28871,7 +28857,7 @@ export namespace Prisma {
     update?: XOR<XOR<ConfiguracaoPerguntaUpdateToOneWithWhereWithoutPerguntasInput, ConfiguracaoPerguntaUpdateWithoutPerguntasInput>, ConfiguracaoPerguntaUncheckedUpdateWithoutPerguntasInput>
   }
 
-  export type RespostaUncheckedUpdateManyWithoutPerguntaNestedInput = {
+  export type RespostaUpdateManyWithoutPerguntaNestedInput = {
     create?: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput> | RespostaCreateWithoutPerguntaInput[] | RespostaUncheckedCreateWithoutPerguntaInput[]
     connectOrCreate?: RespostaCreateOrConnectWithoutPerguntaInput | RespostaCreateOrConnectWithoutPerguntaInput[]
     upsert?: RespostaUpsertWithWhereUniqueWithoutPerguntaInput | RespostaUpsertWithWhereUniqueWithoutPerguntaInput[]
@@ -28897,6 +28883,20 @@ export namespace Prisma {
     update?: ImovelPerguntaUpdateWithWhereUniqueWithoutPerguntaInput | ImovelPerguntaUpdateWithWhereUniqueWithoutPerguntaInput[]
     updateMany?: ImovelPerguntaUpdateManyWithWhereWithoutPerguntaInput | ImovelPerguntaUpdateManyWithWhereWithoutPerguntaInput[]
     deleteMany?: ImovelPerguntaScalarWhereInput | ImovelPerguntaScalarWhereInput[]
+  }
+
+  export type RespostaUncheckedUpdateManyWithoutPerguntaNestedInput = {
+    create?: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput> | RespostaCreateWithoutPerguntaInput[] | RespostaUncheckedCreateWithoutPerguntaInput[]
+    connectOrCreate?: RespostaCreateOrConnectWithoutPerguntaInput | RespostaCreateOrConnectWithoutPerguntaInput[]
+    upsert?: RespostaUpsertWithWhereUniqueWithoutPerguntaInput | RespostaUpsertWithWhereUniqueWithoutPerguntaInput[]
+    createMany?: RespostaCreateManyPerguntaInputEnvelope
+    set?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
+    disconnect?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
+    delete?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
+    connect?: RespostaWhereUniqueInput | RespostaWhereUniqueInput[]
+    update?: RespostaUpdateWithWhereUniqueWithoutPerguntaInput | RespostaUpdateWithWhereUniqueWithoutPerguntaInput[]
+    updateMany?: RespostaUpdateManyWithWhereWithoutPerguntaInput | RespostaUpdateManyWithWhereWithoutPerguntaInput[]
+    deleteMany?: RespostaScalarWhereInput | RespostaScalarWhereInput[]
   }
 
   export type PerguntaCreateNestedManyWithoutConfiguracaoInput = {
@@ -29006,17 +29006,17 @@ export namespace Prisma {
     connect?: ImoveisRecomendadosWhereUniqueInput | ImoveisRecomendadosWhereUniqueInput[]
   }
 
-  export type UserCreateNestedOneWithoutRelatoriosInput = {
-    create?: XOR<UserCreateWithoutRelatoriosInput, UserUncheckedCreateWithoutRelatoriosInput>
-    connectOrCreate?: UserCreateOrConnectWithoutRelatoriosInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type MatchCreateNestedManyWithoutRelatorioInput = {
     create?: XOR<MatchCreateWithoutRelatorioInput, MatchUncheckedCreateWithoutRelatorioInput> | MatchCreateWithoutRelatorioInput[] | MatchUncheckedCreateWithoutRelatorioInput[]
     connectOrCreate?: MatchCreateOrConnectWithoutRelatorioInput | MatchCreateOrConnectWithoutRelatorioInput[]
     createMany?: MatchCreateManyRelatorioInputEnvelope
     connect?: MatchWhereUniqueInput | MatchWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutRelatoriosInput = {
+    create?: XOR<UserCreateWithoutRelatoriosInput, UserUncheckedCreateWithoutRelatoriosInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRelatoriosInput
+    connect?: UserWhereUniqueInput
   }
 
   export type ImoveisRecomendadosUncheckedCreateNestedManyWithoutRelatorioInput = {
@@ -29041,16 +29041,16 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableBoolFieldUpdateOperationsInput = {
-    set?: boolean | null
-  }
-
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
   }
 
   export type ImoveisRecomendadosUpdateManyWithoutRelatorioNestedInput = {
@@ -29067,14 +29067,6 @@ export namespace Prisma {
     deleteMany?: ImoveisRecomendadosScalarWhereInput | ImoveisRecomendadosScalarWhereInput[]
   }
 
-  export type UserUpdateOneRequiredWithoutRelatoriosNestedInput = {
-    create?: XOR<UserCreateWithoutRelatoriosInput, UserUncheckedCreateWithoutRelatoriosInput>
-    connectOrCreate?: UserCreateOrConnectWithoutRelatoriosInput
-    upsert?: UserUpsertWithoutRelatoriosInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRelatoriosInput, UserUpdateWithoutRelatoriosInput>, UserUncheckedUpdateWithoutRelatoriosInput>
-  }
-
   export type MatchUpdateManyWithoutRelatorioNestedInput = {
     create?: XOR<MatchCreateWithoutRelatorioInput, MatchUncheckedCreateWithoutRelatorioInput> | MatchCreateWithoutRelatorioInput[] | MatchUncheckedCreateWithoutRelatorioInput[]
     connectOrCreate?: MatchCreateOrConnectWithoutRelatorioInput | MatchCreateOrConnectWithoutRelatorioInput[]
@@ -29087,6 +29079,14 @@ export namespace Prisma {
     update?: MatchUpdateWithWhereUniqueWithoutRelatorioInput | MatchUpdateWithWhereUniqueWithoutRelatorioInput[]
     updateMany?: MatchUpdateManyWithWhereWithoutRelatorioInput | MatchUpdateManyWithWhereWithoutRelatorioInput[]
     deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutRelatoriosNestedInput = {
+    create?: XOR<UserCreateWithoutRelatoriosInput, UserUncheckedCreateWithoutRelatoriosInput>
+    connectOrCreate?: UserCreateOrConnectWithoutRelatoriosInput
+    upsert?: UserUpsertWithoutRelatoriosInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRelatoriosInput, UserUpdateWithoutRelatoriosInput>, UserUncheckedUpdateWithoutRelatoriosInput>
   }
 
   export type ImoveisRecomendadosUncheckedUpdateManyWithoutRelatorioNestedInput = {
@@ -29115,20 +29115,6 @@ export namespace Prisma {
     update?: MatchUpdateWithWhereUniqueWithoutRelatorioInput | MatchUpdateWithWhereUniqueWithoutRelatorioInput[]
     updateMany?: MatchUpdateManyWithWhereWithoutRelatorioInput | MatchUpdateManyWithWhereWithoutRelatorioInput[]
     deleteMany?: MatchScalarWhereInput | MatchScalarWhereInput[]
-  }
-
-  export type RelatorioCreateNestedOneWithoutImoveisRecomendadosInput = {
-    create?: XOR<RelatorioCreateWithoutImoveisRecomendadosInput, RelatorioUncheckedCreateWithoutImoveisRecomendadosInput>
-    connectOrCreate?: RelatorioCreateOrConnectWithoutImoveisRecomendadosInput
-    connect?: RelatorioWhereUniqueInput
-  }
-
-  export type RelatorioUpdateOneRequiredWithoutImoveisRecomendadosNestedInput = {
-    create?: XOR<RelatorioCreateWithoutImoveisRecomendadosInput, RelatorioUncheckedCreateWithoutImoveisRecomendadosInput>
-    connectOrCreate?: RelatorioCreateOrConnectWithoutImoveisRecomendadosInput
-    upsert?: RelatorioUpsertWithoutImoveisRecomendadosInput
-    connect?: RelatorioWhereUniqueInput
-    update?: XOR<XOR<RelatorioUpdateToOneWithWhereWithoutImoveisRecomendadosInput, RelatorioUpdateWithoutImoveisRecomendadosInput>, RelatorioUncheckedUpdateWithoutImoveisRecomendadosInput>
   }
 
   export type ConstrutoraCreateNestedOneWithoutImoveisMetadataInput = {
@@ -29173,6 +29159,20 @@ export namespace Prisma {
     upsert?: PerguntaUpsertWithoutImoveisInput
     connect?: PerguntaWhereUniqueInput
     update?: XOR<XOR<PerguntaUpdateToOneWithWhereWithoutImoveisInput, PerguntaUpdateWithoutImoveisInput>, PerguntaUncheckedUpdateWithoutImoveisInput>
+  }
+
+  export type RelatorioCreateNestedOneWithoutImoveisRecomendadosInput = {
+    create?: XOR<RelatorioCreateWithoutImoveisRecomendadosInput, RelatorioUncheckedCreateWithoutImoveisRecomendadosInput>
+    connectOrCreate?: RelatorioCreateOrConnectWithoutImoveisRecomendadosInput
+    connect?: RelatorioWhereUniqueInput
+  }
+
+  export type RelatorioUpdateOneRequiredWithoutImoveisRecomendadosNestedInput = {
+    create?: XOR<RelatorioCreateWithoutImoveisRecomendadosInput, RelatorioUncheckedCreateWithoutImoveisRecomendadosInput>
+    connectOrCreate?: RelatorioCreateOrConnectWithoutImoveisRecomendadosInput
+    upsert?: RelatorioUpsertWithoutImoveisRecomendadosInput
+    connect?: RelatorioWhereUniqueInput
+    update?: XOR<XOR<RelatorioUpdateToOneWithWhereWithoutImoveisRecomendadosInput, RelatorioUpdateWithoutImoveisRecomendadosInput>, RelatorioUncheckedUpdateWithoutImoveisRecomendadosInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -29435,14 +29435,6 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
-  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
-    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedBoolNullableFilter<$PrismaModel>
-    _max?: NestedBoolNullableFilter<$PrismaModel>
-  }
-
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -29459,6 +29451,14 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
   export type ImovelCreateWithoutTipoImovelInput = {
     id?: string
     idExternoAPI?: string | null
@@ -29473,19 +29473,19 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelNome?: string | null
     construtora: ConstrutoraCreateNestedOneWithoutImoveisInput
-    matches?: MatchCreateNestedManyWithoutImovelInput
     perguntas?: ImovelPerguntaCreateNestedManyWithoutImovelInput
+    matches?: MatchCreateNestedManyWithoutImovelInput
   }
 
   export type ImovelUncheckedCreateWithoutTipoImovelInput = {
@@ -29502,19 +29502,19 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     construtoraId: string
-    matches?: MatchUncheckedCreateNestedManyWithoutImovelInput
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelNome?: string | null
     perguntas?: ImovelPerguntaUncheckedCreateNestedManyWithoutImovelInput
+    matches?: MatchUncheckedCreateNestedManyWithoutImovelInput
   }
 
   export type ImovelCreateOrConnectWithoutTipoImovelInput = {
@@ -29560,18 +29560,128 @@ export namespace Prisma {
     longitude?: FloatFilter<"Imovel"> | number
     telefoneContato?: StringNullableFilter<"Imovel"> | string | null
     endereco?: StringFilter<"Imovel"> | string
-    fotoPrincipal?: StringNullableFilter<"Imovel"> | string | null
-    galeriaFotos?: StringNullableListFilter<"Imovel">
     caracteristicas?: JsonNullableFilter<"Imovel">
-    caracteristicasArray?: StringNullableListFilter<"Imovel">
-    tipoImovelId?: StringNullableFilter<"Imovel"> | string | null
-    tipoImovelNome?: StringNullableFilter<"Imovel"> | string | null
-    status?: StringNullableFilter<"Imovel"> | string | null
-    ativo?: BoolFilter<"Imovel"> | boolean
-    destaque?: BoolFilter<"Imovel"> | boolean
     createdAt?: DateTimeFilter<"Imovel"> | Date | string
     updatedAt?: DateTimeFilter<"Imovel"> | Date | string
     construtoraId?: StringFilter<"Imovel"> | string
+    caracteristicasArray?: StringNullableListFilter<"Imovel">
+    destaque?: BoolFilter<"Imovel"> | boolean
+    fotoPrincipal?: StringNullableFilter<"Imovel"> | string | null
+    galeriaFotos?: StringNullableListFilter<"Imovel">
+    status?: StringNullableFilter<"Imovel"> | string | null
+    ativo?: BoolFilter<"Imovel"> | boolean
+    tipoImovelId?: StringNullableFilter<"Imovel"> | string | null
+    tipoImovelNome?: StringNullableFilter<"Imovel"> | string | null
+  }
+
+  export type RelatorioCreateWithoutUsuarioInput = {
+    id?: string
+    resumo?: string | null
+    pdfUrl?: string | null
+    updatedAt?: Date | string
+    bairros?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
+    distanciaMaximaTrabalho?: number | null
+    importanciaAcademia?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
+    importanciaEspacoPet?: string | null
+    importanciaParques?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
+    importanciaRestaurantes?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
+    importanciaTransporte?: string | null
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
+    ImoveisRecomendados?: ImoveisRecomendadosCreateNestedManyWithoutRelatorioInput
+    matches?: MatchCreateNestedManyWithoutRelatorioInput
+  }
+
+  export type RelatorioUncheckedCreateWithoutUsuarioInput = {
+    id?: string
+    resumo?: string | null
+    pdfUrl?: string | null
+    updatedAt?: Date | string
+    bairros?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
+    distanciaMaximaTrabalho?: number | null
+    importanciaAcademia?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
+    importanciaEspacoPet?: string | null
+    importanciaParques?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
+    importanciaRestaurantes?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
+    importanciaTransporte?: string | null
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
+    ImoveisRecomendados?: ImoveisRecomendadosUncheckedCreateNestedManyWithoutRelatorioInput
+    matches?: MatchUncheckedCreateNestedManyWithoutRelatorioInput
+  }
+
+  export type RelatorioCreateOrConnectWithoutUsuarioInput = {
+    where: RelatorioWhereUniqueInput
+    create: XOR<RelatorioCreateWithoutUsuarioInput, RelatorioUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type RelatorioCreateManyUsuarioInputEnvelope = {
+    data: RelatorioCreateManyUsuarioInput | RelatorioCreateManyUsuarioInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RespostaCreateWithoutUsuarioInput = {
+    id?: string
+    valor: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pergunta: PerguntaCreateNestedOneWithoutRespostasInput
+  }
+
+  export type RespostaUncheckedCreateWithoutUsuarioInput = {
+    id?: string
+    valor: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    perguntaId: string
+  }
+
+  export type RespostaCreateOrConnectWithoutUsuarioInput = {
+    where: RespostaWhereUniqueInput
+    create: XOR<RespostaCreateWithoutUsuarioInput, RespostaUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type RespostaCreateManyUsuarioInputEnvelope = {
+    data: RespostaCreateManyUsuarioInput | RespostaCreateManyUsuarioInput[]
+    skipDuplicates?: boolean
   }
 
   export type ConstrutoraCreateWithoutUsuariosInput = {
@@ -29607,114 +29717,87 @@ export namespace Prisma {
     create: XOR<ConstrutoraCreateWithoutUsuariosInput, ConstrutoraUncheckedCreateWithoutUsuariosInput>
   }
 
-  export type RespostaCreateWithoutUsuarioInput = {
-    id?: string
-    valor: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    pergunta: PerguntaCreateNestedOneWithoutRespostasInput
-  }
-
-  export type RespostaUncheckedCreateWithoutUsuarioInput = {
-    id?: string
-    valor: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    perguntaId: string
-  }
-
-  export type RespostaCreateOrConnectWithoutUsuarioInput = {
-    where: RespostaWhereUniqueInput
-    create: XOR<RespostaCreateWithoutUsuarioInput, RespostaUncheckedCreateWithoutUsuarioInput>
-  }
-
-  export type RespostaCreateManyUsuarioInputEnvelope = {
-    data: RespostaCreateManyUsuarioInput | RespostaCreateManyUsuarioInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type RelatorioCreateWithoutUsuarioInput = {
-    id?: string
-    resumo?: string | null
-    pdfUrl?: string | null
-    dataCriacao?: Date | string
-    updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
-    bairros?: string | null
-    localTrabalho?: string | null
-    distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
-    importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
-    importanciaEspacoPet?: string | null
-    importanciaParques?: string | null
-    importanciaShopping?: string | null
-    importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
-    importanciaTransporte?: string | null
-    imoveisRecomendados?: ImoveisRecomendadosCreateNestedManyWithoutRelatorioInput
-    matches?: MatchCreateNestedManyWithoutRelatorioInput
-  }
-
-  export type RelatorioUncheckedCreateWithoutUsuarioInput = {
-    id?: string
-    resumo?: string | null
-    pdfUrl?: string | null
-    dataCriacao?: Date | string
-    updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
-    bairros?: string | null
-    localTrabalho?: string | null
-    distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
-    importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
-    importanciaEspacoPet?: string | null
-    importanciaParques?: string | null
-    importanciaShopping?: string | null
-    importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
-    importanciaTransporte?: string | null
-    imoveisRecomendados?: ImoveisRecomendadosUncheckedCreateNestedManyWithoutRelatorioInput
-    matches?: MatchUncheckedCreateNestedManyWithoutRelatorioInput
-  }
-
-  export type RelatorioCreateOrConnectWithoutUsuarioInput = {
+  export type RelatorioUpsertWithWhereUniqueWithoutUsuarioInput = {
     where: RelatorioWhereUniqueInput
+    update: XOR<RelatorioUpdateWithoutUsuarioInput, RelatorioUncheckedUpdateWithoutUsuarioInput>
     create: XOR<RelatorioCreateWithoutUsuarioInput, RelatorioUncheckedCreateWithoutUsuarioInput>
   }
 
-  export type RelatorioCreateManyUsuarioInputEnvelope = {
-    data: RelatorioCreateManyUsuarioInput | RelatorioCreateManyUsuarioInput[]
-    skipDuplicates?: boolean
+  export type RelatorioUpdateWithWhereUniqueWithoutUsuarioInput = {
+    where: RelatorioWhereUniqueInput
+    data: XOR<RelatorioUpdateWithoutUsuarioInput, RelatorioUncheckedUpdateWithoutUsuarioInput>
+  }
+
+  export type RelatorioUpdateManyWithWhereWithoutUsuarioInput = {
+    where: RelatorioScalarWhereInput
+    data: XOR<RelatorioUpdateManyMutationInput, RelatorioUncheckedUpdateManyWithoutUsuarioInput>
+  }
+
+  export type RelatorioScalarWhereInput = {
+    AND?: RelatorioScalarWhereInput | RelatorioScalarWhereInput[]
+    OR?: RelatorioScalarWhereInput[]
+    NOT?: RelatorioScalarWhereInput | RelatorioScalarWhereInput[]
+    id?: StringFilter<"Relatorio"> | string
+    resumo?: StringNullableFilter<"Relatorio"> | string | null
+    pdfUrl?: StringNullableFilter<"Relatorio"> | string | null
+    updatedAt?: DateTimeFilter<"Relatorio"> | Date | string
+    userId?: StringFilter<"Relatorio"> | string
+    bairros?: StringNullableFilter<"Relatorio"> | string | null
+    cidade?: StringNullableFilter<"Relatorio"> | string | null
+    dataCriacao?: DateTimeFilter<"Relatorio"> | Date | string
+    distanciaMaximaTrabalho?: FloatNullableFilter<"Relatorio"> | number | null
+    importanciaAcademia?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaCaminhabilidade?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaEscolas?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaEspacoPet?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaParques?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaPiscina?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaPisoQuartos?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaPlayground?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaRestaurantes?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaSalaoFestas?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaShopping?: StringNullableFilter<"Relatorio"> | string | null
+    importanciaTransporte?: StringNullableFilter<"Relatorio"> | string | null
+    localTrabalho?: StringNullableFilter<"Relatorio"> | string | null
+    prazoFinanciamento?: IntNullableFilter<"Relatorio"> | number | null
+    rendaMensal?: FloatNullableFilter<"Relatorio"> | number | null
+    taxa?: FloatNullableFilter<"Relatorio"> | number | null
+    temOutrosEmprestimos?: BoolNullableFilter<"Relatorio"> | boolean | null
+    temPet?: BoolNullableFilter<"Relatorio"> | boolean | null
+    tipoPortaria?: StringNullableFilter<"Relatorio"> | string | null
+    valorEntrada?: FloatNullableFilter<"Relatorio"> | number | null
+    valorFinanciamento?: FloatNullableFilter<"Relatorio"> | number | null
+    valorImovel?: FloatNullableFilter<"Relatorio"> | number | null
+    valorParcela?: FloatNullableFilter<"Relatorio"> | number | null
+    valorParcelaMaxima?: FloatNullableFilter<"Relatorio"> | number | null
+  }
+
+  export type RespostaUpsertWithWhereUniqueWithoutUsuarioInput = {
+    where: RespostaWhereUniqueInput
+    update: XOR<RespostaUpdateWithoutUsuarioInput, RespostaUncheckedUpdateWithoutUsuarioInput>
+    create: XOR<RespostaCreateWithoutUsuarioInput, RespostaUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type RespostaUpdateWithWhereUniqueWithoutUsuarioInput = {
+    where: RespostaWhereUniqueInput
+    data: XOR<RespostaUpdateWithoutUsuarioInput, RespostaUncheckedUpdateWithoutUsuarioInput>
+  }
+
+  export type RespostaUpdateManyWithWhereWithoutUsuarioInput = {
+    where: RespostaScalarWhereInput
+    data: XOR<RespostaUpdateManyMutationInput, RespostaUncheckedUpdateManyWithoutUsuarioInput>
+  }
+
+  export type RespostaScalarWhereInput = {
+    AND?: RespostaScalarWhereInput | RespostaScalarWhereInput[]
+    OR?: RespostaScalarWhereInput[]
+    NOT?: RespostaScalarWhereInput | RespostaScalarWhereInput[]
+    id?: StringFilter<"Resposta"> | string
+    valor?: StringFilter<"Resposta"> | string
+    createdAt?: DateTimeFilter<"Resposta"> | Date | string
+    updatedAt?: DateTimeFilter<"Resposta"> | Date | string
+    perguntaId?: StringFilter<"Resposta"> | string
+    userId?: StringFilter<"Resposta"> | string
   }
 
   export type ConstrutoraUpsertWithoutUsuariosInput = {
@@ -29756,125 +29839,6 @@ export namespace Prisma {
     imoveisMetadata?: ImovelMetadataUncheckedUpdateManyWithoutConstrutoraNestedInput
   }
 
-  export type RespostaUpsertWithWhereUniqueWithoutUsuarioInput = {
-    where: RespostaWhereUniqueInput
-    update: XOR<RespostaUpdateWithoutUsuarioInput, RespostaUncheckedUpdateWithoutUsuarioInput>
-    create: XOR<RespostaCreateWithoutUsuarioInput, RespostaUncheckedCreateWithoutUsuarioInput>
-  }
-
-  export type RespostaUpdateWithWhereUniqueWithoutUsuarioInput = {
-    where: RespostaWhereUniqueInput
-    data: XOR<RespostaUpdateWithoutUsuarioInput, RespostaUncheckedUpdateWithoutUsuarioInput>
-  }
-
-  export type RespostaUpdateManyWithWhereWithoutUsuarioInput = {
-    where: RespostaScalarWhereInput
-    data: XOR<RespostaUpdateManyMutationInput, RespostaUncheckedUpdateManyWithoutUsuarioInput>
-  }
-
-  export type RespostaScalarWhereInput = {
-    AND?: RespostaScalarWhereInput | RespostaScalarWhereInput[]
-    OR?: RespostaScalarWhereInput[]
-    NOT?: RespostaScalarWhereInput | RespostaScalarWhereInput[]
-    id?: StringFilter<"Resposta"> | string
-    valor?: StringFilter<"Resposta"> | string
-    createdAt?: DateTimeFilter<"Resposta"> | Date | string
-    updatedAt?: DateTimeFilter<"Resposta"> | Date | string
-    perguntaId?: StringFilter<"Resposta"> | string
-    userId?: StringFilter<"Resposta"> | string
-  }
-
-  export type RelatorioUpsertWithWhereUniqueWithoutUsuarioInput = {
-    where: RelatorioWhereUniqueInput
-    update: XOR<RelatorioUpdateWithoutUsuarioInput, RelatorioUncheckedUpdateWithoutUsuarioInput>
-    create: XOR<RelatorioCreateWithoutUsuarioInput, RelatorioUncheckedCreateWithoutUsuarioInput>
-  }
-
-  export type RelatorioUpdateWithWhereUniqueWithoutUsuarioInput = {
-    where: RelatorioWhereUniqueInput
-    data: XOR<RelatorioUpdateWithoutUsuarioInput, RelatorioUncheckedUpdateWithoutUsuarioInput>
-  }
-
-  export type RelatorioUpdateManyWithWhereWithoutUsuarioInput = {
-    where: RelatorioScalarWhereInput
-    data: XOR<RelatorioUpdateManyMutationInput, RelatorioUncheckedUpdateManyWithoutUsuarioInput>
-  }
-
-  export type RelatorioScalarWhereInput = {
-    AND?: RelatorioScalarWhereInput | RelatorioScalarWhereInput[]
-    OR?: RelatorioScalarWhereInput[]
-    NOT?: RelatorioScalarWhereInput | RelatorioScalarWhereInput[]
-    id?: StringFilter<"Relatorio"> | string
-    resumo?: StringNullableFilter<"Relatorio"> | string | null
-    pdfUrl?: StringNullableFilter<"Relatorio"> | string | null
-    dataCriacao?: DateTimeFilter<"Relatorio"> | Date | string
-    updatedAt?: DateTimeFilter<"Relatorio"> | Date | string
-    rendaMensal?: FloatNullableFilter<"Relatorio"> | number | null
-    valorParcelaMaxima?: FloatNullableFilter<"Relatorio"> | number | null
-    temOutrosEmprestimos?: BoolNullableFilter<"Relatorio"> | boolean | null
-    valorEntrada?: FloatNullableFilter<"Relatorio"> | number | null
-    prazoFinanciamento?: IntNullableFilter<"Relatorio"> | number | null
-    taxa?: FloatNullableFilter<"Relatorio"> | number | null
-    valorImovel?: FloatNullableFilter<"Relatorio"> | number | null
-    valorFinanciamento?: FloatNullableFilter<"Relatorio"> | number | null
-    valorParcela?: FloatNullableFilter<"Relatorio"> | number | null
-    cidade?: StringNullableFilter<"Relatorio"> | string | null
-    bairros?: StringNullableFilter<"Relatorio"> | string | null
-    localTrabalho?: StringNullableFilter<"Relatorio"> | string | null
-    distanciaMaximaTrabalho?: FloatNullableFilter<"Relatorio"> | number | null
-    importanciaPisoQuartos?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaAcademia?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaPiscina?: StringNullableFilter<"Relatorio"> | string | null
-    tipoPortaria?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaSalaoFestas?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaPlayground?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaEspacoPet?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaParques?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaShopping?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaRestaurantes?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaCaminhabilidade?: StringNullableFilter<"Relatorio"> | string | null
-    temPet?: BoolNullableFilter<"Relatorio"> | boolean | null
-    importanciaEscolas?: StringNullableFilter<"Relatorio"> | string | null
-    importanciaTransporte?: StringNullableFilter<"Relatorio"> | string | null
-    userId?: StringFilter<"Relatorio"> | string
-  }
-
-  export type UserCreateWithoutConstrutoraInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    telefone?: string | null
-    role?: $Enums.UserRole
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    respostas?: RespostaCreateNestedManyWithoutUsuarioInput
-    relatorios?: RelatorioCreateNestedManyWithoutUsuarioInput
-  }
-
-  export type UserUncheckedCreateWithoutConstrutoraInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    telefone?: string | null
-    role?: $Enums.UserRole
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    respostas?: RespostaUncheckedCreateNestedManyWithoutUsuarioInput
-    relatorios?: RelatorioUncheckedCreateNestedManyWithoutUsuarioInput
-  }
-
-  export type UserCreateOrConnectWithoutConstrutoraInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutConstrutoraInput, UserUncheckedCreateWithoutConstrutoraInput>
-  }
-
-  export type UserCreateManyConstrutoraInputEnvelope = {
-    data: UserCreateManyConstrutoraInput | UserCreateManyConstrutoraInput[]
-    skipDuplicates?: boolean
-  }
-
   export type ImovelCreateWithoutConstrutoraInput = {
     id?: string
     idExternoAPI?: string | null
@@ -29889,19 +29853,19 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelNome?: string | null
     tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
-    matches?: MatchCreateNestedManyWithoutImovelInput
     perguntas?: ImovelPerguntaCreateNestedManyWithoutImovelInput
+    matches?: MatchCreateNestedManyWithoutImovelInput
   }
 
   export type ImovelUncheckedCreateWithoutConstrutoraInput = {
@@ -29918,19 +29882,19 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelId?: string | null
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    matches?: MatchUncheckedCreateNestedManyWithoutImovelInput
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     perguntas?: ImovelPerguntaUncheckedCreateNestedManyWithoutImovelInput
+    matches?: MatchUncheckedCreateNestedManyWithoutImovelInput
   }
 
   export type ImovelCreateOrConnectWithoutConstrutoraInput = {
@@ -29971,35 +29935,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserUpsertWithWhereUniqueWithoutConstrutoraInput = {
+  export type UserCreateWithoutConstrutoraInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    telefone?: string | null
+    relatorios?: RelatorioCreateNestedManyWithoutUsuarioInput
+    respostas?: RespostaCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UserUncheckedCreateWithoutConstrutoraInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    telefone?: string | null
+    relatorios?: RelatorioUncheckedCreateNestedManyWithoutUsuarioInput
+    respostas?: RespostaUncheckedCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UserCreateOrConnectWithoutConstrutoraInput = {
     where: UserWhereUniqueInput
-    update: XOR<UserUpdateWithoutConstrutoraInput, UserUncheckedUpdateWithoutConstrutoraInput>
     create: XOR<UserCreateWithoutConstrutoraInput, UserUncheckedCreateWithoutConstrutoraInput>
   }
 
-  export type UserUpdateWithWhereUniqueWithoutConstrutoraInput = {
-    where: UserWhereUniqueInput
-    data: XOR<UserUpdateWithoutConstrutoraInput, UserUncheckedUpdateWithoutConstrutoraInput>
-  }
-
-  export type UserUpdateManyWithWhereWithoutConstrutoraInput = {
-    where: UserScalarWhereInput
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutConstrutoraInput>
-  }
-
-  export type UserScalarWhereInput = {
-    AND?: UserScalarWhereInput | UserScalarWhereInput[]
-    OR?: UserScalarWhereInput[]
-    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
-    id?: StringFilter<"User"> | string
-    name?: StringFilter<"User"> | string
-    email?: StringFilter<"User"> | string
-    password?: StringFilter<"User"> | string
-    telefone?: StringNullableFilter<"User"> | string | null
-    role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
-    createdAt?: DateTimeFilter<"User"> | Date | string
-    updatedAt?: DateTimeFilter<"User"> | Date | string
-    construtoraId?: StringNullableFilter<"User"> | string | null
+  export type UserCreateManyConstrutoraInputEnvelope = {
+    data: UserCreateManyConstrutoraInput | UserCreateManyConstrutoraInput[]
+    skipDuplicates?: boolean
   }
 
   export type ImovelUpsertWithWhereUniqueWithoutConstrutoraInput = {
@@ -30042,9 +30011,73 @@ export namespace Prisma {
     imovelIdExterno?: StringFilter<"ImovelMetadata"> | string
     telefone?: StringFilter<"ImovelMetadata"> | string
     observacoes?: StringFilter<"ImovelMetadata"> | string
-    construtoraId?: StringNullableFilter<"ImovelMetadata"> | string | null
     createdAt?: DateTimeFilter<"ImovelMetadata"> | Date | string
     updatedAt?: DateTimeFilter<"ImovelMetadata"> | Date | string
+    construtoraId?: StringNullableFilter<"ImovelMetadata"> | string | null
+  }
+
+  export type UserUpsertWithWhereUniqueWithoutConstrutoraInput = {
+    where: UserWhereUniqueInput
+    update: XOR<UserUpdateWithoutConstrutoraInput, UserUncheckedUpdateWithoutConstrutoraInput>
+    create: XOR<UserCreateWithoutConstrutoraInput, UserUncheckedCreateWithoutConstrutoraInput>
+  }
+
+  export type UserUpdateWithWhereUniqueWithoutConstrutoraInput = {
+    where: UserWhereUniqueInput
+    data: XOR<UserUpdateWithoutConstrutoraInput, UserUncheckedUpdateWithoutConstrutoraInput>
+  }
+
+  export type UserUpdateManyWithWhereWithoutConstrutoraInput = {
+    where: UserScalarWhereInput
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutConstrutoraInput>
+  }
+
+  export type UserScalarWhereInput = {
+    AND?: UserScalarWhereInput | UserScalarWhereInput[]
+    OR?: UserScalarWhereInput[]
+    NOT?: UserScalarWhereInput | UserScalarWhereInput[]
+    id?: StringFilter<"User"> | string
+    name?: StringFilter<"User"> | string
+    email?: StringFilter<"User"> | string
+    password?: StringFilter<"User"> | string
+    role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
+    createdAt?: DateTimeFilter<"User"> | Date | string
+    updatedAt?: DateTimeFilter<"User"> | Date | string
+    construtoraId?: StringNullableFilter<"User"> | string | null
+    telefone?: StringNullableFilter<"User"> | string | null
+  }
+
+  export type ConstrutoraCreateWithoutImoveisInput = {
+    id?: string
+    nome: string
+    cnpj: string
+    telefone: string
+    email: string
+    endereco: string
+    ativa?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    imoveisMetadata?: ImovelMetadataCreateNestedManyWithoutConstrutoraInput
+    usuarios?: UserCreateNestedManyWithoutConstrutoraInput
+  }
+
+  export type ConstrutoraUncheckedCreateWithoutImoveisInput = {
+    id?: string
+    nome: string
+    cnpj: string
+    telefone: string
+    email: string
+    endereco: string
+    ativa?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    imoveisMetadata?: ImovelMetadataUncheckedCreateNestedManyWithoutConstrutoraInput
+    usuarios?: UserUncheckedCreateNestedManyWithoutConstrutoraInput
+  }
+
+  export type ConstrutoraCreateOrConnectWithoutImoveisInput = {
+    where: ConstrutoraWhereUniqueInput
+    create: XOR<ConstrutoraCreateWithoutImoveisInput, ConstrutoraUncheckedCreateWithoutImoveisInput>
   }
 
   export type TipoImovelCreateWithoutImoveisInput = {
@@ -30070,37 +30103,28 @@ export namespace Prisma {
     create: XOR<TipoImovelCreateWithoutImoveisInput, TipoImovelUncheckedCreateWithoutImoveisInput>
   }
 
-  export type ConstrutoraCreateWithoutImoveisInput = {
+  export type ImovelPerguntaCreateWithoutImovelInput = {
     id?: string
-    nome: string
-    cnpj: string
-    telefone: string
-    email: string
-    endereco: string
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    usuarios?: UserCreateNestedManyWithoutConstrutoraInput
-    imoveisMetadata?: ImovelMetadataCreateNestedManyWithoutConstrutoraInput
+    pergunta: PerguntaCreateNestedOneWithoutImoveisInput
   }
 
-  export type ConstrutoraUncheckedCreateWithoutImoveisInput = {
+  export type ImovelPerguntaUncheckedCreateWithoutImovelInput = {
     id?: string
-    nome: string
-    cnpj: string
-    telefone: string
-    email: string
-    endereco: string
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    usuarios?: UserUncheckedCreateNestedManyWithoutConstrutoraInput
-    imoveisMetadata?: ImovelMetadataUncheckedCreateNestedManyWithoutConstrutoraInput
+    perguntaId: string
   }
 
-  export type ConstrutoraCreateOrConnectWithoutImoveisInput = {
-    where: ConstrutoraWhereUniqueInput
-    create: XOR<ConstrutoraCreateWithoutImoveisInput, ConstrutoraUncheckedCreateWithoutImoveisInput>
+  export type ImovelPerguntaCreateOrConnectWithoutImovelInput = {
+    where: ImovelPerguntaWhereUniqueInput
+    create: XOR<ImovelPerguntaCreateWithoutImovelInput, ImovelPerguntaUncheckedCreateWithoutImovelInput>
+  }
+
+  export type ImovelPerguntaCreateManyImovelInputEnvelope = {
+    data: ImovelPerguntaCreateManyImovelInput | ImovelPerguntaCreateManyImovelInput[]
+    skipDuplicates?: boolean
   }
 
   export type MatchCreateWithoutImovelInput = {
@@ -30135,28 +30159,43 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ImovelPerguntaCreateWithoutImovelInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    pergunta: PerguntaCreateNestedOneWithoutImoveisInput
+  export type ConstrutoraUpsertWithoutImoveisInput = {
+    update: XOR<ConstrutoraUpdateWithoutImoveisInput, ConstrutoraUncheckedUpdateWithoutImoveisInput>
+    create: XOR<ConstrutoraCreateWithoutImoveisInput, ConstrutoraUncheckedCreateWithoutImoveisInput>
+    where?: ConstrutoraWhereInput
   }
 
-  export type ImovelPerguntaUncheckedCreateWithoutImovelInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    perguntaId: string
+  export type ConstrutoraUpdateToOneWithWhereWithoutImoveisInput = {
+    where?: ConstrutoraWhereInput
+    data: XOR<ConstrutoraUpdateWithoutImoveisInput, ConstrutoraUncheckedUpdateWithoutImoveisInput>
   }
 
-  export type ImovelPerguntaCreateOrConnectWithoutImovelInput = {
-    where: ImovelPerguntaWhereUniqueInput
-    create: XOR<ImovelPerguntaCreateWithoutImovelInput, ImovelPerguntaUncheckedCreateWithoutImovelInput>
+  export type ConstrutoraUpdateWithoutImoveisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    cnpj?: StringFieldUpdateOperationsInput | string
+    telefone?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    endereco?: StringFieldUpdateOperationsInput | string
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    imoveisMetadata?: ImovelMetadataUpdateManyWithoutConstrutoraNestedInput
+    usuarios?: UserUpdateManyWithoutConstrutoraNestedInput
   }
 
-  export type ImovelPerguntaCreateManyImovelInputEnvelope = {
-    data: ImovelPerguntaCreateManyImovelInput | ImovelPerguntaCreateManyImovelInput[]
-    skipDuplicates?: boolean
+  export type ConstrutoraUncheckedUpdateWithoutImoveisInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nome?: StringFieldUpdateOperationsInput | string
+    cnpj?: StringFieldUpdateOperationsInput | string
+    telefone?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    endereco?: StringFieldUpdateOperationsInput | string
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    imoveisMetadata?: ImovelMetadataUncheckedUpdateManyWithoutConstrutoraNestedInput
+    usuarios?: UserUncheckedUpdateManyWithoutConstrutoraNestedInput
   }
 
   export type TipoImovelUpsertWithoutImoveisInput = {
@@ -30188,43 +30227,31 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ConstrutoraUpsertWithoutImoveisInput = {
-    update: XOR<ConstrutoraUpdateWithoutImoveisInput, ConstrutoraUncheckedUpdateWithoutImoveisInput>
-    create: XOR<ConstrutoraCreateWithoutImoveisInput, ConstrutoraUncheckedCreateWithoutImoveisInput>
-    where?: ConstrutoraWhereInput
+  export type ImovelPerguntaUpsertWithWhereUniqueWithoutImovelInput = {
+    where: ImovelPerguntaWhereUniqueInput
+    update: XOR<ImovelPerguntaUpdateWithoutImovelInput, ImovelPerguntaUncheckedUpdateWithoutImovelInput>
+    create: XOR<ImovelPerguntaCreateWithoutImovelInput, ImovelPerguntaUncheckedCreateWithoutImovelInput>
   }
 
-  export type ConstrutoraUpdateToOneWithWhereWithoutImoveisInput = {
-    where?: ConstrutoraWhereInput
-    data: XOR<ConstrutoraUpdateWithoutImoveisInput, ConstrutoraUncheckedUpdateWithoutImoveisInput>
+  export type ImovelPerguntaUpdateWithWhereUniqueWithoutImovelInput = {
+    where: ImovelPerguntaWhereUniqueInput
+    data: XOR<ImovelPerguntaUpdateWithoutImovelInput, ImovelPerguntaUncheckedUpdateWithoutImovelInput>
   }
 
-  export type ConstrutoraUpdateWithoutImoveisInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nome?: StringFieldUpdateOperationsInput | string
-    cnpj?: StringFieldUpdateOperationsInput | string
-    telefone?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    endereco?: StringFieldUpdateOperationsInput | string
-    ativa?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usuarios?: UserUpdateManyWithoutConstrutoraNestedInput
-    imoveisMetadata?: ImovelMetadataUpdateManyWithoutConstrutoraNestedInput
+  export type ImovelPerguntaUpdateManyWithWhereWithoutImovelInput = {
+    where: ImovelPerguntaScalarWhereInput
+    data: XOR<ImovelPerguntaUpdateManyMutationInput, ImovelPerguntaUncheckedUpdateManyWithoutImovelInput>
   }
 
-  export type ConstrutoraUncheckedUpdateWithoutImoveisInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    nome?: StringFieldUpdateOperationsInput | string
-    cnpj?: StringFieldUpdateOperationsInput | string
-    telefone?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    endereco?: StringFieldUpdateOperationsInput | string
-    ativa?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usuarios?: UserUncheckedUpdateManyWithoutConstrutoraNestedInput
-    imoveisMetadata?: ImovelMetadataUncheckedUpdateManyWithoutConstrutoraNestedInput
+  export type ImovelPerguntaScalarWhereInput = {
+    AND?: ImovelPerguntaScalarWhereInput | ImovelPerguntaScalarWhereInput[]
+    OR?: ImovelPerguntaScalarWhereInput[]
+    NOT?: ImovelPerguntaScalarWhereInput | ImovelPerguntaScalarWhereInput[]
+    id?: StringFilter<"ImovelPergunta"> | string
+    createdAt?: DateTimeFilter<"ImovelPergunta"> | Date | string
+    updatedAt?: DateTimeFilter<"ImovelPergunta"> | Date | string
+    imovelId?: StringFilter<"ImovelPergunta"> | string
+    perguntaId?: StringFilter<"ImovelPergunta"> | string
   }
 
   export type MatchUpsertWithWhereUniqueWithoutImovelInput = {
@@ -30256,59 +30283,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Match"> | Date | string
     imovelId?: StringFilter<"Match"> | string
     relatorioId?: StringNullableFilter<"Match"> | string | null
-  }
-
-  export type ImovelPerguntaUpsertWithWhereUniqueWithoutImovelInput = {
-    where: ImovelPerguntaWhereUniqueInput
-    update: XOR<ImovelPerguntaUpdateWithoutImovelInput, ImovelPerguntaUncheckedUpdateWithoutImovelInput>
-    create: XOR<ImovelPerguntaCreateWithoutImovelInput, ImovelPerguntaUncheckedCreateWithoutImovelInput>
-  }
-
-  export type ImovelPerguntaUpdateWithWhereUniqueWithoutImovelInput = {
-    where: ImovelPerguntaWhereUniqueInput
-    data: XOR<ImovelPerguntaUpdateWithoutImovelInput, ImovelPerguntaUncheckedUpdateWithoutImovelInput>
-  }
-
-  export type ImovelPerguntaUpdateManyWithWhereWithoutImovelInput = {
-    where: ImovelPerguntaScalarWhereInput
-    data: XOR<ImovelPerguntaUpdateManyMutationInput, ImovelPerguntaUncheckedUpdateManyWithoutImovelInput>
-  }
-
-  export type ImovelPerguntaScalarWhereInput = {
-    AND?: ImovelPerguntaScalarWhereInput | ImovelPerguntaScalarWhereInput[]
-    OR?: ImovelPerguntaScalarWhereInput[]
-    NOT?: ImovelPerguntaScalarWhereInput | ImovelPerguntaScalarWhereInput[]
-    id?: StringFilter<"ImovelPergunta"> | string
-    createdAt?: DateTimeFilter<"ImovelPergunta"> | Date | string
-    updatedAt?: DateTimeFilter<"ImovelPergunta"> | Date | string
-    imovelId?: StringFilter<"ImovelPergunta"> | string
-    perguntaId?: StringFilter<"ImovelPergunta"> | string
-  }
-
-  export type RespostaCreateWithoutPerguntaInput = {
-    id?: string
-    valor: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    usuario: UserCreateNestedOneWithoutRespostasInput
-  }
-
-  export type RespostaUncheckedCreateWithoutPerguntaInput = {
-    id?: string
-    valor: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userId: string
-  }
-
-  export type RespostaCreateOrConnectWithoutPerguntaInput = {
-    where: RespostaWhereUniqueInput
-    create: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput>
-  }
-
-  export type RespostaCreateManyPerguntaInputEnvelope = {
-    data: RespostaCreateManyPerguntaInput | RespostaCreateManyPerguntaInput[]
-    skipDuplicates?: boolean
   }
 
   export type ImovelPerguntaCreateWithoutPerguntaInput = {
@@ -30360,20 +30334,30 @@ export namespace Prisma {
     create: XOR<ConfiguracaoPerguntaCreateWithoutPerguntasInput, ConfiguracaoPerguntaUncheckedCreateWithoutPerguntasInput>
   }
 
-  export type RespostaUpsertWithWhereUniqueWithoutPerguntaInput = {
+  export type RespostaCreateWithoutPerguntaInput = {
+    id?: string
+    valor: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    usuario: UserCreateNestedOneWithoutRespostasInput
+  }
+
+  export type RespostaUncheckedCreateWithoutPerguntaInput = {
+    id?: string
+    valor: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userId: string
+  }
+
+  export type RespostaCreateOrConnectWithoutPerguntaInput = {
     where: RespostaWhereUniqueInput
-    update: XOR<RespostaUpdateWithoutPerguntaInput, RespostaUncheckedUpdateWithoutPerguntaInput>
     create: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput>
   }
 
-  export type RespostaUpdateWithWhereUniqueWithoutPerguntaInput = {
-    where: RespostaWhereUniqueInput
-    data: XOR<RespostaUpdateWithoutPerguntaInput, RespostaUncheckedUpdateWithoutPerguntaInput>
-  }
-
-  export type RespostaUpdateManyWithWhereWithoutPerguntaInput = {
-    where: RespostaScalarWhereInput
-    data: XOR<RespostaUpdateManyMutationInput, RespostaUncheckedUpdateManyWithoutPerguntaInput>
+  export type RespostaCreateManyPerguntaInputEnvelope = {
+    data: RespostaCreateManyPerguntaInput | RespostaCreateManyPerguntaInput[]
+    skipDuplicates?: boolean
   }
 
   export type ImovelPerguntaUpsertWithWhereUniqueWithoutPerguntaInput = {
@@ -30423,23 +30407,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type RespostaUpsertWithWhereUniqueWithoutPerguntaInput = {
+    where: RespostaWhereUniqueInput
+    update: XOR<RespostaUpdateWithoutPerguntaInput, RespostaUncheckedUpdateWithoutPerguntaInput>
+    create: XOR<RespostaCreateWithoutPerguntaInput, RespostaUncheckedCreateWithoutPerguntaInput>
+  }
+
+  export type RespostaUpdateWithWhereUniqueWithoutPerguntaInput = {
+    where: RespostaWhereUniqueInput
+    data: XOR<RespostaUpdateWithoutPerguntaInput, RespostaUncheckedUpdateWithoutPerguntaInput>
+  }
+
+  export type RespostaUpdateManyWithWhereWithoutPerguntaInput = {
+    where: RespostaScalarWhereInput
+    data: XOR<RespostaUpdateManyMutationInput, RespostaUncheckedUpdateManyWithoutPerguntaInput>
+  }
+
   export type PerguntaCreateWithoutConfiguracaoInput = {
     id?: string
     texto: string
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    respostas?: RespostaCreateNestedManyWithoutPerguntaInput
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
     imoveis?: ImovelPerguntaCreateNestedManyWithoutPerguntaInput
+    respostas?: RespostaCreateNestedManyWithoutPerguntaInput
   }
 
   export type PerguntaUncheckedCreateWithoutConfiguracaoInput = {
@@ -30448,17 +30448,17 @@ export namespace Prisma {
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    respostas?: RespostaUncheckedCreateNestedManyWithoutPerguntaInput
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
     imoveis?: ImovelPerguntaUncheckedCreateNestedManyWithoutPerguntaInput
+    respostas?: RespostaUncheckedCreateNestedManyWithoutPerguntaInput
   }
 
   export type PerguntaCreateOrConnectWithoutConfiguracaoInput = {
@@ -30496,15 +30496,15 @@ export namespace Prisma {
     tipo?: StringFilter<"Pergunta"> | string
     opcoes?: JsonNullableFilter<"Pergunta">
     ordem?: IntFilter<"Pergunta"> | number
-    categoria?: StringFilter<"Pergunta"> | string
-    fluxo?: StringFilter<"Pergunta"> | string
-    pontuacao?: IntFilter<"Pergunta"> | number
     obrigatoria?: BoolFilter<"Pergunta"> | boolean
     condicional?: JsonNullableFilter<"Pergunta">
     geradaPorIA?: BoolFilter<"Pergunta"> | boolean
-    ativa?: BoolFilter<"Pergunta"> | boolean
     createdAt?: DateTimeFilter<"Pergunta"> | Date | string
     updatedAt?: DateTimeFilter<"Pergunta"> | Date | string
+    ativa?: BoolFilter<"Pergunta"> | boolean
+    categoria?: StringFilter<"Pergunta"> | string
+    fluxo?: StringFilter<"Pergunta"> | string
+    pontuacao?: IntFilter<"Pergunta"> | number
     configuracaoId?: StringNullableFilter<"Pergunta"> | string | null
   }
 
@@ -30514,15 +30514,15 @@ export namespace Prisma {
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
     imoveis?: ImovelPerguntaCreateNestedManyWithoutPerguntaInput
     configuracao?: ConfiguracaoPerguntaCreateNestedOneWithoutPerguntasInput
   }
@@ -30533,15 +30533,15 @@ export namespace Prisma {
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
     configuracaoId?: string | null
     imoveis?: ImovelPerguntaUncheckedCreateNestedManyWithoutPerguntaInput
   }
@@ -30556,12 +30556,12 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    telefone?: string | null
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
-    construtora?: ConstrutoraCreateNestedOneWithoutUsuariosInput
+    telefone?: string | null
     relatorios?: RelatorioCreateNestedManyWithoutUsuarioInput
+    construtora?: ConstrutoraCreateNestedOneWithoutUsuariosInput
   }
 
   export type UserUncheckedCreateWithoutRespostasInput = {
@@ -30569,11 +30569,11 @@ export namespace Prisma {
     name: string
     email: string
     password: string
-    telefone?: string | null
     role?: $Enums.UserRole
     createdAt?: Date | string
     updatedAt?: Date | string
     construtoraId?: string | null
+    telefone?: string | null
     relatorios?: RelatorioUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
@@ -30599,15 +30599,15 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
     imoveis?: ImovelPerguntaUpdateManyWithoutPerguntaNestedInput
     configuracao?: ConfiguracaoPerguntaUpdateOneWithoutPerguntasNestedInput
   }
@@ -30618,15 +30618,15 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
     configuracaoId?: NullableStringFieldUpdateOperationsInput | string | null
     imoveis?: ImovelPerguntaUncheckedUpdateManyWithoutPerguntaNestedInput
   }
@@ -30647,12 +30647,12 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    construtora?: ConstrutoraUpdateOneWithoutUsuariosNestedInput
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     relatorios?: RelatorioUpdateManyWithoutUsuarioNestedInput
+    construtora?: ConstrutoraUpdateOneWithoutUsuariosNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRespostasInput = {
@@ -30660,11 +30660,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     construtoraId?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
     relatorios?: RelatorioUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
@@ -30682,18 +30682,18 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelNome?: string | null
     construtora: ConstrutoraCreateNestedOneWithoutImoveisInput
+    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
     perguntas?: ImovelPerguntaCreateNestedManyWithoutImovelInput
   }
 
@@ -30711,18 +30711,18 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelId?: string | null
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     construtoraId: string
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     perguntas?: ImovelPerguntaUncheckedCreateNestedManyWithoutImovelInput
   }
 
@@ -30735,36 +30735,36 @@ export namespace Prisma {
     id?: string
     resumo?: string | null
     pdfUrl?: string | null
-    dataCriacao?: Date | string
     updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
     bairros?: string | null
-    localTrabalho?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
     distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
     importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
     importanciaEspacoPet?: string | null
     importanciaParques?: string | null
-    importanciaShopping?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
     importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
     importanciaTransporte?: string | null
-    imoveisRecomendados?: ImoveisRecomendadosCreateNestedManyWithoutRelatorioInput
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
+    ImoveisRecomendados?: ImoveisRecomendadosCreateNestedManyWithoutRelatorioInput
     usuario: UserCreateNestedOneWithoutRelatoriosInput
   }
 
@@ -30772,37 +30772,37 @@ export namespace Prisma {
     id?: string
     resumo?: string | null
     pdfUrl?: string | null
-    dataCriacao?: Date | string
     updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
+    userId: string
     bairros?: string | null
-    localTrabalho?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
     distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
     importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
     importanciaEspacoPet?: string | null
     importanciaParques?: string | null
-    importanciaShopping?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
     importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
     importanciaTransporte?: string | null
-    userId: string
-    imoveisRecomendados?: ImoveisRecomendadosUncheckedCreateNestedManyWithoutRelatorioInput
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
+    ImoveisRecomendados?: ImoveisRecomendadosUncheckedCreateNestedManyWithoutRelatorioInput
   }
 
   export type RelatorioCreateOrConnectWithoutMatchesInput = {
@@ -30835,18 +30835,18 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     construtora?: ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput
+    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
     perguntas?: ImovelPerguntaUpdateManyWithoutImovelNestedInput
   }
 
@@ -30864,18 +30864,18 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     construtoraId?: StringFieldUpdateOperationsInput | string
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     perguntas?: ImovelPerguntaUncheckedUpdateManyWithoutImovelNestedInput
   }
 
@@ -30894,36 +30894,36 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     resumo?: NullableStringFieldUpdateOperationsInput | string | null
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
     bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-    imoveisRecomendados?: ImoveisRecomendadosUpdateManyWithoutRelatorioNestedInput
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
+    ImoveisRecomendados?: ImoveisRecomendadosUpdateManyWithoutRelatorioNestedInput
     usuario?: UserUpdateOneRequiredWithoutRelatoriosNestedInput
   }
 
@@ -30931,41 +30931,41 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     resumo?: NullableStringFieldUpdateOperationsInput | string | null
     pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    userId?: StringFieldUpdateOperationsInput | string
     bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
     importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: StringFieldUpdateOperationsInput | string
-    imoveisRecomendados?: ImoveisRecomendadosUncheckedUpdateManyWithoutRelatorioNestedInput
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
+    ImoveisRecomendados?: ImoveisRecomendadosUncheckedUpdateManyWithoutRelatorioNestedInput
   }
 
   export type ImoveisRecomendadosCreateWithoutRelatorioInput = {
-    id?: string
+    id: string
     imovelId: string
     titulo?: string | null
     preco?: number | null
@@ -30982,7 +30982,7 @@ export namespace Prisma {
   }
 
   export type ImoveisRecomendadosUncheckedCreateWithoutRelatorioInput = {
-    id?: string
+    id: string
     imovelId: string
     titulo?: string | null
     preco?: number | null
@@ -31006,37 +31006,6 @@ export namespace Prisma {
   export type ImoveisRecomendadosCreateManyRelatorioInputEnvelope = {
     data: ImoveisRecomendadosCreateManyRelatorioInput | ImoveisRecomendadosCreateManyRelatorioInput[]
     skipDuplicates?: boolean
-  }
-
-  export type UserCreateWithoutRelatoriosInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    telefone?: string | null
-    role?: $Enums.UserRole
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    construtora?: ConstrutoraCreateNestedOneWithoutUsuariosInput
-    respostas?: RespostaCreateNestedManyWithoutUsuarioInput
-  }
-
-  export type UserUncheckedCreateWithoutRelatoriosInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    telefone?: string | null
-    role?: $Enums.UserRole
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    construtoraId?: string | null
-    respostas?: RespostaUncheckedCreateNestedManyWithoutUsuarioInput
-  }
-
-  export type UserCreateOrConnectWithoutRelatoriosInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutRelatoriosInput, UserUncheckedCreateWithoutRelatoriosInput>
   }
 
   export type MatchCreateWithoutRelatorioInput = {
@@ -31069,6 +31038,37 @@ export namespace Prisma {
   export type MatchCreateManyRelatorioInputEnvelope = {
     data: MatchCreateManyRelatorioInput | MatchCreateManyRelatorioInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutRelatoriosInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    telefone?: string | null
+    respostas?: RespostaCreateNestedManyWithoutUsuarioInput
+    construtora?: ConstrutoraCreateNestedOneWithoutUsuariosInput
+  }
+
+  export type UserUncheckedCreateWithoutRelatoriosInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    construtoraId?: string | null
+    telefone?: string | null
+    respostas?: RespostaUncheckedCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UserCreateOrConnectWithoutRelatoriosInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutRelatoriosInput, UserUncheckedCreateWithoutRelatoriosInput>
   }
 
   export type ImoveisRecomendadosUpsertWithWhereUniqueWithoutRelatorioInput = {
@@ -31108,43 +31108,6 @@ export namespace Prisma {
     dataCriacao?: DateTimeFilter<"ImoveisRecomendados"> | Date | string
   }
 
-  export type UserUpsertWithoutRelatoriosInput = {
-    update: XOR<UserUpdateWithoutRelatoriosInput, UserUncheckedUpdateWithoutRelatoriosInput>
-    create: XOR<UserCreateWithoutRelatoriosInput, UserUncheckedCreateWithoutRelatoriosInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutRelatoriosInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutRelatoriosInput, UserUncheckedUpdateWithoutRelatoriosInput>
-  }
-
-  export type UserUpdateWithoutRelatoriosInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    construtora?: ConstrutoraUpdateOneWithoutUsuariosNestedInput
-    respostas?: RespostaUpdateManyWithoutUsuarioNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutRelatoriosInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    construtoraId?: NullableStringFieldUpdateOperationsInput | string | null
-    respostas?: RespostaUncheckedUpdateManyWithoutUsuarioNestedInput
-  }
-
   export type MatchUpsertWithWhereUniqueWithoutRelatorioInput = {
     where: MatchWhereUniqueInput
     update: XOR<MatchUpdateWithoutRelatorioInput, MatchUncheckedUpdateWithoutRelatorioInput>
@@ -31161,168 +31124,41 @@ export namespace Prisma {
     data: XOR<MatchUpdateManyMutationInput, MatchUncheckedUpdateManyWithoutRelatorioInput>
   }
 
-  export type RelatorioCreateWithoutImoveisRecomendadosInput = {
-    id?: string
-    resumo?: string | null
-    pdfUrl?: string | null
-    dataCriacao?: Date | string
-    updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
-    bairros?: string | null
-    localTrabalho?: string | null
-    distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
-    importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
-    importanciaEspacoPet?: string | null
-    importanciaParques?: string | null
-    importanciaShopping?: string | null
-    importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
-    importanciaTransporte?: string | null
-    usuario: UserCreateNestedOneWithoutRelatoriosInput
-    matches?: MatchCreateNestedManyWithoutRelatorioInput
+  export type UserUpsertWithoutRelatoriosInput = {
+    update: XOR<UserUpdateWithoutRelatoriosInput, UserUncheckedUpdateWithoutRelatoriosInput>
+    create: XOR<UserCreateWithoutRelatoriosInput, UserUncheckedCreateWithoutRelatoriosInput>
+    where?: UserWhereInput
   }
 
-  export type RelatorioUncheckedCreateWithoutImoveisRecomendadosInput = {
-    id?: string
-    resumo?: string | null
-    pdfUrl?: string | null
-    dataCriacao?: Date | string
-    updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
-    bairros?: string | null
-    localTrabalho?: string | null
-    distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
-    importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
-    importanciaEspacoPet?: string | null
-    importanciaParques?: string | null
-    importanciaShopping?: string | null
-    importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
-    importanciaTransporte?: string | null
-    userId: string
-    matches?: MatchUncheckedCreateNestedManyWithoutRelatorioInput
+  export type UserUpdateToOneWithWhereWithoutRelatoriosInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutRelatoriosInput, UserUncheckedUpdateWithoutRelatoriosInput>
   }
 
-  export type RelatorioCreateOrConnectWithoutImoveisRecomendadosInput = {
-    where: RelatorioWhereUniqueInput
-    create: XOR<RelatorioCreateWithoutImoveisRecomendadosInput, RelatorioUncheckedCreateWithoutImoveisRecomendadosInput>
-  }
-
-  export type RelatorioUpsertWithoutImoveisRecomendadosInput = {
-    update: XOR<RelatorioUpdateWithoutImoveisRecomendadosInput, RelatorioUncheckedUpdateWithoutImoveisRecomendadosInput>
-    create: XOR<RelatorioCreateWithoutImoveisRecomendadosInput, RelatorioUncheckedCreateWithoutImoveisRecomendadosInput>
-    where?: RelatorioWhereInput
-  }
-
-  export type RelatorioUpdateToOneWithWhereWithoutImoveisRecomendadosInput = {
-    where?: RelatorioWhereInput
-    data: XOR<RelatorioUpdateWithoutImoveisRecomendadosInput, RelatorioUncheckedUpdateWithoutImoveisRecomendadosInput>
-  }
-
-  export type RelatorioUpdateWithoutImoveisRecomendadosInput = {
+  export type UserUpdateWithoutRelatoriosInput = {
     id?: StringFieldUpdateOperationsInput | string
-    resumo?: NullableStringFieldUpdateOperationsInput | string | null
-    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
-    bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
-    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-    usuario?: UserUpdateOneRequiredWithoutRelatoriosNestedInput
-    matches?: MatchUpdateManyWithoutRelatorioNestedInput
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    respostas?: RespostaUpdateManyWithoutUsuarioNestedInput
+    construtora?: ConstrutoraUpdateOneWithoutUsuariosNestedInput
   }
 
-  export type RelatorioUncheckedUpdateWithoutImoveisRecomendadosInput = {
+  export type UserUncheckedUpdateWithoutRelatoriosInput = {
     id?: StringFieldUpdateOperationsInput | string
-    resumo?: NullableStringFieldUpdateOperationsInput | string | null
-    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
-    bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
-    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-    userId?: StringFieldUpdateOperationsInput | string
-    matches?: MatchUncheckedUpdateManyWithoutRelatorioNestedInput
+    construtoraId?: NullableStringFieldUpdateOperationsInput | string | null
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    respostas?: RespostaUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type ConstrutoraCreateWithoutImoveisMetadataInput = {
@@ -31335,8 +31171,8 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    usuarios?: UserCreateNestedManyWithoutConstrutoraInput
     imoveis?: ImovelCreateNestedManyWithoutConstrutoraInput
+    usuarios?: UserCreateNestedManyWithoutConstrutoraInput
   }
 
   export type ConstrutoraUncheckedCreateWithoutImoveisMetadataInput = {
@@ -31349,8 +31185,8 @@ export namespace Prisma {
     ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    usuarios?: UserUncheckedCreateNestedManyWithoutConstrutoraInput
     imoveis?: ImovelUncheckedCreateNestedManyWithoutConstrutoraInput
+    usuarios?: UserUncheckedCreateNestedManyWithoutConstrutoraInput
   }
 
   export type ConstrutoraCreateOrConnectWithoutImoveisMetadataInput = {
@@ -31379,8 +31215,8 @@ export namespace Prisma {
     ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usuarios?: UserUpdateManyWithoutConstrutoraNestedInput
     imoveis?: ImovelUpdateManyWithoutConstrutoraNestedInput
+    usuarios?: UserUpdateManyWithoutConstrutoraNestedInput
   }
 
   export type ConstrutoraUncheckedUpdateWithoutImoveisMetadataInput = {
@@ -31393,8 +31229,8 @@ export namespace Prisma {
     ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    usuarios?: UserUncheckedUpdateManyWithoutConstrutoraNestedInput
     imoveis?: ImovelUncheckedUpdateManyWithoutConstrutoraNestedInput
+    usuarios?: UserUncheckedUpdateManyWithoutConstrutoraNestedInput
   }
 
   export type ImovelCreateWithoutPerguntasInput = {
@@ -31411,18 +31247,18 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelNome?: string | null
     construtora: ConstrutoraCreateNestedOneWithoutImoveisInput
+    tipoImovel?: TipoImovelCreateNestedOneWithoutImoveisInput
     matches?: MatchCreateNestedManyWithoutImovelInput
   }
 
@@ -31440,18 +31276,18 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelId?: string | null
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     construtoraId: string
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
     matches?: MatchUncheckedCreateNestedManyWithoutImovelInput
   }
 
@@ -31466,17 +31302,17 @@ export namespace Prisma {
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    respostas?: RespostaCreateNestedManyWithoutPerguntaInput
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
     configuracao?: ConfiguracaoPerguntaCreateNestedOneWithoutPerguntasInput
+    respostas?: RespostaCreateNestedManyWithoutPerguntaInput
   }
 
   export type PerguntaUncheckedCreateWithoutImoveisInput = {
@@ -31485,15 +31321,15 @@ export namespace Prisma {
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
     configuracaoId?: string | null
     respostas?: RespostaUncheckedCreateNestedManyWithoutPerguntaInput
   }
@@ -31528,18 +31364,18 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     construtora?: ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput
+    tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
     matches?: MatchUpdateManyWithoutImovelNestedInput
   }
 
@@ -31557,18 +31393,18 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     construtoraId?: StringFieldUpdateOperationsInput | string
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     matches?: MatchUncheckedUpdateManyWithoutImovelNestedInput
   }
 
@@ -31589,17 +31425,17 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    respostas?: RespostaUpdateManyWithoutPerguntaNestedInput
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
     configuracao?: ConfiguracaoPerguntaUpdateOneWithoutPerguntasNestedInput
+    respostas?: RespostaUpdateManyWithoutPerguntaNestedInput
   }
 
   export type PerguntaUncheckedUpdateWithoutImoveisInput = {
@@ -31608,17 +31444,181 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
     configuracaoId?: NullableStringFieldUpdateOperationsInput | string | null
     respostas?: RespostaUncheckedUpdateManyWithoutPerguntaNestedInput
+  }
+
+  export type RelatorioCreateWithoutImoveisRecomendadosInput = {
+    id?: string
+    resumo?: string | null
+    pdfUrl?: string | null
+    updatedAt?: Date | string
+    bairros?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
+    distanciaMaximaTrabalho?: number | null
+    importanciaAcademia?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
+    importanciaEspacoPet?: string | null
+    importanciaParques?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
+    importanciaRestaurantes?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
+    importanciaTransporte?: string | null
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
+    matches?: MatchCreateNestedManyWithoutRelatorioInput
+    usuario: UserCreateNestedOneWithoutRelatoriosInput
+  }
+
+  export type RelatorioUncheckedCreateWithoutImoveisRecomendadosInput = {
+    id?: string
+    resumo?: string | null
+    pdfUrl?: string | null
+    updatedAt?: Date | string
+    userId: string
+    bairros?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
+    distanciaMaximaTrabalho?: number | null
+    importanciaAcademia?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
+    importanciaEspacoPet?: string | null
+    importanciaParques?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
+    importanciaRestaurantes?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
+    importanciaTransporte?: string | null
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
+    matches?: MatchUncheckedCreateNestedManyWithoutRelatorioInput
+  }
+
+  export type RelatorioCreateOrConnectWithoutImoveisRecomendadosInput = {
+    where: RelatorioWhereUniqueInput
+    create: XOR<RelatorioCreateWithoutImoveisRecomendadosInput, RelatorioUncheckedCreateWithoutImoveisRecomendadosInput>
+  }
+
+  export type RelatorioUpsertWithoutImoveisRecomendadosInput = {
+    update: XOR<RelatorioUpdateWithoutImoveisRecomendadosInput, RelatorioUncheckedUpdateWithoutImoveisRecomendadosInput>
+    create: XOR<RelatorioCreateWithoutImoveisRecomendadosInput, RelatorioUncheckedCreateWithoutImoveisRecomendadosInput>
+    where?: RelatorioWhereInput
+  }
+
+  export type RelatorioUpdateToOneWithWhereWithoutImoveisRecomendadosInput = {
+    where?: RelatorioWhereInput
+    data: XOR<RelatorioUpdateWithoutImoveisRecomendadosInput, RelatorioUncheckedUpdateWithoutImoveisRecomendadosInput>
+  }
+
+  export type RelatorioUpdateWithoutImoveisRecomendadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resumo?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bairros?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
+    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
+    matches?: MatchUpdateManyWithoutRelatorioNestedInput
+    usuario?: UserUpdateOneRequiredWithoutRelatoriosNestedInput
+  }
+
+  export type RelatorioUncheckedUpdateWithoutImoveisRecomendadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resumo?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    bairros?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
+    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
+    matches?: MatchUncheckedUpdateManyWithoutRelatorioNestedInput
   }
 
   export type ImovelCreateManyTipoImovelInput = {
@@ -31635,17 +31635,17 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     construtoraId: string
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelNome?: string | null
   }
 
   export type ImovelUpdateWithoutTipoImovelInput = {
@@ -31662,19 +31662,19 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     construtora?: ConstrutoraUpdateOneRequiredWithoutImoveisNestedInput
-    matches?: MatchUpdateManyWithoutImovelNestedInput
     perguntas?: ImovelPerguntaUpdateManyWithoutImovelNestedInput
+    matches?: MatchUpdateManyWithoutImovelNestedInput
   }
 
   export type ImovelUncheckedUpdateWithoutTipoImovelInput = {
@@ -31691,19 +31691,19 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     construtoraId?: StringFieldUpdateOperationsInput | string
-    matches?: MatchUncheckedUpdateManyWithoutImovelNestedInput
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     perguntas?: ImovelPerguntaUncheckedUpdateManyWithoutImovelNestedInput
+    matches?: MatchUncheckedUpdateManyWithoutImovelNestedInput
   }
 
   export type ImovelUncheckedUpdateManyWithoutTipoImovelInput = {
@@ -31720,17 +31720,52 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     construtoraId?: StringFieldUpdateOperationsInput | string
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type RelatorioCreateManyUsuarioInput = {
+    id?: string
+    resumo?: string | null
+    pdfUrl?: string | null
+    updatedAt?: Date | string
+    bairros?: string | null
+    cidade?: string | null
+    dataCriacao?: Date | string
+    distanciaMaximaTrabalho?: number | null
+    importanciaAcademia?: string | null
+    importanciaCaminhabilidade?: string | null
+    importanciaEscolas?: string | null
+    importanciaEspacoPet?: string | null
+    importanciaParques?: string | null
+    importanciaPiscina?: string | null
+    importanciaPisoQuartos?: string | null
+    importanciaPlayground?: string | null
+    importanciaRestaurantes?: string | null
+    importanciaSalaoFestas?: string | null
+    importanciaShopping?: string | null
+    importanciaTransporte?: string | null
+    localTrabalho?: string | null
+    prazoFinanciamento?: number | null
+    rendaMensal?: number | null
+    taxa?: number | null
+    temOutrosEmprestimos?: boolean | null
+    temPet?: boolean | null
+    tipoPortaria?: string | null
+    valorEntrada?: number | null
+    valorFinanciamento?: number | null
+    valorImovel?: number | null
+    valorParcela?: number | null
+    valorParcelaMaxima?: number | null
   }
 
   export type RespostaCreateManyUsuarioInput = {
@@ -31741,39 +31776,113 @@ export namespace Prisma {
     perguntaId: string
   }
 
-  export type RelatorioCreateManyUsuarioInput = {
-    id?: string
-    resumo?: string | null
-    pdfUrl?: string | null
-    dataCriacao?: Date | string
-    updatedAt?: Date | string
-    rendaMensal?: number | null
-    valorParcelaMaxima?: number | null
-    temOutrosEmprestimos?: boolean | null
-    valorEntrada?: number | null
-    prazoFinanciamento?: number | null
-    taxa?: number | null
-    valorImovel?: number | null
-    valorFinanciamento?: number | null
-    valorParcela?: number | null
-    cidade?: string | null
-    bairros?: string | null
-    localTrabalho?: string | null
-    distanciaMaximaTrabalho?: number | null
-    importanciaPisoQuartos?: string | null
-    importanciaAcademia?: string | null
-    importanciaPiscina?: string | null
-    tipoPortaria?: string | null
-    importanciaSalaoFestas?: string | null
-    importanciaPlayground?: string | null
-    importanciaEspacoPet?: string | null
-    importanciaParques?: string | null
-    importanciaShopping?: string | null
-    importanciaRestaurantes?: string | null
-    importanciaCaminhabilidade?: string | null
-    temPet?: boolean | null
-    importanciaEscolas?: string | null
-    importanciaTransporte?: string | null
+  export type RelatorioUpdateWithoutUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resumo?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bairros?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
+    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
+    ImoveisRecomendados?: ImoveisRecomendadosUpdateManyWithoutRelatorioNestedInput
+    matches?: MatchUpdateManyWithoutRelatorioNestedInput
+  }
+
+  export type RelatorioUncheckedUpdateWithoutUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resumo?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bairros?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
+    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
+    ImoveisRecomendados?: ImoveisRecomendadosUncheckedUpdateManyWithoutRelatorioNestedInput
+    matches?: MatchUncheckedUpdateManyWithoutRelatorioNestedInput
+  }
+
+  export type RelatorioUncheckedUpdateManyWithoutUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    resumo?: NullableStringFieldUpdateOperationsInput | string | null
+    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bairros?: NullableStringFieldUpdateOperationsInput | string | null
+    cidade?: NullableStringFieldUpdateOperationsInput | string | null
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
+    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
+    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
+    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
+    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
+    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
+    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
+    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
+    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
+    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
+    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
   }
 
   export type RespostaUpdateWithoutUsuarioInput = {
@@ -31800,126 +31909,6 @@ export namespace Prisma {
     perguntaId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type RelatorioUpdateWithoutUsuarioInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    resumo?: NullableStringFieldUpdateOperationsInput | string | null
-    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
-    bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
-    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-    imoveisRecomendados?: ImoveisRecomendadosUpdateManyWithoutRelatorioNestedInput
-    matches?: MatchUpdateManyWithoutRelatorioNestedInput
-  }
-
-  export type RelatorioUncheckedUpdateWithoutUsuarioInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    resumo?: NullableStringFieldUpdateOperationsInput | string | null
-    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
-    bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
-    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-    imoveisRecomendados?: ImoveisRecomendadosUncheckedUpdateManyWithoutRelatorioNestedInput
-    matches?: MatchUncheckedUpdateManyWithoutRelatorioNestedInput
-  }
-
-  export type RelatorioUncheckedUpdateManyWithoutUsuarioInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    resumo?: NullableStringFieldUpdateOperationsInput | string | null
-    pdfUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    rendaMensal?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcelaMaxima?: NullableFloatFieldUpdateOperationsInput | number | null
-    temOutrosEmprestimos?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    valorEntrada?: NullableFloatFieldUpdateOperationsInput | number | null
-    prazoFinanciamento?: NullableIntFieldUpdateOperationsInput | number | null
-    taxa?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorImovel?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorFinanciamento?: NullableFloatFieldUpdateOperationsInput | number | null
-    valorParcela?: NullableFloatFieldUpdateOperationsInput | number | null
-    cidade?: NullableStringFieldUpdateOperationsInput | string | null
-    bairros?: NullableStringFieldUpdateOperationsInput | string | null
-    localTrabalho?: NullableStringFieldUpdateOperationsInput | string | null
-    distanciaMaximaTrabalho?: NullableFloatFieldUpdateOperationsInput | number | null
-    importanciaPisoQuartos?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaAcademia?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPiscina?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoPortaria?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaSalaoFestas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaPlayground?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaEspacoPet?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaParques?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaShopping?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaRestaurantes?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaCaminhabilidade?: NullableStringFieldUpdateOperationsInput | string | null
-    temPet?: NullableBoolFieldUpdateOperationsInput | boolean | null
-    importanciaEscolas?: NullableStringFieldUpdateOperationsInput | string | null
-    importanciaTransporte?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type UserCreateManyConstrutoraInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    telefone?: string | null
-    role?: $Enums.UserRole
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type ImovelCreateManyConstrutoraInput = {
     id?: string
     idExternoAPI?: string | null
@@ -31934,17 +31923,17 @@ export namespace Prisma {
     longitude: number
     telefoneContato?: string | null
     endereco: string
-    fotoPrincipal?: string | null
-    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
-    tipoImovelId?: string | null
-    tipoImovelNome?: string | null
-    status?: string | null
-    ativo?: boolean
-    destaque?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    caracteristicasArray?: ImovelCreatecaracteristicasArrayInput | string[]
+    destaque?: boolean
+    fotoPrincipal?: string | null
+    galeriaFotos?: ImovelCreategaleriaFotosInput | string[]
+    status?: string | null
+    ativo?: boolean
+    tipoImovelId?: string | null
+    tipoImovelNome?: string | null
   }
 
   export type ImovelMetadataCreateManyConstrutoraInput = {
@@ -31956,41 +31945,15 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type UserUpdateWithoutConstrutoraInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    respostas?: RespostaUpdateManyWithoutUsuarioNestedInput
-    relatorios?: RelatorioUpdateManyWithoutUsuarioNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutConstrutoraInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    respostas?: RespostaUncheckedUpdateManyWithoutUsuarioNestedInput
-    relatorios?: RelatorioUncheckedUpdateManyWithoutUsuarioNestedInput
-  }
-
-  export type UserUncheckedUpdateManyWithoutConstrutoraInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    telefone?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type UserCreateManyConstrutoraInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.UserRole
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    telefone?: string | null
   }
 
   export type ImovelUpdateWithoutConstrutoraInput = {
@@ -32007,19 +31970,19 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     tipoImovel?: TipoImovelUpdateOneWithoutImoveisNestedInput
-    matches?: MatchUpdateManyWithoutImovelNestedInput
     perguntas?: ImovelPerguntaUpdateManyWithoutImovelNestedInput
+    matches?: MatchUpdateManyWithoutImovelNestedInput
   }
 
   export type ImovelUncheckedUpdateWithoutConstrutoraInput = {
@@ -32036,19 +31999,19 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    matches?: MatchUncheckedUpdateManyWithoutImovelNestedInput
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
     perguntas?: ImovelPerguntaUncheckedUpdateManyWithoutImovelNestedInput
+    matches?: MatchUncheckedUpdateManyWithoutImovelNestedInput
   }
 
   export type ImovelUncheckedUpdateManyWithoutConstrutoraInput = {
@@ -32065,17 +32028,17 @@ export namespace Prisma {
     longitude?: FloatFieldUpdateOperationsInput | number
     telefoneContato?: NullableStringFieldUpdateOperationsInput | string | null
     endereco?: StringFieldUpdateOperationsInput | string
-    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
-    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
     caracteristicas?: NullableJsonNullValueInput | InputJsonValue
-    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
-    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
-    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: NullableStringFieldUpdateOperationsInput | string | null
-    ativo?: BoolFieldUpdateOperationsInput | boolean
-    destaque?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    caracteristicasArray?: ImovelUpdatecaracteristicasArrayInput | string[]
+    destaque?: BoolFieldUpdateOperationsInput | boolean
+    fotoPrincipal?: NullableStringFieldUpdateOperationsInput | string | null
+    galeriaFotos?: ImovelUpdategaleriaFotosInput | string[]
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    ativo?: BoolFieldUpdateOperationsInput | boolean
+    tipoImovelId?: NullableStringFieldUpdateOperationsInput | string | null
+    tipoImovelNome?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ImovelMetadataUpdateWithoutConstrutoraInput = {
@@ -32105,6 +32068,50 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserUpdateWithoutConstrutoraInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    relatorios?: RelatorioUpdateManyWithoutUsuarioNestedInput
+    respostas?: RespostaUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutConstrutoraInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+    relatorios?: RelatorioUncheckedUpdateManyWithoutUsuarioNestedInput
+    respostas?: RespostaUncheckedUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type UserUncheckedUpdateManyWithoutConstrutoraInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    telefone?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ImovelPerguntaCreateManyImovelInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    perguntaId: string
+  }
+
   export type MatchCreateManyImovelInput = {
     id?: string
     porcentagem: number
@@ -32116,11 +32123,25 @@ export namespace Prisma {
     relatorioId?: string | null
   }
 
-  export type ImovelPerguntaCreateManyImovelInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    perguntaId: string
+  export type ImovelPerguntaUpdateWithoutImovelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pergunta?: PerguntaUpdateOneRequiredWithoutImoveisNestedInput
+  }
+
+  export type ImovelPerguntaUncheckedUpdateWithoutImovelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    perguntaId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ImovelPerguntaUncheckedUpdateManyWithoutImovelInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    perguntaId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MatchUpdateWithoutImovelInput = {
@@ -32156,25 +32177,11 @@ export namespace Prisma {
     relatorioId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type ImovelPerguntaUpdateWithoutImovelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    pergunta?: PerguntaUpdateOneRequiredWithoutImoveisNestedInput
-  }
-
-  export type ImovelPerguntaUncheckedUpdateWithoutImovelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    perguntaId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ImovelPerguntaUncheckedUpdateManyWithoutImovelInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    perguntaId?: StringFieldUpdateOperationsInput | string
+  export type ImovelPerguntaCreateManyPerguntaInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    imovelId: string
   }
 
   export type RespostaCreateManyPerguntaInput = {
@@ -32185,11 +32192,25 @@ export namespace Prisma {
     userId: string
   }
 
-  export type ImovelPerguntaCreateManyPerguntaInput = {
-    id?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    imovelId: string
+  export type ImovelPerguntaUpdateWithoutPerguntaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    imovel?: ImovelUpdateOneRequiredWithoutPerguntasNestedInput
+  }
+
+  export type ImovelPerguntaUncheckedUpdateWithoutPerguntaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    imovelId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ImovelPerguntaUncheckedUpdateManyWithoutPerguntaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    imovelId?: StringFieldUpdateOperationsInput | string
   }
 
   export type RespostaUpdateWithoutPerguntaInput = {
@@ -32216,42 +32237,21 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type ImovelPerguntaUpdateWithoutPerguntaInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    imovel?: ImovelUpdateOneRequiredWithoutPerguntasNestedInput
-  }
-
-  export type ImovelPerguntaUncheckedUpdateWithoutPerguntaInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    imovelId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type ImovelPerguntaUncheckedUpdateManyWithoutPerguntaInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    imovelId?: StringFieldUpdateOperationsInput | string
-  }
-
   export type PerguntaCreateManyConfiguracaoInput = {
     id?: string
     texto: string
     tipo: string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem: number
-    categoria: string
-    fluxo: string
-    pontuacao?: number
     obrigatoria?: boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: boolean
-    ativa?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    ativa?: boolean
+    categoria: string
+    fluxo: string
+    pontuacao?: number
   }
 
   export type PerguntaUpdateWithoutConfiguracaoInput = {
@@ -32260,17 +32260,17 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    respostas?: RespostaUpdateManyWithoutPerguntaNestedInput
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
     imoveis?: ImovelPerguntaUpdateManyWithoutPerguntaNestedInput
+    respostas?: RespostaUpdateManyWithoutPerguntaNestedInput
   }
 
   export type PerguntaUncheckedUpdateWithoutConfiguracaoInput = {
@@ -32279,17 +32279,17 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    respostas?: RespostaUncheckedUpdateManyWithoutPerguntaNestedInput
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
     imoveis?: ImovelPerguntaUncheckedUpdateManyWithoutPerguntaNestedInput
+    respostas?: RespostaUncheckedUpdateManyWithoutPerguntaNestedInput
   }
 
   export type PerguntaUncheckedUpdateManyWithoutConfiguracaoInput = {
@@ -32298,19 +32298,19 @@ export namespace Prisma {
     tipo?: StringFieldUpdateOperationsInput | string
     opcoes?: NullableJsonNullValueInput | InputJsonValue
     ordem?: IntFieldUpdateOperationsInput | number
-    categoria?: StringFieldUpdateOperationsInput | string
-    fluxo?: StringFieldUpdateOperationsInput | string
-    pontuacao?: IntFieldUpdateOperationsInput | number
     obrigatoria?: BoolFieldUpdateOperationsInput | boolean
     condicional?: NullableJsonNullValueInput | InputJsonValue
     geradaPorIA?: BoolFieldUpdateOperationsInput | boolean
-    ativa?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ativa?: BoolFieldUpdateOperationsInput | boolean
+    categoria?: StringFieldUpdateOperationsInput | string
+    fluxo?: StringFieldUpdateOperationsInput | string
+    pontuacao?: IntFieldUpdateOperationsInput | number
   }
 
   export type ImoveisRecomendadosCreateManyRelatorioInput = {
-    id?: string
+    id: string
     imovelId: string
     titulo?: string | null
     preco?: number | null

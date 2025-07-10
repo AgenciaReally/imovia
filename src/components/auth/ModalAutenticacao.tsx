@@ -153,7 +153,7 @@ export function ModalAutenticacao({ isOpen, onClose }: ModalAutenticacaoProps) {
         },
         body: JSON.stringify({
           email: data.email,
-          senha: data.senha,
+          password: data.senha,  // Corrigido de 'senha' para 'password' para combinar com o que a API espera
           lembrarMe: data.lembrarMe || false,
         }),
       });

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { 
@@ -114,20 +114,33 @@ function RespostasPorCategoria({
   }
   
   // Função para formatar a data
-  const formatarData = (dataString: string) => {
-    const data = new Date(dataString)
-    return new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).format(data)
+  const formatarData = (dataString: string | null | undefined) => {
+    if (!dataString) return 'Data não disponível';
+    
+    try {
+      const data = new Date(dataString);
+      
+      // Verificar se a data é válida
+      if (isNaN(data.getTime())) {
+        return 'Data inválida';
+      }
+      
+      return new Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }).format(data);
+    } catch (error) {
+      console.error('Erro ao formatar data:', error);
+      return 'Erro na data';
+    }
   }
   
   // Ícone para cada categoria
   const iconeCategoria = (categoria: string) => {
-    const icones: Record<string, JSX.Element> = {
+    const icones: Record<string, React.ReactNode> = {
       'CADASTRO': <MessageSquare className="h-5 w-5" />,
       'AVALIACAO_CREDITO': <CheckCircle2 className="h-5 w-5" />,
       'INFORMACOES_COMPLEMENTARES': <Info className="h-5 w-5" />,
@@ -199,12 +212,23 @@ export default function RespostasClientePage() {
   const [filtroCategoria, setFiltroCategoria] = useState<string>("todas")
   const [categorias, setCategorias] = useState<string[]>([])
   const [categoriasExpandidas, setCategoriasExpandidas] = useState<Record<string, boolean>>({})
+  const [userName, setUserName] = useState("Cliente")
   
-  // Carregar dados das respostas
+  // Carregar dados das respostas e informações do usuário
   useEffect(() => {
-    const carregarRespostas = async () => {
+    const carregarDados = async () => {
       setLoading(true)
       try {
+        // Buscar informações do usuário
+        const userResponse = await fetch('/api/cliente/dashboard')
+        if (userResponse.ok) {
+          const { data } = await userResponse.json()
+          // Atualizar o nome do usuário com o retornado pela API
+          if (data?.userName) {
+            setUserName(data.userName)
+          }
+        }
+        
         // Buscar respostas do cliente na API
         const response = await fetch('/api/cliente/respostas')
         
@@ -213,12 +237,16 @@ export default function RespostasClientePage() {
         }
         
         const data = await response.json()
+        console.log('Dados recebidos da API:', data)
         
         // Adicionar categoria às respostas para facilitar o agrupamento
-        const respostasComCategoria = data.map((resposta: Resposta) => ({
-          ...resposta,
-          categoria: resposta.pergunta.categoria
-        }))
+        const respostasComCategoria = data.map((resposta: Resposta) => {
+          console.log('Processando resposta:', resposta)
+          return {
+            ...resposta,
+            categoria: resposta.pergunta.categoria
+          }
+        })
         
         setRespostas(respostasComCategoria)
         setRespostasFiltradas(respostasComCategoria)
@@ -249,7 +277,7 @@ export default function RespostasClientePage() {
       }
     }
     
-    carregarRespostas()
+    carregarDados()
   }, [])
   
   // Filtrar respostas quando a busca ou categoria mudar
@@ -317,7 +345,7 @@ export default function RespostasClientePage() {
   }
   
   return (
-    <DashboardLayout userRole="cliente" userName="Cliente">
+    <DashboardLayout userRole="cliente" userName={userName}>
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>

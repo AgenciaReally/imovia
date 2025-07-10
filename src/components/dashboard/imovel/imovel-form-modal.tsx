@@ -1541,34 +1541,14 @@ export function ImovelFormModal({ onSuccess, imovel }: ImovelFormModalProps) {
                 }}
               />
               
-              {/* Destaque na Página Inicial */}
-              <FormField
-                control={form.control}
-                name="destaque"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 col-span-1">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel>Destacar na página inicial</FormLabel>
-                      <FormDescription>
-                        Este imóvel aparecerá em destaque na página inicial do site
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
+              
               
               {/* Campo Ativo */}
               <FormField
                 control={form.control}
                 name="ativo"
                 render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 col-span-1">
+                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 col-span-2">
                     <FormControl>
                       <Checkbox
                         checked={field.value}

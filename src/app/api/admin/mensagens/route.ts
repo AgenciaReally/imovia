@@ -1,6 +1,19 @@
 import { NextResponse } from "next/server"
-import prisma from "@/lib/prisma"
-import { sendEmail } from "@/services/email-service"
+import { prisma } from "@/lib/prisma"
+import nodemailer from 'nodemailer'
+
+// Configurar transportador diretamente na API - mesmo padrão usado na API de relatórios
+const transportador = nodemailer.createTransport({
+  host: 'mail.imovia.ai',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'relatorios@imovia.ai',
+    pass: 'Lala147??',
+  },
+  logger: true,
+  debug: true
+})
 
 export async function POST(request: Request) {
   try {
@@ -30,16 +43,15 @@ export async function POST(request: Request) {
     }
 
     // Registrar o envio da mensagem no banco
-    const mensagemEnviada = await prisma.mensagem.create({
+    // Utilizando o modelo MensagemContato que existe no schema Prisma
+    const mensagemEnviada = await prisma.mensagemContato.create({
       data: {
-        tipo,
-        assunto: assunto || "",
-        conteudo: mensagem,
-        destinatario,
-        userId: clienteId,
+        texto: mensagem,
+        usuarioNome: cliente.name,
+        usuarioEmail: destinatario,
         status: "enviado",
       },
-    }).catch(error => {
+    }).catch((error: Error) => {
       console.error("Erro ao salvar mensagem no banco:", error)
       // Não retornar erro aqui, continuamos o fluxo para tentar enviar mesmo assim
       return null
@@ -54,8 +66,9 @@ export async function POST(request: Request) {
         )
       }
 
-      // Enviar por email
-      await sendEmail({
+      // Configuração do email
+      const mailOptions = {
+        from: `"iMovia" <relatorios@imovia.ai>`,
         to: destinatario,
         subject: assunto,
         html: `
@@ -74,8 +87,11 @@ export async function POST(request: Request) {
               <p>© 2023 Imovia. Todos os direitos reservados.</p>
             </div>
           </div>
-        `,
-      })
+        `
+      };
+      
+      // Envio do email diretamente com o transportador configurado
+      await transportador.sendMail(mailOptions)
     } else if (tipo === "sms") {
       // Simular envio de SMS (em um cenário real, usaríamos um serviço de SMS como Twilio)
       console.log(`SMS para ${destinatario}: ${mensagem}`)
@@ -111,9 +127,9 @@ export async function GET(request: Request) {
       )
     }
 
-    const mensagens = await prisma.mensagem.findMany({
+    const mensagens = await prisma.mensagemContato.findMany({
       where: {
-        userId: clienteId,
+        usuarioEmail: clienteId,
       },
       orderBy: {
         createdAt: "desc",
