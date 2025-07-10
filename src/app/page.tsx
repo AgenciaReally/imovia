@@ -233,11 +233,23 @@ export default function Home() {
               senha: data.senhaGerada
             }));
             
+            // Persistir dados de autenticação no localStorage
+            localStorage.setItem('user-session', JSON.stringify({
+              id: data.userId,
+              email: dadosUsuario.email,
+              name: dadosUsuario.nome,
+              role: 'CLIENTE',
+              token: data.token
+            }));
+            
+            // Atualizar estado de usuário logado
+            setUsuarioLogado(true);
+            
             // Mostrar mensagem de boas-vindas
             if (data.isNew) {
               toast({
                 title: `Olá, ${dadosUsuario.nome}!`,
-                description: "Conta criada automaticamente. Use seu email para acessar o painel quando precisar.",
+                description: "Conta criada automaticamente. Uma senha de acesso foi enviada para seu email.",
                 variant: "default",
               });
             } else {

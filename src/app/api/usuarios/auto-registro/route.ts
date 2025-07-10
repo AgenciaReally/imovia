@@ -62,7 +62,8 @@ export async function POST(request: Request) {
     
     console.log(`Usuário criado automaticamente: ${nome} (${email})`)
     
-    return NextResponse.json({
+    // Preparar response com cookie
+    const response = NextResponse.json({
       success: true,
       message: 'Usuário criado com sucesso',
       userId: novoUsuario.id,
@@ -70,6 +71,39 @@ export async function POST(request: Request) {
       senhaGerada, // Senha em texto limpo para o usuário
       isNew: true
     })
+    
+    // Definir cookie de autenticação
+    response.cookies.set('auth-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24 * 7, // 7 dias
+      path: '/'
+    })
+    
+    // Enviar email de boas-vindas com a senha
+    try {
+      const emailResponse = await fetch(new URL('/api/usuarios/email-boas-vindas', request.url), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nome,
+          email,
+          senha: senhaGerada
+        })
+      })
+      
+      if (emailResponse.ok) {
+        console.log('Email de boas-vindas enviado com sucesso')
+      } else {
+        console.error('Falha ao enviar email de boas-vindas')
+      }
+    } catch (emailError) {
+      console.error('Erro ao enviar email de boas-vindas:', emailError)
+    }
+    
+    return response
   } catch (error) {
     console.error('Erro ao registrar usuário automaticamente:', error)
     return NextResponse.json(
