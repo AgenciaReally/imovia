@@ -47,12 +47,14 @@ interface Resposta {
   pergunta?: {
     texto: string;
     categoria: string;
+    tipo?: string;
   };
   usuario?: {
     email: string;
     name?: string;
   };
   valor: string;
+  resposta?: string; // Campo alternativo que pode estar presente em algumas respostas
   createdAt: string;
   updatedAt: string;
 }

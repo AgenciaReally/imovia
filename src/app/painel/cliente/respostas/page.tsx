@@ -48,8 +48,10 @@ interface Resposta {
     categoria: string
     fluxo: string
   }
-  resposta: string
-  dataResposta: string
+  resposta?: string
+  valor?: string
+  dataResposta?: string
+  createdAt?: string
   categoria?: string
 }
 
@@ -187,12 +189,12 @@ function RespostasPorCategoria({
                 </div>
                 
                 <div className="bg-background p-3 rounded-md">
-                  <p className="text-sm">{resposta.resposta}</p>
+                  <p className="text-sm">{resposta.valor || resposta.resposta || 'Sem resposta'}</p>
                 </div>
                 
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Calendar className="h-3 w-3" />
-                  <span>{formatarData(resposta.dataResposta)}</span>
+                  <span>{formatarData(resposta.dataResposta || resposta.createdAt)}</span>
                 </div>
               </div>
             ))}
