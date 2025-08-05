@@ -3,15 +3,17 @@ import { prisma } from '@/lib/prisma';
 import { randomBytes } from 'crypto';
 import nodemailer from 'nodemailer';
 
-// Configuração do transporte de email usando variáveis de ambiente
+// Configuração direta do transporte de email
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  secure: process.env.EMAIL_SERVER_SECURE === 'true',
+  host: 'mail.imovia.ai',
+  port: 465,
+  secure: true,
   auth: {
-    user: process.env.EMAIL_PORT,
-    pass: process.env.EMAIL_PASS,
+    user: 'relatorios@imovia.ai',
+    pass: 'Lala147??',
   },
+  logger: true,
+  debug: true
 });
 
 export async function POST(request: NextRequest) {
@@ -67,31 +69,101 @@ export async function POST(request: NextRequest) {
 
     // Criar o HTML do email
     const emailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
-        <div style="text-align: center; margin-bottom: 20px;">
-          <img src="https://imovia.ai/logo.webp" alt="Imovia Logo" style="max-width: 150px; height: auto;">
+      <!DOCTYPE html>
+      <html lang="pt-BR">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Recuperação de Senha - Imovia</title>
+        <style>
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+          }
+          
+          .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          }
+          
+          .header {
+            background-color: #ff6b35;
+            padding: 30px 40px;
+            color: white;
+            text-align: center;
+          }
+          
+          .header img {
+            max-width: 180px;
+            margin-bottom: 15px;
+          }
+          
+          .header h1 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 28px;
+          }
+          
+          .header p {
+            margin: 10px 0 0;
+            opacity: 0.9;
+            font-size: 16px;
+          }
+          
+          .content {
+            padding: 40px;
+          }
+          
+          .footer {
+            margin-top: 30px;
+            padding: 20px 40px;
+            border-top: 1px solid #e0e0e0;
+            text-align: center;
+            color: #888;
+            font-size: 12px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <div class="header">
+            <img src="https://zwrvzwymppmrvtkl.public.blob.vercel-storage.com/logo-branca.png" alt="Imovia Logo">
+            <h1>Recuperação de Senha</h1>
+            <p>Seu código de verificação para redefinir sua senha</p>
+          </div>
+          
+          <div class="content">
+            <p style="font-size: 16px;">Olá, <strong>${user.name}</strong>,</p>
+            <p style="font-size: 16px;">Recebemos uma solicitação para redefinir sua senha. Use o código abaixo para continuar o processo:</p>
+            
+            <div style="background-color: #f7f7f7; padding: 20px; text-align: center; margin: 25px 0; border-radius: 8px;">
+              <span style="font-size: 32px; font-weight: bold; letter-spacing: 8px; color: #ff6b00;">${resetCode}</span>
+            </div>
+            
+            <p style="color: #555; font-size: 16px; line-height: 1.5;">Este código é válido por 1 hora. Se você não solicitou a recuperação de senha, ignore este email.</p>
+            
+            <p style="color: #555; font-size: 16px; line-height: 1.5; margin-top: 30px;">Atenciosamente,<br>Equipe Imovia</p>
+          </div>
+          
+          <div class="footer">
+            <p>Este é um email automático. Por favor, não responda.</p>
+          </div>
         </div>
-        <h2 style="color: #333; text-align: center; margin-bottom: 20px;">Recuperação de Senha</h2>
-        <p style="color: #555; font-size: 16px; line-height: 1.5;">Olá ${user.name},</p>
-        <p style="color: #555; font-size: 16px; line-height: 1.5;">Recebemos uma solicitação para redefinir sua senha. Use o código abaixo para continuar o processo:</p>
-        
-        <div style="background-color: #f7f7f7; padding: 15px; text-align: center; margin: 25px 0; border-radius: 4px;">
-          <span style="font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #ff6b00;">${resetCode}</span>
-        </div>
-        
-        <p style="color: #555; font-size: 16px; line-height: 1.5;">Este código é válido por 1 hora. Se você não solicitou a recuperação de senha, ignore este email.</p>
-        
-        <p style="color: #555; font-size: 16px; line-height: 1.5; margin-top: 30px;">Atenciosamente,<br>Equipe Imovia</p>
-        
-        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #888; font-size: 12px;">
-          <p>Este é um email automático. Por favor, não responda.</p>
-        </div>
-      </div>
+      </body>
+      </html>
     `;
 
     // Enviar email
     await transporter.sendMail({
-      from: `"Imovia" <${process.env.EMAIL_PORT}>`,
+      from: `"Imovia" <relatorios@imovia.ai>`,
       to: email,
       subject: "Recuperação de Senha - Imovia",
       html: emailHtml,

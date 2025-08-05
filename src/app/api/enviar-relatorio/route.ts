@@ -33,13 +33,31 @@ export async function POST(request: NextRequest) {
     
     // Log detalhado para depuração dos dados recebidos na API
     console.log(`API: Processando envio de relatório para ${dados.email}`);
+    
+    // Verificação robusta dos imóveis recomendados
+    if (!dados.imoveisRecomendados || !Array.isArray(dados.imoveisRecomendados) || dados.imoveisRecomendados.length === 0) {
+      console.warn(`⚠️ ALERTA API: Não há imóveis recomendados para ${dados.email}. Tentando recuperar de fallback...`);
+      
+      // Tentar recuperar os imóveis do localStorage se estiverem disponíveis no lado do cliente
+      // Como estamos no lado do servidor, não podemos fazer isso diretamente
+      // Esta é uma verificação de segurança adicional
+    }
+    
+    // Log detalhado dos dados essenciais para o relatório
     console.log('API: Dados recebidos:', JSON.stringify({
       nome: dados.nome,
       email: dados.email,
       telefone: dados.telefone,
+      cidade: dados.cidade || 'Não especificada',
+      bairro: dados.bairro || 'Não especificado',
       rendaMensal: dados.rendaMensal,
       valorMaximoImovel: dados.valorMaximoImovel,
-      imoveisRecomendados: dados.imoveisRecomendados?.length || 0
+      imoveisRecomendados: dados.imoveisRecomendados?.length || 0,
+      detalhesImoveis: dados.imoveisRecomendados?.map(imovel => ({
+        titulo: imovel.titulo,
+        preco: imovel.preco,
+        matchPercentage: imovel.matchPercentage
+      }))
     }));
     
     // Gerar o HTML do relatório

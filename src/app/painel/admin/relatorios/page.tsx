@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { format, subDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 import { 
   Card, 
@@ -176,7 +178,7 @@ export default function RelatoriosPage() {
     return null;
   }
   
-  // Função para exportar relatório
+  // Função para exportar relatório em JSON
   const exportarRelatorio = () => {
     // Preparar dados para exportação
     const dataAtual = new Date().toLocaleDateString('pt-BR');
@@ -203,6 +205,101 @@ export default function RelatoriosPage() {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     }, 0);
+  };
+  
+  // Função para gerar PDF
+  const gerarPDF = () => {
+    // Criar documento PDF
+    const doc = new jsPDF();
+    const dataAtual = new Date().toLocaleDateString('pt-BR');
+    
+    // Adicionar cabeçalho
+    doc.setFillColor(255, 107, 53); // Cor laranja da iMovia (#ff6b35)
+    doc.rect(0, 0, 210, 30, 'F');
+    
+    // Título do documento
+    doc.setTextColor(255, 255, 255); // Texto branco
+    doc.setFontSize(22);
+    doc.text("Relatório iMovia", 105, 15, { align: "center" });
+    
+    // Restaurar cor para texto preto
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(12);
+    
+    // Informações do relatório
+    const periodoLabel = periodos.find(p => p.valor === periodoSelecionado)?.label || periodoSelecionado;
+    doc.text(`Período: ${periodoLabel}`, 14, 40);
+    doc.text(`Data de geração: ${dataAtual}`, 14, 48);
+    doc.text(`De ${dataInicio} até ${dataFim}`, 14, 56);
+    
+    // Seção de métricas
+    doc.setFontSize(16);
+    doc.text("Métricas Principais", 14, 70);
+    doc.setFontSize(12);
+    
+    // Tabela de métricas
+    const metricasHeaders = [["Métrica", "Valor", "Variação"]];
+    const metricasData = [
+      ["Visualizações", metricas.visualizacoes.total.toString(), `${metricas.visualizacoes.percentual}%`],
+      ["Cliques", metricas.cliques.total.toString(), `${metricas.cliques.percentual}%`],
+      ["CTR", `${metricas.ctr.total}%`, `${metricas.ctr.percentual}%`],
+      ["Tempo Médio", metricas.tempoMedio.total.toString(), `${metricas.tempoMedio.percentual}%`],
+      ["Usuários", metricas.usuarios.total.toString(), `${metricas.usuarios.percentual}%`],
+      ["Conversões", metricas.conversoes.total.toString(), `${metricas.conversoes.percentual}%`],
+    ];
+    
+    // @ts-ignore (jspdf-autotable é adicionado ao protótipo do jsPDF)
+    doc.autoTable({
+      head: metricasHeaders,
+      body: metricasData,
+      startY: 75,
+      theme: 'striped',
+      headStyles: { fillColor: [255, 107, 53], textColor: [255, 255, 255] },
+      margin: { top: 75 },
+    });
+    
+    // Seção de totais
+    const finalY = (doc as any).lastAutoTable.finalY || 150;
+    doc.setFontSize(16);
+    doc.text("Resumo do Sistema", 14, finalY + 20);
+    doc.setFontSize(12);
+    
+    // Tabela de totais
+    const totaisHeaders = [["Categoria", "Total"]];
+    const totaisData = [
+      ["Usuários Cadastrados", totais.usuarios.toString()],
+      ["Imóveis Registrados", totais.imoveis.toString()],
+      ["Respostas Coletadas", totais.respostas.toString()],
+      ["Construtoras Parceiras", totais.construtoras.toString()],
+      ["Matches Realizados", totais.matches.toString()],
+      ["Relatórios Enviados", totais.relatorios.toString()],
+    ];
+    
+    // @ts-ignore
+    doc.autoTable({
+      head: totaisHeaders,
+      body: totaisData,
+      startY: finalY + 25,
+      theme: 'grid',
+      headStyles: { fillColor: [255, 107, 53], textColor: [255, 255, 255] },
+    });
+    
+    // Rodapé
+    const pageCount = (doc as any).internal.getNumberOfPages();
+    for(let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      doc.setFontSize(10);
+      doc.setTextColor(128, 128, 128);
+      doc.text(
+        `Página ${i} de ${pageCount} - © ${new Date().getFullYear()} iMovia - Todos os direitos reservados`, 
+        105, 
+        doc.internal.pageSize.height - 10, 
+        { align: "center" }
+      );
+    }
+    
+    // Salvar PDF
+    doc.save(`relatorio-imovia-${dataAtual.replace(/\//g, '-')}.pdf`);
   };
 
   return (
@@ -243,10 +340,10 @@ export default function RelatoriosPage() {
             
             <Button variant="outline" className="h-9" onClick={exportarRelatorio}>
               <Download className="mr-2 h-4 w-4" />
-              Exportar
+              Exportar JSON
             </Button>
             
-            <Button className="h-9">
+            <Button className="h-9" onClick={gerarPDF}>
               <FileText className="mr-2 h-4 w-4" />
               Gerar PDF
             </Button>

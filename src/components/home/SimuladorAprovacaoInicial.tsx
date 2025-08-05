@@ -48,13 +48,13 @@ export const SimuladorAprovacaoInicial = ({
     if (porcentagemEntrada < 5) {
       return {
         icon: <ThumbsDown className="h-4 w-4 text-red-500" />,
-        message: "Entrada muito baixa. Para imóveis de luxo, é necessário pelo menos 30% de entrada.",
+        message: "Entrada muito baixa. Recomendamos pelo menos 10% de entrada inicial.",
         color: "bg-red-100 text-red-800 border-red-200"
       };
     } else if (porcentagemEntrada < 10) {
       return {
         icon: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
-        message: "Entrada abaixo do recomendado. Para imóveis de luxo, bancos exigem entradas a partir de 30%.",
+        message: "Entrada abaixo do ideal. Bancos geralmente preferem entradas a partir de 20%.",
         color: "bg-yellow-100 text-yellow-800 border-yellow-200"
       };
     } else if (porcentagemEntrada < 20) {
@@ -79,7 +79,7 @@ export const SimuladorAprovacaoInicial = ({
   };
   
   const getFeedbackRendaMensal = () => {
-    const rendaNecessaria = (valorFinanciamento / 30) / 0.3; // Cálculo aproximado da renda necessária (30 anos, 30% da renda)
+    const rendaNecessaria = (valorFinanciamento / 35) / 0.35; // Cálculo mais flexível da renda necessária (35 anos, 35% da renda)
     
     if (rendaMensal < 2000) {
       return {
@@ -154,22 +154,22 @@ export const SimuladorAprovacaoInicial = ({
     // Simular chamada a uma API de aprovação
     setTimeout(() => {
       // Critérios de aprovação conforme padrões do mercado imobiliário para imóveis de luxo
-      const aprovadoEntrada = porcentagemEntrada >= 30; // Entrada mínima de 30% para imóveis de luxo
+      const aprovadoEntrada = porcentagemEntrada >= 20; // Entrada mínima de 20% (mais acessível)
       const aprovadoRenda = comprometimentoRenda <= 30; // Máximo 30% da renda comprometida
       const aprovadoOutrosEmprestimos = temOutrosEmprestimos === false; // Preferencialmente sem outros empréstimos
       
       // Calcular pontuação baseada nos critérios (0-100)
       let pontuacao = 0;
       
-      // Entrada tem peso maior e exige no mínimo 30% (regra mais rígida para imóveis de luxo)
-      pontuacao += aprovadoEntrada ? 40 : 0; // Sem pontos parciais para entrada menor que 30%
+      // Entrada tem peso importante mas com regras mais flexíveis
+      pontuacao += aprovadoEntrada ? 40 : (porcentagemEntrada >= 10 ? 20 : 0); // Pontuação parcial para entradas entre 10% e 20%
       pontuacao += aprovadoRenda ? 40 : (comprometimentoRenda <= 40 ? 20 : 0);
       pontuacao += aprovadoOutrosEmprestimos ? 20 : 0; // Sem outros empréstimos é essencial
       
       setScore(pontuacao);
       
-      // Regra mais rígida: Aprovado apenas se pontuação >= 60 E entrada >= 30%
-      setIsAprovado(pontuacao >= 60 && aprovadoEntrada);
+      // Regra mais flexível: Aprovado se pontuação >= 50 (sem exigir entrada mínima de 20%)
+      setIsAprovado(pontuacao >= 50);
       setResultadoVisivel(true);
       setIsLoading(false);
     }, 1500);
@@ -196,7 +196,7 @@ export const SimuladorAprovacaoInicial = ({
   };
 
   return (
-    <Card className="w-full max-w-3xl mx-auto shadow-lg">
+    <Card className="w-full max-w-3xl mx-auto shadow-lg rounded-xl overflow-hidden">
       <CardHeader className="bg-[#fe4f17] text-white">
         <CardTitle className="text-2xl font-bold">Simulador Rápido de Crédito</CardTitle>
         <CardDescription className="text-white/90">
@@ -459,12 +459,12 @@ export const SimuladorAprovacaoInicial = ({
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
                     <div className="flex items-center gap-1">
-                      {porcentagemEntrada >= 30 ? (
+                      {porcentagemEntrada >= 20 ? (
                         <Check className="h-4 w-4 text-green-500" />
                       ) : (
                         <X className="h-4 w-4 text-red-500" />
                       )}
-                      <span>Entrada {porcentagemEntrada >= 30 ? 'adequada' : 'insuficiente'}</span>
+                      <span>Entrada {porcentagemEntrada >= 20 ? 'adequada' : 'insuficiente'}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       {comprometimentoRenda <= 30 ? (

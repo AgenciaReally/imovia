@@ -50,9 +50,38 @@ export async function GET(request: Request) {
       where.area = { gte: area * 0.8 }; // 20% de margem para baixo
     }
     
+    // Filtro de cidade - implementação melhorada para ser mais precisa
+    if (searchParams.has('cidade')) {
+      const cidade = searchParams.get('cidade');
+      
+      // Abordagem mais precisa: verificando se o campo contém a cidade como uma palavra
+      // isolada ou seguida de vírgula, evitando falsos positivos
+      where.OR = [
+        { endereco: { contains: `, ${cidade},`, mode: 'insensitive' } },
+        { endereco: { contains: `, ${cidade}.`, mode: 'insensitive' } },
+        { endereco: { contains: ` - ${cidade}`, mode: 'insensitive' } },
+        { endereco: { endsWith: `, ${cidade}`, mode: 'insensitive' } }
+      ];
+      console.log(`\n\n⚠️ APLICANDO FILTRO DE CIDADE APRIMORADO: ${cidade}`);
+    }
+    
+    // Se tiver filtro de bairro
     if (searchParams.has('bairro')) {
       const bairro = searchParams.get('bairro');
-      where.endereco = { contains: bairro, mode: 'insensitive' };
+      
+      // Se já existe filtro por cidade (usando OR agora)
+      if (where.OR) {
+        // Criar uma condição AND para combinar com o filtro de cidade existente
+        where.AND = [
+          { OR: where.OR }, // Manter o filtro de cidade
+          { endereco: { contains: bairro, mode: 'insensitive' } } // Adicionar filtro de bairro
+        ];
+        // Remover o filtro OR original já que agora está dentro do AND
+        delete where.OR;
+      } else {
+        // Se não tem filtro de cidade, aplica só o de bairro
+        where.endereco = { contains: bairro, mode: 'insensitive' };
+      }
     }
     
     if (searchParams.has('tipoImovel')) {

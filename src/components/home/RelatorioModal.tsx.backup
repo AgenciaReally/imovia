@@ -140,59 +140,83 @@ export default function RelatorioModal({
           </div>
         ) : (
           <div ref={reportRef} className="bg-white p-4 rounded-lg">
-            {/* Header do Relatório */}
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Relatório de Imóveis Personalizados
-              </h2>
-              <p className="text-gray-600">
-                Baseado nas suas preferências e necessidades
-              </p>
-              {(cidade || bairro) && (
-                <div className="flex items-center justify-center mt-2 text-sm text-gray-500">
-                  <MapPin className="h-4 w-4 mr-1" />
-                  <span>
-                    {bairro && cidade ? `${bairro}, ${cidade}` : bairro || cidade}
-                  </span>
-                </div>
-              )}
-            </div>
 
-            {/* Resumo das Preferências */}
-            {dados && Object.keys(dados).length > 0 && (
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-                  <CheckCircle2 className="h-5 w-5 mr-2 text-green-600" />
-                  Suas Preferências
-                </h3>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  {Object.entries(dados).map(([key, value]) => (
-                    <div key={key} className="flex justify-between">
-                      <span className="text-gray-600 capitalize">
-                        {key.replace(/([A-Z])/g, ' $1').toLowerCase()}:
-                      </span>
-                      <span className="font-medium text-gray-800">
-                        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : String(value)}
-                      </span>
+            
+            {/* Respostas do Questionário */}
+            {dados?.respostasSimulacao && dados.respostasSimulacao.length > 0 && (
+              <div className="mb-6 p-4 bg-gray-50 rounded-lg border">
+                <h3 className="font-medium text-lg mb-3">Preferências do Imóvel</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
+                  {dados.respostasSimulacao.map((item: any, index: number) => (
+                    <div key={index} className="border-b pb-2">
+                      <p className="text-sm text-gray-500">{item.pergunta}</p>
+                      <p className="font-medium">
+                        {typeof item.resposta === 'boolean'
+                          ? (item.resposta ? 'Sim' : 'Não')
+                          : typeof item.resposta === 'number'
+                            ? (item.categoria === 'VALOR' 
+                                ? new Intl.NumberFormat('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                  }).format(item.resposta)
+                                : item.resposta)
+                            : item.resposta}
+                      </p>
                     </div>
                   ))}
                 </div>
               </div>
             )}
-
-            {/* Lista de Imóveis */}
-            <div className="mb-6">
-              <h3 className="font-semibold text-gray-800 mb-4">
-                Imóveis Encontrados ({imoveis?.length || 0})
-              </h3>
+            
+            <div className="mt-6">
+              <div className="border-b pb-4 mb-4">
+                <p className="text-gray-600 text-sm">
+                  Com base nas suas preferências, recomendamos os seguintes imóveis para você:
+                </p>
+              </div>
               
-              {!imoveis || imoveis.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
-                  <IconMap className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                  <p>Nenhum imóvel encontrado com os critérios selecionados.</p>
-                </div>
-              ) : (
-                <div className="grid gap-4">
+              <div className="mb-6">
+                <h2 className="text-lg font-bold text-gray-800 mb-3 flex items-center">
+                  <MapPin className="h-5 w-5 mr-2 text-[#fe4f17]" />
+                  Imóveis Recomendados {cidade && <span className="font-normal text-base ml-2">em {cidade}{bairro ? `, ${bairro}` : ''}</span>}
+                </h2>
+                
+                {/* Verificação robusta de imóveis */}
+                {(!imoveis || imoveis.length === 0) ? (
+                  <div className="flex items-center justify-center py-8 bg-gray-50 rounded-lg border border-gray-100">
+                    <div className="text-center max-w-md px-4">
+                      <MapPin className="h-10 w-10 text-orange-500 mx-auto mb-3" />
+                      <h3 className="text-lg font-medium text-gray-900">Nenhum imóvel encontrado</h3>
+                      <p className="text-gray-500 mt-2 text-sm">
+                        Não encontramos imóveis que correspondam aos seus critérios {cidade ? `em ${cidade}` : ''}.                      
+                        {bairro ? <><br/>O bairro <strong className="font-medium">{bairro}</strong> pode ter poucas opções disponíveis no momento.</> : ''}
+                      </p>
+                      <p className="text-gray-600 mt-3 text-sm font-medium">
+                        Tente ajustar os filtros ou escolher outra localidade.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {imoveis.map(imovel => (
+                      <div key={imovel.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        {(imovel.thumbnail || imovel.fotoPrincipal) ? (
+                          <div className="relative aspect-video">
+                            <img 
+                              src={imovel.thumbnail || imovel.fotoPrincipal} 
+                              alt={imovel.titulo}
+                              className="w-full h-full object-cover"
+                            />
+                            {imovel.matchPercentage && (
+                              <Badge className="absolute top-2 right-2 bg-[#fe4f17]">
+                                {imovel.matchPercentage}% Match
+                              </Badge>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="aspect-video bg-gray-100 flex items-center justify-center">
+                            <IconMap className="h-12 w-12 text-gray-400" />
                   {imoveis.map(imovel => (
                     <div key={imovel.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                       {(imovel.thumbnail || imovel.fotoPrincipal) ? (
@@ -222,6 +246,7 @@ export default function RelatorioModal({
                             maximumFractionDigits: 0
                           }).format(imovel.preco)}
                         </p>
+                        {/* Removida a exibição de características conforme solicitado */}
                         {(imovel.telefone || imovel.telefoneContato) && (
                           <div className="mt-3 pt-3 border-t">
                             <Button 

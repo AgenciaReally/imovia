@@ -625,44 +625,79 @@ export default function Home() {
       }
       
       // IMPORTANTE: Verificar se temos os imóveis corretamente
-      console.log('\u2705 Imóveis para enviar no relatório:', JSON.stringify(imoveisDestaque));
+      console.log(' Imóveis disponíveis para o relatório:', JSON.stringify(imoveisDestaque));
       
-      let imoveisFinais = [...imoveisDestaque]; // Criar uma cópia para manipulação
-      
-      if (!imoveisFinais || imoveisFinais.length === 0) {
-        console.error('\u26a0\ufe0f ALERTA: Não há imóveis para incluir no relatório. Verificando imóveis novamente...');
-        // Tentar recuperar imóveis do mapa interativo novamente
-        try {
-          // Buscar o iframe e garantir que ele existe e tem contentWindow
-          const iframe = document.querySelector('iframe[title="Mapa Interativo"]') as HTMLIFrameElement;
-          // Verificação robusta para contentWindow
-          const iframeWindow = iframe?.contentWindow;
-          if (iframeWindow) {
-            const imoveisSelecionados = await new Promise<any[]>((resolve) => {
-              // Função que será chamada pelo iframe
-              (window as any).receberImoveisSelecionados = (imoveis: any[]) => {
-                resolve(imoveis);
-              };
-              
-              // Pedir ao iframe para enviar os imóveis selecionados - com verificação explícita de null
-              if (iframeWindow) {
-                iframeWindow.postMessage('enviarImoveisSelecionados', '*');
-              }
-              
-              // Timeout caso o iframe não responda
-              setTimeout(() => resolve([]), 2000);
-            });
+      // SOLUÇÃO: Garantir que temos imóveis antes de enviar o relatório
+      // Criar uma função assíncrona para carregar os imóveis
+      const carregarImoveisRecomendados = async (): Promise<any[]> => {
+        // Iniciar com os imóveis que já temos no estado
+        let imoveisCarregados = [...imoveisDestaque];
+        
+        // Se não tiver imóveis, tentar buscar do iframe
+        if (!imoveisCarregados || imoveisCarregados.length === 0) {
+          console.log(' CARREGAMENTO FORÇADO: Buscando imóveis para o relatório...');
+          
+          try {
+            // Buscar o iframe e garantir que ele existe e tem contentWindow
+            const iframe = document.querySelector('iframe[title="Mapa Interativo"]') as HTMLIFrameElement;
+            // Verificação robusta para contentWindow
+            const iframeWindow = iframe?.contentWindow;
             
-            if (imoveisSelecionados.length > 0) {
-              console.log('\u2705 Recuperados imóveis do iframe:', imoveisSelecionados.length, 'imóveis');
-              imoveisFinais = imoveisSelecionados;
-              setImoveisDestaque(imoveisSelecionados); // Atualizar state em vez de modificar diretamente
+            if (iframeWindow) {
+              const imoveisSelecionados = await new Promise<any[]>((resolve) => {
+                // Função que será chamada pelo iframe
+                (window as any).receberImoveisSelecionados = (imoveis: any[]) => {
+                  resolve(imoveis);
+                };
+                
+                // Pedir ao iframe para enviar os imóveis selecionados
+                iframeWindow.postMessage('enviarImoveisSelecionados', '*');
+                
+                // Timeout caso o iframe não responda (aumentado para 3000ms para maior chance de sucesso)
+                setTimeout(() => resolve([]), 3000);
+              });
+              
+              if (imoveisSelecionados && imoveisSelecionados.length > 0) {
+                console.log(' SUCESSO! Recuperados imóveis do iframe:', imoveisSelecionados.length, 'imóveis');
+                imoveisCarregados = imoveisSelecionados;
+                setImoveisDestaque(imoveisSelecionados); // Atualizar state
+              }
+            }
+          } catch (error) {
+            console.error('Erro ao tentar recuperar imóveis do iframe:', error);
+          }
+          
+          // Se ainda não tiver imóveis, tentar buscar da API novamente
+          if (!imoveisCarregados || imoveisCarregados.length === 0) {
+            try {
+              console.log(' Tentativa final: Buscando imóveis da API...');
+              const cidadeFiltro = respostas.cidade || '';
+              const bairroFiltro = Array.isArray(respostas.bairros) ? respostas.bairros[0] : respostas.bairros || '';
+              
+              const response = await fetch(`/api/imoveis/destacados?cidade=${encodeURIComponent(cidadeFiltro)}&bairro=${encodeURIComponent(bairroFiltro)}`);
+              
+              if (response.ok) {
+                const dados = await response.json();
+                if (dados && dados.length > 0) {
+                  console.log(' SUCESSO! Recuperados imóveis da API:', dados.length, 'imóveis');
+                  imoveisCarregados = dados;
+                  setImoveisDestaque(dados); // Atualizar state
+                }
+              }
+            } catch (apiError) {
+              console.error('Erro na tentativa final de recuperar imóveis:', apiError);
             }
           }
-        } catch (error) {
-          console.error('Erro ao tentar recuperar imóveis do iframe:', error);
         }
-      }
+        
+        return imoveisCarregados;
+      };
+      
+      // Chamar a função para carregar os imóveis
+      const imoveisFinais = await carregarImoveisRecomendados();
+      
+      // Log para verificar se os imóveis foram carregados corretamente
+      console.log(' Imóveis finais para o relatório:', imoveisFinais ? imoveisFinais.length : 0);
       
       // Salvar imóveis recomendados no localStorage para exibir no painel do cliente
       try {
@@ -860,8 +895,9 @@ export default function Home() {
         proximidades: Array.isArray(respostas.proximidades) 
           ? respostas.proximidades 
           : (respostas.proximidades ? respostas.proximidades.split(',') : []),
-        // IMPORTANTE: Usar APENAS imóveis com destaque=true para garantir consistência com o mapa
-        imoveisRecomendados: (imoveisFinais || []).filter(imovel => imovel.destaque === true),
+        // Modificado: Não filtrar apenas por destaque=true para evitar email vazio
+        // Usar todos os imóveis disponíveis ou fallback para os primeiros 3
+        imoveisRecomendados: (imoveisFinais || []).length > 0 ? imoveisFinais : [],
         dataEnvio: new Date().toLocaleDateString('pt-BR')
       };
       

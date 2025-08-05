@@ -1511,23 +1511,23 @@ export const SimuladorCredito: React.FC<SimuladorCreditoProps> = ({
         return (
           <div className="space-y-6">
             <div className="space-y-2">
-              <Label className="text-base font-medium">Qual valor você pode pagar mensalmente (parcelas)?</Label>
+              <Label className="text-base font-medium">Em quantas parcelas você deseja pagar?</Label>
               <div className="relative pt-5">
                 <Slider
                   value={[valorParcela]}
-                  min={0}
-                  max={15000}
-                  step={100}
+                  min={12}
+                  max={360}
+                  step={12}
                   onValueChange={(values) => setValorParcela(values[0])}
                   className="my-6"
                 />
                 <div className="absolute inset-x-0 -top-1 flex justify-between">
-                  <span className="text-sm text-muted-foreground">R$ 0</span>
-                  <span className="text-sm text-muted-foreground">R$ 15 mil</span>
+                  <span className="text-sm text-muted-foreground">12 parcelas</span>
+                  <span className="text-sm text-muted-foreground">360 parcelas</span>
                 </div>
               </div>
               <div className="text-center">
-                <span className="text-2xl font-semibold text-orange-500">{formatarDinheiro(valorParcela)}</span>
+                <span className="text-2xl font-semibold text-orange-500">{valorParcela} parcelas</span>
               </div>
               <p className="text-sm text-muted-foreground">Esse valor é a parcela mensal do financiamento.</p>
             </div>

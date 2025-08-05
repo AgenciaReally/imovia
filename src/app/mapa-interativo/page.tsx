@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SemImoveisAlerta } from '@/components/mapa/SemImoveisAlerta';
 // Importar tipos compartilhados
 import { Imovel, PinItem } from "@/types/imovel";
 
@@ -134,6 +135,26 @@ function MapaInterativoContent() {
   // Estado para controlar carregamento de dados
   const [carregando, setCarregando] = useState<boolean>(true);
   
+  // Estado para filtros atuais
+  const [filtrosAtuais, setFiltrosAtuais] = useState<{
+    cidade: string | null;
+    bairro: string | null;
+  }>({ cidade: null, bairro: null });
+  
+  // Estado para indicar se não foram encontrados imóveis com os filtros atuais
+  const [semImoveis, setSemImoveis] = useState<boolean>(false);
+  
+  // Função para limpar filtros de localização
+  const limparFiltrosLocalizacao = () => {
+    // Criar uma nova URL sem os parâmetros de cidade e bairro
+    const url = new URL(window.location.href);
+    url.searchParams.delete('cidade');
+    url.searchParams.delete('bairro');
+    
+    // Navegar para a nova URL
+    window.location.href = url.toString();
+  };
+  
   // Função para obter imóveis do banco de dados com filtros opcionais
   async function obterImoveisDoDb(filtros?: Record<string, any>) {
     try {
@@ -179,6 +200,11 @@ function MapaInterativoContent() {
           params.append('area', filtros.area.toString());
         }
         
+        if (filtros.cidade) {
+          params.append('cidade', filtros.cidade);
+          console.log('Aplicando filtro de cidade:', filtros.cidade);
+        }
+        
         if (filtros.bairro) {
           params.append('bairro', filtros.bairro);
         }
@@ -218,12 +244,14 @@ function MapaInterativoContent() {
     const valorMinimo = searchParams.get('valorMinimo');
     const valorMaximo = searchParams.get('valorMaximo');
     const area = searchParams.get('area');
+    const cidade = searchParams.get('cidade');
     const bairro = searchParams.get('bairro');
     const tipoImovel = searchParams.get('tipoImovel');
     const ativo = searchParams.get('ativo');
     
     console.log('Parâmetros de URL recebidos BRUTOS:', { 
       valorMaximo: searchParams.get('valorMaximo'),
+      cidade: searchParams.get('cidade'),
       todos: Object.fromEntries([...searchParams.entries()])
     });
     
@@ -244,6 +272,7 @@ function MapaInterativoContent() {
     if (valorMaximo) filtros.preco.lte = parseFloat(valorMaximo);
     
     if (area) filtros.area = parseInt(area, 10);
+    if (cidade) filtros.cidade = cidade;
     if (bairro) filtros.bairro = bairro;
     if (tipoImovel) filtros.tipoImovel = tipoImovel;
     
@@ -432,23 +461,36 @@ function MapaInterativoContent() {
   useEffect(() => {
     // Buscar imóveis do banco de dados
     const buscarImoveis = async () => {
-      setCarregando(true);
       try {
-        // Extrair filtros dos parâmetros de URL
+        setCarregando(true);
+        setSemImoveis(false); // Resetar estado de sem imóveis
+        
+        // Extrair filtros da URL
         const filtros = extrairFiltrosDeURL();
-        console.log('Filtros extraídos da URL:', filtros);
         
-        // Tentar obter imóveis do banco de dados com os filtros
-        const imoveisData = await obterImoveisDoDb(filtros);
+        // Atualizar os filtros atuais para exibição da mensagem
+        const cidadeFiltro = searchParams.get('cidade');
+        const bairroFiltro = searchParams.get('bairro');
         
-        if (imoveisData && imoveisData.length > 0) {
-          console.log('Imóveis encontrados no banco:', imoveisData.length);
+        setFiltrosAtuais({
+          cidade: cidadeFiltro,
+          bairro: bairroFiltro
+        });
+        
+        console.log('Buscando imóveis com filtro de cidade:', cidadeFiltro);
+        
+        // Buscar imóveis do banco de dados
+        const imoveis = await obterImoveisDoDb(filtros);
+        
+        // Verificar se há imóveis
+        if (imoveis && imoveis.length > 0) {
+          console.log('Imóveis encontrados no banco:', imoveis.length);
           
           // Calcular porcentagem de match para cada imóvel
-          const imoveisComMatch = imoveisData.map((imovel: any) => {
+          const imoveisComMatch = imoveis.map((imovel: any) => {
             const matchPercentage = Object.keys(filtros).length > 0 
               ? calcularMatchPercentage(imovel, filtros)
-              : Math.floor(Math.random() * 30) + 70; // Fallback se não houver filtros (70-99%)
+              : 100; // Se não há filtros, considerar 100% de match
             
             return { ...imovel, matchPercentage };
           });
@@ -774,6 +816,11 @@ function MapaInterativoContent() {
           }
         } else {
           console.warn('Nenhum imóvel encontrado no banco.');
+          // Verificar se há filtro de cidade aplicado
+          if (filtrosAtuais.cidade) {
+            console.warn(`Não foram encontrados imóveis para a cidade: ${filtrosAtuais.cidade}`);
+            setSemImoveis(true);
+          }
           // Mostrar lista vazia se não houver imóveis
           setPins([]);
         }
@@ -789,7 +836,7 @@ function MapaInterativoContent() {
     // Buscar imóveis apenas do banco de dados
     
     buscarImoveis();
-  }, []);
+  }, [searchParams]);
   
   return (
     <div className="w-full h-screen overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
@@ -825,8 +872,19 @@ function MapaInterativoContent() {
         
         {/* Título do mapa */}
         <div className="absolute top-4 left-4 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-lg shadow-sm">
-          <h1 className="text-lg font-medium text-gray-800">Mapa de Imóveis - Curitiba</h1>
+          <h1 className="text-lg font-medium text-gray-800">Mapa de Imóveis {filtrosAtuais.cidade ? `- ${filtrosAtuais.cidade}` : '- Curitiba'}</h1>
         </div>
+        
+        {/* Alerta quando não há imóveis para a cidade selecionada */}
+        {semImoveis && (
+          <div className="absolute top-20 left-4 right-4 z-50 max-w-2xl mx-auto">
+            <SemImoveisAlerta 
+              cidade={filtrosAtuais.cidade} 
+              bairro={filtrosAtuais.bairro}
+              onLimparFiltros={limparFiltrosLocalizacao}
+            />
+          </div>
+        )}
         
         {/* Card centralizado no meio do mapa */}
         <AnimatePresence>              

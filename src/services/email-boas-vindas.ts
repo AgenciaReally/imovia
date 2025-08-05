@@ -110,7 +110,7 @@ export async function enviarEmailBoasVindas({ nome, email, senha }: EmailBoasVin
     <body>
       <div class="container">
         <div class="header">
-          <img src="https://app.imovia.ai/logo.png" alt="Imovia" />
+          <img src="https://zwrvzwymppmrvtkl.public.blob.vercel-storage.com/logo-branca.png" alt="Imovia" style="max-width: 200px; height: auto;" />
         </div>
         <div class="content">
           <h1>Bem-vindo ao Imovia!</h1>
