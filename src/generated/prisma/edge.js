@@ -476,7 +476,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\imovia\\src\\generated\\prisma",
+      "value": "/Users/willian/Desktop/Imovia/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -485,12 +485,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\imovia\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/willian/Desktop/Imovia/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

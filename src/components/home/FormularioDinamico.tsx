@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { ChevronLeft, ChevronRight, Loader2, Zap } from "lucide-react"
+import { ChevronLeft, ChevronRight, Loader2, Zap, Phone } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import { buscarPerguntas, Pergunta } from '@/services/pergunta-service'
 import { DynamicQuestionRenderer } from './DynamicQuestionRenderer'
@@ -40,6 +40,10 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const [erro, setErro] = useState<string | null>(null)
   const [showMatches, setShowMatches] = useState(false)
   
+  // Estados para geolocalização
+  const [localizacaoObtida, setLocalizacaoObtida] = useState(false)
+  const [cidadeDetectada, setCidadeDetectada] = useState<string>('')
+  
   // Estados para simulador de crédito IA
   const [mostrarSimuladorCredito, setMostrarSimuladorCredito] = useState(false);
   const [simulacaoAprovada, setSimulacaoAprovada] = useState(false);
@@ -48,6 +52,65 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   // Hooks AI
   const deepseek = useDeepseek()
   const matches = useMatches()
+
+  // 🌍 Função para obter geolocalização e detectar cidade
+  const obterGeolocalizacao = async () => {
+    if (localizacaoObtida || cidadeDetectada) return
+    
+    try {
+      if (!navigator.geolocation) {
+        console.log('Geolocalização não suportada')
+        return
+      }
+
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          timeout: 10000,
+          enableHighAccuracy: false
+        })
+      })
+
+      const { latitude, longitude } = position.coords
+      console.log(`📍 Localização: ${latitude}, ${longitude}`)
+
+      // API de geocodificação reversa
+      const response = await fetch(
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=pt`
+      )
+      
+      if (response.ok) {
+        const data = await response.json()
+        const cidade = data.city || data.locality || ''
+        const estado = data.principalSubdivision || ''
+        const cidadeCompleta = estado ? `${cidade}, ${estado}` : cidade
+        
+        if (cidadeCompleta) {
+          setCidadeDetectada(cidadeCompleta)
+          setLocalizacaoObtida(true)
+          console.log(`🏙️ Cidade detectada: ${cidadeCompleta}`)
+          
+          // Buscar pergunta de cidade e preencher automaticamente
+          const perguntaCidade = perguntas.find(p => 
+            p.texto.toLowerCase().includes('cidade') || 
+            p.texto.toLowerCase().includes('localização') ||
+            p.texto.toLowerCase().includes('onde você mora')
+          )
+          
+          if (perguntaCidade) {
+            await atualizarResposta(perguntaCidade.id, cidadeCompleta)
+            
+            toast({
+              title: "📍 Localização detectada!",
+              description: `Preenchido automaticamente: ${cidadeCompleta}`,
+              variant: "default"
+            })
+          }
+        }
+      }
+    } catch (error) {
+      console.log('Não foi possível obter localização:', error)
+    }
+  }
 
   // Carregar perguntas
   useEffect(() => {
@@ -78,6 +141,11 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         const steps = Object.keys(perguntasPorStepObj).map(s => parseInt(s)).sort((a, b) => a - b)
         setStepsDisponiveis(steps)
         setStepAtual(0)
+        
+        // Iniciar geolocalização após carregar perguntas
+        setTimeout(() => {
+          obterGeolocalizacao()
+        }, 1500)
         
       } catch (error: any) {
         console.error('❌ Erro ao carregar perguntas:', error)
@@ -231,101 +299,51 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         })
       }
       
-      // 🤖 IA: Criar 4-6 perguntas dinâmicas personalizadas  
+      // 🤖 IA: Criar apenas 2-3 perguntas dinâmicas ESSENCIAIS (velocidade otimizada)
       const timestamp = Date.now()
       
+      // ⚡ FOCO: Apenas perguntas que afetam diretamente a busca de imóveis
       if (rendaAlta || investidor) {
         novasPerguntasDinamicas.push({
           id: `dinamica-investimento-${timestamp}`,
-          texto: "Considerando seu perfil financeiro, tem interesse em imóveis para investimento?",
+          texto: "Imóvel para investimento ou moradia?",
           tipo: "radio",
-          opcoes: ["Sim, quero renda passiva", "Não, apenas moradia", "Talvez no futuro", "Preciso saber mais"],
+          opcoes: ["Investimento", "Moradia", "Ambos"],
           obrigatoria: false,
           categoria: "INVESTIMENTO",
           step: stepAtual + 1,
           ordem: 1000,
           geradaPorIA: true
         })
-        
-        novasPerguntasDinamicas.push({
-          id: `dinamica-portfolio-${timestamp + 1}`,
-          texto: "Quantos imóveis gostaria de ter no seu portfólio?",
-          tipo: "radio",
-          opcoes: ["1-2 imóveis", "3-5 imóveis", "Mais de 5", "Não sei ainda"],
-          obrigatoria: false,
-          categoria: "INVESTIMENTO",
-          step: stepAtual + 1,
-          ordem: 1001,
-          geradaPorIA: true
-        })
       }
       
-      if (rendaMedia || rendaAlta) {
+      // Pergunta de localização essencial
+      novasPerguntasDinamicas.push({
+        id: `dinamica-localizacao-${timestamp + 1}`,
+        texto: "Prioridade de localização?",
+        tipo: "radio",
+        opcoes: ["Centro da cidade", "Bairros residenciais", "Próximo ao trabalho", "Qualquer localização"],
+        obrigatoria: false,
+        categoria: "LOCALIZACAO",
+        step: stepAtual + 1,
+        ordem: 1001,
+        geradaPorIA: true
+      })
+      
+      // Apenas se tiver filhos
+      if (temFilhos) {
         novasPerguntasDinamicas.push({
-          id: `dinamica-construcao-${timestamp + 2}`,
-          texto: "Com seu orçamento, aceita imóveis em construção para ter desconto?",
+          id: `dinamica-familia-${timestamp + 2}`,
+          texto: "Área de lazer para família?",
           tipo: "radio",
-          opcoes: ["Sim, aceito até 36 meses", "Sim, até 24 meses", "Prefiro prontos", "Depende do desconto"],
+          opcoes: ["Playground + piscina", "Apenas área comum", "Não é importante"],
           obrigatoria: false,
-          categoria: "PREFERENCIAS",
+          categoria: "FAMILIA",
           step: stepAtual + 1,
           ordem: 1002,
           geradaPorIA: true
         })
       }
-      
-      if (temFilhos) {
-        novasPerguntasDinamicas.push({
-          id: `dinamica-seguranca-${timestamp + 3}`,
-          texto: "Com crianças, qual o nível de segurança ideal no condomínio?",
-          tipo: "radio",
-          opcoes: ["Segurança 24h obrigatória", "Portaria é suficiente", "Não é prioridade", "Prefiro casa"],
-          obrigatoria: false,
-          categoria: "SEGURANCA",
-          step: stepAtual + 1,
-          ordem: 1003,
-          geradaPorIA: true
-        })
-        
-        novasPerguntasDinamicas.push({
-          id: `dinamica-lazer-${timestamp + 4}`,
-          texto: "Quais áreas de lazer são mais importantes para sua família?",
-          tipo: "radio", 
-          opcoes: ["Playground e piscina", "Quadra esportiva", "Salão de festas", "Área verde"],
-          obrigatoria: false,
-          categoria: "LAZER",
-          step: stepAtual + 1,
-          ordem: 1004,
-          geradaPorIA: true
-        })
-      }
-      
-      if (primeiroImovel) {
-        novasPerguntasDinamicas.push({
-          id: `dinamica-orientacao-${timestamp + 5}`,
-          texto: "Como primeiro imóvel, gostaria de orientação sobre financiamento?",
-          tipo: "radio",
-          opcoes: ["Sim, preciso de ajuda", "Tenho conhecimento básico", "Já pesquisei tudo", "Vou pagar à vista"],
-          obrigatoria: false,
-          categoria: "ORIENTACAO",
-          step: stepAtual + 1,
-          ordem: 1005,
-          geradaPorIA: true
-        })
-      }
-      
-      // Pergunta de localização sempre relevante
-      novasPerguntasDinamicas.push({
-        id: `dinamica-mobilidade-${timestamp + 6}`,
-        texto: "Qual sua principal prioridade de localização?",
-        tipo: "radio",
-        opcoes: ["Perto do trabalho", "Transporte público", "Comércio próximo", "Área nobre"],
-        obrigatoria: false,
-        categoria: "LOCALIZACAO",
-        step: stepAtual + 1,
-        ordem: 1006,
-        geradaPorIA: true
-      })
       
       console.log(`🤖 IA criou ${novasPerguntasDinamicas.length} perguntas e vai ocultar ${perguntasParaOcultar.size} perguntas`)
       
@@ -966,14 +984,14 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       )}
 
       {/* Step atual com animação */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout" initial={false}>
         <motion.div
-          key={stepAtual}
+          key={`step-${stepAtual}`}
           className="mb-8 space-y-8"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -50 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
         >
           <motion.div
             className="mb-6"
@@ -1225,18 +1243,39 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               )}
             </AnimatePresence>
             
-            {/* Botão Teste Rápido - Comentado temporariamente */}
-            {/* 
+            {/* Botão WhatsApp para simulação instantânea */}
             <Button
-              variant="outline"
-              onClick={preencherAutomatico}
-              disabled={salvandoResposta}
-              className="flex items-center gap-2 text-purple-600 border-purple-300 hover:bg-purple-50"
+              onClick={() => {
+                // Coletar dados das respostas para WhatsApp
+                const respostasTexto = Object.entries(respostas).map(([key, resp]) => {
+                  const pergunta = perguntas.find(p => p.id === key)
+                  const texto = pergunta?.texto || 'Pergunta'
+                  const valor = typeof resp.valor === 'object' ? 'Arquivo enviado' : resp.valor
+                  return `• ${texto}: ${valor}`
+                }).join('\n')
+                
+                const dadosAdicionais = []
+                if (cidadeDetectada) dadosAdicionais.push(`📍 Localização: ${cidadeDetectada}`)
+                
+                const mensagem = [
+                  "🏠 *Simulação Imóvel - Imovia*",
+                  "",
+                  "*Minhas Respostas:*",
+                  respostasTexto,
+                  "",
+                  dadosAdicionais.length > 0 ? "*Dados Detectados:*" : "",
+                  ...dadosAdicionais,
+                  "",
+                  "Gostaria de uma análise personalizada dos imóveis disponíveis!"
+                ].filter(Boolean).join('\n')
+                
+                window.open(`https://wa.me/554192223032?text=${encodeURIComponent(mensagem)}`, '_blank')
+              }}
+              className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
             >
-              <Zap className="h-4 w-4" />
-              Teste Rápido
+              <Phone className="h-4 w-4" />
+              Orçamento Rápido
             </Button>
-            */}
             
             <motion.div
               whileHover={{ scale: 1.02 }}
