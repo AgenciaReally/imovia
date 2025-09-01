@@ -340,9 +340,26 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         }
       ]
       
-      // Salvar perguntas dinâmicas no backend
+      // Verificar e evitar perguntas duplicadas antes de salvar
+      const perguntasExistentes = [...perguntas, ...perguntasDinamicas]
+      const perguntasUnicas = perguntasDinamicasGeradas.filter(novaPergunta => {
+        const jaExiste = perguntasExistentes.some(existente => 
+          existente.texto.toLowerCase().trim() === novaPergunta.texto.toLowerCase().trim()
+        )
+        if (jaExiste) {
+          console.log('⚠️ Pergunta duplicada ignorada:', novaPergunta.texto)
+        }
+        return !jaExiste
+      })
+
+      if (perguntasUnicas.length === 0) {
+        console.log('ℹ️ Nenhuma pergunta nova para criar - todas já existem')
+        return
+      }
+
+      // Salvar apenas perguntas únicas no backend
       try {
-        for (const pergunta of perguntasDinamicasGeradas) {
+        for (const pergunta of perguntasUnicas) {
           const response = await fetch('/api/perguntas', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -362,16 +379,16 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           
           if (response.ok) {
             const novaPergunta = await response.json()
-            console.log('✅ Pergunta dinâmica salva:', novaPergunta)
+            console.log('✅ Pergunta dinâmica única salva:', novaPergunta)
           }
         }
         
-        // Adicionar ao estado local
-        setPerguntasDinamicas(prev => [...prev, ...perguntasDinamicasGeradas])
+        // Adicionar apenas perguntas únicas ao estado local
+        setPerguntasDinamicas(prev => [...prev, ...perguntasUnicas])
         
         toast({
           title: "🤖 IA criou novas perguntas!",
-          description: `${perguntasDinamicasGeradas.length} perguntas personalizadas foram adicionadas.`,
+          description: `${perguntasUnicas.length} perguntas personalizadas foram adicionadas.`,
         })
         
       } catch (error) {
@@ -1115,7 +1132,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
             )}
             
-            {/* Botão Teste */}
+            {/* Botão Teste Rápido - Comentado temporariamente */}
+            {/* 
             <Button
               variant="outline"
               onClick={preencherAutomatico}
@@ -1125,6 +1143,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               <Zap className="h-4 w-4" />
               Teste Rápido
             </Button>
+            */}
             
             <Button
               onClick={proximoStep}
