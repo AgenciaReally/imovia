@@ -957,7 +957,7 @@ export default function Home() {
       
       // Finalizar loading e mostrar modal
       setRelatorioSolicitado(true);
-      setModalRelatorioAberto(true);
+      setNovoModalRelatorioAberto(true);
     } catch (error) {
       console.error('Erro ao processar relatório:', error);
       toast({

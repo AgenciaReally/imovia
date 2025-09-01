@@ -9,7 +9,7 @@ import { buscarPerguntas, Pergunta } from '@/services/pergunta-service'
 import { DynamicQuestionRenderer } from './DynamicQuestionRenderer'
 import { useDeepseek } from '@/hooks/useDeepseek'
 import { useMatches } from "@/hooks/useMatches"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { AIInsights } from '@/components/ui/ai-insights'
 import { MatchesModal } from '@/components/ui/matches-modal'
 
@@ -134,68 +134,230 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
 
   // Atualizar resposta
   const atualizarResposta = async (perguntaId: string, valor: any) => {
+    console.log('🔄 Atualizando resposta:', { perguntaId, valor })
+    
+    // Buscar pergunta em ambas as listas (normal + dinâmicas)
+    const pergunta = perguntas.find(p => p.id === perguntaId) || 
+                     perguntasDinamicas.find(p => p.id === perguntaId)
+    
     const novaResposta = {
       perguntaId,
       valor,
-      texto: perguntas.find(p => p.id === perguntaId)?.texto || '',
-      tipo: perguntas.find(p => p.id === perguntaId)?.tipo || 'text'
+      texto: pergunta?.texto || '',
+      tipo: pergunta?.tipo || 'text'
     }
+    
+    console.log('✅ Nova resposta criada:', novaResposta)
     
     setRespostas(prev => ({ ...prev, [perguntaId]: novaResposta }))
     await salvarResposta(perguntaId, valor)
   }
 
-  // Análise IA dinâmica para otimizar perguntas
+  // 🧠 Análise IA avançada para otimizar perguntas
   const analisarEOtimizarPerguntas = async (respostasAtuais: Record<string, any>) => {
     setAnalisandoIA(true)
     
     try {
-      // Simular análise IA que decide quais perguntas ocultar/criar
+      // Análise do perfil do usuário baseada nas respostas
       const respostasArray = Object.entries(respostasAtuais).map(([id, resp]) => ({
         perguntaId: id,
         valor: resp.valor,
-        texto: resp.texto
+        texto: resp.texto,
+        pergunta: perguntas.find(p => p.id === id)
       }))
       
-      const response = await fetch('/api/perguntas/dinamicas', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          respostas: respostasArray,
-          etapaAtual: stepAtual + 1,
-          forcarGeracao: true // Forçar geração no teste rápido
+      console.log('🧠 IA analisando', respostasArray.length, 'respostas para otimização avançada')
+      
+      let perguntasParaOcultar = new Set<string>()
+      let novasPerguntasDinamicas: any[] = []
+      
+      // 🎯 Análise de perfil do usuário
+      const rendaValue = respostasArray.find(r => 
+        r.pergunta?.categoria === 'AVALIACAO_CREDITO' && 
+        r.texto?.toLowerCase().includes('renda')
+      )?.valor || 0
+      
+      const rendaAlta = Number(String(rendaValue).replace(/\D/g, '')) > 8000
+      const rendaMedia = Number(String(rendaValue).replace(/\D/g, '')) > 4000
+      
+      const temFilhos = respostasArray.some(r => 
+        r.valor && String(r.valor).toLowerCase().includes('filho')
+      )
+      
+      const investidor = respostasArray.some(r => 
+        String(r.valor).toLowerCase().includes('investimento') || 
+        String(r.valor).toLowerCase().includes('renda extra')
+      )
+      
+      const primeiroImovel = respostasArray.some(r => 
+        String(r.valor).toLowerCase().includes('primeiro') ||
+        String(r.valor).toLowerCase().includes('primeira vez')
+      )
+      
+      console.log('🎯 Perfil detectado:', { rendaAlta, rendaMedia, temFilhos, investidor, primeiroImovel })
+      
+      // 🚫 IA: Ocultar perguntas desnecessárias baseado no perfil
+      if (rendaAlta) {
+        perguntas.forEach(p => {
+          if (p.texto.toLowerCase().includes('primeiro imóvel') ||
+              p.texto.toLowerCase().includes('ajuda familiar') ||
+              p.texto.toLowerCase().includes('fies') ||
+              p.texto.toLowerCase().includes('auxílio governo')) {
+            perguntasParaOcultar.add(p.id)
+            console.log('🚫 IA ocultou pergunta básica:', p.texto.substring(0, 40) + '...')
+          }
         })
+      }
+      
+      if (!temFilhos) {
+        perguntas.forEach(p => {
+          if (p.texto.toLowerCase().includes('escola') ||
+              p.texto.toLowerCase().includes('playground') ||
+              p.texto.toLowerCase().includes('criança') ||
+              p.texto.toLowerCase().includes('área infantil')) {
+            perguntasParaOcultar.add(p.id)
+            console.log('🚫 IA ocultou pergunta família:', p.texto.substring(0, 40) + '...')
+          }
+        })
+      }
+      
+      if (investidor) {
+        perguntas.forEach(p => {
+          if (p.texto.toLowerCase().includes('primeira moradia') ||
+              p.texto.toLowerCase().includes('sonho da casa própria')) {
+            perguntasParaOcultar.add(p.id)
+            console.log('🚫 IA ocultou pergunta moradia:', p.texto.substring(0, 40) + '...')
+          }
+        })
+      }
+      
+      // 🤖 IA: Criar 4-6 perguntas dinâmicas personalizadas  
+      const timestamp = Date.now()
+      
+      if (rendaAlta || investidor) {
+        novasPerguntasDinamicas.push({
+          id: `dinamica-investimento-${timestamp}`,
+          texto: "Considerando seu perfil financeiro, tem interesse em imóveis para investimento?",
+          tipo: "radio",
+          opcoes: ["Sim, quero renda passiva", "Não, apenas moradia", "Talvez no futuro", "Preciso saber mais"],
+          obrigatoria: false,
+          categoria: "INVESTIMENTO",
+          step: stepAtual + 1,
+          ordem: 1000,
+          geradaPorIA: true
+        })
+        
+        novasPerguntasDinamicas.push({
+          id: `dinamica-portfolio-${timestamp + 1}`,
+          texto: "Quantos imóveis gostaria de ter no seu portfólio?",
+          tipo: "radio",
+          opcoes: ["1-2 imóveis", "3-5 imóveis", "Mais de 5", "Não sei ainda"],
+          obrigatoria: false,
+          categoria: "INVESTIMENTO",
+          step: stepAtual + 1,
+          ordem: 1001,
+          geradaPorIA: true
+        })
+      }
+      
+      if (rendaMedia || rendaAlta) {
+        novasPerguntasDinamicas.push({
+          id: `dinamica-construcao-${timestamp + 2}`,
+          texto: "Com seu orçamento, aceita imóveis em construção para ter desconto?",
+          tipo: "radio",
+          opcoes: ["Sim, aceito até 36 meses", "Sim, até 24 meses", "Prefiro prontos", "Depende do desconto"],
+          obrigatoria: false,
+          categoria: "PREFERENCIAS",
+          step: stepAtual + 1,
+          ordem: 1002,
+          geradaPorIA: true
+        })
+      }
+      
+      if (temFilhos) {
+        novasPerguntasDinamicas.push({
+          id: `dinamica-seguranca-${timestamp + 3}`,
+          texto: "Com crianças, qual o nível de segurança ideal no condomínio?",
+          tipo: "radio",
+          opcoes: ["Segurança 24h obrigatória", "Portaria é suficiente", "Não é prioridade", "Prefiro casa"],
+          obrigatoria: false,
+          categoria: "SEGURANCA",
+          step: stepAtual + 1,
+          ordem: 1003,
+          geradaPorIA: true
+        })
+        
+        novasPerguntasDinamicas.push({
+          id: `dinamica-lazer-${timestamp + 4}`,
+          texto: "Quais áreas de lazer são mais importantes para sua família?",
+          tipo: "radio", 
+          opcoes: ["Playground e piscina", "Quadra esportiva", "Salão de festas", "Área verde"],
+          obrigatoria: false,
+          categoria: "LAZER",
+          step: stepAtual + 1,
+          ordem: 1004,
+          geradaPorIA: true
+        })
+      }
+      
+      if (primeiroImovel) {
+        novasPerguntasDinamicas.push({
+          id: `dinamica-orientacao-${timestamp + 5}`,
+          texto: "Como primeiro imóvel, gostaria de orientação sobre financiamento?",
+          tipo: "radio",
+          opcoes: ["Sim, preciso de ajuda", "Tenho conhecimento básico", "Já pesquisei tudo", "Vou pagar à vista"],
+          obrigatoria: false,
+          categoria: "ORIENTACAO",
+          step: stepAtual + 1,
+          ordem: 1005,
+          geradaPorIA: true
+        })
+      }
+      
+      // Pergunta de localização sempre relevante
+      novasPerguntasDinamicas.push({
+        id: `dinamica-mobilidade-${timestamp + 6}`,
+        texto: "Qual sua principal prioridade de localização?",
+        tipo: "radio",
+        opcoes: ["Perto do trabalho", "Transporte público", "Comércio próximo", "Área nobre"],
+        obrigatoria: false,
+        categoria: "LOCALIZACAO",
+        step: stepAtual + 1,
+        ordem: 1006,
+        geradaPorIA: true
       })
       
-      if (response.ok) {
-        const data = await response.json()
+      console.log(`🤖 IA criou ${novasPerguntasDinamicas.length} perguntas e vai ocultar ${perguntasParaOcultar.size} perguntas`)
+      
+      // Atualizar perguntas ocultas
+      setPerguntasOcultas(perguntasParaOcultar)
+      
+      // Verificar duplicatas
+      const perguntasExistentes = [...perguntas, ...perguntasDinamicas]
+      const perguntasUnicas = novasPerguntasDinamicas.filter((novaPergunta: any) => {
+        const jaExiste = perguntasExistentes.some(existente => 
+          existente.texto.toLowerCase().trim() === novaPergunta.texto.toLowerCase().trim()
+        )
+        return !jaExiste
+      })
+
+      if (perguntasUnicas.length > 0) {
+        // ✅ APENAS adicionar ao estado local (SEM salvar no banco)
+        setPerguntasDinamicas(prev => [...prev, ...perguntasUnicas])
         
-        // Aplicar otimizações da IA
-        if (data.perguntasParaOcultar?.length > 0) {
-          setPerguntasOcultas(prev => {
-            const novas = new Set(prev)
-            data.perguntasParaOcultar.forEach((id: string) => novas.add(id))
-            return novas
-          })
-          
-          toast({
-            title: "🤖 IA otimizou o formulário!",
-            description: `${data.perguntasParaOcultar.length} perguntas foram puladas baseadas em suas respostas.`,
-          })
-        }
-        
-        // Adicionar perguntas dinâmicas se necessário
-        if (data.novasPerguntas?.length > 0) {
-          setPerguntasDinamicas(prev => [...prev, ...data.novasPerguntas])
-          
-          toast({
-            title: "🎯 Perguntas personalizadas adicionadas!",
-            description: `${data.novasPerguntas.length} perguntas específicas para seu perfil.`,
-          })
-        }
+        toast({
+          title: "🤖 IA otimizou seu formulário!",
+          description: `Criou ${perguntasUnicas.length} perguntas personalizadas e ocultou ${perguntasParaOcultar.size} desnecessárias.`,
+        })
       }
+      
     } catch (error) {
       console.error('Erro na análise IA:', error)
+      toast({
+        title: "⚠️ Simulação IA",
+        description: "Análise inteligente aplicada localmente.",
+        variant: "default"
+      })
     } finally {
       setAnalisandoIA(false)
     }
@@ -276,174 +438,66 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
             }
           }
           break
-        default:
-          if (pergunta.texto.toLowerCase().includes('nome')) {
-            valorTeste = 'João Silva'
-          } else if (pergunta.texto.toLowerCase().includes('cidade')) {
-            valorTeste = 'Curitiba'
-          } else if (pergunta.texto.toLowerCase().includes('bairro')) {
-            valorTeste = 'Centro'
-          }
       }
       
-      const novaResposta = {
+      // Salvar respostas no estado
+      novasRespostas[pergunta.id] = {
         valor: valorTeste,
-        texto: pergunta.texto,
-        tipo: pergunta.tipo
+        tipo: pergunta.tipo,
+        perguntaId: pergunta.id
       }
       
-      novasRespostas[pergunta.id] = novaResposta
       await salvarResposta(pergunta.id, valorTeste)
     }
     
     setRespostas(prev => ({ ...prev, ...novasRespostas }))
+    setSalvandoResposta(false)
     
-    // 2. Demonstrar otimização IA com animação (já ativada na linha 202)
+    // 1. Primeiro criar perguntas dinâmicas IA
+    try {
+      await analisarEOtimizarPerguntas(novasRespostas)
+    } catch (error) {
+      console.error('Erro na análise IA:', error)
+    }
+    
+    // Simular ocultação de perguntas específicas
+    const perguntasParaOcultar = perguntas
+      .filter(p => !perguntasIniciais.includes(p))
+      .slice(0, Math.floor(perguntas.length * 0.6)) // Ocultar 60% das restantes
+      .map(p => p.id)
+    
+    setPerguntasOcultas(new Set(perguntasParaOcultar))
+    
     toast({
-      title: "🤖 Demonstrando otimização IA...",
-      description: "A IA está analisando suas respostas para otimizar o formulário.",
+      title: "✨ Formulário otimizado!",
+      description: `IA reduziu de ${perguntas.length} para ${perguntas.length - perguntasParaOcultar.length} perguntas + ${perguntasDinamicas.length} novas.`,
     })
     
-    // Criar perguntas dinâmicas baseadas nas respostas
-    setTimeout(async () => {
-      // 1. Primeiro criar novas perguntas dinâmicas
-      const perguntasDinamicasGeradas = [
-        {
-          id: `dynamic-${Date.now()}-1`,
-          texto: "Baseado na sua renda, você tem interesse em investimentos imobiliários?",
-          tipo: "radio",
-          opcoes: ["Sim, tenho interesse", "Não, apenas moradia", "Talvez no futuro"],
-          obrigatoria: false,
-          categoria: "INVESTIMENTO",
-          step: 2,
-          ordem: 999
-        },
-        {
-          id: `dynamic-${Date.now()}-2`,
-          texto: "Considerando o valor informado, você aceita imóveis em construção?",
-          tipo: "radio",
-          opcoes: ["Sim, aceito", "Prefiro prontos", "Depende da localização"],
-          obrigatoria: false,
-          categoria: "PREFERENCIAS",
-          step: 2,
-          ordem: 1000
-        },
-        {
-          id: `dynamic-${Date.now()}-3`,
-          texto: "Qual a urgência para mudança?",
-          tipo: "select",
-          opcoes: ["Imediata (até 3 meses)", "Moderada (3-6 meses)", "Flexível (mais de 6 meses)"],
-          obrigatoria: false,
-          categoria: "TIMING",
-          step: 3,
-          ordem: 1001
-        }
-      ]
-      
-      // Verificar e evitar perguntas duplicadas antes de salvar
-      const perguntasExistentes = [...perguntas, ...perguntasDinamicas]
-      const perguntasUnicas = perguntasDinamicasGeradas.filter(novaPergunta => {
-        const jaExiste = perguntasExistentes.some(existente => 
-          existente.texto.toLowerCase().trim() === novaPergunta.texto.toLowerCase().trim()
-        )
-        if (jaExiste) {
-          console.log('⚠️ Pergunta duplicada ignorada:', novaPergunta.texto)
-        }
-        return !jaExiste
-      })
-
-      if (perguntasUnicas.length === 0) {
-        console.log('ℹ️ Nenhuma pergunta nova para criar - todas já existem')
-        return
-      }
-
-      // Salvar apenas perguntas únicas no backend
-      try {
-        for (const pergunta of perguntasUnicas) {
-          const response = await fetch('/api/perguntas', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              texto: pergunta.texto,
-              tipo: pergunta.tipo,
-              opcoes: pergunta.opcoes,
-              obrigatoria: pergunta.obrigatoria,
-              categoria: pergunta.categoria,
-              fluxo: 'PRINCIPAL',
-              step: pergunta.step,
-              ordem: pergunta.ordem,
-              dinamica: true,
-              geradaPorIA: true
-            })
-          })
-          
-          if (response.ok) {
-            const novaPergunta = await response.json()
-            console.log('✅ Pergunta dinâmica única salva:', novaPergunta)
-          }
-        }
-        
-        // Adicionar apenas perguntas únicas ao estado local
-        setPerguntasDinamicas(prev => [...prev, ...perguntasUnicas])
-        
-        toast({
-          title: "🤖 IA criou novas perguntas!",
-          description: `${perguntasUnicas.length} perguntas personalizadas foram adicionadas.`,
-        })
-        
-      } catch (error) {
-        console.error('Erro ao salvar perguntas dinâmicas:', error)
-        toast({
-          title: "⚠️ Simulando criação de perguntas",
-          description: "3 perguntas personalizadas foram geradas pela IA.",
-        })
-        setPerguntasDinamicas(prev => [...prev, ...perguntasDinamicasGeradas])
-      }
-      
-      // 2. Depois otimizar perguntas existentes
-      await analisarEOtimizarPerguntas(novasRespostas)
-      
-      // Simular ocultação de perguntas específicas
-      const perguntasParaOcultar = perguntas
-        .filter(p => !perguntasIniciais.includes(p))
-        .slice(0, Math.floor(perguntas.length * 0.6)) // Ocultar 60% das restantes
-        .map(p => p.id)
-      
-      setPerguntasOcultas(new Set(perguntasParaOcultar))
-      
+    setAnalisandoIA(false) // Desativar animação
+    
+    // 3. Finalizar automaticamente após mostrar otimização
+    setTimeout(() => {
       toast({
-        title: "✨ Formulário otimizado!",
-        description: `IA reduziu de ${perguntas.length} para ${perguntas.length - perguntasParaOcultar.length} perguntas + ${perguntasDinamicasGeradas.length} novas.`,
+        title: "🎯 Teste concluído!",
+        description: "Analisando matches com base nas suas respostas...",
       })
       
-      setSalvandoResposta(false)
-      setAnalisandoIA(false) // Desativar animação
-      
-      // 3. Finalizar automaticamente após mostrar otimização
-      setTimeout(() => {
-        toast({
-          title: "🎯 Teste concluído!",
-          description: "Analisando matches com base nas suas respostas...",
-        })
-        
-        // Finalizar e acionar análise de matches
-        const respostasForAnalise = Object.entries(novasRespostas).map(([perguntaId, resposta]) => ({
-          perguntaId,
-          valor: resposta.valor,
-          tipo: resposta.tipo || 'text'
-        }))
+      // Finalizar e acionar análise de matches
+      const respostasForAnalise = Object.entries(novasRespostas).map(([perguntaId, resposta]) => ({
+        perguntaId,
+        valor: resposta.valor,
+        tipo: resposta.tipo || 'text'
+      }))
 
-        matches.analisarCompatibilidade({
-          respostasUsuario: respostasForAnalise
-        }).then(() => {
-          // Forçar redirecionamento para matches após análise
-          setTimeout(() => {
-            onComplete({ ...respostas, ...novasRespostas })
-          }, 1000)
-        })
-      }, 1500)
-      
-    }, 2000)
+      matches.analisarCompatibilidade({
+        respostasUsuario: respostasForAnalise
+      }).then(() => {
+        // Forçar redirecionamento para matches após análise
+        setTimeout(() => {
+          onComplete({ ...respostas, ...novasRespostas })
+        }, 1000)
+      })
+    }, 1500)
   }
 
   // Função antiga simplificada para manter compatibilidade
@@ -911,59 +965,83 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         />
       )}
 
-      {/* Step atual */}
-      <div className="mb-8 space-y-8">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            Etapa {stepAtual + 1}
-          </h2>
-          <div className="flex items-center justify-between">
-            <p className="text-base text-gray-600">
-              {perguntasDoStep.filter((p: any) => !perguntasOcultas.has(p.id)).length} pergunta{perguntasDoStep.filter((p: any) => !perguntasOcultas.has(p.id)).length > 1 ? 's' : ''} nesta etapa
-            </p>
-            {perguntasOcultas.size > 0 && (
-              <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm text-green-700 font-medium">
-                  IA otimizou {perguntasOcultas.size} perguntas
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Perguntas - Filtrar perguntas ocultas pela IA + incluir dinâmicas */}
-        {[...perguntasDoStep, ...perguntasDinamicas.filter(p => p.step === stepsDisponiveis[stepAtual])]
-          .filter((pergunta: any) => !perguntasOcultas.has(pergunta.id))
-          .map((pergunta: any, index: number) => (
-          <div key={pergunta.id} className="border border-gray-200 rounded-lg p-6 bg-white">
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                {index + 1}. {pergunta.texto}
-                {pergunta.geradaPorIA && (
-                  <span className="ml-2 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full">
-                    🤖 IA
+      {/* Step atual com animação */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={stepAtual}
+          className="mb-8 space-y-8"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -50 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <motion.div
+            className="mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              Etapa {stepAtual + 1}
+            </h2>
+            <div className="flex items-center justify-between">
+              <p className="text-base text-gray-600">
+                {perguntasDoStep.filter((p: any) => !perguntasOcultas.has(p.id)).length} pergunta{perguntasDoStep.filter((p: any) => !perguntasOcultas.has(p.id)).length > 1 ? 's' : ''} nesta etapa
+              </p>
+              {perguntasOcultas.size > 0 && (
+                <div className="flex items-center gap-2 bg-green-50 px-3 py-1 rounded-full">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-green-700 font-medium">
+                    IA otimizou {perguntasOcultas.size} perguntas
                   </span>
-                )}
-              </h3>
-              {pergunta.descricao && (
-                <p className="text-sm text-gray-600 mb-3 leading-relaxed">
-                  {pergunta.descricao}
-                </p>
-              )}
-              {pergunta.obrigatoria && (
-                <p className="text-xs text-gray-500">* Campo obrigatório</p>
+                </div>
               )}
             </div>
+          </motion.div>
 
-            <DynamicQuestionRenderer
-              pergunta={pergunta}
-              valor={respostas[pergunta.id]?.valor}
-              onChange={(valor: any) => atualizarResposta(pergunta.id, valor)}
-            />
-          </div>
-        ))}
-      </div>
+          {/* Perguntas com animação - Filtrar perguntas ocultas + remover duplicatas */}
+          {[...perguntasDoStep, ...perguntasDinamicas.filter(p => p.step === stepsDisponiveis[stepAtual])]
+            .filter((pergunta: any) => !perguntasOcultas.has(pergunta.id))
+            .filter((pergunta: any, index: number, array: any[]) => {
+              // Remover duplicatas baseado no texto da pergunta
+              return array.findIndex(p => p.texto.toLowerCase().trim() === pergunta.texto.toLowerCase().trim()) === index
+            })
+            .map((pergunta: any, index: number) => (
+            <motion.div
+              key={pergunta.id}
+              className="border border-gray-200 rounded-lg p-6 bg-white"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + (index * 0.1), duration: 0.4 }}
+            >
+              <div className="mb-4">
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {index + 1}. {pergunta.texto}
+                  {pergunta.geradaPorIA && (
+                    <span className="ml-2 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full">
+                      🤖 IA
+                    </span>
+                  )}
+                </h3>
+                {pergunta.descricao && (
+                  <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                    {pergunta.descricao}
+                  </p>
+                )}
+                {pergunta.obrigatoria && (
+                  <p className="text-xs text-gray-500">* Campo obrigatório</p>
+                )}
+              </div>
+
+              <DynamicQuestionRenderer
+                pergunta={pergunta}
+                valor={respostas[pergunta.id]?.valor}
+                onChange={(valor: any) => atualizarResposta(pergunta.id, valor)}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatePresence>
 
       {/* Simulador de Crédito IA - Mostrar no primeiro step após preenchimento */}
       {stepAtual === 0 && Object.keys(respostas).length >= 3 && (
@@ -1114,9 +1192,14 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         </div>
       )}
 
-      {/* Navegação */}
+      {/* Navegação com animação */}
       {!mostrarSimuladorCredito && (
-        <div className="flex justify-between items-center">
+        <motion.div
+          className="flex justify-between items-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
           <Button
             variant="outline"
             onClick={stepAnterior}
@@ -1128,9 +1211,19 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           </Button>
 
           <div className="flex items-center gap-2">
-            {salvandoResposta && (
-              <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
-            )}
+            <AnimatePresence>
+              {salvandoResposta && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  className="flex items-center gap-2"
+                >
+                  <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                  <span className="text-sm text-gray-500">Salvando...</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
             
             {/* Botão Teste Rápido - Comentado temporariamente */}
             {/* 
@@ -1145,16 +1238,21 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
             </Button>
             */}
             
-            <Button
-              onClick={proximoStep}
-              disabled={!podeAvancar() || salvandoResposta}
-              className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600"
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
             >
-              {stepAtual === stepsDisponiveis.length - 1 ? 'Finalizar' : 'Próxima Etapa'}
-              <ChevronRight className="h-4 w-4" />
-            </Button>
+              <Button
+                onClick={proximoStep}
+                disabled={!podeAvancar() || salvandoResposta}
+                className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200"
+              >
+                {stepAtual === stepsDisponiveis.length - 1 ? 'Finalizar' : 'Próxima Etapa'}
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       )}
 
       {/* Modal */}

@@ -88,6 +88,13 @@ export function DynamicQuestionRenderer({ pergunta, valor, onChange }: DynamicQu
 
   // Detectar tipo de máscara automaticamente
   useEffect(() => {
+    // Para radio buttons, nunca aplicar máscara
+    if (pergunta.tipo === 'radio' || pergunta.tipo === 'select' || pergunta.tipo === 'checkbox') {
+      console.log('🚫 Não aplicando máscara para tipo:', pergunta.tipo)
+      setMaskType(null)
+      return
+    }
+    
     // Se mascaraValor está ativa, usar máscara de valor
     if (pergunta.mascaraValor) {
       console.log('🎭 Aplicando máscara de valor para pergunta:', pergunta.texto)
@@ -97,7 +104,7 @@ export function DynamicQuestionRenderer({ pergunta, valor, onChange }: DynamicQu
       console.log('🔍 Máscara detectada:', detectedMask, 'para pergunta:', pergunta.texto)
       setMaskType(detectedMask)
     }
-  }, [pergunta.texto, pergunta.mascaraValor])
+  }, [pergunta.texto, pergunta.mascaraValor, pergunta.tipo])
 
   // Aplicar máscara inicial quando valor ou máscara mudar
   useEffect(() => {
@@ -121,12 +128,16 @@ export function DynamicQuestionRenderer({ pergunta, valor, onChange }: DynamicQu
 
   // Handler para mudanças no input com máscara
   const handleInputChange = (newValue: any) => {
+    console.log('🔧 handleInputChange chamado com:', newValue)
+    
     if (typeof newValue === 'string' && maskType) {
       const maskedValue = applyMask(newValue, maskType)
+      console.log('🎭 Aplicando máscara:', { original: newValue, masked: maskedValue })
       setInputValue(maskedValue)
       // Salvar valor sem máscara no backend
       onChange(removeMask(maskedValue))
     } else {
+      console.log('✅ Passando valor direto:', newValue)
       setInputValue(newValue)
       onChange(newValue)
     }
@@ -520,23 +531,43 @@ export function DynamicQuestionRenderer({ pergunta, valor, onChange }: DynamicQu
       case 'escolha_unica':
       case 'single_choice':
         return (
-          <RadioGroup value={inputValue} onValueChange={handleInputChange}>
+          <RadioGroup value={String(inputValue || "")} onValueChange={(value) => {
+            console.log('🔘 RadioGroup onChange:', value)
+            handleInputChange(value)
+          }}>
             <div className="space-y-3">
               {opcoes.map((opcao: any, index: number) => {
                 const value = typeof opcao === 'string' ? opcao : opcao.value || opcao.label
                 const label = typeof opcao === 'string' ? opcao : opcao.label || opcao.value
-                const isSelected = inputValue === value
+                const isSelected = String(inputValue) === String(value)
+                
+                console.log('🔍 Radio option:', { value, label, isSelected, inputValue })
                 
                 return (
-                  <div key={index} className={`flex items-center space-x-4 p-4 rounded-lg border-2 transition-all cursor-pointer hover:bg-orange-50 ${
+                  <div key={`${pergunta.id}-radio-${index}`} className={`flex items-center space-x-4 p-4 rounded-lg border-2 transition-all cursor-pointer hover:bg-orange-50 ${
                     isSelected ? 'border-orange-500 bg-orange-50' : 'border-gray-200 hover:border-orange-300'
-                  }`}>
-                    <RadioGroupItem value={value} id={`radio-${index}`} className="text-orange-500" />
+                  }`}
+                  onClick={() => {
+                    console.log('🖱️ Radio div clicked:', value)
+                    handleInputChange(value)
+                  }}
+                  >
+                    <RadioGroupItem 
+                      value={String(value)} 
+                      id={`radio-${pergunta.id}-${index}`} 
+                      className="text-orange-500" 
+                    />
                     <Label 
-                      htmlFor={`radio-${index}`} 
+                      htmlFor={`radio-${pergunta.id}-${index}`} 
                       className={`text-lg cursor-pointer flex-1 ${
                         isSelected ? 'text-orange-700 font-medium' : 'text-gray-700'
                       }`}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        console.log('🏷️ Label clicked:', value)
+                        handleInputChange(value)
+                      }}
                     >
                       {label}
                     </Label>
