@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import { prisma } from '@/lib/prisma'
 
 export async function POST(request: NextRequest) {
   try {
@@ -39,10 +37,10 @@ export async function POST(request: NextRequest) {
         titulo: true,
         endereco: true,
         preco: true,
-        cidade: true,
-        estado: true,
-        bairro: true,
-        destaque: true
+        destaque: true,
+        area: true,
+        quartos: true,
+        banheiros: true
       }
     })
 
@@ -56,7 +54,7 @@ export async function POST(request: NextRequest) {
     // Se encontrou imóveis, logar alguns exemplos
     if (count > 0) {
       console.log(`📍 Exemplos encontrados:`)
-      imoveis.slice(0, 3).forEach(imovel => {
+      imoveis.slice(0, 3).forEach((imovel: any) => {
         console.log(`   - ${imovel.titulo} (${imovel.endereco})`)
       })
     }
