@@ -1,0 +1,383 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TipoImovel {
+  id        String   @id @default(cuid())
+  nome      String   @unique
+  slug      String   @unique
+  descricao String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  imoveis   Imovel[]
+}
+
+model User {
+  id               String                @id @default(cuid())
+  name             String
+  email            String                @unique
+  password         String
+  role             Role               @default(CLIENTE)
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+  construtoraId    String?
+  telefone         String?
+  dataNascimento   DateTime?
+  endereco         String?
+  cidade           String?
+  estado           String?
+  cep              String?
+  respostas        Resposta[]
+  imoveisSalvos    ClienteImovelSalvo[]
+  mensagensContato  MensagemContato[]
+  perguntasDinamicas PerguntaDinamica[]
+  relatorios       Relatorio[]
+  construtora      Construtora?          @relation("UsuarioDaConstrutora", fields: [construtoraId], references: [id])
+}
+
+model Construtora {
+  id              String           @id @default(cuid())
+  nome            String
+  cnpj            String           @unique
+  telefone        String
+  email           String           @unique
+  endereco        String
+  ativa           Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  imoveis         Imovel[]
+  imoveisMetadata ImovelMetadata[]
+  usuarios        User[]           @relation("UsuarioDaConstrutora")
+}
+
+model Imovel {
+  id                   String           @id @default(cuid())
+  idExternoAPI         String?          @unique
+  titulo               String
+  descricao            String
+  preco                Float
+  area                 Float
+  quartos              Int
+  banheiros            Int
+  vagas                Int
+  latitude             Float
+  longitude            Float
+  telefoneContato      String?
+  endereco             String
+  caracteristicas      Json?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  construtoraId        String
+  caracteristicasArray String[]
+  destaque             Boolean          @default(false)
+  fotoPrincipal        String?
+  galeriaFotos         String[]
+  status               String?
+  ativo                Boolean          @default(true)
+  tipoImovelId         String?
+  tipoImovelNome       String?
+  construtora          Construtora      @relation(fields: [construtoraId], references: [id], onDelete: Cascade)
+  tipoImovel           TipoImovel?      @relation(fields: [tipoImovelId], references: [id])
+  perguntas            ImovelPergunta[]
+  matches              Match[]
+}
+
+model Pergunta {
+  id             String                @id @default(cuid())
+  texto          String
+  descricao      String?               // Campo opcional para descrição da pergunta
+  tipo           String
+  opcoes         Json?
+  ordem          Int
+  step           Int                   @default(1)  // Novo campo para agrupamento por etapa
+  obrigatoria    Boolean               @default(true)
+  condicional    Json?
+  geradaPorIA    Boolean               @default(false)
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  ativa          Boolean               @default(true)
+  categoria      String
+  fluxo          String
+  pontuacao      Int                   @default(1)
+  mascaraValor   Boolean               @default(false)  // Aplicar máscara de valor R$
+  
+  // Campos específicos para slider
+  sliderTipo     String?               // numero, real, ponto, porcentagem, metros, anos
+  sliderMin      Float?
+  sliderMax      Float?
+  
+  // Campos para melhorias dinâmicas
+  insightIA      Boolean               @default(false)  // Ativar insight IA dinâmico
+  mascaraCidade  Boolean               @default(false)  // Ativar máscara de cidade
+  mascaraBairro  Boolean               @default(false)  // Ativar máscara de bairro
+  
+  configuracaoId String?
+  imoveis        ImovelPergunta[]
+  configuracao   ConfiguracaoPergunta? @relation(fields: [configuracaoId], references: [id])
+  respostas      Resposta[]
+}
+
+model ConfiguracaoPergunta {
+  id                  String     @id @default(cuid())
+  limitePergunta      Int        @default(10)
+  intensidade         Int        @default(70)
+  instrucoesAvancadas String?
+  modeloIA            String     @default("deepseek-r1")
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+  perguntas           Pergunta[]
+}
+
+model RegraNegocio {
+  id                    String   @id @default(cuid())
+  nome                  String
+  descricao             String?
+  tipo                  String   // ENTRADA, FINANCIAMENTO, RENDA, ENCERRAMENTO
+  ativa                 Boolean  @default(true)
+  condicao              Json     // Condições para aplicar a regra
+  acao                  String   // CONTINUAR, ENCERRAR, CRIAR_PERGUNTA, OCULTAR_PERGUNTA
+  valorMinimo           Float?
+  valorMaximo           Float?
+  percentualMinimo      Float?
+  percentualMaximo      Float?
+  taxaJuros             Float?
+  taxaAprovacao         Float?
+  custoAdicionalITBI    Float?   @default(0.03) // 3%
+  custoEscrituraReg     Float?   @default(0.015) // 1.5%
+  taxaAvaliacaoImovel   Float?   @default(2500)
+  custoSegurosTaxas     Float?   @default(15000)
+  mensagemEncerramento  String?
+  perguntasCriar        Json?    // Perguntas que devem ser criadas
+  perguntasOcultar      String[] // IDs das perguntas a ocultar
+  ordem                 Int      @default(0)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@index([tipo, ativa])
+  @@index([ordem])
+}
+
+model PerguntaDinamica {
+  id        String   @id @default(cuid())
+  userId    String
+  etapa     Int
+  perguntas Json     // Array das perguntas geradas
+  timestamp DateTime @default(now())
+  
+  usuario   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId, etapa])
+}
+
+model Resposta {
+  id         String   @id @default(cuid())
+  valor      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  perguntaId String
+  userId     String
+  pergunta   Pergunta @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
+  usuario    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Match {
+  id             String     @id @default(cuid())
+  porcentagem    Float
+  posicaoRanking Int
+  destaque       Boolean    @default(false)
+  criterios      Json
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  imovelId       String
+  relatorioId    String?
+  imovel         Imovel     @relation(fields: [imovelId], references: [id], onDelete: Cascade)
+  relatorio      Relatorio? @relation(fields: [relatorioId], references: [id])
+}
+
+model Relatorio {
+  id                         String                @id @default(cuid())
+  resumo                     String?
+  pdfUrl                     String?
+  updatedAt                  DateTime              @updatedAt
+  userId                     String
+  bairros                    String?
+  cidade                     String?
+  dataCriacao                DateTime              @default(now())
+  distanciaMaximaTrabalho    Float?
+  importanciaAcademia        String?
+  importanciaCaminhabilidade String?
+  importanciaEscolas         String?
+  importanciaEspacoPet       String?
+  importanciaParques         String?
+  importanciaPiscina         String?
+  importanciaPisoQuartos     String?
+  importanciaPlayground      String?
+  importanciaRestaurantes    String?
+  importanciaSalaoFestas     String?
+  importanciaShopping        String?
+  importanciaTransporte      String?
+  localTrabalho              String?
+  prazoFinanciamento         Int?
+  rendaMensal                Float?
+  taxa                       Float?
+  temOutrosEmprestimos       Boolean?              @default(false)
+  temPet                     Boolean?              @default(false)
+  tipoPortaria               String?
+  valorEntrada               Float?
+  valorFinanciamento         Float?
+  valorImovel                Float?
+  valorParcela               Float?
+  valorParcelaMaxima         Float?
+  ImoveisRecomendados        ImoveisRecomendados[]
+  matches                    Match[]
+  usuario                    User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Configuracao {
+  id        String   @id @default(cuid())
+  chave     String   @unique
+  valor     String
+  descricao String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LogIntegracao {
+  id        String   @id @default(cuid())
+  tipo      String
+  status    String
+  request   Json?
+  response  Json?
+  erro      String?
+  createdAt DateTime @default(now())
+}
+
+model ImovelMetadata {
+  id              String       @id @default(cuid())
+  imovelIdExterno String       @unique
+  telefone        String       @default("")
+  observacoes     String       @default("")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  construtoraId   String?
+  construtora     Construtora? @relation(fields: [construtoraId], references: [id])
+}
+
+model ImovelPergunta {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  imovelId   String
+  perguntaId String
+  imovel     Imovel   @relation(fields: [imovelId], references: [id], onDelete: Cascade)
+  pergunta   Pergunta @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
+
+  @@unique([imovelId, perguntaId])
+}
+
+model MensagemContato {
+  id           String   @id @default(cuid())
+  texto        String
+  resposta     String?
+  usuarioNome  String
+  usuarioEmail String
+  usuarioId    String?
+  status       String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  usuario      User?    @relation(fields: [usuarioId], references: [id])
+}
+
+model AIConversation {
+  id        String   @id @default(cuid())
+  messages  String
+  userId    String?
+  sessionId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AIActionHistory {
+  id         Int      @id @default(autoincrement())
+  tipo       String
+  acao       String
+  entidade   String
+  idEntidade String?
+  timestamp  DateTime @default(now())
+  status     String
+  detalhes   String?
+}
+
+model AIConfig {
+  id        String   @id @default(cuid())
+  chave     String   @unique
+  valor     String
+  descricao String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ImoveisRecomendados {
+  id          String    @id
+  relatorioId String
+  imovelId    String
+  titulo      String?
+  preco       Float?
+  endereco    String?
+  bairro      String?
+  cidade      String?
+  area        Float?
+  quartos     Int?
+  banheiros   Int?
+  vagas       Int?
+  imageUrl    String?
+  linkImovel  String?
+  dataCriacao DateTime  @default(now())
+  Relatorio   Relatorio @relation(fields: [relatorioId], references: [id], onDelete: Cascade)
+
+  @@index([relatorioId])
+}
+
+model ClienteImovelSalvo {
+  id              String   @id @default(cuid())
+  userId          String
+  imovelId        String
+  titulo          String
+  preco           Float
+  area            Float?
+  quartos         Int?
+  banheiros       Int?
+  vagas           Int?
+  endereco        String
+  bairro          String?
+  cidade          String?
+  fotoPrincipal   String?
+  construtoraId   String?
+  construtoraNome String?
+  telefoneContato String?
+  matchPercentage Float?
+  motivos         String[] // Motivos da recomendação
+  tipo            String   @default("MATCH") // MATCH, FAVORITO, VISITADO
+  ativo           Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  usuario         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, imovelId])
+  @@index([userId, tipo])
+  @@index([userId, createdAt])
+}
+
+enum Role {
+  ADMIN
+  CONSTRUTORA
+  CLIENTE
+}
