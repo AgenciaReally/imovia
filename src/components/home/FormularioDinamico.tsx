@@ -43,11 +43,10 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   // Estados para geolocalização
   const [localizacaoObtida, setLocalizacaoObtida] = useState(false)
   const [cidadeDetectada, setCidadeDetectada] = useState<string>('')
-  const [imoveisNaRegiao, setImoveisNaRegiao] = useState<number | null>(null)
   
   // Estados para simulador de crédito IA
-  const [mostrarSimuladorCredito, setMostrarSimuladorCredito] = useState(false)
-  const [simulacaoAprovada, setSimulacaoAprovada] = useState(true)
+  const [mostrarSimuladorCredito, setMostrarSimuladorCredito] = useState(false);
+  const [simulacaoAprovada, setSimulacaoAprovada] = useState(false);
   const [dadosSimulacao, setDadosSimulacao] = useState<any>(null);
   
   // Hooks AI
@@ -115,10 +114,6 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                 
                 console.log(`🏠 Imóveis encontrados em ${cidadeCompleta}:`, count)
                 console.log('🏠 Exemplos:', imoveis?.slice(0, 3))
-                
-                // Salvar dados para exibição
-                setCidadeDetectada(cidadeCompleta)
-                setImoveisNaRegiao(count)
                 
                 if (count > 0) {
                   toast({
@@ -1122,49 +1117,6 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         </div>
         <Progress value={progresso} className="h-2" />
       </div>
-
-      {/* Informações da Cidade Detectada */}
-      {cidadeDetectada && (
-        <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-              <span className="text-xl">📍</span>
-            </div>
-            <div>
-              <h3 className="font-semibold text-gray-900">Localização Detectada</h3>
-              <p className="text-sm text-gray-600">Informações sobre sua região</p>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🏙️</span>
-              <div>
-                <p className="text-sm text-gray-600">Cidade</p>
-                <p className="font-medium text-gray-900">{cidadeDetectada}</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">🏠</span>
-              <div>
-                <p className="text-sm text-gray-600">Imóveis Disponíveis</p>
-                <p className="font-medium text-gray-900">
-                  {imoveisNaRegiao !== null ? (
-                    imoveisNaRegiao > 0 ? (
-                      <span className="text-green-600">{imoveisNaRegiao} imóveis encontrados</span>
-                    ) : (
-                      <span className="text-red-600">Nenhum imóvel disponível</span>
-                    )
-                  ) : (
-                    <span className="text-gray-500">Verificando...</span>
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* AI Insights */}
       {deepseek.insights.length > 0 && (
