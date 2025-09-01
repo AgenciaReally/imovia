@@ -99,11 +99,43 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           if (perguntaCidade) {
             await atualizarResposta(perguntaCidade.id, cidadeCompleta)
             
-            toast({
-              title: "📍 Localização detectada!",
-              description: `Preenchido automaticamente: ${cidadeCompleta}`,
-              variant: "default"
-            })
+            // 🏠 Verificar imóveis disponíveis na região detectada
+            try {
+              const response = await fetch('/api/imoveis/verificar-regiao', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                  cidade: cidade,
+                  estado: estado,
+                  cidadeCompleta: cidadeCompleta
+                })
+              })
+              
+              if (response.ok) {
+                const { count, encontrados } = await response.json()
+                
+                toast({
+                  title: "📍 Localização detectada!",
+                  description: `${cidadeCompleta} - ${count} imóveis disponíveis na região!`,
+                  variant: "default"
+                })
+                
+                console.log(`🏠 Encontrados ${count} imóveis em ${cidadeCompleta}`)
+              } else {
+                toast({
+                  title: "📍 Localização detectada!",
+                  description: `Preenchido automaticamente: ${cidadeCompleta}`,
+                  variant: "default"
+                })
+              }
+            } catch (error) {
+              console.error('Erro ao verificar imóveis na região:', error)
+              toast({
+                title: "📍 Localização detectada!",
+                description: `Preenchido automaticamente: ${cidadeCompleta}`,
+                variant: "default"
+              })
+            }
           }
         }
       }
@@ -219,6 +251,40 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
     
     setRespostas(prev => ({ ...prev, [perguntaId]: novaResposta }))
     await salvarResposta(perguntaId, valor)
+    
+    // 🏠 Verificar se é pergunta de cidade e fazer busca de imóveis
+    if (pergunta && typeof valor === 'string' && valor.trim()) {
+      const ehPerguntaCidade = pergunta.texto.toLowerCase().includes('cidade') || 
+                              pergunta.texto.toLowerCase().includes('localização') ||
+                              pergunta.texto.toLowerCase().includes('onde você mora')
+      
+      if (ehPerguntaCidade && valor.length > 3) {
+        // Fazer verificação de imóveis quando usuário digita cidade
+        try {
+          const response = await fetch('/api/imoveis/verificar-regiao', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              cidadeCompleta: valor.trim()
+            })
+          })
+          
+          if (response.ok) {
+            const { count } = await response.json()
+            
+            toast({
+              title: "🏠 Região verificada!",
+              description: `${count} imóveis encontrados em ${valor}`,
+              variant: "default"
+            })
+            
+            console.log(`🏠 Busca manual: ${count} imóveis em ${valor}`)
+          }
+        } catch (error) {
+          console.error('Erro ao verificar região:', error)
+        }
+      }
+    }
   }
 
   // 🧠 Análise IA avançada para otimizar perguntas
@@ -724,25 +790,98 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
     }
   }
 
+  // ⚡ IA Auto-Finalização Inteligente
+  const verificarSeIADeveFinalizarFormulario = async () => {
+    const totalRespostas = Object.keys(respostas).length
+    
+    // IA analisa se já tem dados suficientes para finalizar
+    if (totalRespostas >= 3 && stepAtual >= 1) {
+      setAnalisandoIA(true)
+      
+      try {
+        // Verificar se temos as respostas essenciais
+        const respostasArray = Object.entries(respostas)
+        let temRenda = false
+        let temValorImovel = false
+        let temLocalizacao = false
+        
+        respostasArray.forEach(([key, resp]) => {
+          const pergunta = perguntas.find(p => p.id === key)
+          if (pergunta?.categoria === 'AVALIACAO_CREDITO') {
+            if (pergunta.texto.toLowerCase().includes('renda')) temRenda = true
+            if (pergunta.texto.toLowerCase().includes('valor') || pergunta.texto.toLowerCase().includes('preço')) temValorImovel = true
+          }
+        })
+        
+        // Se temos localização detectada ou respostas essenciais, finalizar
+        if (cidadeDetectada) temLocalizacao = true
+        
+        const dadosEssenciaisCompletos = (temRenda || temValorImovel) || totalRespostas >= 5
+        
+        if (dadosEssenciaisCompletos || stepAtual >= 2) {
+          // IA decide finalizar automaticamente
+          toast({
+            title: "🤖 IA Analisou Seu Perfil!",
+            description: "Dados suficientes coletados. Finalizando e buscando imóveis ideais...",
+            variant: "default"
+          })
+          
+          // Simular análise IA por 2s e finalizar
+          setTimeout(async () => {
+            setAnalisandoIA(false)
+            
+            // Finalizar formulário automaticamente
+            const respostasForAnalise = Object.entries(respostas).map(([perguntaId, resposta]) => ({
+              perguntaId,
+              valor: resposta.valor,
+              tipo: resposta.tipo || 'text'
+            }))
+
+            matches.analisarCompatibilidade({
+              respostasUsuario: respostasForAnalise
+            }).then(() => {
+              onComplete(respostas)
+            })
+          }, 2000)
+          
+          return true
+        }
+      } catch (error) {
+        console.error('Erro na análise IA:', error)
+        setAnalisandoIA(false)
+      }
+    }
+    
+    return false
+  }
+
   // Avançar para próximo step
   const proximoStep = async () => {
+    // ⚡ PRIMEIRO: Verificar se IA deve finalizar automaticamente
+    const iaFinalizou = await verificarSeIADeveFinalizarFormulario()
+    if (iaFinalizou) return
+    
     const novoContador = contadorSteps + 1
     setContadorSteps(novoContador)
     
-    // A cada 5 steps, fazer análise IA para otimizar
-    if (novoContador % 5 === 0 && novoContador > 0) {
+    // Análise IA a cada step após o primeiro
+    if (stepAtual >= 1 && Object.keys(respostas).length >= 2) {
       setAnalisandoIA(true)
       
-      // Simular análise IA
+      // Análise IA mais rápida
       setTimeout(async () => {
         await analisarEOtimizarPerguntas(respostas)
         setAnalisandoIA(false)
         
-        // Avançar após análise
+        // Verificar novamente se deve finalizar após análise
+        const iaFinalizouAposAnalise = await verificarSeIADeveFinalizarFormulario()
+        if (iaFinalizouAposAnalise) return
+        
+        // Só avança se IA não finalizou
         if (stepAtual < stepsDisponiveis.length - 1) {
           setStepAtual(prev => prev + 1)
         }
-      }, 2500) // 2.5s para análise IA
+      }, 1500) // Análise mais rápida
       
       return
     }
@@ -750,7 +889,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
     if (stepAtual < stepsDisponiveis.length - 1) {
       setStepAtual(prev => prev + 1)
     } else {
-      // Finalizar formulário
+      // Fallback: Finalizar formulário manualmente
       const respostasForAnalise = Object.entries(respostas).map(([perguntaId, resposta]) => ({
         perguntaId,
         valor: resposta.valor,
@@ -766,6 +905,11 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   }
 
   const podeAvancar = () => {
+    // 🚫 BLOQUEAR se simulação de crédito foi recusada
+    if (mostrarSimuladorCredito && !simulacaoAprovada) {
+      return false
+    }
+    
     const currentStepNumber = stepsDisponiveis[stepAtual]
     if (!currentStepNumber) return false
 
@@ -1196,12 +1340,13 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                   setStepAtual(prev => prev + 1)
                 } else {
                   setMostrarSimuladorCredito(false)
+                  // Não avançar quando recusado - ficar no step atual
                 }
               }}
               className={`px-8 py-3 ${
                 simulacaoAprovada 
                   ? 'bg-green-600 hover:bg-green-700' 
-                  : 'bg-orange-500 hover:bg-orange-600'
+                  : 'bg-red-500 hover:bg-red-600'
               }`}
             >
               {simulacaoAprovada ? 'Continuar para Próxima Etapa' : 'Revisar Respostas'}
