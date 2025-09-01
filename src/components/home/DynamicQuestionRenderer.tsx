@@ -1041,7 +1041,7 @@
           />
         )}
         
-        {/* Informações adicionais */}
+        {/* Informações adicionaiss */}
         {pergunta.opcoes?.descricao && (
           <p className="text-sm text-gray-500 mt-2">
             {pergunta.opcoes.descricao}
