@@ -290,6 +290,13 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
 
   // 🧠 Análise IA avançada para otimizar perguntas
   const analisarEOtimizarPerguntas = async (respostasAtuais: Record<string, any>) => {
+    // 🚫 BLOQUEAR IA no primeiro step
+    const currentStepNumber = stepsDisponiveis[stepAtual]
+    if (currentStepNumber === 1) {
+      console.log('🚫 IA bloqueada no step 1')
+      return
+    }
+    
     setAnalisandoIA(true)
     
     try {
@@ -417,11 +424,14 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       // Atualizar perguntas ocultas
       setPerguntasOcultas(perguntasParaOcultar)
       
-      // Verificar duplicatas
+      // 🚫 EVITAR REPETIÇÃO: Verificar duplicatas rigorosamente
       const perguntasExistentes = [...perguntas, ...perguntasDinamicas]
       const perguntasUnicas = novasPerguntasDinamicas.filter((novaPergunta: any) => {
         const jaExiste = perguntasExistentes.some(existente => 
-          existente.texto.toLowerCase().trim() === novaPergunta.texto.toLowerCase().trim()
+          existente.texto.toLowerCase().trim() === novaPergunta.texto.toLowerCase().trim() ||
+          existente.id.includes('dinamica-investimento') && novaPergunta.id.includes('dinamica-investimento') ||
+          existente.id.includes('dinamica-localizacao') && novaPergunta.id.includes('dinamica-localizacao') ||
+          existente.id.includes('dinamica-familia') && novaPergunta.id.includes('dinamica-familia')
         )
         return !jaExiste
       })
