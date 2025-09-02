@@ -15,25 +15,9 @@ interface Ponto {
   titulo?: string;
 }
 
-const PONTOS_MOCK: Ponto[] = [
-  { id: "p1", lat: 25, lng: 25, valor: 95, imovelId: "im1", titulo: "Apartamento Premium Zona Norte" },
-  { id: "p2", lat: 70, lng: 35, valor: 78, imovelId: "im2", titulo: "Casa em Condomínio Fechado" },
-  { id: "p3", lat: 62, lng: 65, valor: 65, imovelId: "im3", titulo: "Studio Moderno Centro" },
-  { id: "p4", lat: 38, lng: 60, valor: 82, imovelId: "im4", titulo: "Cobertura Duplex Jardins" },
-  { id: "p5", lat: 45, lng: 45, valor: 91, imovelId: "im5", titulo: "Apartamento Vista Parque" },
-  { id: "p6", lat: 30, lng: 30, valor: 43, imovelId: "im6", titulo: "Casa Térrea" },
-  { id: "p7", lat: 75, lng: 25, valor: 56, imovelId: "im7", titulo: "Loft Industrial" },
-  { id: "p8", lat: 65, lng: 75, valor: 37, imovelId: "im8", titulo: "Kitnet Universitária" },
-  { id: "p9", lat: 28, lng: 55, valor: 62, imovelId: "im9", titulo: "Sobrado Estilo Americano" },
-  { id: "p10", lat: 55, lng: 60, valor: 88, imovelId: "im10", titulo: "Apartamento Alto Padrão" },
-  { id: "p11", lat: 15, lng: 35, valor: 71, imovelId: "im11", titulo: "Casa com Vista" },
-  { id: "p12", lat: 80, lng: 40, valor: 53, imovelId: "im12", titulo: "Flat Mobiliado" },
-  { id: "p13", lat: 50, lng: 80, valor: 49, imovelId: "im13", titulo: "Apartamento 2 Quartos" },
-  { id: "p14", lat: 35, lng: 70, valor: 76, imovelId: "im14", titulo: "Cobertura com Piscina" },
-  { id: "p15", lat: 60, lng: 20, valor: 84, imovelId: "im15", titulo: "Condomínio Club" },
-];
 
 interface MapaCalorProps {
+  pontos?: Ponto[];
   titulo?: string;
   descricao?: string;
   altura?: number;
@@ -41,6 +25,7 @@ interface MapaCalorProps {
 }
 
 export function MapaCalor({ 
+  pontos = [],
   titulo = "Mapa de Calor de Interações",
   descricao = "Visualize quais áreas e imóveis recebem mais interesse dos usuários",
   altura = 400,
@@ -144,7 +129,7 @@ export function MapaCalor({
           </div>
           
           {/* Pontos de calor */}
-          {PONTOS_MOCK.map((ponto) => (
+          {pontos.map((ponto: Ponto) => (
             <div 
               key={ponto.id}
               className={`absolute rounded-full cursor-pointer ${obterCorCalor(ponto.valor)} opacity-70 hover:opacity-100 transition-all duration-200 flex items-center justify-center`}

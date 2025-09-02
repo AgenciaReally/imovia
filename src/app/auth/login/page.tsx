@@ -161,7 +161,7 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm overflow-hidden relative z-10">
+          <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm overflow-hidden relative z-10 rounded-3xl">
             {/* Elementos decorativos no card */}
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/80 via-primary to-primary/80"></div>
             <div className="absolute -right-6 -top-6 w-12 h-12 rounded-full bg-primary/10"></div>
@@ -196,7 +196,7 @@ export default function LoginPage() {
                             placeholder="seu@email.com" 
                             {...field} 
                             disabled={isLoading}
-                            className="border-gray-200 focus:border-primary focus:ring-primary/20"
+                            className="border-gray-200 focus:border-primary focus:ring-primary/20 rounded-xl"
                           />
                         </FormControl>
                         <FormMessage />
@@ -215,6 +215,7 @@ export default function LoginPage() {
                             placeholder="••••••••" 
                             {...field} 
                             disabled={isLoading}
+                            className="rounded-xl"
                           />
                         </FormControl>
                         <FormMessage />
@@ -258,7 +259,7 @@ export default function LoginPage() {
                     <motion.div 
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="bg-red-50 p-3 rounded-md text-red-600 text-sm border border-red-100"
+                      className="bg-red-50 p-3 rounded-xl text-red-600 text-sm border border-red-100"
                     >
                       {error}
                     </motion.div>
@@ -266,7 +267,7 @@ export default function LoginPage() {
                   
                   <Button 
                     type="submit" 
-                    className="w-full bg-primary hover:bg-primary-600 transition-all duration-200 text-white font-medium py-2 mt-2"
+                    className="w-full bg-primary hover:bg-primary-600 transition-all duration-200 text-white font-medium py-2 mt-2 rounded-xl"
                     disabled={isLoading}
                   >
                     {isLoading ? (
@@ -293,7 +294,7 @@ export default function LoginPage() {
                     <Button 
                       type="button" 
                       variant="outline" 
-                      className="bg-white hover:bg-gray-50 text-gray-700 border-gray-200 flex items-center justify-center gap-2"
+                      className="bg-white hover:bg-gray-50 text-gray-700 border-gray-200 flex items-center justify-center gap-2 rounded-xl"
                       onClick={() => console.log('Login com Facebook')}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#1877F2" viewBox="0 0 24 24">
@@ -304,7 +305,7 @@ export default function LoginPage() {
                     <Button 
                       type="button" 
                       variant="outline" 
-                      className="bg-white hover:bg-gray-50 text-gray-700 border-gray-200 flex items-center justify-center gap-2"
+                      className="bg-white hover:bg-gray-50 text-gray-700 border-gray-200 flex items-center justify-center gap-2 rounded-xl"
                       onClick={() => console.log('Login com Google')}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">

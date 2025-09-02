@@ -16,101 +16,18 @@ import {
   Home 
 } from "lucide-react";
 
-// Dados mockados
-const IMOVEIS_DADOS = [
-  {
-    id: "im1",
-    titulo: "Apartamento Premium Zona Norte",
-    visualizacoes: 2840,
-    cliques: 682,
-    tempo: 185, // segundos
-    ctr: 24.01,
-    variacao: 12.5,
-  },
-  {
-    id: "im2",
-    titulo: "Casa em Condomínio Fechado",
-    visualizacoes: 2350,
-    cliques: 597,
-    tempo: 205,
-    ctr: 25.40,
-    variacao: 8.3,
-  },
-  {
-    id: "im3",
-    titulo: "Studio Moderno Centro",
-    visualizacoes: 1920,
-    cliques: 435,
-    tempo: 160,
-    ctr: 22.66,
-    variacao: -3.2,
-  },
-  {
-    id: "im4",
-    titulo: "Cobertura Duplex Jardins",
-    visualizacoes: 1840,
-    cliques: 520,
-    tempo: 240,
-    ctr: 28.26,
-    variacao: 15.7,
-  },
-  {
-    id: "im5",
-    titulo: "Apartamento Vista Parque",
-    visualizacoes: 1780,
-    cliques: 490,
-    tempo: 215,
-    ctr: 27.53,
-    variacao: 9.8,
-  },
-  {
-    id: "im6",
-    titulo: "Casa Térrea",
-    visualizacoes: 1650,
-    cliques: 380,
-    tempo: 170,
-    ctr: 23.03,
-    variacao: -1.5,
-  },
-  {
-    id: "im7",
-    titulo: "Loft Industrial",
-    visualizacoes: 1580,
-    cliques: 420,
-    tempo: 195,
-    ctr: 26.58,
-    variacao: 7.2,
-  },
-  {
-    id: "im8",
-    titulo: "Kitnet Universitária",
-    visualizacoes: 1540,
-    cliques: 350,
-    tempo: 145,
-    ctr: 22.73,
-    variacao: -5.8,
-  },
-  {
-    id: "im9",
-    titulo: "Sobrado Estilo Americano",
-    visualizacoes: 1490,
-    cliques: 365,
-    tempo: 175,
-    ctr: 24.50,
-    variacao: 2.1,
-  },
-  {
-    id: "im10",
-    titulo: "Apartamento Alto Padrão",
-    visualizacoes: 1430,
-    cliques: 395,
-    tempo: 220,
-    ctr: 27.62,
-    variacao: 10.5,
-  },
-];
+interface ImovelDados {
+  id: string;
+  titulo: string;
+  visualizacoes: number;
+  cliques: number;
+  tempo: number; // segundos
+  ctr: number;
+  variacao: number;
+}
 
 interface TabelaImoveisProps {
+  dados?: ImovelDados[];
   titulo?: string;
   descricao?: string;
   itensPorPagina?: number;
@@ -120,6 +37,7 @@ type OrdenacaoTipo = "visualizacoes" | "cliques" | "tempo" | "ctr" | "nome";
 type DirecaoOrdenacao = "asc" | "desc";
 
 export function TabelaImoveis({
+  dados = [],
   titulo = "Imóveis Mais Populares",
   descricao = "Lista dos imóveis mais visualizados e com mais interações",
   itensPorPagina = 5
@@ -130,11 +48,11 @@ export function TabelaImoveis({
   const [direcao, setDirecao] = useState<DirecaoOrdenacao>("desc");
   
   // Filtragem e ordenação
-  const imoveisFiltrados = IMOVEIS_DADOS
-    .filter(imovel => 
+  const imoveisFiltrados = dados
+    .filter((imovel: ImovelDados) => 
       imovel.titulo.toLowerCase().includes(busca.toLowerCase())
     )
-    .sort((a, b) => {
+    .sort((a: ImovelDados, b: ImovelDados) => {
       if (ordenarPor === "nome") {
         return direcao === "asc" 
           ? a.titulo.localeCompare(b.titulo) 
@@ -276,7 +194,7 @@ export function TabelaImoveis({
                   </TableCell>
                 </TableRow>
               ) : (
-                imoveisPaginados.map((imovel) => (
+                imoveisPaginados.map((imovel: ImovelDados) => (
                   <TableRow key={imovel.id}>
                     <TableCell className="font-medium">
                       <div className="flex items-center gap-2">

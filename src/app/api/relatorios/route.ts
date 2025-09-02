@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     
     const dataInicio = subDays(hoje, dias);
     
-    // Consultar os dados do banco
+    // Consultar os dados do banco incluindo analytics
     const [
       totalUsuarios,
       novosUsuarios,
@@ -35,7 +35,11 @@ export async function GET(request: Request) {
       totalMatches,
       matchesRecentes,
       totalRelatorios,
-      logsChamadas
+      logsChamadas,
+      analyticsAcessoPagina,
+      analyticsCliques,
+      analyticsFormularios,
+      analyticsRelatorios
     ] = await Promise.all([
       // Total de usuários
       prisma.user.count(),
@@ -86,6 +90,46 @@ export async function GET(request: Request) {
       prisma.logIntegracao.count({
         where: {
           createdAt: {
+            gte: dataInicio
+          }
+        }
+      }),
+      
+      // Analytics: Acessos à página
+      prisma.analytics.count({
+        where: {
+          evento: 'ACESSO_PAGINA',
+          timestamp: {
+            gte: dataInicio
+          }
+        }
+      }),
+      
+      // Analytics: Cliques em elementos
+      prisma.analytics.count({
+        where: {
+          evento: 'CLIQUE_ELEMENTO',
+          timestamp: {
+            gte: dataInicio
+          }
+        }
+      }),
+      
+      // Analytics: Formulários concluídos
+      prisma.analytics.count({
+        where: {
+          evento: 'FORMULARIO_CONCLUIDO',
+          timestamp: {
+            gte: dataInicio
+          }
+        }
+      }),
+      
+      // Analytics: Relatórios solicitados
+      prisma.analytics.count({
+        where: {
+          evento: 'RELATORIO_SOLICITADO',
+          timestamp: {
             gte: dataInicio
           }
         }
@@ -197,17 +241,17 @@ export async function GET(request: Request) {
       return Math.round(((atual - anterior) / anterior) * 1000) / 10;
     }
     
-    // Métricas organizadas para visualizações
+    // Métricas organizadas usando dados de analytics reais
     const metricas = {
       visualizacoes: {
-        total: logsChamadas,
-        percentual: calcularCrescimento(logsChamadas, logsAnterior),
-        positivo: logsChamadas >= logsAnterior
+        total: analyticsAcessoPagina || logsChamadas, // Usar analytics se disponível, senão fallback para logs
+        percentual: calcularCrescimento(analyticsAcessoPagina || logsChamadas, logsAnterior),
+        positivo: (analyticsAcessoPagina || logsChamadas) >= logsAnterior
       },
       cliques: {
-        total: Math.round(logsChamadas * 0.3), // Estimativa: 30% das visualizações geram cliques
-        percentual: calcularCrescimento(Math.round(logsChamadas * 0.3), Math.round(logsAnterior * 0.3)),
-        positivo: logsChamadas >= logsAnterior
+        total: analyticsCliques || Math.round(logsChamadas * 0.3), // Dados reais de cliques
+        percentual: calcularCrescimento(analyticsCliques || Math.round(logsChamadas * 0.3), Math.round(logsAnterior * 0.3)),
+        positivo: (analyticsCliques || logsChamadas) >= logsAnterior
       },
       ctr: {
         total: 30, // Estimativa: Click-Through Rate de 30%

@@ -51,7 +51,7 @@ export function ConstrutoraTileCard({ construtora, className, onDelete, onStatus
         className
       )}
     >
-      <Card className="border-0 shadow-lg transition-all duration-300 h-full relative overflow-hidden group">
+      <Card className="border-0 shadow-lg transition-all duration-300 h-full relative overflow-hidden group rounded-xl">
         {/* Faixa lateral de status */}
         <div 
           className={cn(
@@ -70,7 +70,7 @@ export function ConstrutoraTileCard({ construtora, className, onDelete, onStatus
             </div>
             <Badge 
               className={cn(
-                "ml-2 uppercase text-xs font-semibold px-2.5 py-0.5 rounded border", 
+                "ml-2 uppercase text-xs font-semibold px-2.5 py-0.5 rounded-lg border", 
                 statusColors[construtora.status]
               )}
             >
@@ -80,7 +80,7 @@ export function ConstrutoraTileCard({ construtora, className, onDelete, onStatus
           
           <div className="grid grid-cols-2 gap-3 mb-6">
             <div className="flex items-center">
-              <div className="p-1.5 rounded-md bg-blue-50 dark:bg-blue-900/20 mr-2.5">
+              <div className="p-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/20 mr-2.5">
                 <Building2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
@@ -90,7 +90,7 @@ export function ConstrutoraTileCard({ construtora, className, onDelete, onStatus
             </div>
             
             <div className="flex items-center">
-              <div className="p-1.5 rounded-md bg-indigo-50 dark:bg-indigo-900/20 mr-2.5">
+              <div className="p-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/20 mr-2.5">
                 <CalendarIcon className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <div>
@@ -100,7 +100,7 @@ export function ConstrutoraTileCard({ construtora, className, onDelete, onStatus
             </div>
             
             <div className="flex items-center">
-              <div className="p-1.5 rounded-md bg-violet-50 dark:bg-violet-900/20 mr-2.5">
+              <div className="p-1.5 rounded-lg bg-violet-50 dark:bg-violet-900/20 mr-2.5">
                 <HomeIcon className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
               </div>
               <div>
@@ -110,7 +110,7 @@ export function ConstrutoraTileCard({ construtora, className, onDelete, onStatus
             </div>
             
             <div className="flex items-center">
-              <div className="p-1.5 rounded-md bg-pink-50 dark:bg-pink-900/20 mr-2.5">
+              <div className="p-1.5 rounded-lg bg-pink-50 dark:bg-pink-900/20 mr-2.5">
                 <Users className="h-3.5 w-3.5 text-pink-600 dark:text-pink-400" />
               </div>
               <div>
@@ -128,7 +128,7 @@ export function ConstrutoraTileCard({ construtora, className, onDelete, onStatus
                     <Button 
                       variant="default" 
                       size="sm"
-                      className="w-full flex gap-2 items-center"
+                      className="w-full flex gap-2 items-center rounded-lg"
                     >
                       <Eye className="h-3.5 w-3.5" />
                       <span>Visualizar Detalhes</span>
@@ -153,7 +153,7 @@ export function ConstrutoraTileCard({ construtora, className, onDelete, onStatus
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full flex gap-2 items-center"
+                      className="w-full flex gap-2 items-center rounded-lg"
                     >
                       <Edit className="h-3.5 w-3.5" />
                       <span>Editar</span>

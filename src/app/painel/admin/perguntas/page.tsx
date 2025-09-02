@@ -188,7 +188,7 @@ export default function PerguntasPage() {
       }
       
       // Recarregar perguntas e fechar formulário
-      carregarPerguntas()
+      await carregarPerguntas()
       setFormAberto(false)
     } catch (error) {
       console.error("Erro ao salvar pergunta:", error)
@@ -209,7 +209,7 @@ export default function PerguntasPage() {
       })
       
       // Recarregar perguntas e fechar diálogo de confirmação
-      carregarPerguntas()
+      await carregarPerguntas()
       setConfirmacaoExclusao(null)
     } catch (error) {
       console.error("Erro ao excluir pergunta:", error)
@@ -452,7 +452,7 @@ export default function PerguntasPage() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <div className="grid grid-cols-1 gap-4 pt-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
                       {perguntasNaCategoria.map((pergunta, index) => (
                         <PerguntaCard
                           key={pergunta.id}

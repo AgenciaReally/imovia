@@ -38,6 +38,7 @@ model User {
   mensagensContato   MensagemContato[]
   perguntasDinamicas PerguntaDinamica[]
   relatorios         Relatorio[]
+  analytics          Analytics[]
   construtora        Construtora?         @relation("UsuarioDaConstrutora", fields: [construtoraId], references: [id])
 }
 
@@ -374,6 +375,26 @@ model ClienteImovelSalvo {
   @@unique([userId, imovelId])
   @@index([userId, tipo])
   @@index([userId, createdAt])
+}
+
+model Analytics {
+  id           String   @id @default(cuid())
+  evento       String // ACESSO_PAGINA, CLIQUE_ELEMENTO, FORMULARIO_INICIADO, FORMULARIO_CONCLUIDO, RELATORIO_SOLICITADO
+  pagina       String // '/', '/painel/admin/imoveis', etc
+  elemento     String? // ID do elemento clicado
+  propriedades Json? // Dados adicionais do evento
+  userAgent    String?
+  ip           String?
+  sessaoId     String? // Para rastrear sessões únicas
+  userId       String? // Se usuário estiver logado
+  timestamp    DateTime @default(now())
+
+  usuario User? @relation(fields: [userId], references: [id])
+
+  @@index([evento, timestamp])
+  @@index([pagina, timestamp])
+  @@index([sessaoId])
+  @@index([userId])
 }
 
 enum Role {

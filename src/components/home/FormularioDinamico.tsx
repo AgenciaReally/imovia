@@ -43,7 +43,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   // Estados para geolocalização
   const [localizacaoObtida, setLocalizacaoObtida] = useState(false)
   const [cidadeDetectada, setCidadeDetectada] = useState<string>('')
-  
+  const [imoveisDisponiveis, setImoveisDisponiveis] = useState<number>(0)
+  const [cidadeValidada, setCidadeValidada] = useState<boolean>(false)
   // Estados para simulador de crédito IA
   const [mostrarSimuladorCredito, setMostrarSimuladorCredito] = useState(false);
   const [simulacaoAprovada, setSimulacaoAprovada] = useState(false);
@@ -97,6 +98,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           )
           
           if (perguntaCidade) {
+            console.log('🎯 Pergunta de cidade encontrada:', { id: perguntaCidade.id, texto: perguntaCidade.texto })
+            console.log('🌍 Preenchendo com cidade detectada:', cidadeCompleta)
             await atualizarResposta(perguntaCidade.id, cidadeCompleta)
             
             // 🏠 Verificar imóveis disponíveis na região detectada
@@ -114,6 +117,10 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                 
                 console.log(`🏠 Imóveis encontrados em ${cidadeCompleta}:`, count)
                 console.log('🏠 Exemplos:', imoveis?.slice(0, 3))
+                
+                // Atualizar estados de validação da cidade
+                setImoveisDisponiveis(count)
+                setCidadeValidada(count > 0)
                 
                 if (count > 0) {
                   toast({
@@ -273,11 +280,23 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           if (response.ok) {
             const { count } = await response.json()
             
-            toast({
-              title: "🏠 Região verificada!",
-              description: `${count} imóveis encontrados em ${valor}`,
-              variant: "default"
-            })
+            // Atualizar estados de validação da cidade
+            setImoveisDisponiveis(count)
+            setCidadeValidada(count > 0)
+            
+            if (count > 0) {
+              toast({
+                title: "🏠 Região verificada!",
+                description: `${count} imóveis encontrados em ${valor}`,
+                variant: "default"
+              })
+            } else {
+              toast({
+                title: "❌ Nenhum imóvel encontrado",
+                description: `Não há imóveis disponíveis em ${valor} no momento.`,
+                variant: "destructive"
+              })
+            }
             
             console.log(`🏠 Busca manual: ${count} imóveis em ${valor}`)
           }
@@ -805,11 +824,22 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const verificarSeIADeveFinalizarFormulario = async () => {
     const totalRespostas = Object.keys(respostas).length
     
+    console.log('🚫 [DEBUG] DESABILITANDO auto-finalização temporariamente para debug')
+    return false // DESABILITAR TEMPORARIAMENTE
+    
     // IA analisa se já tem dados suficientes para finalizar
     if (totalRespostas >= 3 && stepAtual >= 1) {
       setAnalisandoIA(true)
       
       try {
+        // DEBUG: Log detalhado da análise
+        console.log('🔍 [DEBUG] Verificando se IA deve finalizar:', {
+          stepAtual,
+          totalRespostas: Object.keys(respostas).length,
+          cidadeDetectada,
+          respostas: Object.keys(respostas)
+        })
+        
         // Verificar se temos as respostas essenciais
         const respostasArray = Object.entries(respostas)
         let temRenda = false
@@ -827,9 +857,22 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         // Se temos localização detectada ou respostas essenciais, finalizar
         if (cidadeDetectada) temLocalizacao = true
         
-        const dadosEssenciaisCompletos = (temRenda || temValorImovel) || totalRespostas >= 5
+        console.log('🔍 [DEBUG] Critérios essenciais:', {
+          temRenda,
+          temValorImovel,
+          temLocalizacao,
+          cidadeDetectada
+        })
         
-        if (dadosEssenciaisCompletos || stepAtual >= 2) {
+        const dadosEssenciaisCompletos = (temRenda && temValorImovel && temLocalizacao) || totalRespostas >= 10
+        
+        console.log('🔍 [DEBUG] Avaliação final:', {
+          dadosEssenciaisCompletos,
+          stepAtual,
+          shouldFinish: dadosEssenciaisCompletos || stepAtual >= 5
+        })
+        
+        if (dadosEssenciaisCompletos || stepAtual >= 5) {
           // IA decide finalizar automaticamente
           toast({
             title: "🤖 IA Analisou Seu Perfil!",
@@ -868,15 +911,31 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
 
   // Avançar para próximo step
   const proximoStep = async () => {
+    console.log('🚀 [DEBUG] proximoStep chamado:', {
+      stepAtual,
+      stepsDisponiveis: stepsDisponiveis.length,
+      totalSteps: stepsDisponiveis,
+      proximoStepSeria: stepAtual + 1
+    })
+    
     // ⚡ PRIMEIRO: Verificar se IA deve finalizar automaticamente
     const iaFinalizou = await verificarSeIADeveFinalizarFormulario()
+    console.log('🤖 [DEBUG] IA finalizou?', iaFinalizou)
     if (iaFinalizou) return
     
     const novoContador = contadorSteps + 1
     setContadorSteps(novoContador)
     
+    // DEBUG: Verificar condições da análise IA
+    const deveAnalisarIA = stepAtual >= 1 && Object.keys(respostas).length >= 2
+    console.log('🧠 [DEBUG] Deve analisar IA?', {
+      stepAtual,
+      totalRespostas: Object.keys(respostas).length,
+      deveAnalisar: deveAnalisarIA
+    })
+    
     // Análise IA a cada step após o primeiro
-    if (stepAtual >= 1 && Object.keys(respostas).length >= 2) {
+    if (deveAnalisarIA) {
       setAnalisandoIA(true)
       
       // Análise IA mais rápida
@@ -886,20 +945,34 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         
         // Verificar novamente se deve finalizar após análise
         const iaFinalizouAposAnalise = await verificarSeIADeveFinalizarFormulario()
+        console.log('🤖 [DEBUG] IA finalizou após análise?', iaFinalizouAposAnalise)
         if (iaFinalizouAposAnalise) return
         
         // Só avança se IA não finalizou
         if (stepAtual < stepsDisponiveis.length - 1) {
+          console.log('✅ [DEBUG] Avançando para próximo step via IA')
           setStepAtual(prev => prev + 1)
+        } else {
+          console.log('⚠️ [DEBUG] Chegou ao final dos steps via IA')
         }
       }, 1500) // Análise mais rápida
       
       return
     }
     
-    if (stepAtual < stepsDisponiveis.length - 1) {
+    // DEBUG: Verificar condição final
+    const podeAvancar = stepAtual < stepsDisponiveis.length - 1
+    console.log('📊 [DEBUG] Pode avançar?', {
+      stepAtual,
+      totalSteps: stepsDisponiveis.length,
+      podeAvancar
+    })
+    
+    if (podeAvancar) {
+      console.log('✅ [DEBUG] Avançando para próximo step normalmente')
       setStepAtual(prev => prev + 1)
     } else {
+      console.log('🏁 [DEBUG] FINALIZANDO FORMULÁRIO - chegou ao final dos steps')
       // Fallback: Finalizar formulário manualmente
       const respostasForAnalise = Object.entries(respostas).map(([perguntaId, resposta]) => ({
         perguntaId,
@@ -1216,8 +1289,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         </motion.div>
       </AnimatePresence>
 
-      {/* Simulador de Crédito IA - Mostrar no primeiro step após preenchimento */}
-      {stepAtual === 0 && Object.keys(respostas).length >= 3 && (
+      {/* Simulador de Crédito IA - Mostrar apenas se cidade foi validada com imóveis */}
+      {stepAtual === 0 && Object.keys(respostas).length >= 3 && cidadeValidada && imoveisDisponiveis > 0 && (
         <div className="mb-8 p-6 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl border border-orange-200">
           <div className="text-center mb-6">
             <h3 className="text-xl font-bold text-gray-800 mb-2">

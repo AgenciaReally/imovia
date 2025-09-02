@@ -108,7 +108,10 @@
 
     // Aplicar máscara inicial quando valor ou máscara mudar
     useEffect(() => {
+      console.log('🔄 DynamicQuestionRenderer useEffect - valor mudou:', { perguntaId: pergunta.id, valor, inputValue })
+      
       if (!valor) {
+        console.log('🔄 Valor vazio, limpando inputValue')
         setInputValue('')
         return
       }
@@ -120,11 +123,13 @@
         setInputValue(formatted)
       } else if (typeof valor === 'string' && maskType) {
         const maskedValue = applyMask(valor, maskType)
+        console.log('🎭 Aplicando máscara ao valor:', { valor, maskedValue, maskType })
         setInputValue(maskedValue)
       } else {
+        console.log('🔄 Definindo inputValue diretamente:', valor)
         setInputValue(valor || '')
       }
-    }, [valor, pergunta.mascaraValor, maskType])
+    }, [valor, pergunta.mascaraValor, maskType, pergunta.id])
 
     // Handler para mudanças no input com máscara
     const handleInputChange = (newValue: any) => {

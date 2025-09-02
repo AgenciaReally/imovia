@@ -17,6 +17,7 @@ import { RelatorioModal } from '@/components/ui/relatorio-modal'
 import { Poppins } from "next/font/google";
 import { ModalAutenticacao } from "@/components/auth/ModalAutenticacao";
 import { getUserSession } from "@/lib/auth-client";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 // Carregar fonte Poppins
 const poppins = Poppins({
@@ -126,6 +127,7 @@ export default function Home() {
   };
   
   const { toast } = useToast();
+  const { trackPageView, trackClick, trackFormStart, trackFormComplete, trackReportRequest } = useAnalytics();
   
   // Efeito para ativar os pins quando o progresso atingir 30%
   useEffect(() => {
@@ -133,6 +135,15 @@ export default function Home() {
       setPinsVisiveis(true);
     }
   }, [progresso]);
+
+  // Tracking: Acesso à página inicial
+  useEffect(() => {
+    trackPageView('/', {
+      timestamp: new Date().toISOString(),
+      parametrosUrl: Object.keys(dadosUsuario).length > 0,
+      usuarioLogado
+    });
+  }, [trackPageView, dadosUsuario, usuarioLogado]);
 
   // Verificar se o usuário está logado e se temos parâmetros na URL
   useEffect(() => {
@@ -292,6 +303,42 @@ export default function Home() {
   const handleQuestionarioConcluido = async (respostasFinais: Record<string, any>) => {
     console.log("Respostas do formulário atual:", Object.keys(respostasFinais).length, "respostas");
     
+    // Tracking: Formulário concluído
+    trackFormComplete('/', respostasFinais.fluxo || 'formulario-principal', {
+      etapa: respostasFinais.fluxo,
+      totalRespostas: Object.keys(respostasFinais).length,
+      progresso: progresso
+    });
+
+    // Integração ActiveCampaign: Adicionar tag baseada no fluxo concluído
+    if (respostasFinais.email || dadosUsuario.email) {
+      const email = respostasFinais.email || dadosUsuario.email;
+      const fluxo = respostasFinais.fluxo || 'formulario-principal';
+      
+      try {
+        console.log('🏷️ Enviando tag para ActiveCampaign:', { email, fluxo });
+        const tagResponse = await fetch('/api/activecampaign', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: email,
+            tag: `formulario-${fluxo}-concluido`
+          })
+        });
+
+        if (tagResponse.ok) {
+          const tagResult = await tagResponse.json();
+          console.log('✅ Tag ActiveCampaign aplicada:', tagResult.message);
+        } else {
+          console.warn('⚠️ Erro ao aplicar tag ActiveCampaign:', await tagResponse.text());
+        }
+      } catch (acError) {
+        console.error('❌ Erro na integração ActiveCampaign:', acError);
+      }
+    }
+    
     // Verificar a etapa atual do fluxo
     const fluxoAtual = respostasFinais.fluxo;
     console.log("Fluxo atual concluído:", fluxoAtual);
@@ -441,6 +488,13 @@ export default function Home() {
   
   // Função para solicitar relatório
   const handleSolicitarRelatorio = async () => {
+    // Tracking: Relatório solicitado
+    trackReportRequest('/', {
+      progresso: progresso,
+      questionarioConcluido: questionarioConcluido,
+      totalRespostas: Object.keys(respostas).length
+    });
+    
     // Iniciar loading
     setRelatorioLoading(true);
     

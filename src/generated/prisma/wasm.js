@@ -435,6 +435,19 @@ exports.Prisma.ClienteImovelSalvoScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AnalyticsScalarFieldEnum = {
+  id: 'id',
+  evento: 'evento',
+  pagina: 'pagina',
+  elemento: 'elemento',
+  propriedades: 'propriedades',
+  userAgent: 'userAgent',
+  ip: 'ip',
+  sessaoId: 'sessaoId',
+  userId: 'userId',
+  timestamp: 'timestamp'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -491,7 +504,8 @@ exports.Prisma.ModelName = {
   AIActionHistory: 'AIActionHistory',
   AIConfig: 'AIConfig',
   ImoveisRecomendados: 'ImoveisRecomendados',
-  ClienteImovelSalvo: 'ClienteImovelSalvo'
+  ClienteImovelSalvo: 'ClienteImovelSalvo',
+  Analytics: 'Analytics'
 };
 
 /**

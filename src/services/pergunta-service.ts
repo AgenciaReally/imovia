@@ -207,7 +207,7 @@ export async function excluirPergunta(id: string): Promise<boolean> {
     return true
   } catch (error) {
     console.error(`Erro ao excluir pergunta ${id}:`, error)
-    return false
+    throw error // Propagar o erro ao invés de retornar false
   }
 }
 

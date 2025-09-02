@@ -100,7 +100,7 @@ export function ImovelCard({ imovel, className, onDelete, onToggleStatus }: Imov
       onHoverEnd={() => setIsHovered(false)}
       className={cn("h-full", className)}
     >
-      <Card className="overflow-hidden h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+      <Card className="overflow-hidden h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl">
         {/* Imagem do imóvel com navegação */}
         <div className="relative h-48 overflow-hidden">
           <Image
@@ -119,7 +119,7 @@ export function ImovelCard({ imovel, className, onDelete, onToggleStatus }: Imov
           {/* Badge de status */}
           <Badge 
             className={cn(
-              "absolute top-2 right-2 uppercase text-xs font-semibold px-2.5 py-1 rounded border", 
+              "absolute top-2 right-2 uppercase text-xs font-semibold px-2.5 py-1 rounded-xl border", 
               statusColor
             )}
           >
@@ -178,28 +178,28 @@ export function ImovelCard({ imovel, className, onDelete, onToggleStatus }: Imov
           {/* Características em grid */}
           <div className="grid grid-cols-2 gap-y-2 gap-x-4 mt-3 text-sm">
             <div className="flex items-center gap-1.5">
-              <div className="p-1 rounded-md bg-blue-50 dark:bg-blue-900/20">
+              <div className="p-1 rounded-lg bg-blue-50 dark:bg-blue-900/20">
                 <Ruler className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
               </div>
               <span>{imovel.area} m²</span>
             </div>
             
             <div className="flex items-center gap-1.5">
-              <div className="p-1 rounded-md bg-indigo-50 dark:bg-indigo-900/20">
+              <div className="p-1 rounded-lg bg-indigo-50 dark:bg-indigo-900/20">
                 <BedDouble className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
               </div>
               <span>{imovel.quartos} {imovel.quartos === 1 ? 'quarto' : 'quartos'}</span>
             </div>
             
             <div className="flex items-center gap-1.5">
-              <div className="p-1 rounded-md bg-violet-50 dark:bg-violet-900/20">
+              <div className="p-1 rounded-lg bg-violet-50 dark:bg-violet-900/20">
                 <Bath className="h-3.5 w-3.5 text-violet-600 dark:text-violet-400" />
               </div>
               <span>{imovel.banheiros} {imovel.banheiros === 1 ? 'banheiro' : 'banheiros'}</span>
             </div>
             
             <div className="flex items-center gap-1.5">
-              <div className="p-1 rounded-md bg-pink-50 dark:bg-pink-900/20">
+              <div className="p-1 rounded-lg bg-pink-50 dark:bg-pink-900/20">
                 <Car className="h-3.5 w-3.5 text-pink-600 dark:text-pink-400" />
               </div>
               <span>{imovel.vagas} {imovel.vagas === 1 ? 'vaga' : 'vagas'}</span>
@@ -212,7 +212,7 @@ export function ImovelCard({ imovel, className, onDelete, onToggleStatus }: Imov
               <Button 
                 variant="default" 
                 size="sm" 
-                className="text-xs gap-2"
+                className="text-xs gap-2 rounded-xl"
                 onClick={() => setModalEdicaoAberto(true)}
               >
                 <Eye className="w-3.5 h-3.5" />
@@ -223,7 +223,7 @@ export function ImovelCard({ imovel, className, onDelete, onToggleStatus }: Imov
                 <Button 
                   variant="destructive" 
                   size="sm"
-                  className="text-xs"
+                  className="text-xs rounded-xl"
                   onClick={(e) => {
                     e.stopPropagation();
                     if (confirm(`Tem certeza que deseja excluir o imóvel ${imovel.titulo}?`)) {

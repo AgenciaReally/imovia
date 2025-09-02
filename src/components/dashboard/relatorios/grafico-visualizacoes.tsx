@@ -20,39 +20,13 @@ import {
 } from "recharts";
 import { ArrowUpRight, ArrowDownRight, Eye, MousePointerClick, CheckCircle2 } from "lucide-react";
 
-// Dados mockados para o gráfico
-const dadosPorDia = [
-  { data: "01/04", visualizacoes: 1245, cliques: 230, conversoes: 35 },
-  { data: "02/04", visualizacoes: 1350, cliques: 280, conversoes: 42 },
-  { data: "03/04", visualizacoes: 1190, cliques: 210, conversoes: 32 },
-  { data: "04/04", visualizacoes: 1420, cliques: 310, conversoes: 48 },
-  { data: "05/04", visualizacoes: 1680, cliques: 390, conversoes: 52 },
-  { data: "06/04", visualizacoes: 1560, cliques: 350, conversoes: 47 },
-  { data: "07/04", visualizacoes: 1230, cliques: 270, conversoes: 38 },
-  { data: "08/04", visualizacoes: 1380, cliques: 320, conversoes: 43 },
-  { data: "09/04", visualizacoes: 1490, cliques: 340, conversoes: 51 },
-  { data: "10/04", visualizacoes: 1620, cliques: 380, conversoes: 58 },
-  { data: "11/04", visualizacoes: 1720, cliques: 410, conversoes: 63 },
-  { data: "12/04", visualizacoes: 1850, cliques: 440, conversoes: 68 },
-  { data: "13/04", visualizacoes: 1920, cliques: 460, conversoes: 70 },
-  { data: "14/04", visualizacoes: 1780, cliques: 420, conversoes: 62 },
-];
-
-const dadosPorSemana = [
-  { data: "Semana 1", visualizacoes: 8200, cliques: 1850, conversoes: 280 },
-  { data: "Semana 2", visualizacoes: 9400, cliques: 2100, conversoes: 320 },
-  { data: "Semana 3", visualizacoes: 10600, cliques: 2400, conversoes: 360 },
-  { data: "Semana 4", visualizacoes: 12100, cliques: 2850, conversoes: 410 },
-];
-
-const dadosPorMes = [
-  { data: "Jan", visualizacoes: 35000, cliques: 7600, conversoes: 1200 },
-  { data: "Fev", visualizacoes: 38000, cliques: 8200, conversoes: 1320 },
-  { data: "Mar", visualizacoes: 42000, cliques: 9500, conversoes: 1450 },
-  { data: "Abr", visualizacoes: 48000, cliques: 11200, conversoes: 1680 },
-  { data: "Mai", visualizacoes: 52000, cliques: 12400, conversoes: 1840 },
-  { data: "Jun", visualizacoes: 49000, cliques: 11500, conversoes: 1720 },
-];
+// Interface para dados de atividade
+interface AtividadeDiaria {
+  data: string;
+  visitas: number;
+  cliques: number;
+  conversoes: number;
+}
 
 // Cores personalizadas para o gráfico
 const cores = {
@@ -65,6 +39,7 @@ type PeriodoTipo = "dia" | "semana" | "mes";
 type DadosTipo = "visualizacoes" | "cliques" | "conversoes";
 
 interface GraficoVisualizacoesProps {
+  dados: AtividadeDiaria[];
   titulo?: string;
   descricao?: string;
   altura?: number;
@@ -73,39 +48,54 @@ interface GraficoVisualizacoesProps {
 }
 
 export function GraficoVisualizacoes({ 
+  dados,
   titulo = "Visualizações e Engajamento",
   descricao = "Acompanhe as métricas de visualizações, cliques e conversões da plataforma",
   altura = 320,
   tipoGrafico = "area",
   mostrarDados = ["visualizacoes", "cliques", "conversoes"]
 }: GraficoVisualizacoesProps) {
-  const [periodo, setPeriodo] = useState<PeriodoTipo>("dia");
-  
-  // Selecionar o conjunto de dados com base no período
-  const dados = periodo === "dia" 
-    ? dadosPorDia 
-    : periodo === "semana" 
-      ? dadosPorSemana 
-      : dadosPorMes;
+  // Mapear os dados recebidos para o formato do gráfico
+  const dadosGrafico = dados.map(item => ({
+    data: item.data,
+    visualizacoes: item.visitas,
+    cliques: item.cliques,
+    conversoes: item.conversoes
+  }));
   
   // Calcular os números totais e taxas de crescimento
-  const totalVisualizacoes = dados.reduce((acc, item) => acc + item.visualizacoes, 0);
-  const totalCliques = dados.reduce((acc, item) => acc + item.cliques, 0);
-  const totalConversoes = dados.reduce((acc, item) => acc + item.conversoes, 0);
+  const totalVisualizacoes = dadosGrafico.reduce((acc: number, item) => acc + item.visualizacoes, 0);
+  const totalCliques = dadosGrafico.reduce((acc: number, item) => acc + item.cliques, 0);
+  const totalConversoes = dadosGrafico.reduce((acc: number, item) => acc + item.conversoes, 0);
   
   // Calcular taxa de cliques (CTR) e taxa de conversão
   const taxaCliques = (totalCliques / totalVisualizacoes) * 100;
   const taxaConversao = (totalConversoes / totalCliques) * 100;
   
-  // Crescimento percentual (simulado)
-  const crescimentoVisualizacoes = periodo === "dia" ? 7.2 : periodo === "semana" ? 12.5 : 9.8;
-  const crescimentoCliques = periodo === "dia" ? 8.5 : periodo === "semana" ? 11.2 : 10.3;
+  // Calcular crescimento baseado nos dados reais
+  const metadeDados = Math.floor(dadosGrafico.length / 2);
+  const primeiraMetade = dadosGrafico.slice(0, metadeDados);
+  const segundaMetade = dadosGrafico.slice(metadeDados);
+  
+  const totalPrimeiraMetade = primeiraMetade.reduce((acc: number, item) => acc + item.visualizacoes, 0);
+  const totalSegundaMetade = segundaMetade.reduce((acc: number, item) => acc + item.visualizacoes, 0);
+  
+  const crescimentoVisualizacoes = totalPrimeiraMetade > 0 
+    ? ((totalSegundaMetade - totalPrimeiraMetade) / totalPrimeiraMetade) * 100 
+    : 0;
+    
+  const cliquePrimeiraMetade = primeiraMetade.reduce((acc: number, item) => acc + item.cliques, 0);
+  const cliqueSegundaMetade = segundaMetade.reduce((acc: number, item) => acc + item.cliques, 0);
+  
+  const crescimentoCliques = cliquePrimeiraMetade > 0 
+    ? ((cliqueSegundaMetade - cliquePrimeiraMetade) / cliquePrimeiraMetade) * 100 
+    : 0;
   
   const renderizarGrafico = () => {
     switch (tipoGrafico) {
       case "linha":
         return (
-          <LineChart data={dados}>
+          <LineChart data={dadosGrafico}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="data" />
             <YAxis />
@@ -145,7 +135,7 @@ export function GraficoVisualizacoes({
         );
       case "barra":
         return (
-          <BarChart data={dados}>
+          <BarChart data={dadosGrafico}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="data" />
             <YAxis />
@@ -177,7 +167,7 @@ export function GraficoVisualizacoes({
       case "area":
       default:
         return (
-          <AreaChart data={dados}>
+          <AreaChart data={dadosGrafico}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="data" />
             <YAxis />
@@ -225,16 +215,9 @@ export function GraficoVisualizacoes({
           <CardTitle className="text-xl">{titulo}</CardTitle>
           <CardDescription>{descricao}</CardDescription>
         </div>
-        <Select value={periodo} onValueChange={(value) => setPeriodo(value as PeriodoTipo)}>
-          <SelectTrigger className="w-[130px]">
-            {periodo === "dia" ? "Diário" : periodo === "semana" ? "Semanal" : "Mensal"}
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="dia">Diário</SelectItem>
-            <SelectItem value="semana">Semanal</SelectItem>
-            <SelectItem value="mes">Mensal</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="text-sm text-muted-foreground">
+          {dadosGrafico.length} pontos de dados
+        </div>
       </CardHeader>
       <CardContent className="px-2">
         {/* Cards de resumo */}
