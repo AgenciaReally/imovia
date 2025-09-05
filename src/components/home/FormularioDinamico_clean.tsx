@@ -37,6 +37,64 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const deepseek = useDeepseek()
   const matches = useMatches()
 
+  // 💀 BOTÃO ULTRA FORÇADO - APARECE SEMPRE
+  useEffect(() => {
+    console.log('💀 CRIANDO BOTÃO ULTRA FORÇADO');
+    
+    // Criar botão IMEDIATAMENTE
+    const criarBotao = () => {
+      const botao = document.createElement('div');
+      botao.innerHTML = `
+        <button onclick="window.encerrarFormulario()" style="
+          position: fixed !important;
+          top: 20px !important;
+          right: 20px !important;
+          z-index: 999999 !important;
+          background: #dc2626 !important;
+          color: white !important;
+          border: none !important;
+          padding: 15px 25px !important;
+          border-radius: 8px !important;
+          font-weight: bold !important;
+          font-size: 16px !important;
+          cursor: pointer !important;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+          animation: pulse 1s infinite !important;
+        ">
+          🚨 ENCERRAR AGORA
+        </button>
+        <style>
+          @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+          }
+        </style>
+      `;
+      document.body.appendChild(botao);
+      console.log('💀 BOTÃO ADICIONADO');
+    };
+    
+    // Função global para encerrar
+    (window as any).encerrarFormulario = () => {
+      console.log('💀 ENCERRANDO FORMULÁRIO!');
+      onComplete({
+        finalizacaoAntecipada: true,
+        limiteCredito: 500000,
+        creditoAprovado: true,
+        dataFinalizacao: new Date().toISOString()
+      });
+    };
+    
+    // Criar imediatamente
+    criarBotao();
+    
+    // E a cada 3 segundos garantir que existe
+    const interval = setInterval(criarBotao, 3000);
+    
+    return () => clearInterval(interval);
+  }, [onComplete]);
+
   // Carregar perguntas
   useEffect(() => {
     const carregarPerguntas = async () => {

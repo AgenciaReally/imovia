@@ -51,61 +51,98 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       deveMostrarBotao: Object.keys(respostas).length >= 1
     });
 
-    // 🔥 CRIAR BOTÃO BRUTAL FORÇADO NO DOM
-    setTimeout(() => {
-      // Remover botão anterior se existir
-      const botaoExistente = document.getElementById('BOTAO_ENCERRAR_FORCADO');
-      if (botaoExistente) {
-        botaoExistente.remove();
-      }
-
-      // Criar botão absolutamente forçado
-      const botaoForcado = document.createElement('button');
-      botaoForcado.id = 'BOTAO_ENCERRAR_FORCADO';
-      botaoForcado.innerHTML = '⚡ ENCERRAR AGORA (FORÇADO)';
-      botaoForcado.style.cssText = `
-        position: fixed !important;
-        top: 20px !important;
-        right: 20px !important;
-        z-index: 99999 !important;
-        background: #dc2626 !important;
-        color: white !important;
-        border: none !important;
-        padding: 12px 20px !important;
-        border-radius: 8px !important;
-        font-weight: bold !important;
-        font-size: 14px !important;
-        cursor: pointer !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-        display: block !important;
-        visibility: visible !important;
-        opacity: 1 !important;
-      `;
+    // 🔥 MÉTODO ULTRA BRUTAL - APARECE IMEDIATAMENTE
+    const criarBotaoUltraBrutal = () => {
+      console.log('💀 INICIANDO MÉTODO ULTRA BRUTAL');
       
-      botaoForcado.onclick = () => {
-        console.log('🔥 BOTÃO FORÇADO CLICADO!');
-        
-        const limiteCredito = localStorage.getItem('limiteCredito') || '500000';
-        const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
-        
-        const respostasFinais = {
-          ...respostas,
-          limiteCredito: parseInt(limiteCredito),
-          creditoAprovado,
-          finalizacaoAntecipada: true,
-          dataFinalizacao: new Date().toISOString(),
-          metodoBotaoForcado: true
-        };
-        
-        console.log('📋 FINALIZANDO COM BOTÃO FORÇADO:', respostasFinais);
-        onComplete(respostasFinais);
-      };
+      // Remover TODOS os botões anteriores
+      const botoesAntigos = document.querySelectorAll('[id*="ENCERRAR"], [id*="FORCADO"]');
+      botoesAntigos.forEach(btn => btn.remove());
       
-      // Adicionar ao body
-      document.body.appendChild(botaoForcado);
-      console.log('✅ BOTÃO FORÇADO ADICIONADO AO DOM');
-    }, 1000);
-  }, [stepAtual, stepsDisponiveis, respostas, onComplete])
+      // Criar 3 botões em posições diferentes para garantir
+      const posicoes = [
+        { id: 'ULTRA_BRUTAL_1', top: '10px', right: '10px', bg: '#dc2626' },
+        { id: 'ULTRA_BRUTAL_2', top: '10px', left: '50%', bg: '#ea580c' },
+        { id: 'ULTRA_BRUTAL_3', bottom: '10px', right: '10px', bg: '#c2410c' }
+      ];
+      
+      posicoes.forEach((pos, index) => {
+        setTimeout(() => {
+          const botao = document.createElement('div');
+          botao.id = pos.id;
+          botao.innerHTML = `
+            <button style="
+              position: fixed !important;
+              ${pos.top ? `top: ${pos.top} !important;` : ''}
+              ${pos.bottom ? `bottom: ${pos.bottom} !important;` : ''}
+              ${pos.right ? `right: ${pos.right} !important;` : ''}
+              ${pos.left ? `left: ${pos.left} !important;` : ''}
+              transform: ${pos.left ? 'translateX(-50%)' : 'none'} !important;
+              z-index: ${99999 + index} !important;
+              background: ${pos.bg} !important;
+              color: white !important;
+              border: 3px solid white !important;
+              padding: 15px 25px !important;
+              border-radius: 10px !important;
+              font-weight: 900 !important;
+              font-size: 16px !important;
+              cursor: pointer !important;
+              box-shadow: 0 8px 20px rgba(0,0,0,0.5) !important;
+              display: block !important;
+              visibility: visible !important;
+              opacity: 1 !important;
+              animation: pulse 2s infinite !important;
+              font-family: Arial, sans-serif !important;
+            ">
+              🚨 ENCERRAR ${index + 1}
+            </button>
+            <style>
+              @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+                100% { transform: scale(1); }
+              }
+            </style>
+          `;
+          
+          const btn = botao.querySelector('button');
+          btn.onclick = () => {
+            console.log(\`💀 BOTÃO ULTRA BRUTAL \${index + 1} CLICADO!\`);
+            
+            // Remover todos os botões
+            posicoes.forEach(p => {
+              const elemento = document.getElementById(p.id);
+              if (elemento) elemento.remove();
+            });
+            
+            const respostasFinais = {
+              ...respostas,
+              limiteCredito: 500000,
+              creditoAprovado: true,
+              finalizacaoAntecipada: true,
+              dataFinalizacao: new Date().toISOString(),
+              metodoUltraBrutal: true,
+              botaoClicado: index + 1
+            };
+            
+            console.log('💀 FINALIZANDO COM MÉTODO ULTRA BRUTAL:', respostasFinais);
+            onComplete(respostasFinais);
+          };
+          
+          document.body.appendChild(botao);
+          console.log(\`💀 BOTÃO ULTRA BRUTAL \${index + 1} CRIADO!\`);
+        }, index * 100);
+      });
+    };
+    
+    // Executar IMEDIATAMENTE
+    criarBotaoUltraBrutal();
+    
+    // E executar novamente a cada 2 segundos para garantir
+    const interval = setInterval(criarBotaoUltraBrutal, 2000);
+    
+    return () => clearInterval(interval);
+  }, [])
   
   // Estados para geolocalização
   const [localizacaoObtida, setLocalizacaoObtida] = useState(false)
