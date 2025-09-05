@@ -1764,46 +1764,30 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               Orçamento Rápido
             </Button>
 
-            {/* Botão Encerrar Agora - SEMPRE VISÍVEL */}
-            {true && (
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Button
-                  onClick={() => {
-                    console.log('⚡ [ENCERRAR] Finalizando formulário antecipadamente:', {
-                      stepAtual,
-                      totalSteps: stepsDisponiveis.length,
-                      respostasPreenchidas: Object.keys(respostas).length
-                    });
-                    
-                    // Recuperar dados de crédito do localStorage
-                    const limiteCredito = localStorage.getItem('limiteCredito');
-                    const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
-                    const simulacaoCredito = localStorage.getItem('simulacaoCredito');
-                    
-                    // Finalizar com dados parciais
-                    const respostasFinais = {
-                      ...respostas,
-                      formularioCompleto: false, // Indicar que foi finalizado antes do fim
-                      stepFinalizado: stepAtual,
-                      limiteCredito: limiteCredito ? parseFloat(limiteCredito) : null,
-                      creditoAprovado,
-                      simulacaoCredito: simulacaoCredito ? JSON.parse(simulacaoCredito) : null
-                    };
-                    
-                    console.log('⚡ [ENCERRAR] Enviando dados parciais:', respostasFinais);
-                    onComplete(respostasFinais);
-                  }}
-                  variant="outline"
-                  className="flex items-center gap-2 border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400"
-                >
-                  <CheckCircle className="h-4 w-4" />
-                  Encerrar Agora
-                </Button>
-              </motion.div>
-            )}
+            {/* BOTÃO ENCERRAR AGORA - FORÇADO */}
+            <Button
+              onClick={() => {
+                console.log('⚡ [ENCERRAR FORÇADO] Finalizando formulário');
+                
+                const limiteCredito = localStorage.getItem('limiteCredito') || '500000';
+                const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
+                
+                const respostasFinais = {
+                  ...respostas,
+                  limiteCredito: parseInt(limiteCredito),
+                  creditoAprovado,
+                  finalizacaoAntecipada: true,
+                  dataFinalizacao: new Date().toISOString()
+                };
+                
+                console.log('📋 Finalizando com respostas:', respostasFinais);
+                onComplete(respostasFinais);
+              }}
+              className="bg-red-500 hover:bg-red-600 text-white flex items-center gap-2 ml-3"
+              style={{ display: 'flex !important' }}
+            >
+              ⚡ Encerrar Agora
+            </Button>
 
             <motion.div
               whileHover={{ scale: 1.02 }}
@@ -1821,17 +1805,22 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                   proximoStep();
                 }}
                 disabled={!podeAvancar() || salvandoResposta}
-                className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200"
+                className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200 ml-3"
               >
-                {stepAtual === stepsDisponiveis.length - 1 ? 'Finalizar' : 'Próxima Etapa'}
-                <ChevronRight className="h-4 w-4" />
+                {salvandoResposta ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    {stepAtual === stepsDisponiveis.length - 1 ? 'Ver Imóveis' : 'Próxima Etapa'}
+                    <ChevronRight className="h-4 w-4" />
+                  </>
+                )}
               </Button>
             </motion.div>
           </div>
         </motion.div>
       )}
 
-      {/* Modal */}
       <MatchesModal
         isOpen={showMatches}
         onClose={() => {
