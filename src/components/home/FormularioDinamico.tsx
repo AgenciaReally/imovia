@@ -50,7 +50,62 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       condicao1: Object.keys(respostas).length >= 1,
       deveMostrarBotao: Object.keys(respostas).length >= 1
     });
-  }, [stepAtual, stepsDisponiveis, respostas])
+
+    // 🔥 CRIAR BOTÃO BRUTAL FORÇADO NO DOM
+    setTimeout(() => {
+      // Remover botão anterior se existir
+      const botaoExistente = document.getElementById('BOTAO_ENCERRAR_FORCADO');
+      if (botaoExistente) {
+        botaoExistente.remove();
+      }
+
+      // Criar botão absolutamente forçado
+      const botaoForcado = document.createElement('button');
+      botaoForcado.id = 'BOTAO_ENCERRAR_FORCADO';
+      botaoForcado.innerHTML = '⚡ ENCERRAR AGORA (FORÇADO)';
+      botaoForcado.style.cssText = `
+        position: fixed !important;
+        top: 20px !important;
+        right: 20px !important;
+        z-index: 99999 !important;
+        background: #dc2626 !important;
+        color: white !important;
+        border: none !important;
+        padding: 12px 20px !important;
+        border-radius: 8px !important;
+        font-weight: bold !important;
+        font-size: 14px !important;
+        cursor: pointer !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      `;
+      
+      botaoForcado.onclick = () => {
+        console.log('🔥 BOTÃO FORÇADO CLICADO!');
+        
+        const limiteCredito = localStorage.getItem('limiteCredito') || '500000';
+        const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
+        
+        const respostasFinais = {
+          ...respostas,
+          limiteCredito: parseInt(limiteCredito),
+          creditoAprovado,
+          finalizacaoAntecipada: true,
+          dataFinalizacao: new Date().toISOString(),
+          metodoBotaoForcado: true
+        };
+        
+        console.log('📋 FINALIZANDO COM BOTÃO FORÇADO:', respostasFinais);
+        onComplete(respostasFinais);
+      };
+      
+      // Adicionar ao body
+      document.body.appendChild(botaoForcado);
+      console.log('✅ BOTÃO FORÇADO ADICIONADO AO DOM');
+    }, 1000);
+  }, [stepAtual, stepsDisponiveis, respostas, onComplete])
   
   // Estados para geolocalização
   const [localizacaoObtida, setLocalizacaoObtida] = useState(false)
