@@ -1764,8 +1764,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               Orçamento Rápido
             </Button>
 
-            {/* Botão Encerrar Agora - sempre visível quando há respostas */}
-            {Object.keys(respostas).length >= 1 && (
+            {/* Botão Encerrar Agora - SEMPRE VISÍVEL */}
+            {true && (
               <motion.div
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
