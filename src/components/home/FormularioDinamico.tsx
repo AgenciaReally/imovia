@@ -40,6 +40,18 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const [erro, setErro] = useState<string | null>(null)
   const [showMatches, setShowMatches] = useState(false)
   
+  // 🚨 DEBUG TEMPORÁRIO - REMOVER DEPOIS
+  useEffect(() => {
+    console.log('🔍 DEBUG BOTÃO ENCERRAR:', {
+      stepAtual,
+      stepsDisponiveis: stepsDisponiveis.length,
+      respostasCount: Object.keys(respostas).length,
+      respostas: Object.keys(respostas),
+      condicao1: Object.keys(respostas).length >= 1,
+      deveMostrarBotao: Object.keys(respostas).length >= 1
+    });
+  }, [stepAtual, stepsDisponiveis, respostas])
+  
   // Estados para geolocalização
   const [localizacaoObtida, setLocalizacaoObtida] = useState(false)
   const [cidadeDetectada, setCidadeDetectada] = useState<string>('')
