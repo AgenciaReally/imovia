@@ -1544,7 +1544,12 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           
           <div className="flex justify-center">
             <Button
-              onClick={ativarSimuladorCreditoIA}
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                ativarSimuladorCreditoIA()
+              }}
               disabled={analisandoIA}
               className="px-8 py-3 bg-orange-500 hover:bg-orange-600 flex items-center gap-2"
             >
