@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 // Importar tipos compartilhados
 import { Imovel } from "@/types/imovel";
-import { FormularioDinamico } from "@/components/home/FormularioDinamico_clean";
+import { FormularioDinamico } from "@/components/home/FormularioDinamico";
 import { enviarRespostas, solicitarRelatorio } from "@/components/home/api-service";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";

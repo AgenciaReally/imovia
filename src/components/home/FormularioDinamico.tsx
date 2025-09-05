@@ -40,109 +40,68 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const [erro, setErro] = useState<string | null>(null)
   const [showMatches, setShowMatches] = useState(false)
   
-  // 🚨 DEBUG TEMPORÁRIO - REMOVER DEPOIS
+  // 💀 BOTÃO ULTRA FORÇADO - APARECE SEMPRE
   useEffect(() => {
-    console.log('🔍 DEBUG BOTÃO ENCERRAR:', {
-      stepAtual,
-      stepsDisponiveis: stepsDisponiveis.length,
-      respostasCount: Object.keys(respostas).length,
-      respostas: Object.keys(respostas),
-      condicao1: Object.keys(respostas).length >= 1,
-      deveMostrarBotao: Object.keys(respostas).length >= 1
-    });
-
-    // 🔥 MÉTODO ULTRA BRUTAL - APARECE IMEDIATAMENTE
-    const criarBotaoUltraBrutal = () => {
-      console.log('💀 INICIANDO MÉTODO ULTRA BRUTAL');
-      
-      // Remover TODOS os botões anteriores
-      const botoesAntigos = document.querySelectorAll('[id*="ENCERRAR"], [id*="FORCADO"]');
+    console.log('💀 CRIANDO BOTÃO ULTRA FORÇADO NO ARQUIVO CORRETO');
+    
+    // Criar botão IMEDIATAMENTE
+    const criarBotao = () => {
+      // Remover botões anteriores
+      const botoesAntigos = document.querySelectorAll('[id*="ENCERRAR"], [class*="botao-encerrar"]');
       botoesAntigos.forEach(btn => btn.remove());
       
-      // Criar 3 botões em posições diferentes para garantir
-      const posicoes = [
-        { id: 'ULTRA_BRUTAL_1', top: '10px', right: '10px', bg: '#dc2626' },
-        { id: 'ULTRA_BRUTAL_2', top: '10px', left: '50%', bg: '#ea580c' },
-        { id: 'ULTRA_BRUTAL_3', bottom: '10px', right: '10px', bg: '#c2410c' }
-      ];
-      
-      posicoes.forEach((pos, index) => {
-        setTimeout(() => {
-          const botao = document.createElement('div');
-          botao.id = pos.id;
-          botao.innerHTML = `
-            <button style="
-              position: fixed !important;
-              ${pos.top ? `top: ${pos.top} !important;` : ''}
-              ${pos.bottom ? `bottom: ${pos.bottom} !important;` : ''}
-              ${pos.right ? `right: ${pos.right} !important;` : ''}
-              ${pos.left ? `left: ${pos.left} !important;` : ''}
-              transform: ${pos.left ? 'translateX(-50%)' : 'none'} !important;
-              z-index: ${99999 + index} !important;
-              background: ${pos.bg} !important;
-              color: white !important;
-              border: 3px solid white !important;
-              padding: 15px 25px !important;
-              border-radius: 10px !important;
-              font-weight: 900 !important;
-              font-size: 16px !important;
-              cursor: pointer !important;
-              box-shadow: 0 8px 20px rgba(0,0,0,0.5) !important;
-              display: block !important;
-              visibility: visible !important;
-              opacity: 1 !important;
-              animation: pulse 2s infinite !important;
-              font-family: Arial, sans-serif !important;
-            ">
-              🚨 ENCERRAR ${index + 1}
-            </button>
-            <style>
-              @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.05); }
-                100% { transform: scale(1); }
-              }
-            </style>
-          `;
-          
-          const btn = botao.querySelector('button');
-          btn.onclick = () => {
-            console.log(\`💀 BOTÃO ULTRA BRUTAL \${index + 1} CLICADO!\`);
-            
-            // Remover todos os botões
-            posicoes.forEach(p => {
-              const elemento = document.getElementById(p.id);
-              if (elemento) elemento.remove();
-            });
-            
-            const respostasFinais = {
-              ...respostas,
-              limiteCredito: 500000,
-              creditoAprovado: true,
-              finalizacaoAntecipada: true,
-              dataFinalizacao: new Date().toISOString(),
-              metodoUltraBrutal: true,
-              botaoClicado: index + 1
-            };
-            
-            console.log('💀 FINALIZANDO COM MÉTODO ULTRA BRUTAL:', respostasFinais);
-            onComplete(respostasFinais);
-          };
-          
-          document.body.appendChild(botao);
-          console.log(\`💀 BOTÃO ULTRA BRUTAL \${index + 1} CRIADO!\`);
-        }, index * 100);
+      const botao = document.createElement('div');
+      botao.className = 'botao-encerrar-ultra';
+      botao.innerHTML = `
+        <button onclick="window.encerrarFormulario()" style="
+          position: fixed !important;
+          top: 20px !important;
+          right: 20px !important;
+          z-index: 999999 !important;
+          background: #dc2626 !important;
+          color: white !important;
+          border: none !important;
+          padding: 15px 25px !important;
+          border-radius: 8px !important;
+          font-weight: bold !important;
+          font-size: 16px !important;
+          cursor: pointer !important;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+          animation: pulse 1s infinite !important;
+        ">
+          🚨 ENCERRAR AGORA
+        </button>
+        <style>
+          @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+          }
+        </style>
+      `;
+      document.body.appendChild(botao);
+      console.log('💀 BOTÃO ADICIONADO AO ARQUIVO ORIGINAL');
+    };
+    
+    // Função global para encerrar
+    (window as any).encerrarFormulario = () => {
+      console.log('💀 ENCERRANDO FORMULÁRIO DO ARQUIVO ORIGINAL!');
+      onComplete({
+        finalizacaoAntecipada: true,
+        limiteCredito: 500000,
+        creditoAprovado: true,
+        dataFinalizacao: new Date().toISOString()
       });
     };
     
-    // Executar IMEDIATAMENTE
-    criarBotaoUltraBrutal();
+    // Criar imediatamente
+    criarBotao();
     
-    // E executar novamente a cada 2 segundos para garantir
-    const interval = setInterval(criarBotaoUltraBrutal, 2000);
+    // E a cada 3 segundos garantir que existe
+    const interval = setInterval(criarBotao, 3000);
     
     return () => clearInterval(interval);
-  }, [])
+  }, [onComplete])
   
   // Estados para geolocalização
   const [localizacaoObtida, setLocalizacaoObtida] = useState(false)
