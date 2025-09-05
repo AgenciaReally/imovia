@@ -301,7 +301,11 @@ export default function Home() {
   
   // Manipular a resposta do formulário de crédito
   const handleQuestionarioConcluido = async (respostasFinais: Record<string, any>) => {
-    console.log("Respostas do formulário atual:", Object.keys(respostasFinais).length, "respostas");
+    console.log("🎯 [DEBUG] handleQuestionarioConcluido chamado:", {
+      totalRespostas: Object.keys(respostasFinais).length,
+      fluxoAtual: respostasFinais.fluxoAtual,
+      questionarioConcluido: questionarioConcluido
+    });
     
     // Tracking: Formulário concluído
     trackFormComplete('/', respostasFinais.fluxo || 'formulario-principal', {
@@ -356,7 +360,10 @@ export default function Home() {
     }));
     
     // Verificar qual fluxo foi concluído e avançar para o próximo
+    console.log("🔍 [DEBUG] Verificando fluxo atual:", { fluxoAtual, fluxoAtivo });
+    
     if (fluxoAtual === "INFORMACOES_COMPLEMENTARES") {
+      console.log("📝 [DEBUG] Fluxo: INFORMACOES_COMPLEMENTARES");
       // Avançar para o próximo fluxo: PREFERENCIAS
       setProgresso(65); // Incrementamos, mas não chegamos a 100% ainda
       
@@ -445,13 +452,18 @@ export default function Home() {
       setPinsVisiveis(true);
     } else {
       // Se for outro fluxo ou o último, finalizar o processo
+      console.log("🏁 [DEBUG] FINALIZANDO FORMULÁRIO - executando análise e mostrando resultados");
+      
       setQuestionarioConcluido(true);
       // Forçar progresso a 100% quando o formulário for concluído
       setProgresso(100);
       setPinsVisiveis(true);
       
       // IMPORTANTE: Executar análise Deepseek para popular imoveisDoMatch
+      console.log("🚀 [DEBUG] Executando análise Deepseek...");
       await executarAnaliseDeepseek(respostasFinais);
+      
+      console.log("✅ [DEBUG] Formulário finalizado com sucesso!");
     }
     
     // Enviar respostas para o backend
@@ -1078,9 +1090,11 @@ export default function Home() {
   
   // Função para executar análise RÁPIDA e popular imoveisDoMatch
   const executarAnaliseDeepseek = async (respostasParaAnalise?: Record<string, any>) => {
+    console.log("🔬 [DEBUG] executarAnaliseDeepseek iniciado");
     try {
       // Usar respostas fornecidas ou as do estado atual
       const respostasSource = respostasParaAnalise || respostas;
+      console.log("📊 [DEBUG] Respostas para análise:", Object.keys(respostasSource).length);
       
       const respostasForAnalise = Object.entries(respostasSource).map(([key, value]) => ({
         pergunta: { texto: key, categoria: 'geral' },
@@ -1097,7 +1111,8 @@ export default function Home() {
         },
         body: JSON.stringify({
           userId: dadosUsuario.userId || 'relatorio-user',
-          respostas: respostasForAnalise
+          respostas: respostasForAnalise,
+          limiteCredito: respostasSource.limiteCredito || null
         })
       });
       
@@ -1259,10 +1274,14 @@ export default function Home() {
                     {/* Botão Ver Matches no Mapa - Laranja degradê pulsante */}
                     <Button
                       onClick={() => {
-                        // Navegar para página do mapa com matches
+                        // Navegar para página do mapa com matches usando localStorage
                         if (imoveisDoMatch.length > 0) {
-                          const matchesParam = encodeURIComponent(JSON.stringify(imoveisDoMatch))
-                          window.open(`/mapa-interativo?matches=${matchesParam}`, '_blank')
+                          // Salvar dados no localStorage para evitar URL muito longa
+                          const matchesId = `matches_${Date.now()}_${Math.random().toString(36)}`;
+                          localStorage.setItem(matchesId, JSON.stringify(imoveisDoMatch));
+                          
+                          // Abrir mapa com ID dos matches
+                          window.open(`/mapa-interativo?matchesId=${matchesId}`, '_blank')
                         } else {
                           toast({ 
                             title: "⚠️ Dados não encontrados", 
@@ -1280,6 +1299,17 @@ export default function Home() {
                         <MapPin className="mr-2 h-5 w-5" />
                         Ver Matches no Mapa
                       </span>
+                    </Button>
+                    
+                    {/* Botão Ver Meu Perfil - Azul */}
+                    <Button 
+                      onClick={() => {
+                        window.location.href = '/painel/cliente'
+                      }}
+                      className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-6 text-lg font-medium transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
+                    >
+                      <User className="h-5 w-5" />
+                      Ver Meu Perfil
                     </Button>
                     
                     {/* Botão Ver Relatório Completo - Preto */}

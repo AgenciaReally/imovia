@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { ChevronLeft, ChevronRight, Loader2, Zap, Phone } from "lucide-react"
+import { Phone, ChevronLeft, ChevronRight, Loader2, Clock, User, Mail, Building, MapPin, Calendar, CreditCard, Home, Star, Check, Target, Brain, Zap, TrendingUp, Award, Shield, CheckCircle } from 'lucide-react'
 import { useToast } from "@/components/ui/use-toast"
 import { buscarPerguntas, Pergunta } from '@/services/pergunta-service'
 import { DynamicQuestionRenderer } from './DynamicQuestionRenderer'
@@ -46,9 +46,9 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const [imoveisDisponiveis, setImoveisDisponiveis] = useState<number>(0)
   const [cidadeValidada, setCidadeValidada] = useState<boolean>(false)
   // Estados para simulador de crédito IA
-  const [mostrarSimuladorCredito, setMostrarSimuladorCredito] = useState(false);
   const [simulacaoAprovada, setSimulacaoAprovada] = useState(false);
   const [dadosSimulacao, setDadosSimulacao] = useState<any>(null);
+  const [mostrarSimuladorCredito, setMostrarSimuladorCredito] = useState(false);
   
   // Hooks AI
   const deepseek = useDeepseek()
@@ -357,15 +357,23 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       
       console.log('🎯 Perfil detectado:', { rendaAlta, rendaMedia, temFilhos, investidor, primeiroImovel })
       
-      // 🚫 IA: Ocultar perguntas desnecessárias baseado no perfil
+      // 🚫 OTIMIZAÇÃO MAIS AGRESSIVA: Ocultar 15-25 perguntas por step baseado no perfil
+      let perguntasOcultasCount = 0;
+      
       if (rendaAlta) {
         perguntas.forEach(p => {
           if (p.texto.toLowerCase().includes('primeiro imóvel') ||
               p.texto.toLowerCase().includes('ajuda familiar') ||
               p.texto.toLowerCase().includes('fies') ||
-              p.texto.toLowerCase().includes('auxílio governo')) {
+              p.texto.toLowerCase().includes('auxílio governo') ||
+              p.texto.toLowerCase().includes('programa habitacional') ||
+              p.texto.toLowerCase().includes('minha casa minha vida') ||
+              p.texto.toLowerCase().includes('financiamento facilitado') ||
+              p.texto.toLowerCase().includes('entrada baixa') ||
+              p.texto.toLowerCase().includes('sem comprovação de renda')) {
             perguntasParaOcultar.add(p.id)
-            console.log('🚫 IA ocultou pergunta básica:', p.texto.substring(0, 40) + '...')
+            perguntasOcultasCount++
+            console.log('🚫 IA ocultou pergunta renda alta:', p.texto.substring(0, 50) + '...')
           }
         })
       }
@@ -375,9 +383,16 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           if (p.texto.toLowerCase().includes('escola') ||
               p.texto.toLowerCase().includes('playground') ||
               p.texto.toLowerCase().includes('criança') ||
-              p.texto.toLowerCase().includes('área infantil')) {
+              p.texto.toLowerCase().includes('área infantil') ||
+              p.texto.toLowerCase().includes('brinquedoteca') ||
+              p.texto.toLowerCase().includes('berçário') ||
+              p.texto.toLowerCase().includes('educação infantil') ||
+              p.texto.toLowerCase().includes('pediatra') ||
+              p.texto.toLowerCase().includes('parque infantil') ||
+              p.texto.toLowerCase().includes('segurança para crianças')) {
             perguntasParaOcultar.add(p.id)
-            console.log('🚫 IA ocultou pergunta família:', p.texto.substring(0, 40) + '...')
+            perguntasOcultasCount++
+            console.log('🚫 IA ocultou pergunta sem filhos:', p.texto.substring(0, 50) + '...')
           }
         })
       }
@@ -385,55 +400,194 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       if (investidor) {
         perguntas.forEach(p => {
           if (p.texto.toLowerCase().includes('primeira moradia') ||
-              p.texto.toLowerCase().includes('sonho da casa própria')) {
+              p.texto.toLowerCase().includes('sonho da casa própria') ||
+              p.texto.toLowerCase().includes('lar doce lar') ||
+              p.texto.toLowerCase().includes('casa dos sonhos') ||
+              p.texto.toLowerCase().includes('morar pela primeira vez') ||
+              p.texto.toLowerCase().includes('sair da casa dos pais') ||
+              p.texto.toLowerCase().includes('constituir família')) {
             perguntasParaOcultar.add(p.id)
-            console.log('🚫 IA ocultou pergunta moradia:', p.texto.substring(0, 40) + '...')
+            perguntasOcultasCount++
+            console.log('🚫 IA ocultou pergunta investidor:', p.texto.substring(0, 50) + '...')
           }
         })
       }
       
-      // 🤖 IA: Criar apenas 2-3 perguntas dinâmicas ESSENCIAIS (velocidade otimizada)
+      // 🚫 OCULTAÇÃO POR CATEGORIA DE PREFERÊNCIAS
+      if (rendaMedia || rendaAlta) {
+        perguntas.forEach(p => {
+          if (p.categoria === 'BASICO' ||
+              p.texto.toLowerCase().includes('básico') ||
+              p.texto.toLowerCase().includes('simples') ||
+              p.texto.toLowerCase().includes('econômico') ||
+              p.texto.toLowerCase().includes('popular') ||
+              p.texto.toLowerCase().includes('kit net') && rendaAlta) {
+            perguntasParaOcultar.add(p.id)
+            perguntasOcultasCount++
+            console.log('🚫 IA ocultou pergunta básica:', p.texto.substring(0, 50) + '...')
+          }
+        })
+      }
+      
+      // 🚫 OCULTAÇÃO POR LOCALIZAÇÃO (se já tem preferência clara)
+      const temPreferenciaLocalizacao = respostasArray.some(r => 
+        r.pergunta?.categoria === 'LOCALIZACAO' || 
+        String(r.valor).toLowerCase().includes('centro') ||
+        String(r.valor).toLowerCase().includes('bairro')
+      )
+      
+      if (temPreferenciaLocalizacao) {
+        perguntas.forEach(p => {
+          if (p.categoria === 'LOCALIZACAO_ALTERNATIVA' ||
+              (p.categoria === 'LOCALIZACAO' && !perguntasParaOcultar.has(p.id) && Math.random() > 0.6)) {
+            perguntasParaOcultar.add(p.id)
+            perguntasOcultasCount++
+            console.log('🚫 IA ocultou pergunta localização redundante:', p.texto.substring(0, 50) + '...')
+          }
+        })
+      }
+      
+      console.log(`🎯 [IA] Total de perguntas ocultadas: ${perguntasOcultasCount}`);
+      
+      // 🤖 IA: OTIMIZAÇÃO MAIS AGRESSIVA - Criar 5-10 perguntas dinâmicas por step
       const timestamp = Date.now()
       
-      // ⚡ FOCO: Apenas perguntas que afetam diretamente a busca de imóveis
+      console.log('🎯 [IA] Criando perguntas dinâmicas baseadas no perfil:', {
+        stepAtual,
+        rendaAlta, rendaMedia, temFilhos, investidor, primeiroImovel,
+        respostasAnalisadas: respostasArray.length
+      });
+      
+      // ⚡ CATEGORIA 1: Investimento e Finalidade
       if (rendaAlta || investidor) {
         novasPerguntasDinamicas.push({
           id: `dinamica-investimento-${timestamp}`,
-          texto: "Imóvel para investimento ou moradia?",
-          tipo: "radio",
-          opcoes: ["Investimento", "Moradia", "Ambos"],
+          texto: "Finalidade principal do imóvel?",
+          tipo: "radio", 
+          opcoes: ["Moradia própria", "Investimento para alugar", "Moradia + Renda extra", "Revenda futura"],
           obrigatoria: false,
           categoria: "INVESTIMENTO",
           step: stepAtual + 1,
           ordem: 1000,
           geradaPorIA: true
         })
+        
+        novasPerguntasDinamicas.push({
+          id: `dinamica-rentabilidade-${timestamp + 1}`,
+          texto: "Prioridade na rentabilidade?",
+          tipo: "radio",
+          opcoes: ["Máxima rentabilidade", "Valorização a longo prazo", "Facilidade para alugar", "Não é prioridade"],
+          obrigatoria: false,
+          categoria: "INVESTIMENTO", 
+          step: stepAtual + 1,
+          ordem: 1001,
+          geradaPorIA: true
+        })
       }
       
-      // Pergunta de localização essencial
+      // ⚡ CATEGORIA 2: Localização e Proximidades
       novasPerguntasDinamicas.push({
-        id: `dinamica-localizacao-${timestamp + 1}`,
-        texto: "Prioridade de localização?",
+        id: `dinamica-localizacao-${timestamp + 2}`,
+        texto: "Principal critério de localização?",
         tipo: "radio",
-        opcoes: ["Centro da cidade", "Bairros residenciais", "Próximo ao trabalho", "Qualquer localização"],
+        opcoes: ["Próximo ao trabalho", "Centro da cidade", "Bairros nobres", "Transporte público", "Escolas próximas"],
         obrigatoria: false,
         categoria: "LOCALIZACAO",
         step: stepAtual + 1,
-        ordem: 1001,
+        ordem: 1002,
         geradaPorIA: true
       })
       
-      // Apenas se tiver filhos
+      novasPerguntasDinamicas.push({
+        id: `dinamica-transporte-${timestamp + 3}`,
+        texto: "Principal meio de transporte?",
+        tipo: "radio",
+        opcoes: ["Carro próprio", "Transporte público", "A pé/bicicleta", "Misto", "Trabalho remoto"],
+        obrigatoria: false,
+        categoria: "MOBILIDADE",
+        step: stepAtual + 1,
+        ordem: 1003,
+        geradaPorIA: true
+      })
+      
+      // ⚡ CATEGORIA 3: Família e Estilo de Vida
       if (temFilhos) {
         novasPerguntasDinamicas.push({
-          id: `dinamica-familia-${timestamp + 2}`,
-          texto: "Área de lazer para família?",
-          tipo: "radio",
-          opcoes: ["Playground + piscina", "Apenas área comum", "Não é importante"],
+          id: `dinamica-familia-${timestamp + 4}`,
+          texto: "Infraestrutura para família?", 
+          tipo: "checkbox",
+          opcoes: ["Playground", "Piscina", "Quadra esportiva", "Área gourmet", "Salão de festas", "Área pet"],
           obrigatoria: false,
           categoria: "FAMILIA",
           step: stepAtual + 1,
-          ordem: 1002,
+          ordem: 1004,
+          geradaPorIA: true
+        })
+        
+        novasPerguntasDinamicas.push({
+          id: `dinamica-seguranca-${timestamp + 5}`,
+          texto: "Nível de segurança desejado?",
+          tipo: "radio",
+          opcoes: ["Máxima (condomínio fechado)", "Alta (portaria 24h)", "Moderada (controle básico)", "Não é prioridade"],
+          obrigatoria: false,
+          categoria: "SEGURANCA",
+          step: stepAtual + 1,
+          ordem: 1005,
+          geradaPorIA: true
+        })
+      }
+      
+      // ⚡ CATEGORIA 4: Características do Imóvel  
+      novasPerguntasDinamicas.push({
+        id: `dinamica-prioridades-${timestamp + 6}`,
+        texto: "O que é mais importante no imóvel?",
+        tipo: "radio",
+        opcoes: ["Área ampla", "Boa iluminação", "Varanda/sacada", "Múltiplos quartos", "Área de serviço", "Garagem"],
+        obrigatoria: false,
+        categoria: "CARACTERISTICAS",
+        step: stepAtual + 1,
+        ordem: 1006,
+        geradaPorIA: true
+      })
+      
+      // ⚡ CATEGORIA 5: Estilo de Vida e Preferências
+      if (rendaAlta) {
+        novasPerguntasDinamicas.push({
+          id: `dinamica-lifestyle-${timestamp + 7}`,
+          texto: "Estilo de vida preferido?",
+          tipo: "radio",
+          opcoes: ["Urbano moderno", "Residencial tranquilo", "Próximo à natureza", "Centro comercial", "Não tenho preferência"],
+          obrigatoria: false,
+          categoria: "LIFESTYLE",
+          step: stepAtual + 1,
+          ordem: 1007,
+          geradaPorIA: true
+        })
+        
+        novasPerguntasDinamicas.push({
+          id: `dinamica-lazer-${timestamp + 8}`,
+          texto: "Atividades de lazer importantes?",
+          tipo: "checkbox",
+          opcoes: ["Academia", "Spa/sauna", "Cinema/teatro próximo", "Restaurantes", "Shopping", "Parques"],
+          obrigatoria: false,
+          categoria: "LAZER",
+          step: stepAtual + 1,
+          ordem: 1008,
+          geradaPorIA: true
+        })
+      }
+      
+      // ⚡ CATEGORIA 6: Flexibilidade e Futuro
+      if (primeiroImovel) {
+        novasPerguntasDinamicas.push({
+          id: `dinamica-futuro-${timestamp + 9}`,
+          texto: "Planos para os próximos 5 anos?",
+          tipo: "radio",
+          opcoes: ["Morar definitivamente", "Possível mudança de cidade", "Crescimento da família", "Upgrade para imóvel maior", "Não sei ainda"],
+          obrigatoria: false,
+          categoria: "PLANEJAMENTO",
+          step: stepAtual + 1,
+          ordem: 1009,
           geradaPorIA: true
         })
       }
@@ -606,10 +760,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       matches.analisarCompatibilidade({
         respostasUsuario: respostasForAnalise
       }).then(() => {
-        // Forçar redirecionamento para matches após análise
-        setTimeout(() => {
-          onComplete({ ...respostas, ...novasRespostas })
-        }, 1000)
+        // NÃO finalizar formulário - apenas mostrar resultado da IA
+        console.log('✅ Análise de compatibilidade concluída (sem finalizar formulário)')
       })
     }, 1500)
   }
@@ -679,21 +831,22 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       matches.analisarCompatibilidade({
         respostasUsuario: respostasForAnalise
       }).then(() => {
-        onComplete({ ...respostas, ...novasRespostas })
+        // NÃO finalizar formulário - apenas mostrar resultado
+        console.log('✅ Análise de compatibilidade concluída (etapa intermediária)')
       })
     }, 1000)
   }
 
   // Ativar simulador de crédito IA no final do primeiro step
   const ativarSimuladorCreditoIA = async () => {
+    console.log('🎯 [SIMULAÇÃO] Iniciando simulação de crédito IA...')
     setAnalisandoIA(true)
     
     try {
       // Coletar dados das respostas do primeiro step para análise
-      const respostasStep1 = Object.entries(respostas).filter(([key, value]) => {
-        // Filtrar apenas respostas relevantes para crédito
-        const perguntaCredito = perguntas.find(p => p.id === key && p.categoria === 'AVALIACAO_CREDITO')
-        return perguntaCredito && value?.valor
+      const respostasStep1 = Object.entries(respostas).filter(([key, resposta]) => {
+        const pergunta = perguntas.find(p => p.id === key)
+        return pergunta?.step === 1 && resposta.valor
       })
       
       console.log('🔍 Respostas encontradas para crédito:', respostasStep1.length)
@@ -703,14 +856,20 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         console.log('⚠️ Nenhuma resposta de crédito encontrada, usando valores padrão')
       }
       
+      // ANIMAÇÃO: Mostrar análise detalhada dos 7 campos
+      // Delay progressivo mostrando cada campo sendo analisado
+      console.log('🔄 [SIMULAÇÃO] Aguardando animação de 4 segundos...')
+      await new Promise(resolve => setTimeout(resolve, 4000))
+      console.log('✅ [SIMULAÇÃO] Animação concluída, processando dados...')
+      
       // Simular análise IA para gerar simulação de crédito
       // Buscar valores das respostas independente do ID específico
       const respostasArray = Object.entries(respostas)
-      let valorMaximoImovel = 0
       let rendaBrutaFamiliar = 0
       let rendaMensalFamiliar = 0
       let valorParcelaMinima = 0
       let outrosFinanciamentos = 'Não possuo'
+      let valorEntrada = 0;
       
       // Buscar pelos valores nas respostas existentes OU usar valores padrão para demonstração
       respostasArray.forEach(([key, resposta]) => {
@@ -719,8 +878,10 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           if (pergunta?.categoria === 'AVALIACAO_CREDITO') {
             const valor = Number(String(resposta.valor).replace(/[^\d]/g, '')) || 0
             
-            if (pergunta.texto.toLowerCase().includes('valor máximo') || pergunta.texto.toLowerCase().includes('valor do imóvel')) {
-              valorMaximoImovel = valor
+            // BUSCAR ENTRADA - pergunta "Qual valor você tem para dar de entrada"
+            if (pergunta.texto.toLowerCase().includes('entrada')) {
+              valorEntrada = valor
+              console.log('💰 [ENTRADA] Valor encontrado:', valor)
             } else if (pergunta.texto.toLowerCase().includes('renda bruta')) {
               rendaBrutaFamiliar = valor
             } else if (pergunta.texto.toLowerCase().includes('renda mensal')) {
@@ -734,28 +895,13 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         }
       })
       
-      // Se não encontrou valores, usar dados das respostas preenchidas (mesmo que não sejam de crédito)
-      if (valorMaximoImovel === 0 && rendaMensalFamiliar === 0) {
-        // Buscar qualquer valor numérico nas respostas para demonstração
-        respostasArray.forEach(([key, resposta]) => {
-          if (resposta?.valor) {
-            const valor = Number(String(resposta.valor).replace(/[^\d]/g, '')) || 0
-            if (valor > 0) {
-              if (valorMaximoImovel === 0 && valor > 100000) valorMaximoImovel = valor
-              if (rendaMensalFamiliar === 0 && valor > 1000 && valor < 100000) rendaMensalFamiliar = valor
-              if (valorParcelaMinima === 0 && valor > 500 && valor < 10000) valorParcelaMinima = valor
-            }
-          }
-        })
-      }
-      
       // Valores padrão se ainda não tiver nada
-      if (valorMaximoImovel === 0) valorMaximoImovel = 500000
+      if (valorEntrada === 0) valorEntrada = 100000
       if (rendaMensalFamiliar === 0) rendaMensalFamiliar = 8000
       if (valorParcelaMinima === 0) valorParcelaMinima = 2000
       
       const dadosParaSimulacao = {
-        valorMaximoImovel,
+        valorEntrada: valorEntrada,
         rendaBrutaFamiliar,
         outrosFinanciamentos,
         rendaMensalFamiliar,
@@ -764,18 +910,35 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       
       console.log('🔍 Dados coletados para simulação:', dadosParaSimulacao)
       
-      // Calcular simulação baseada nos dados
-      const valorFinanciamento = Math.min(
-        Number(dadosParaSimulacao.valorMaximoImovel) * 0.8, // 80% do valor do imóvel
-        Number(dadosParaSimulacao.rendaMensalFamiliar) * 120 // 120x a renda mensal
-      )
+      // CORRIGIR: Calcular valor máximo do imóvel baseado na ENTRADA disponível
+      // Se tem R$ 500k de entrada (20% do imóvel), pode comprar imóvel de R$ 2.5M
+      const valorMaximoImovelPorEntrada = Number(dadosParaSimulacao.valorEntrada) / 0.2; // Entrada é 20% do valor total
       
-      const entrada = Number(dadosParaSimulacao.valorMaximoImovel) * 0.2 // 20% de entrada
+      // Calcular valor máximo do imóvel baseado na RENDA (120x renda para financiamento + entrada)
+      const valorFinanciamentoPorRenda = Number(dadosParaSimulacao.rendaMensalFamiliar) * 120; // 120x a renda mensal
+      const valorMaximoImovelPorRenda = valorFinanciamentoPorRenda + Number(dadosParaSimulacao.valorEntrada);
+      
+      // O valor máximo do imóvel é o MENOR entre os dois limitadores
+      const valorMaximoImovelFinal = Math.min(valorMaximoImovelPorEntrada, valorMaximoImovelPorRenda);
+      
+      // Valor de financiamento necessário (valor do imóvel - entrada)
+      const valorFinanciamento = valorMaximoImovelFinal - Number(dadosParaSimulacao.valorEntrada);
+      
+      const entrada = Number(dadosParaSimulacao.valorEntrada) // Entrada informada pelo usuário
       const parcelaMaxima = Number(dadosParaSimulacao.rendaMensalFamiliar) * 0.3 // 30% da renda
       const comprometimento = (Number(dadosParaSimulacao.valorParcelaMinima) / Number(dadosParaSimulacao.rendaMensalFamiliar)) * 100
       
       // Determinar se foi aprovado
-      const aprovado = comprometimento <= 35 && valorFinanciamento > 0
+      const aprovado = comprometimento <= 35 && valorFinanciamento > 0 && Number(dadosParaSimulacao.valorEntrada) > 0
+      
+      console.log('💰 [SIMULAÇÃO] Cálculos:', {
+        entradaInformada: Number(dadosParaSimulacao.valorEntrada),
+        valorMaximoImovelPorEntrada,
+        valorMaximoImovelPorRenda, 
+        valorMaximoImovelFinal: valorMaximoImovelFinal,
+        valorFinanciamento,
+        comprometimento: `${comprometimento.toFixed(1)}%`
+      });
       
       const simulacao = {
         valorFinanciamento,
@@ -793,24 +956,56 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       
       setDadosSimulacao(simulacao)
       setSimulacaoAprovada(aprovado)
-      setMostrarSimuladorCredito(true)
+      setDadosSimulacao(simulacao)
       
-      toast({
-        title: aprovado ? "✅ Pré-aprovação concedida!" : "⚠️ Simulação gerada",
-        description: aprovado 
-          ? "Parabéns! Você pode prosseguir para o próximo step." 
-          : "Revise os dados para melhorar sua aprovação.",
-      })
+      // Salvar dados da simulação localmente (NÃO finalizar formulário ainda)
+      if (aprovado) {
+        // CORRIGIR: Salvar VALOR MÁXIMO DO IMÓVEL, não apenas financiamento
+        localStorage.setItem('limiteCredito', valorMaximoImovelFinal.toString());
+        localStorage.setItem('creditoAprovado', 'true');
+        localStorage.setItem('simulacaoCredito', JSON.stringify(simulacao));
+        
+        console.log('💳 Limite de crédito aprovado salvo:', valorMaximoImovelFinal);
+        
+        // Atualizar respostas localmente com dados do crédito
+        const respostasComCredito = {
+          ...respostas,
+          limiteCredito: valorMaximoImovelFinal,
+          creditoAprovado: true,
+          simulacaoCredito: simulacao
+        };
+        setRespostas(respostasComCredito);
+      }
+      
+      // Mostrar resultado
+      if (aprovado) {
+        toast({
+          title: "✅ Pré-aprovação concedida!",
+          description: "Parabéns! Você pode prosseguir para o próximo step.",
+        })
+      } else {
+        toast({
+          title: "⚠️ Simulação gerada",
+          description: "Revise os dados para melhorar sua aprovação.",
+        })
+      }
+      
+      // MOSTRAR resultado da simulação após análise
+      console.log('🎯 [SIMULAÇÃO] Definindo mostrarSimuladorCredito = true')
+      setMostrarSimuladorCredito(true)
+      console.log('✅ [SIMULAÇÃO] Análise IA concluída, resultado exibido');
       
     } catch (error) {
-      console.error('Erro na simulação IA:', error)
+      console.error('❌ [SIMULAÇÃO] Erro na simulação IA:', error)
       toast({
         title: "Erro na simulação",
         description: "Não foi possível gerar a simulação. Tente novamente.",
         variant: "destructive"
       })
     } finally {
+      console.log('🔄 [SIMULAÇÃO] Finally: Definindo analisandoIA = false')
       setAnalisandoIA(false)
+      console.log('✅ [SIMULAÇÃO] Estado analisandoIA resetado para false')
     }
   }
 
@@ -894,7 +1089,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
             matches.analisarCompatibilidade({
               respostasUsuario: respostasForAnalise
             }).then(() => {
-              onComplete(respostas)
+              // NÃO finalizar formulário - apenas análise intermediária
+              console.log('✅ Análise IA concluída (step intermediário)')
             })
           }, 2000)
           
@@ -961,195 +1157,227 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
     }
     
     // DEBUG: Verificar condição final
-    const podeAvancar = stepAtual < stepsDisponiveis.length - 1
-    console.log('📊 [DEBUG] Pode avançar?', {
+    const isUltimoStep = stepAtual === stepsDisponiveis.length - 1;
+    const podeAvancarProximoStep = stepAtual < stepsDisponiveis.length - 1;
+    
+    console.log('📊 [DEBUG] Análise de step:', {
       stepAtual,
       totalSteps: stepsDisponiveis.length,
-      podeAvancar
+      isUltimoStep,
+      podeAvancarProximoStep,
+      respostasCount: Object.keys(respostas).length
     })
     
-    if (podeAvancar) {
+    if (isUltimoStep) {
+      console.log('🏁 [DEBUG] FINALIZANDO FORMULÁRIO - último step detectado')
+      
+      // Recuperar dados de crédito do localStorage
+      const limiteCredito = localStorage.getItem('limiteCredito');
+      const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
+      const simulacaoCredito = localStorage.getItem('simulacaoCredito');
+      
+      // Preparar respostas finais com dados de crédito
+      const respostasFinais = {
+        ...respostas,
+        limiteCredito: limiteCredito ? parseFloat(limiteCredito) : null,
+        creditoAprovado,
+        simulacaoCredito: simulacaoCredito ? JSON.parse(simulacaoCredito) : null
+      };
+      
+      console.log('💳 [DEBUG] Enviando dados finais:', {
+        totalRespostas: Object.keys(respostasFinais).length,
+        limiteCredito,
+        creditoAprovado
+      });
+      
+      // FINALIZAR formulário com dados completos
+      onComplete(respostasFinais);
+    } else if (podeAvancarProximoStep) {
       console.log('✅ [DEBUG] Avançando para próximo step normalmente')
       setStepAtual(prev => prev + 1)
     } else {
-      console.log('🏁 [DEBUG] FINALIZANDO FORMULÁRIO - chegou ao final dos steps')
-      // Fallback: Finalizar formulário manualmente
-      const respostasForAnalise = Object.entries(respostas).map(([perguntaId, resposta]) => ({
-        perguntaId,
-        valor: resposta.valor,
-        tipo: resposta.tipo || 'text'
-      }))
-
-      matches.analisarCompatibilidade({
-        respostasUsuario: respostasForAnalise
-      }).then(() => {
-        onComplete(respostas)
-      })
+      console.log('⚠️ [DEBUG] Não pode avançar - validação falhou')
     }
   }
 
   const podeAvancar = () => {
-    // 🚫 BLOQUEAR se simulação de crédito foi recusada
+    console.log('🔍 [VALIDAÇÃO] Verificando podeAvancar:', {
+      stepAtual,
+      stepsDisponiveis,
+      mostrarSimuladorCredito,
+      simulacaoAprovada
+    });
+
+    // 🚫 BLOQUEAR STEP 1: Deve executar simulação de crédito primeiro
+    if (stepAtual === 0 && Object.keys(respostas).length >= 3) {
+      if (!mostrarSimuladorCredito) {
+        console.log('❌ [VALIDAÇÃO] Step 1 bloqueado - deve executar simulação de crédito primeiro');
+        return false
+      }
+      if (mostrarSimuladorCredito && !simulacaoAprovada) {
+        console.log('❌ [VALIDAÇÃO] Step 1 bloqueado - simulação de crédito não aprovada');
+        return false
+      }
+    }
+
+    // 🚫 BLOQUEAR se simulação de crédito foi recusada em outros steps
     if (mostrarSimuladorCredito && !simulacaoAprovada) {
+      console.log('❌ [VALIDAÇÃO] Bloqueado - simulação de crédito não aprovada');
       return false
     }
     
     const currentStepNumber = stepsDisponiveis[stepAtual]
-    if (!currentStepNumber) return false
+    if (!currentStepNumber) {
+      console.log('❌ [VALIDAÇÃO] Bloqueado - step atual inválido:', currentStepNumber);
+      return false
+    }
 
     const questionsInStep = perguntasPorStep[currentStepNumber] || []
+    console.log('📝 [VALIDAÇÃO] Perguntas no step:', {
+      stepNumber: currentStepNumber,
+      totalPerguntas: questionsInStep.length,
+      perguntasObrigatorias: questionsInStep.filter(p => p.obrigatoria).length
+    });
     
+    const perguntasSemResposta = [];
     for (const pergunta of questionsInStep) {
       if (pergunta.obrigatoria && !perguntasOcultas.has(pergunta.id)) {
         const resposta = respostas[pergunta.id]
         if (!resposta?.valor) {
-          return false
+          perguntasSemResposta.push({
+            id: pergunta.id,
+            texto: pergunta.texto
+          });
         }
       }
     }
 
+    if (perguntasSemResposta.length > 0) {
+      console.log('❌ [VALIDAÇÃO] Bloqueado - perguntas obrigatórias sem resposta:', perguntasSemResposta);
+      return false
+    }
+
+    console.log('✅ [VALIDAÇÃO] Todas as validações passaram');
     return true
   }
 
   const progresso = stepsDisponiveis.length > 0 ? ((stepAtual + 1) / stepsDisponiveis.length) * 100 : 0
 
-  // Loading animado da IA
-  const LoadingIA = () => (
-    <div className="fixed inset-0 bg-gradient-to-br from-orange-900/20 via-black/60 to-orange-900/20 backdrop-blur-sm flex items-center justify-center z-50">
-      <motion.div 
-        className="bg-white/95 backdrop-blur-md rounded-2xl p-12 max-w-lg w-full mx-4 text-center shadow-2xl border border-orange-200/50"
-        initial={{ scale: 0.8, y: 50 }}
-        animate={{ scale: 1, y: 0 }}
-        transition={{ type: "spring", damping: 20 }}
-      >
-        {/* Neural Network Animation */}
-        <div className="relative mb-8 h-24 flex items-center justify-center">
-          {/* Central Brain */}
+  // Loading animado da Simulação de Crédito - Análise dos 7 Campos
+  const LoadingIA = () => {
+    const [campoAtual, setCampoAtual] = useState(0);
+    
+    const campos7Step1 = [
+      { nome: '💰 Valor da Entrada', desc: 'Analisando capacidade financeira inicial' },
+      { nome: '📊 Renda Bruta Familiar', desc: 'Verificando estabilidade de renda' },
+      { nome: '🏦 Financiamentos Existentes', desc: 'Checando comprometimento atual' },
+      { nome: '💳 Renda Mensal', desc: 'Calculando capacidade de pagamento' },
+      { nome: '📈 Valor da Parcela', desc: 'Determinando limite de financiamento' },
+      { nome: '🏠 Custos de Transferência', desc: 'Validando reserva para despesas' },
+      { nome: '🌍 Cidade Desejada', desc: 'Localizando imóveis disponíveis' }
+    ];
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCampoAtual(prev => {
+          if (prev < campos7Step1.length - 1) {
+            return prev + 1;
+          }
+          return prev;
+        });
+      }, 500); // Cada campo demora 500ms
+
+      return () => clearInterval(interval);
+    }, []);
+
+    return (
+      <div className="fixed inset-0 bg-gradient-to-br from-orange-900/20 via-black/60 to-orange-900/20 backdrop-blur-sm flex items-center justify-center z-50">
+        <motion.div 
+          className="bg-white/95 backdrop-blur-md rounded-2xl p-8 max-w-2xl w-full mx-4 text-center shadow-2xl border border-orange-200/50"
+          initial={{ scale: 0.8, y: 50 }}
+          animate={{ scale: 1, y: 0 }}
+          transition={{ type: "spring", damping: 20 }}
+        >
+          {/* Header */}
           <motion.div
-            className="relative w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full shadow-lg"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              boxShadow: [
-                "0 0 20px rgba(251, 146, 60, 0.3)",
-                "0 0 40px rgba(251, 146, 60, 0.6)",
-                "0 0 20px rgba(251, 146, 60, 0.3)"
-              ]
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-8"
           >
-            <div className="absolute inset-2 bg-white/20 rounded-full flex items-center justify-center">
-              <motion.div
-                className="text-white text-2xl font-bold"
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-              >
-                🧠
-              </motion.div>
-            </div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">
+              🤖 Simulação de Crédito IA
+            </h3>
+            <p className="text-gray-600">
+              Analisando suas 7 respostas para calcular limite de crédito
+            </p>
           </motion.div>
 
-          {/* Neural Connections */}
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-3 h-3 bg-orange-400 rounded-full"
-              style={{
-                left: `${50 + 35 * Math.cos((i * Math.PI * 2) / 6)}%`,
-                top: `${50 + 35 * Math.sin((i * Math.PI * 2) / 6)}%`,
-              }}
-              animate={{
-                scale: [0.5, 1.2, 0.5],
-                opacity: [0.3, 1, 0.3],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Infinity,
-                delay: i * 0.2,
-              }}
-            />
-          ))}
-
-          {/* Connecting Lines */}
-          <svg className="absolute inset-0 w-full h-full">
-            {[...Array(6)].map((_, i) => (
-              <motion.line
-                key={i}
-                x1="50%"
-                y1="50%"
-                x2={`${50 + 35 * Math.cos((i * Math.PI * 2) / 6)}%`}
-                y2={`${50 + 35 * Math.sin((i * Math.PI * 2) / 6)}%`}
-                stroke="rgb(251, 146, 60)"
-                strokeWidth="2"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ pathLength: 1, opacity: 0.6 }}
-                transition={{
-                  duration: 1,
-                  delay: i * 0.1,
-                  repeat: Infinity,
-                  repeatType: "reverse",
-                  repeatDelay: 1,
-                }}
-              />
+          {/* Lista dos 7 Campos */}
+          <div className="space-y-3 mb-8">
+            {campos7Step1.map((campo, index) => (
+              <motion.div
+                key={index}
+                className={`flex items-center justify-between p-4 rounded-lg border-2 transition-all duration-300 ${
+                  index < campoAtual 
+                    ? 'bg-green-50 border-green-300 text-green-800' 
+                    : index === campoAtual 
+                    ? 'bg-orange-50 border-orange-300 text-orange-800' 
+                    : 'bg-gray-50 border-gray-200 text-gray-500'
+                }`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                    index < campoAtual 
+                      ? 'bg-green-500' 
+                      : index === campoAtual 
+                      ? 'bg-orange-500' 
+                      : 'bg-gray-300'
+                  }`}>
+                    {index < campoAtual ? (
+                      <Check className="h-3 w-3 text-white" />
+                    ) : index === campoAtual ? (
+                      <motion.div 
+                        className="w-2 h-2 bg-white rounded-full"
+                        animate={{ scale: [1, 1.5, 1] }}
+                        transition={{ duration: 0.8, repeat: Infinity }}
+                      />
+                    ) : (
+                      <span className="text-xs text-white">{index + 1}</span>
+                    )}
+                  </div>
+                  <span className="font-medium">{campo.nome}</span>
+                </div>
+                
+                {index === campoAtual && (
+                  <motion.span 
+                    className="text-sm italic"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                  >
+                    {campo.desc}
+                  </motion.span>
+                )}
+              </motion.div>
             ))}
-          </svg>
-        </div>
-        
-        {/* Text Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <motion.h3 
-            className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-3"
-            animate={{ opacity: [0.8, 1, 0.8] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            🤖 IA Processando
-          </motion.h3>
-          <p className="text-gray-700 mb-6 text-lg">
-            Analisando suas respostas com inteligência artificial...
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+            <motion.div
+              className="bg-gradient-to-r from-orange-400 to-orange-600 h-3 rounded-full"
+              initial={{ width: "0%" }}
+              animate={{ width: `${((campoAtual + 1) / campos7Step1.length) * 100}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+          
+          <p className="text-sm text-gray-500">
+            Processando campo {campoAtual + 1} de {campos7Step1.length}
           </p>
         </motion.div>
-        
-        {/* Progress Indicators */}
-        <div className="flex justify-center space-x-3 mb-6">
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="w-3 h-3 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full"
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.4, 1, 0.4],
-              }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                delay: i * 0.15,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Status Text */}
-        <motion.div
-          className="text-sm text-orange-600 font-medium"
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-        >
-          Otimizando experiência baseada no seu perfil
-        </motion.div>
-      </motion.div>
-    </div>
-  )
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-orange-500" />
-          <p className="text-gray-600">Carregando formulário...</p>
-        </div>
       </div>
     )
   }
@@ -1505,13 +1733,63 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               <Phone className="h-4 w-4" />
               Orçamento Rápido
             </Button>
-            
+
+            {/* Botão Encerrar Agora - apenas se não for o último step E simulação aprovada */}
+            {stepAtual < stepsDisponiveis.length - 1 && Object.keys(respostas).length > 3 && (!mostrarSimuladorCredito || simulacaoAprovada) && (
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button
+                  onClick={() => {
+                    console.log('⚡ [ENCERRAR] Finalizando formulário antecipadamente:', {
+                      stepAtual,
+                      totalSteps: stepsDisponiveis.length,
+                      respostasPreenchidas: Object.keys(respostas).length
+                    });
+                    
+                    // Recuperar dados de crédito do localStorage
+                    const limiteCredito = localStorage.getItem('limiteCredito');
+                    const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
+                    const simulacaoCredito = localStorage.getItem('simulacaoCredito');
+                    
+                    // Finalizar com dados parciais
+                    const respostasFinais = {
+                      ...respostas,
+                      formularioCompleto: false, // Indicar que foi finalizado antes do fim
+                      stepFinalizado: stepAtual,
+                      limiteCredito: limiteCredito ? parseFloat(limiteCredito) : null,
+                      creditoAprovado,
+                      simulacaoCredito: simulacaoCredito ? JSON.parse(simulacaoCredito) : null
+                    };
+                    
+                    console.log('⚡ [ENCERRAR] Enviando dados parciais:', respostasFinais);
+                    onComplete(respostasFinais);
+                  }}
+                  variant="outline"
+                  className="flex items-center gap-2 border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400"
+                >
+                  <CheckCircle className="h-4 w-4" />
+                  Encerrar Agora
+                </Button>
+              </motion.div>
+            )}
+
             <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
               <Button
-                onClick={proximoStep}
+                onClick={() => {
+                  console.log('🔥 [CLICK] Botão clicado:', {
+                    stepAtual,
+                    totalSteps: stepsDisponiveis.length,
+                    podeAvancar: podeAvancar(),
+                    salvandoResposta,
+                    disabled: !podeAvancar() || salvandoResposta
+                  });
+                  proximoStep();
+                }}
                 disabled={!podeAvancar() || salvandoResposta}
                 className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200"
               >

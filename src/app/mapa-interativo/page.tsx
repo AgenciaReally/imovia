@@ -450,13 +450,37 @@ function MapaInterativoContent() {
   }, [pins]);
 
   useEffect(() => {
-    // Verificar se temos dados de matches diretos na URL
+    // Verificar se temos dados de matches diretos na URL (método antigo)
     const matchesParam = searchParams.get('matches');
-    if (matchesParam) {
+    const matchesId = searchParams.get('matchesId');
+    
+    let matches = null;
+    
+    if (matchesId) {
+      // Novo método: buscar dados do localStorage
       try {
-        const matches = JSON.parse(decodeURIComponent(matchesParam));
-        console.log('🎯 Recebidos matches do página principal:', matches);
-        
+        const matchesData = localStorage.getItem(matchesId);
+        if (matchesData) {
+          matches = JSON.parse(matchesData);
+          // Limpar localStorage após uso
+          localStorage.removeItem(matchesId);
+          console.log('🎯 Recebidos matches do localStorage:', matches);
+        }
+      } catch (e) {
+        console.error('Erro ao ler matches do localStorage:', e);
+      }
+    } else if (matchesParam) {
+      // Método antigo: ler da URL (pode causar erro 431)
+      try {
+        matches = JSON.parse(decodeURIComponent(matchesParam));
+        console.log('🎯 Recebidos matches da URL:', matches);
+      } catch (e) {
+        console.error('Erro ao parsear matches da URL:', e);
+      }
+    }
+    
+    if (matches) {
+      try {
         // Converter matches para formato de pins
         const pinsDoMatches = matches.map((match: any, index: number) => ({
           id: match.id,
@@ -487,7 +511,7 @@ function MapaInterativoContent() {
         setCarregando(false);
         return;
       } catch (e) {
-        console.error('Erro ao parsear matches da URL:', e);
+        console.error('Erro ao parsear matches:', e);
       }
     }
     

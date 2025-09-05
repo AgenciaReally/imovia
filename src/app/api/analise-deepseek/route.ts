@@ -3,10 +3,11 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(request: Request) {
   try {
-    const { userId, respostas } = await request.json()
+    const { userId, respostas, limiteCredito } = await request.json()
 
     console.log('🤖 Iniciando análise Deepseek para usuário:', userId)
     console.log('📝 Respostas recebidas:', respostas?.length || 0)
+    console.log('💳 Limite de crédito aprovado:', limiteCredito ? `R$ ${limiteCredito.toLocaleString('pt-BR')}` : 'Não informado')
 
     // 1. Buscar imóveis do banco de dados com filtro de preço
     
@@ -41,10 +42,16 @@ export async function POST(request: Request) {
     
     const whereClause: any = { ativo: true };
     
-    // Aplicar filtro de preço exato (dentro da faixa especificada)
-    if (valorMaximo) {
-      whereClause.preco = { lte: valorMaximo };
-      console.log(`🔍 Filtro de preço aplicado: até R$ ${valorMaximo.toLocaleString('pt-BR')} (valor exato)`);
+    // Priorizar limite de crédito aprovado sobre valor das respostas
+    const valorFinalMaximo = limiteCredito || valorMaximo;
+    
+    if (valorFinalMaximo) {
+      whereClause.preco = { lte: valorFinalMaximo };
+      console.log(`🔍 Filtro de preço aplicado: até R$ ${valorFinalMaximo.toLocaleString('pt-BR')} ${limiteCredito ? '(LIMITE APROVADO)' : '(valor das respostas)'}`);
+    } else {
+      // Se não há limite, usar um valor conservador baseado na renda média
+      whereClause.preco = { lte: 300000 };
+      console.log('⚠️ Sem limite definido - usando valor conservador: R$ 300.000');
     }
     
     // Aplicar filtro de cidade se especificada
@@ -103,7 +110,7 @@ export async function POST(request: Request) {
 Você é um especialista em análise imobiliária. Analise o perfil do cliente baseado nas respostas dele e encontre os 3 imóveis que melhor atendem às suas necessidades.
 
 PERFIL DO CLIENTE:
-${perfilUsuario.map(p => `- ${p.pergunta}: ${p.resposta} (${p.categoria})`).join('\n')}
+${perfilUsuario.map((p: any) => `- ${p.pergunta}: ${p.resposta} (${p.categoria})`).join('\n')}
 
 IMÓVEIS DISPONÍVEIS:
 ${dadosImoveis.map(i => 
@@ -267,13 +274,13 @@ Retorne APENAS um JSON válido no formato:
 async function gerarAnaliseSimples(dadosImoveis: any[], perfilUsuario: any[]) {
   console.log('🔄 Executando análise de fallback (sem Deepseek)')
 
-  // Extrair preferências do perfil
-  let orcamentoMax = 1000000 // Valor padrão
+  // Extrair preferências do perfil - usar valores mais conservadores
+  let orcamentoMax = 300000 // Valor padrão mais realista (era 1 milhão!)
   let quartosDesejados = 2
   let banheirosDesejados = 1
   let areaMinima = 50
   
-  perfilUsuario.forEach(p => {
+  perfilUsuario.forEach((p: any) => {
     if (p.pergunta?.toLowerCase().includes('orçamento') || p.pergunta?.toLowerCase().includes('valor')) {
       const valor = parseFloat(p.resposta.toString().replace(/[^\d,]/g, '').replace(',', '.'))
       if (!isNaN(valor)) orcamentoMax = valor
