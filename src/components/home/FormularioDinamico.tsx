@@ -244,6 +244,19 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const atualizarResposta = async (perguntaId: string, valor: any) => {
     console.log('🔄 Atualizando resposta:', { perguntaId, valor })
     
+    // Log específico para arquivos
+    if (valor && typeof valor === 'object' && valor.url && valor.filename) {
+      console.log('📁 ARQUIVO SENDO SALVO:', {
+        perguntaId,
+        arquivo: {
+          url: valor.url,
+          filename: valor.filename,
+          size: valor.size,
+          type: valor.type
+        }
+      })
+    }
+    
     // Buscar pergunta em ambas as listas (normal + dinâmicas)
     const pergunta = perguntas.find(p => p.id === perguntaId) || 
                      perguntasDinamicas.find(p => p.id === perguntaId)

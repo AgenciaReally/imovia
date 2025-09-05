@@ -71,8 +71,22 @@ export async function POST(request: Request) {
           perguntaId,
           valor,
           tipoValor: typeof valor,
-          valorProcessado: typeof valor === 'object' ? JSON.stringify(valor) : String(valor)
+          valorProcessado: typeof valor === 'object' ? JSON.stringify(valor) : String(valor),
+          isFileUpload: valor && typeof valor === 'object' && valor.url && valor.filename
         })
+
+        // Log específico para arquivos
+        if (valor && typeof valor === 'object' && valor.url && valor.filename) {
+          console.log(`📁 ARQUIVO DETECTADO:`, {
+            perguntaId,
+            arquivo: {
+              url: valor.url,
+              filename: valor.filename,
+              size: valor.size,
+              type: valor.type
+            }
+          })
+        }
 
         // Salvar a resposta
         const valorRespostaStr = typeof valor === 'object' 

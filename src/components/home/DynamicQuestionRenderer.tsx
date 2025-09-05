@@ -135,6 +135,19 @@
     const handleInputChange = (newValue: any) => {
       console.log('🔧 handleInputChange chamado com:', newValue)
       
+      // Log específico para arquivos
+      if (newValue && typeof newValue === 'object' && newValue.url && newValue.filename) {
+        console.log('📁 ARQUIVO SENDO PROCESSADO:', {
+          perguntaId: pergunta.id,
+          arquivo: {
+            url: newValue.url,
+            filename: newValue.filename,
+            size: newValue.size,
+            type: newValue.type
+          }
+        })
+      }
+      
       if (typeof newValue === 'string' && maskType) {
         const maskedValue = applyMask(newValue, maskType)
         console.log('🎭 Aplicando máscara:', { original: newValue, masked: maskedValue })
