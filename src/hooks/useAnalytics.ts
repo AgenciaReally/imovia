@@ -10,6 +10,12 @@ interface AnalyticsEvent {
 
 // Gerar ID único para sessão
 const generateSessionId = () => {
+  // Verificar se está no lado do cliente (browser)
+  if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
+    // Durante SSR/prerendering, retornar um ID temporário
+    return `ssr_session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+  }
+  
   const existing = sessionStorage.getItem('analytics-session-id')
   if (existing) return existing
   
@@ -23,6 +29,11 @@ export const useAnalytics = () => {
 
   const track = useCallback(async (event: AnalyticsEvent) => {
     try {
+      // Verificar se está no lado do cliente
+      if (typeof window === 'undefined') {
+        return // Não fazer tracking durante SSR
+      }
+
       // Obter userId se disponível
       let userId: string | undefined
       try {
