@@ -1748,6 +1748,33 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         </div>
       )}
 
+      {/* BOTÃO ENCERRAR AGORA - SEMPRE VISÍVEL */}
+      <div className="fixed top-4 right-4 z-50">
+        <Button
+          onClick={() => {
+            console.log('⚡ [ENCERRAR FORÇADO] Finalizando formulário');
+            
+            const limiteCredito = localStorage.getItem('limiteCredito') || '500000';
+            const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
+            
+            const respostasFinais = {
+              ...respostas,
+              limiteCredito: parseInt(limiteCredito),
+              creditoAprovado,
+              finalizacaoAntecipada: true,
+              dataFinalizacao: new Date().toISOString()
+            };
+            
+            console.log('📋 Finalizando com respostas:', respostasFinais);
+            onComplete(respostasFinais);
+          }}
+          className="bg-red-500 hover:bg-red-600 text-white flex items-center gap-2 shadow-lg animate-pulse"
+          size="lg"
+        >
+          🚨 ENCERRAR AGORA
+        </Button>
+      </div>
+
       {/* Navegação com animação */}
       {!mostrarSimuladorCredito && (
         <motion.div
@@ -1771,7 +1798,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               {salvandoResposta && (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   className="flex items-center gap-2"
                 >
@@ -1813,31 +1840,6 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
             >
               <Phone className="h-4 w-4" />
               Orçamento Rápido
-            </Button>
-
-            {/* BOTÃO ENCERRAR AGORA - FORÇADO */}
-            <Button
-              onClick={() => {
-                console.log('⚡ [ENCERRAR FORÇADO] Finalizando formulário');
-                
-                const limiteCredito = localStorage.getItem('limiteCredito') || '500000';
-                const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
-                
-                const respostasFinais = {
-                  ...respostas,
-                  limiteCredito: parseInt(limiteCredito),
-                  creditoAprovado,
-                  finalizacaoAntecipada: true,
-                  dataFinalizacao: new Date().toISOString()
-                };
-                
-                console.log('📋 Finalizando com respostas:', respostasFinais);
-                onComplete(respostasFinais);
-              }}
-              className="bg-red-500 hover:bg-red-600 text-white flex items-center gap-2 ml-3"
-              style={{ display: 'flex !important' }}
-            >
-              ⚡ Encerrar Agora
             </Button>
 
             <motion.div
