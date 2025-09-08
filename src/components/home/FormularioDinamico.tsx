@@ -40,68 +40,6 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const [erro, setErro] = useState<string | null>(null)
   const [showMatches, setShowMatches] = useState(false)
   
-  // 💀 BOTÃO ULTRA FORÇADO - APARECE SEMPRE
-  useEffect(() => {
-    console.log('💀 CRIANDO BOTÃO ULTRA FORÇADO NO ARQUIVO CORRETO');
-    
-    // Criar botão IMEDIATAMENTE
-    const criarBotao = () => {
-      // Remover botões anteriores
-      const botoesAntigos = document.querySelectorAll('[id*="ENCERRAR"], [class*="botao-encerrar"]');
-      botoesAntigos.forEach(btn => btn.remove());
-      
-      const botao = document.createElement('div');
-      botao.className = 'botao-encerrar-ultra';
-      botao.innerHTML = `
-        <button onclick="window.encerrarFormulario()" style="
-          position: fixed !important;
-          top: 20px !important;
-          right: 20px !important;
-          z-index: 999999 !important;
-          background: #dc2626 !important;
-          color: white !important;
-          border: none !important;
-          padding: 15px 25px !important;
-          border-radius: 8px !important;
-          font-weight: bold !important;
-          font-size: 16px !important;
-          cursor: pointer !important;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-          animation: pulse 1s infinite !important;
-        ">
-          🚨 ENCERRAR AGORA
-        </button>
-        <style>
-          @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-          }
-        </style>
-      `;
-      document.body.appendChild(botao);
-      console.log('💀 BOTÃO ADICIONADO AO ARQUIVO ORIGINAL');
-    };
-    
-    // Função global para encerrar
-    (window as any).encerrarFormulario = () => {
-      console.log('💀 ENCERRANDO FORMULÁRIO DO ARQUIVO ORIGINAL!');
-      onComplete({
-        finalizacaoAntecipada: true,
-        limiteCredito: 500000,
-        creditoAprovado: true,
-        dataFinalizacao: new Date().toISOString()
-      });
-    };
-    
-    // Criar imediatamente
-    criarBotao();
-    
-    // E a cada 3 segundos garantir que existe
-    const interval = setInterval(criarBotao, 3000);
-    
-    return () => clearInterval(interval);
-  }, [onComplete])
   
   // Estados para geolocalização
   const [localizacaoObtida, setLocalizacaoObtida] = useState(false)
@@ -1748,32 +1686,6 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         </div>
       )}
 
-      {/* BOTÃO ENCERRAR AGORA - SEMPRE VISÍVEL */}
-      <div className="fixed top-4 right-4 z-50">
-        <Button
-          onClick={() => {
-            console.log('⚡ [ENCERRAR FORÇADO] Finalizando formulário');
-            
-            const limiteCredito = localStorage.getItem('limiteCredito') || '500000';
-            const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
-            
-            const respostasFinais = {
-              ...respostas,
-              limiteCredito: parseInt(limiteCredito),
-              creditoAprovado,
-              finalizacaoAntecipada: true,
-              dataFinalizacao: new Date().toISOString()
-            };
-            
-            console.log('📋 Finalizando com respostas:', respostasFinais);
-            onComplete(respostasFinais);
-          }}
-          className="bg-red-500 hover:bg-red-600 text-white flex items-center gap-2 shadow-lg animate-pulse"
-          size="lg"
-        >
-          🚨 ENCERRAR AGORA
-        </Button>
-      </div>
 
       {/* Navegação com animação */}
       {!mostrarSimuladorCredito && (
@@ -1869,6 +1781,77 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                   </>
                 )}
               </Button>
+
+              {/* Botão Finalizar Rápido - apenas em desenvolvimento */}
+              {process.env.NODE_ENV === 'development' && (
+                <Button
+                  onClick={() => {
+                    console.log('🚀 [FINALIZAR RÁPIDO] Auto-preenchendo formulário');
+                    
+                    // Auto-preencher todas as perguntas com valores de teste
+                    const respostasRapidas: any = {};
+                    
+                    perguntas.forEach((pergunta) => {
+                      switch (pergunta.tipo) {
+                        case 'select':
+                          if (pergunta.opcoes && pergunta.opcoes.length > 0) {
+                            respostasRapidas[pergunta.id] = pergunta.opcoes[0].valor;
+                          }
+                          break;
+                        case 'numero':
+                          respostasRapidas[pergunta.id] = pergunta.id.includes('renda') ? 8000 :
+                                                        pergunta.id.includes('idade') ? 35 :
+                                                        pergunta.id.includes('valor') ? 500000 : 100;
+                          break;
+                        case 'texto':
+                          respostasRapidas[pergunta.id] = pergunta.id.includes('nome') ? 'João Silva' :
+                                                         pergunta.id.includes('email') ? 'joao@teste.com' :
+                                                         pergunta.id.includes('telefone') ? '11999999999' :
+                                                         'Teste rápido';
+                          break;
+                        case 'checkbox':
+                          respostasRapidas[pergunta.id] = true;
+                          break;
+                        case 'radio':
+                          if (pergunta.opcoes && pergunta.opcoes.length > 0) {
+                            respostasRapidas[pergunta.id] = pergunta.opcoes[0].valor;
+                          }
+                          break;
+                        default:
+                          respostasRapidas[pergunta.id] = 'Teste';
+                      }
+                    });
+
+                    // Adicionar dados específicos importantes
+                    const respostasFinais = {
+                      ...respostasRapidas,
+                      limiteCredito: 600000,
+                      creditoAprovado: true,
+                      finalizacaoRapida: true,
+                      dataFinalizacao: new Date().toISOString(),
+                      // Dados básicos para análise
+                      renda: 8000,
+                      idade: 35,
+                      valorMaximo: 600000,
+                      tipoImovel: 'apartamento',
+                      quartos: 3,
+                      cidade: 'São Paulo'
+                    };
+
+                    console.log('🚀 Finalizando rapidamente com:', respostasFinais);
+                    
+                    // Salvar no localStorage para análise
+                    localStorage.setItem('limiteCredito', '600000');
+                    localStorage.setItem('creditoAprovado', 'true');
+                    
+                    // Finalizar formulário
+                    onComplete(respostasFinais);
+                  }}
+                  className="flex items-center gap-2 bg-green-500 hover:bg-green-600 transition-all duration-200 ml-2"
+                >
+                  🚀 Finalizar Rápido
+                </Button>
+              )}
             </motion.div>
           </div>
         </motion.div>
