@@ -1033,8 +1033,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const verificarSeIADeveFinalizarFormulario = async () => {
     const totalRespostas = Object.keys(respostas).length
     
-    console.log('🚫 [DEBUG] DESABILITANDO auto-finalização temporariamente para debug')
-    return false // DESABILITAR TEMPORARIAMENTE
+    console.log('🚫 [DEBUG] Auto-finalização desabilitada - permite navegação normal pelos steps')
+    return false // SEMPRE FALSO para permitir navegação normal
     
     // IA analisa se já tem dados suficientes para finalizar
     if (totalRespostas >= 3 && stepAtual >= 1) {
@@ -1128,10 +1128,9 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       proximoStepSeria: stepAtual + 1
     })
     
-    // ⚡ PRIMEIRO: Verificar se IA deve finalizar automaticamente
-    const iaFinalizou = await verificarSeIADeveFinalizarFormulario()
-    console.log('🤖 [DEBUG] IA finalizou?', iaFinalizou)
-    if (iaFinalizou) return
+    // ⚡ VERIFICAÇÃO REMOVIDA: Permitir navegação normal pelos steps
+    // Auto-finalização desabilitada para permitir controle manual
+    console.log('📝 [DEBUG] Navegação normal pelos steps (auto-finalização desabilitada)')
     
     const novoContador = contadorSteps + 1
     setContadorSteps(novoContador)
@@ -1153,10 +1152,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         await analisarEOtimizarPerguntas(respostas)
         setAnalisandoIA(false)
         
-        // Verificar novamente se deve finalizar após análise
-        const iaFinalizouAposAnalise = await verificarSeIADeveFinalizarFormulario()
-        console.log('🤖 [DEBUG] IA finalizou após análise?', iaFinalizouAposAnalise)
-        if (iaFinalizouAposAnalise) return
+        // Análise IA não finaliza mais automaticamente
+        console.log('🤖 [DEBUG] Análise IA concluída (sem auto-finalização)')
         
         // Só avança se IA não finalizou
         if (stepAtual < stepsDisponiveis.length - 1) {
@@ -1170,8 +1167,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       return
     }
     
-    // DEBUG: Verificar condição final
-    const isUltimoStep = stepAtual === stepsDisponiveis.length - 1;
+    // DEBUG: Verificar condição final - CORRIGIDO
+    const isUltimoStep = stepAtual >= stepsDisponiveis.length - 1;
     const podeAvancarProximoStep = stepAtual < stepsDisponiveis.length - 1;
     
     console.log('📊 [DEBUG] Análise de step:', {
@@ -1182,7 +1179,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       respostasCount: Object.keys(respostas).length
     })
     
-    if (isUltimoStep) {
+    // SÓ FINALIZAR se realmente for o último step disponível
+    if (isUltimoStep && stepAtual === stepsDisponiveis.length - 1) {
       console.log('🏁 [DEBUG] FINALIZANDO FORMULÁRIO - último step detectado')
       
       // Recuperar dados de crédito do localStorage
@@ -1782,76 +1780,74 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                 )}
               </Button>
 
-              {/* Botão Finalizar Rápido - apenas em desenvolvimento */}
-              {process.env.NODE_ENV === 'development' && (
-                <Button
-                  onClick={() => {
-                    console.log('🚀 [FINALIZAR RÁPIDO] Auto-preenchendo formulário');
-                    
-                    // Auto-preencher todas as perguntas com valores de teste
-                    const respostasRapidas: any = {};
-                    
-                    perguntas.forEach((pergunta) => {
-                      switch (pergunta.tipo) {
-                        case 'select':
-                          if (pergunta.opcoes && pergunta.opcoes.length > 0) {
-                            respostasRapidas[pergunta.id] = pergunta.opcoes[0].valor;
-                          }
-                          break;
-                        case 'numero':
-                          respostasRapidas[pergunta.id] = pergunta.id.includes('renda') ? 8000 :
-                                                        pergunta.id.includes('idade') ? 35 :
-                                                        pergunta.id.includes('valor') ? 500000 : 100;
-                          break;
-                        case 'texto':
-                          respostasRapidas[pergunta.id] = pergunta.id.includes('nome') ? 'João Silva' :
-                                                         pergunta.id.includes('email') ? 'joao@teste.com' :
-                                                         pergunta.id.includes('telefone') ? '11999999999' :
-                                                         'Teste rápido';
-                          break;
-                        case 'checkbox':
-                          respostasRapidas[pergunta.id] = true;
-                          break;
-                        case 'radio':
-                          if (pergunta.opcoes && pergunta.opcoes.length > 0) {
-                            respostasRapidas[pergunta.id] = pergunta.opcoes[0].valor;
-                          }
-                          break;
-                        default:
-                          respostasRapidas[pergunta.id] = 'Teste';
-                      }
-                    });
+              {/* Botão Finalizar Rápido */}
+              <Button
+                onClick={() => {
+                  console.log('🚀 [FINALIZAR RÁPIDO] Auto-preenchendo formulário');
+                  
+                  // Auto-preencher todas as perguntas com valores de teste
+                  const respostasRapidas: any = {};
+                  
+                  perguntas.forEach((pergunta) => {
+                    switch (pergunta.tipo) {
+                      case 'select':
+                        if (pergunta.opcoes && pergunta.opcoes.length > 0) {
+                          respostasRapidas[pergunta.id] = pergunta.opcoes[0].valor;
+                        }
+                        break;
+                      case 'numero':
+                        respostasRapidas[pergunta.id] = pergunta.id.includes('renda') ? 8000 :
+                                                      pergunta.id.includes('idade') ? 35 :
+                                                      pergunta.id.includes('valor') ? 500000 : 100;
+                        break;
+                      case 'texto':
+                        respostasRapidas[pergunta.id] = pergunta.id.includes('nome') ? 'João Silva' :
+                                                       pergunta.id.includes('email') ? 'joao@teste.com' :
+                                                       pergunta.id.includes('telefone') ? '11999999999' :
+                                                       'Teste rápido';
+                        break;
+                      case 'checkbox':
+                        respostasRapidas[pergunta.id] = true;
+                        break;
+                      case 'radio':
+                        if (pergunta.opcoes && pergunta.opcoes.length > 0) {
+                          respostasRapidas[pergunta.id] = pergunta.opcoes[0].valor;
+                        }
+                        break;
+                      default:
+                        respostasRapidas[pergunta.id] = 'Teste';
+                    }
+                  });
 
-                    // Adicionar dados específicos importantes
-                    const respostasFinais = {
-                      ...respostasRapidas,
-                      limiteCredito: 600000,
-                      creditoAprovado: true,
-                      finalizacaoRapida: true,
-                      dataFinalizacao: new Date().toISOString(),
-                      // Dados básicos para análise
-                      renda: 8000,
-                      idade: 35,
-                      valorMaximo: 600000,
-                      tipoImovel: 'apartamento',
-                      quartos: 3,
-                      cidade: 'São Paulo'
-                    };
+                  // Adicionar dados específicos importantes
+                  const respostasFinais = {
+                    ...respostasRapidas,
+                    limiteCredito: 600000,
+                    creditoAprovado: true,
+                    finalizacaoRapida: true,
+                    dataFinalizacao: new Date().toISOString(),
+                    // Dados básicos para análise
+                    renda: 8000,
+                    idade: 35,
+                    valorMaximo: 600000,
+                    tipoImovel: 'apartamento',
+                    quartos: 3,
+                    cidade: 'São Paulo'
+                  };
 
-                    console.log('🚀 Finalizando rapidamente com:', respostasFinais);
-                    
-                    // Salvar no localStorage para análise
-                    localStorage.setItem('limiteCredito', '600000');
-                    localStorage.setItem('creditoAprovado', 'true');
-                    
-                    // Finalizar formulário
-                    onComplete(respostasFinais);
-                  }}
-                  className="flex items-center gap-2 bg-green-500 hover:bg-green-600 transition-all duration-200 ml-2"
-                >
-                  🚀 Finalizar Rápido
-                </Button>
-              )}
+                  console.log('🚀 Finalizando rapidamente com:', respostasFinais);
+                  
+                  // Salvar no localStorage para análise
+                  localStorage.setItem('limiteCredito', '600000');
+                  localStorage.setItem('creditoAprovado', 'true');
+                  
+                  // Finalizar formulário
+                  onComplete(respostasFinais);
+                }}
+                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 transition-all duration-200 ml-2"
+              >
+                🚀 Finalizar Rápido
+              </Button>
             </motion.div>
           </div>
         </motion.div>
