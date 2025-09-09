@@ -3,7 +3,9 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { Phone, ChevronLeft, ChevronRight, Loader2, Clock, User, Mail, Building, MapPin, Calendar, CreditCard, Home, Star, Check, Target, Brain, Zap, TrendingUp, Award, Shield, CheckCircle } from 'lucide-react'
+import { Phone, Loader2, ChevronLeft, ChevronRight, CheckCircle2, AlertCircle, MapPin, Home, Clock, Calendar, Check, Target, FileText, BarChart3, Edit3 } from 'lucide-react'
+import RelatorioModal from './RelatorioModal'
+import { useRouter } from 'next/navigation'
 import { useToast } from "@/components/ui/use-toast"
 import { buscarPerguntas, Pergunta } from '@/services/pergunta-service'
 import { DynamicQuestionRenderer } from './DynamicQuestionRenderer'
@@ -57,6 +59,9 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const [perguntasRespondidas, setPerguntasRespondidas] = useState<Set<string>>(new Set())
   const [mostrarAnaliseIA, setMostrarAnaliseIA] = useState(false)
   const [ultimaPerguntaClicada, setUltimaPerguntaClicada] = useState<string>('')
+  const [mostrarModalAnaliseCompleta, setMostrarModalAnaliseCompleta] = useState(false)
+  const [resultadoAnaliseIA, setResultadoAnaliseIA] = useState<any>(null)
+  const [mostrarRelatorioModal, setMostrarRelatorioModal] = useState(false)
 
   // Estados faltantes para simulação
   const [dadosSimulacao, setDadosSimulacao] = useState<any>(null)
@@ -65,6 +70,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   // Hooks AI
   const deepseek = useDeepseek()
   const matches = useMatches()
+  const router = useRouter()
 
   // 🌍 Função para obter geolocalização e detectar cidade
   const obterGeolocalizacao = async () => {
@@ -1687,12 +1693,11 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                       }))
 
                       // 3. Executar análise de compatibilidade e buscar imóveis
-                      await matches.analisarCompatibilidade({ respostasUsuario: respostasForAnalise })
+                      const resultadoAnalise = await matches.analisarCompatibilidade({ respostasUsuario: respostasForAnalise })
                       
-                      // 4. Finalizar formulário e redirecionar para matches/relatórios
-                      if (onComplete) {
-                        onComplete(respostas)
-                      }
+                      // 4. Salvar resultado e mostrar modal com opções
+                      setResultadoAnaliseIA(resultadoAnalise)
+                      setMostrarModalAnaliseCompleta(true)
                       
                     } catch (error) {
                       console.error('Erro na análise IA:', error)
@@ -1734,7 +1739,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           transition={{ delay: 0.5 }}
         >
           {/* Botões de navegação principais */}
-          <div className="flex justify-between items-center gap-4">
+          <div className="flex justify-center items-center gap-4">
             <Button
               variant="outline"
               onClick={stepAnterior}
@@ -1745,7 +1750,33 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               Etapa Anterior
             </Button>
 
-            {/* Botão WhatsApp alinhado ao centro */}
+            <Button
+              onClick={() => {
+                console.log('🔥 [CLICK] Botão clicado:', {
+                  stepAtual,
+                  totalSteps: stepsDisponiveis.length,
+                  podeAvancar: podeAvancar(),
+                  salvandoResposta,
+                  disabled: !podeAvancar() || salvandoResposta
+                });
+                proximoStep();
+              }}
+              disabled={!podeAvancar() || salvandoResposta}
+              className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200"
+            >
+              {salvandoResposta ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  {stepAtual === stepsDisponiveis.length - 1 ? 'Ver Imóveis' : 'Próxima Etapa'}
+                  <ChevronRight className="h-4 w-4" />
+                </>
+              )}
+            </Button>
+          </div>
+
+          {/* Botão WhatsApp centralizado */}
+          <div className="flex justify-center">
             <Button
               onClick={() => {
                 // Coletar dados das respostas para WhatsApp
@@ -1773,34 +1804,10 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                 
                 window.open(`https://wa.me/554192223032?text=${encodeURIComponent(mensagem)}`, '_blank')
               }}
-              className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+              className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2 px-6"
             >
               <Phone className="h-4 w-4" />
               Orçamento Rápido
-            </Button>
-
-            <Button
-              onClick={() => {
-                console.log('🔥 [CLICK] Botão clicado:', {
-                  stepAtual,
-                  totalSteps: stepsDisponiveis.length,
-                  podeAvancar: podeAvancar(),
-                  salvandoResposta,
-                  disabled: !podeAvancar() || salvandoResposta
-                });
-                proximoStep();
-              }}
-              disabled={!podeAvancar() || salvandoResposta}
-              className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200"
-            >
-              {salvandoResposta ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <>
-                  {stepAtual === stepsDisponiveis.length - 1 ? 'Ver Imóveis' : 'Próxima Etapa'}
-                  <ChevronRight className="h-4 w-4" />
-                </>
-              )}
             </Button>
           </div>
 
@@ -1832,6 +1839,138 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
         matches={matches.matches}
         loading={matches.loading}
         totalAnalizado={matches.totalAnalizado}
+      />
+
+      {/* Modal de Análise IA Completa */}
+      <AnimatePresence>
+        {mostrarModalAnaliseCompleta && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+            >
+              <div className="text-center mb-8">
+                <div className="w-20 h-20 bg-gradient-to-r from-orange-100 to-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target className="h-10 w-10 text-orange-600" />
+                </div>
+                <h2 className="text-2xl font-bold text-orange-800 mb-2">
+                  Análise IA Completa!
+                </h2>
+                <p className="text-orange-600">
+                  Sua análise foi processada com sucesso. Escolha o que deseja fazer:
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {/* Ver Matches/Mapa */}
+                <Button
+                  onClick={() => {
+                    setMostrarModalAnaliseCompleta(false)
+                    
+                    // Preparar dados para o mapa interativo
+                    const dadosParaMapa = {
+                      matches: matches.matches || [],
+                      analiseIA: resultadoAnaliseIA,
+                      respostas: respostas
+                    }
+                    
+                    // Salvar no localStorage para o mapa interativo
+                    localStorage.setItem('mapaInterativoData', JSON.stringify(dadosParaMapa))
+                    
+                    // Redirecionar para mapa interativo
+                    router.push('/mapa-interativo')
+                  }}
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white flex items-center gap-2 p-4 h-auto rounded-xl shadow-lg"
+                >
+                  <Home className="h-8 w-8" />
+                  <div className="text-left">
+                    <div className="font-semibold">Ver Matches/Mapa</div>
+                    <div className="text-sm opacity-80">Imóveis compatíveis</div>
+                  </div>
+                </Button>
+
+                {/* Ver Respostas */}
+                <Button
+                  onClick={() => {
+                    setMostrarModalAnaliseCompleta(false)
+                    // Redirecionar para painel de respostas
+                    router.push('/painel/cliente/respostas')
+                  }}
+                  variant="outline"
+                  className="border-2 border-orange-300 text-orange-700 hover:bg-orange-50 flex items-center gap-2 p-4 h-auto rounded-xl shadow-sm"
+                >
+                  <FileText className="h-8 w-8" />
+                  <div className="text-left">
+                    <div className="font-semibold">Ver Respostas</div>
+                    <div className="text-sm opacity-80">Suas informações</div>
+                  </div>
+                </Button>
+
+                {/* Ver Relatórios */}
+                <Button
+                  onClick={() => {
+                    setMostrarModalAnaliseCompleta(false)
+                    // Mostrar modal de relatórios com os mesmos imóveis dos matches
+                    setMostrarRelatorioModal(true)
+                  }}
+                  variant="outline"
+                  className="border-2 border-gray-800 text-gray-800 hover:bg-gray-100 flex items-center gap-2 p-4 h-auto rounded-xl shadow-sm"
+                >
+                  <BarChart3 className="h-8 w-8" />
+                  <div className="text-left">
+                    <div className="font-semibold">Ver Relatórios</div>
+                    <div className="text-sm opacity-80">Análise detalhada</div>
+                  </div>
+                </Button>
+
+                {/* Fazer Análise Completa */}
+                <Button
+                  onClick={() => {
+                    setMostrarModalAnaliseCompleta(false)
+                    setMostrarAnaliseIA(false)
+                    setStepAtual(1) // Avançar para step 2
+                  }}
+                  variant="outline"
+                  className="border-2 border-orange-300 text-orange-700 hover:bg-orange-50 flex items-center gap-2 p-4 h-auto rounded-xl shadow-sm"
+                >
+                  <Edit3 className="h-8 w-8" />
+                  <div className="text-left">
+                    <div className="font-semibold">Análise Completa</div>
+                    <div className="text-sm opacity-80">Todas as perguntas</div>
+                  </div>
+                </Button>
+              </div>
+
+              {/* Botão Fechar */}
+              <div className="text-center">
+                <Button
+                  onClick={() => setMostrarModalAnaliseCompleta(false)}
+                  variant="ghost"
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  Fechar
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Modal de Relatórios */}
+      <RelatorioModal
+        open={mostrarRelatorioModal}
+        onOpenChange={setMostrarRelatorioModal}
+        dados={respostas}
+        imoveis={matches.matches || []}
+        cidade={cidadeDetectada}
+        loading={matches.loading}
       />
     </div>
   )
