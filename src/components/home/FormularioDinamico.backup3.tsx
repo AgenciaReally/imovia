@@ -52,15 +52,14 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const [resultadoCredito, setResultadoCredito] = useState<any>(null)
   const [processandoRapido, setProcessandoRapido] = useState(false)
 
-  // Estados para exibição progressiva das perguntas (Step 1)
-  const [perguntasVisiveis, setPerguntasVisiveis] = useState<number>(1) // Começar com apenas 1 pergunta
+  // Estados para exibição progressiva das perguntas
+  const [perguntasVisiveis, setPerguntasVisiveis] = useState<number>(3) // Começar com 3 perguntas visíveis
   const [perguntasRespondidas, setPerguntasRespondidas] = useState<Set<string>>(new Set())
   const [mostrarAnaliseIA, setMostrarAnaliseIA] = useState(false)
-  const [ultimaPerguntaClicada, setUltimaPerguntaClicada] = useState<string>('')
 
   // Estados faltantes para simulação
   const [dadosSimulacao, setDadosSimulacao] = useState<any>(null)
-  const [simulacaoAprovada, setSimulacaoAprovada] = useState<boolean>(false);
+  const [simulacaoAprovada, setSimulacaoAprovada] = useState<boolean>(false)
   
   // Hooks AI
   const deepseek = useDeepseek()
@@ -285,7 +284,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
     setRespostas(prev => ({ ...prev, [perguntaId]: novaResposta }))
     await salvarResposta(perguntaId, valor)
 
-    // 🔄 Lógica progressiva para Step 1: mostrar novas perguntas conforme responde
+    // Lógica para exibição progressiva das perguntas (apenas no step 1)
     if (stepAtual === 0) {
       const novasPerguntasRespondidas = new Set(perguntasRespondidas).add(perguntaId)
       setPerguntasRespondidas(novasPerguntasRespondidas)
@@ -293,15 +292,12 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       const perguntasDoStepAtual = perguntasPorStep[stepsDisponiveis[stepAtual]] || []
       const totalPerguntasStep = perguntasDoStepAtual.length
       
-      // Avanço automático: mostrar próxima pergunta quando uma for preenchida
-      if (perguntasVisiveis < totalPerguntasStep) {
-        setTimeout(() => {
-          setPerguntasVisiveis(prev => Math.min(prev + 1, totalPerguntasStep))
-          console.log('🔄 Avançando automaticamente para próxima pergunta:', perguntasVisiveis + 1)
-        }, 500) // Pequeno delay para suavizar a transição
+      // Se respondeu mais de 2 perguntas, mostrar mais uma (máximo de 6 por vez)
+      if (novasPerguntasRespondidas.size >= 2 && perguntasVisiveis < Math.min(totalPerguntasStep, 6)) {
+        setPerguntasVisiveis(prev => Math.min(prev + 1, totalPerguntasStep))
       }
       
-      // Quando responder 75% das perguntas, mostrar análise IA
+      // Se respondeu 75% das perguntas do step, mostrar análise IA
       if (novasPerguntasRespondidas.size >= Math.ceil(totalPerguntasStep * 0.75)) {
         setMostrarAnaliseIA(true)
       }
@@ -1460,23 +1456,9 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const perguntasDoStep = perguntasPorStep[stepReal] || []
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-9xl mx-auto p-6">
       {/* Header com progresso */}
-      <div className="mb-12">
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <h1 className="text-3xl font-bold text-gray-800">
-              Análise Inteligente de Perfil
-            </h1>
-            <span className="px-3 py-1 bg-orange-500 text-white text-sm font-semibold rounded-full shadow-sm">
-              IA
-            </span>
-          </div>
-          <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Nossa inteligência artificial vai analisar suas respostas para encontrar os imóveis perfeitos para seu perfil e orçamento.
-          </p>
-        </div>
-        
+      <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
           <span className="text-sm text-gray-500">
             Etapa {stepAtual + 1} de {stepsDisponiveis.length}
@@ -1530,211 +1512,322 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                 </div>
               )}
             </div>
-          </motion.div>
-
-          {/* Perguntas com sistema progressivo para Step 1 */}
-          {(() => {
-            const todasPerguntasStep = [...perguntasDoStep, ...perguntasDinamicas.filter(p => p.step === stepsDisponiveis[stepAtual])]
-              .filter((pergunta: any) => !perguntasOcultas.has(pergunta.id))
-              .filter((pergunta: any, index: number, array: any[]) => {
-                return array.findIndex(p => p.texto.toLowerCase().trim() === pergunta.texto.toLowerCase().trim()) === index
-              })
-
-            // Se estamos no step 1, aplicar lógica progressiva
-            if (stepAtual === 0) {
-              const perguntasParaMostrar = todasPerguntasStep.slice(0, perguntasVisiveis)
-              const perguntasRespondidasArray = Array.from(perguntasRespondidas)
-              
-              return perguntasParaMostrar.map((pergunta: any, index: number) => {
-                const foiRespondida = perguntasRespondidasArray.includes(pergunta.id.toString())
-                const ehPerguntaCidade = pergunta.texto.toLowerCase().includes('cidade') || pergunta.texto.toLowerCase().includes('onde você deseja')
-                
-                // Ocultar TODAS as perguntas anteriores respondidas, exceto a da cidade
-                // e só ocultar quando o usuário clicou em uma pergunta posterior
-                const perguntaPosteriorClicada = ultimaPerguntaClicada && perguntasParaMostrar.findIndex(p => p.id === ultimaPerguntaClicada) > index
-                const deveEsconder = foiRespondida && !ehPerguntaCidade && perguntaPosteriorClicada
-
-                return (
-                  <AnimatePresence key={pergunta.id}>
-                    {!deveEsconder && (
-                      <motion.div
-                        className="border border-gray-200 rounded-2xl p-8 bg-white shadow-sm"
-                        initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -30, scale: 0.95, height: 0 }}
-                        transition={{ 
-                          duration: 0.4,
-                          delay: index * 0.1,
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 30
-                        }}
-                      >
-                        <div className="mb-4">
-                          <h3 className="text-lg font-semibold text-gray-800 mb-2 flex items-center">
-                            {index + 1}. {pergunta.texto}
-                            {pergunta.geradaPorIA && (
-                              <span className="ml-2 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full">
-                                🤖 IA
-                              </span>
-                            )}
-                            {foiRespondida && (
-                              <motion.span 
-                                className="ml-2 px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full"
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                transition={{ delay: 0.2 }}
-                              >
-                                ✓ Respondida
-                              </motion.span>
-                            )}
-                          </h3>
-                          {pergunta.descricao && (
-                            <p className="text-sm text-gray-600 mb-3 leading-relaxed">
-                              {pergunta.descricao}
-                            </p>
-                          )}
-                          {pergunta.obrigatoria && (
-                            <p className="text-xs text-gray-500">* Campo obrigatório</p>
-                          )}
-                        </div>
-
-                        <div 
-                          onClick={() => setUltimaPerguntaClicada(pergunta.id)}
-                          onFocus={() => setUltimaPerguntaClicada(pergunta.id)}
-                        >
-                          <DynamicQuestionRenderer
-                            pergunta={pergunta}
-                            valor={respostas[pergunta.id]?.valor}
-                            onChange={(valor: any) => atualizarResposta(pergunta.id, valor)}
-                          />
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                )
-              })
-            } else {
-              // Para outros steps, mostrar todas normalmente
-              return todasPerguntasStep.map((pergunta: any, index: number) => (
-                <motion.div
-                  key={pergunta.id}
-                  className="border border-gray-200 rounded-2xl p-8 bg-white shadow-sm"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 + (index * 0.1), duration: 0.4 }}
-                >
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      {index + 1}. {pergunta.texto}
-                      {pergunta.geradaPorIA && (
-                        <span className="ml-2 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full">
-                          🤖 IA
-                        </span>
-                      )}
-                    </h3>
-                    {pergunta.descricao && (
-                      <p className="text-sm text-gray-600 mb-3 leading-relaxed">
-                        {pergunta.descricao}
-                      </p>
-                    )}
-                    {pergunta.obrigatoria && (
-                      <p className="text-xs text-gray-500">* Campo obrigatório</p>
-                    )}
-                  </div>
-
-                  <DynamicQuestionRenderer
-                    pergunta={pergunta}
-                    valor={respostas[pergunta.id]?.valor}
-                    onChange={(valor: any) => atualizarResposta(pergunta.id, valor)}
-                  />
-                </motion.div>
-              ))
-            }
-          })()}
-
-          {/* Mostrar análise IA quando apropriado no step 1 */}
-          {stepAtual === 0 && mostrarAnaliseIA && (
-            <motion.div
-              className="mb-8 p-6 bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl border border-purple-200"
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: 0.3, duration: 0.5 }}
-            >
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-bold text-gray-800 mb-2">
-                  🤖 Análise Inteligente Completa
-                </h3>
-                <p className="text-gray-600">
-                  Com base nas suas respostas, nossa IA fará uma análise completa do seu perfil imobiliário
-                </p>
-              </div>
-
-              <div className="space-y-4">
-                <Button
-                  onClick={async () => {
-                    setAnalisandoIA(true)
-                    
-                    try {
-                      // 1. Analisar e otimizar perguntas com IA
-                      await analisarEOtimizarPerguntas(respostas)
-                      
-                      // 2. Preparar respostas para análise de compatibilidade
-                      const respostasForAnalise = Object.entries(respostas).map(([perguntaId, resposta]: [string, any]) => ({
-                        perguntaId: perguntaId,
-                        valor: resposta.valor,
-                        tipo: resposta.tipo || 'text'
-                      }))
-
-                      // 3. Executar análise de compatibilidade e buscar imóveis
-                      await matches.analisarCompatibilidade({ respostasUsuario: respostasForAnalise })
-                      
-                      // 4. Finalizar formulário e redirecionar para matches/relatórios
-                      if (onComplete) {
-                        onComplete(respostas)
-                      }
-                      
-                    } catch (error) {
-                      console.error('Erro na análise IA:', error)
-                    } finally {
-                      setAnalisandoIA(false)
-                    }
-                  }}
-                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 px-6 text-lg"
-                  disabled={analisandoIA}
-                >
-                  {analisandoIA ? (
-                    <>
-                      <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                      Analisando com IA...
-                    </>
-                  ) : (
-                    <>
-                      🎯 Analisar e Ver Matches
-                      <ChevronRight className="h-5 w-5 ml-2" />
-                    </>
-                  )}
-                </Button>
-
-              </div>
-            </motion.div>
-          )}
+          </div>
         </motion.div>
-      </AnimatePresence>
+              </div>
+            )}
+          </div>
+        </motion.div>
+
+        {/* Perguntas com animação progressiva */}
+        {(() => {
+          const todasPerguntasStep = [...perguntasDoStep, ...perguntasDinamicas.filter(p => p.step === stepsDisponiveis[stepAtual])]
+            .filter((pergunta: any) => !perguntasOcultas.has(pergunta.id))
+            .filter((pergunta: any, index: number, array: any[]) => {
+              return array.findIndex(p => p.texto.toLowerCase().trim() === pergunta.texto.toLowerCase().trim()) === index
+            })
+
+          // No step 1, aplicar lógica progressiva
+          if (stepAtual === 0) {
+            const perguntasParaMostrar = todasPerguntasStep.slice(0, perguntasVisiveis)
+            const perguntasRespondidasArray = Array.from(perguntasRespondidas)
+            
+            return perguntasParaMostrar.map((pergunta: any, index: number) => {
+              const foiRespondida = perguntasRespondidasArray.includes(pergunta.id.toString())
+              const deveEsconder = foiRespondida && index < perguntasVisiveis - 3 // Manter 3 visíveis
+
+              return (
+                <AnimatePresence key={pergunta.id}>
+                  {!deveEsconder && (
+                    <motion.div
+                      className="border border-gray-200 rounded-lg p-6 bg-white"
+                      initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -30, scale: 0.95 }}
+                      transition={{ delay: 0.1 + (index * 0.1), duration: 0.4 }}
+                    >
+                      <div className="mb-4">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                          {index + 1}. {pergunta.texto}
+                          {pergunta.geradaPorIA && (
+                            <span className="ml-2 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full">
+                              🤖 IA
+                            </span>
+                          )}
+                          {foiRespondida && (
+                            <span className="ml-2 px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">
+                              ✓ Respondida
+                            </span>
+                          )}
+                        </h3>
+                        {pergunta.descricao && (
+                          <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                            {pergunta.descricao}
+                          </p>
+                        )}
+                        {pergunta.obrigatoria && (
+                          <p className="text-xs text-gray-500">* Campo obrigatório</p>
+                        )}
+                      </div>
+
+                      <DynamicQuestionRenderer
+                        pergunta={pergunta}
+                        valor={respostas[pergunta.id]?.valor}
+                        onChange={(valor: any) => atualizarResposta(pergunta.id, valor)}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              )
+            })
+          } else {
+            // Para outros steps, mostrar todas as perguntas normalmente
+            return todasPerguntasStep.map((pergunta: any, index: number) => (
+              <motion.div
+                key={pergunta.id}
+                className="border border-gray-200 rounded-lg p-6 bg-white"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + (index * 0.1), duration: 0.4 }}
+              >
+                <div className="mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    {index + 1}. {pergunta.texto}
+                    {pergunta.geradaPorIA && (
+                      <span className="ml-2 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded-full">
+                        🤖 IA
+                      </span>
+                    )}
+                  </h3>
+                  {pergunta.descricao && (
+                    <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                      {pergunta.descricao}
+                    </p>
+                  )}
+                  {pergunta.obrigatoria && (
+                    <p className="text-xs text-gray-500">* Campo obrigatório</p>
+                  )}
+                </div>
+
+                <DynamicQuestionRenderer
+                  pergunta={pergunta}
+                  valor={respostas[pergunta.id]?.valor}
+                  onChange={(valor: any) => atualizarResposta(pergunta.id, valor)}
+                />
+              </motion.div>
+            ))
+          }
+        })()}
+
+        {/* Mostrar análise IA quando apropriado no step 1 */}
+        {stepAtual === 0 && mostrarAnaliseIA && (
+          <motion.div
+            className="mb-8 p-6 bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl border border-purple-200"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+          >
+            <div className="text-center mb-6">
+              <h3 className="text-xl font-bold text-gray-800 mb-2">
+                🤖 Análise Inteligente Completa
+              </h3>
+              <p className="text-gray-600">
+                Com base nas suas respostas, nossa IA fará uma análise completa do seu perfil imobiliário
+              </p>
+            </div>
+
+            <Button
+              onClick={() => {
+                setMostrarSimuladorCredito(true)
+                setProcessandoCredito(true)
+              }}
+              className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3 px-6 text-lg"
+              disabled={analisandoIA}
+            >
+              {analisandoIA ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                  Analisando perfil...
+                </>
+              ) : (
+                <>
+                  ✨ Iniciar Análise Completa
+                  <ChevronRight className="h-5 w-5 ml-2" />
+                </>
+              )}
+            </Button>
+          </motion.div>
+        )}
+      </motion.div>
+    </AnimatePresence>
 
 
+      {/* Simulador de Crédito IA - Mostrar apenas se cidade foi validada com imóveis */}
+      {stepAtual === 0 && Object.keys(respostas).length >= 3 && cidadeValidada && imoveisDisponiveis > 0 && (
+        <div className="mb-8 p-6 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl border border-orange-200">
+          <div className="text-center mb-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-2">
+              🤖 Simulação de Crédito IA
+            </h3>
+            <p className="text-gray-600">
+              Baseado nas suas respostas, vamos gerar uma simulação personalizada
+            </p>
+          </div>
+          
+          <div className="flex justify-center">
+            <Button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                ativarSimuladorCreditoIA()
+              }}
+              disabled={analisandoIA}
+              className="px-8 py-3 bg-orange-500 hover:bg-orange-600 flex items-center gap-2"
+            >
+              {analisandoIA ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Analisando...
+                </>
+              ) : (
+                <>
+                  <Zap className="h-4 w-4" />
+                  Simular Aprovação de Crédito
+                </>
+              )}
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Resultado da Simulação de Crédito */}
+      {mostrarSimuladorCredito && dadosSimulacao && (
+        <div className="mb-8 p-6 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl border border-orange-200">
+          <div className="text-center mb-6">
+            <h3 className="text-xl font-bold text-gray-800 mb-2">
+              🤖 Resultado da Simulação
+            </h3>
+            <p className="text-gray-600">
+              Análise completa baseada nas suas respostas
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div className="bg-white p-4 rounded-lg">
+              <h4 className="font-semibold text-gray-700 mb-3">Resumo da Simulação</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>Valor a Financiar:</span>
+                  <span className="font-bold text-green-600">
+                    R$ {dadosSimulacao.valorFinanciamento.toLocaleString('pt-BR')}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Entrada (20%):</span>
+                  <span className="font-bold">
+                    R$ {dadosSimulacao.entrada.toLocaleString('pt-BR')}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Parcela Máxima:</span>
+                  <span className="font-bold">
+                    R$ {dadosSimulacao.parcelaMaxima.toLocaleString('pt-BR')}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Comprometimento:</span>
+                  <span className={`font-bold ${
+                    dadosSimulacao.comprometimento <= 35 ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                    {dadosSimulacao.comprometimento.toFixed(1)}%
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white p-4 rounded-lg">
+              <h4 className="font-semibold text-gray-700 mb-3">Custos Adicionais</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span>ITBI:</span>
+                  <span>R$ {dadosSimulacao.custos.itbi.toLocaleString('pt-BR')}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Escritura:</span>
+                  <span>R$ {dadosSimulacao.custos.escritura.toLocaleString('pt-BR')}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Avaliação:</span>
+                  <span>R$ {dadosSimulacao.custos.avaliacao.toLocaleString('pt-BR')}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Seguros e taxas:</span>
+                  <span>R$ {dadosSimulacao.custos.seguros.toLocaleString('pt-BR')}</span>
+                </div>
+                <hr className="border-amber-300" />
+                <div className="flex justify-between font-bold">
+                  <span>Total aproximado:</span>
+                  <span>R$ {(dadosSimulacao.custos.itbi + dadosSimulacao.custos.escritura + dadosSimulacao.custos.avaliacao + dadosSimulacao.custos.seguros).toLocaleString('pt-BR')}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className={`p-4 rounded-lg text-center ${
+            simulacaoAprovada 
+              ? 'bg-green-100 border border-green-300' 
+              : 'bg-red-100 border border-red-300'
+          }`}>
+            <div className={`text-lg font-bold mb-2 ${
+              simulacaoAprovada ? 'text-green-800' : 'text-red-800'
+            }`}>
+              {simulacaoAprovada ? '✅ Pré-aprovação Concedida!' : '❌ Simulação Precisa de Ajustes'}
+            </div>
+            <p className={`text-sm ${
+              simulacaoAprovada ? 'text-green-700' : 'text-red-700'
+            }`}>
+              {simulacaoAprovada 
+                ? 'Parabéns! Você pode prosseguir para encontrar seu imóvel ideal.'
+                : 'Revise os valores para melhorar sua capacidade de financiamento.'
+              }
+            </p>
+          </div>
+          
+          <div className="flex justify-center mt-6">
+            <Button
+              onClick={() => {
+                if (simulacaoAprovada) {
+                  setMostrarSimuladorCredito(false)
+                  setStepAtual(prev => prev + 1)
+                } else {
+                  setMostrarSimuladorCredito(false)
+                  // Não avançar quando recusado - ficar no step atual
+                }
+              }}
+              className={`px-8 py-3 ${
+                simulacaoAprovada 
+                  ? 'bg-green-600 hover:bg-green-700' 
+                  : 'bg-red-500 hover:bg-red-600'
+              }`}
+            >
+              {simulacaoAprovada ? 'Continuar para Próxima Etapa' : 'Revisar Respostas'}
+            </Button>
+          </div>
+        </div>
+      )}
 
 
       {/* Navegação com animação */}
       {!mostrarSimuladorCredito && (
         <motion.div
-          className="flex flex-col gap-4"
+          className="flex justify-between items-center gap-4 flex-wrap w-full"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          {/* Botões de navegação principais */}
-          <div className="flex justify-between items-center gap-4">
+          {/* Lado Esquerdo - Navegação e Debug */}
+          <div className="flex items-center gap-3">
             <Button
               variant="outline"
               onClick={stepAnterior}
@@ -1745,25 +1838,67 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               Etapa Anterior
             </Button>
 
-            {/* Botão WhatsApp alinhado ao centro */}
+            <AnimatePresence>
+              {salvandoResposta && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  className="flex items-center gap-2"
+                >
+                  <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                  <span className="text-sm text-gray-500">Salvando...</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Botão para Exportar Logs Manualmente */}
             <Button
               onClick={() => {
-                // Coletar dados das respostas para WhatsApp
-                const respostasTexto = Object.entries(respostas).map(([key, resp]) => {
-                  const pergunta = perguntas.find(p => p.id === key)
-                  const texto = pergunta?.texto || 'Pergunta'
-                  const valor = typeof resp.valor === 'object' ? 'Arquivo enviado' : resp.valor
-                  return `• ${texto}: ${valor}`
-                }).join('\n')
+                const globalLogger = (window as any).globalLogger;
+                if (globalLogger) {
+                  globalLogger.log('🔽 [EXPORT MANUAL] Usuário solicitou export manual de logs');
+                  globalLogger.exportLogs(`debug_manual_${globalLogger.getSessionId()}.txt`);
+                }
+              }}
+              variant="outline"
+              className="flex items-center gap-2 border-blue-500 text-blue-600 hover:bg-blue-50"
+            >
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Baixar Logs Debug
+            </Button>
+          </div>
+
+          {/* Lado Direito - Ações Principais */}
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={() => {
+                console.log('🔮 [ANÁLISE RÁPIDA] Iniciando análise de crédito:')
                 
-                const dadosAdicionais = []
-                if (cidadeDetectada) dadosAdicionais.push(`📍 Localização: ${cidadeDetectada}`)
+                let dadosColetados: any = {}
+                
+                perguntas.forEach(pergunta => {
+                  const resposta = respostas[pergunta.id]
+                  if (resposta) {
+                    dadosColetados[pergunta.texto] = resposta
+                  }
+                })
+                
+                console.log('📊 Dados coletados para WhatsApp:', dadosColetados)
+                
+                const dadosAdicionais = Object.entries(dadosColetados)
+                  .filter(([key, value]) => value && key && value.toString().trim() !== '')
+                  .map(([key, value]) => `• ${key}: ${value}`)
                 
                 const mensagem = [
-                  "🏠 *Simulação Imóvel - Imovia*",
+                  "🏠 *IMOVIÁ - Solicitação de Análise de Crédito*",
                   "",
-                  "*Minhas Respostas:*",
-                  respostasTexto,
+                  "Olá! Acabei de preencher o formulário no site e gostaria de:",
+                  "✅ Análise detalhada do meu perfil de crédito",
+                  "✅ Recomendações de imóveis personalizadas",
+                  "✅ Simulação completa de financiamento",
                   "",
                   dadosAdicionais.length > 0 ? "*Dados Detectados:*" : "",
                   ...dadosAdicionais,
@@ -1804,35 +1939,283 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
             </Button>
           </div>
 
-          {/* Status de salvamento */}
-          <div className="flex justify-center items-center">
-            <AnimatePresence>
-              {salvandoResposta && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="flex items-center gap-2"
-                >
-                  <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
-                  <span className="text-sm text-gray-500">Salvando...</span>
-                </motion.div>
-              )}
-            </AnimatePresence>
+          {/* Botão Finalizar Rápido */}
+          <div className="mt-4 p-3 border border-purple-300 bg-purple-50 rounded-lg">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-semibold text-purple-800">⚡ Modo Teste Rápido</p>
+                <p className="text-sm text-purple-600">Preenche automaticamente com perfil aleatório</p>
+              </div>
+              <Button
+                onClick={async () => {
+                  const globalLogger = (window as any).globalLogger;
+                  if (!globalLogger) return;
+
+                  globalLogger.log('⚡ [FINALIZAR RÁPIDO] Iniciando processo');
+
+                  try {
+                    // Gerar perfil aleatório
+                    const perfis = [
+                      {
+                        nome: 'Ana Rodrigues', email: 'ana@email.com', telefone: '11987654321',
+                        idade: 28, renda: 12000, valorMax: 800000, quartos: 2, banheiros: 2,
+                        cidade: 'São Paulo', bairro: 'Vila Madalena', tipo: 'apartamento', perfil: 'jovem_profissional'
+                      },
+                      {
+                        nome: 'Carlos Santos', email: 'carlos@email.com', telefone: '11876543210', 
+                        idade: 42, renda: 25000, valorMax: 1500000, quartos: 4, banheiros: 3,
+                        cidade: 'São Paulo', bairro: 'Morumbi', tipo: 'casa', perfil: 'familia_executiva'
+                      },
+                      {
+                        nome: 'Maria Oliveira', email: 'maria@email.com', telefone: '11765432109',
+                        idade: 35, renda: 8500, valorMax: 600000, quartos: 3, banheiros: 2,
+                        cidade: 'São Paulo', bairro: 'Tatuapé', tipo: 'apartamento', perfil: 'familia_media'
+                      },
+                      {
+                        nome: 'João Costa', email: 'joao@email.com', telefone: '11654321098',
+                        idade: 25, renda: 6000, valorMax: 400000, quartos: 2, banheiros: 1,
+                        cidade: 'São Paulo', bairro: 'Liberdade', tipo: 'studio', perfil: 'jovem_iniciante'
+                      },
+                      {
+                        nome: 'Patricia Lima', email: 'patricia@email.com', telefone: '11543210987',
+                        idade: 50, renda: 35000, valorMax: 2000000, quartos: 4, banheiros: 4,
+                        cidade: 'São Paulo', bairro: 'Jardins', tipo: 'cobertura', perfil: 'executivo_senior'
+                      }
+                    ];
+                    
+                    const perfilEscolhido = perfis[Math.floor(Math.random() * perfis.length)];
+                    globalLogger.log(`🎭 [PERFIL ESCOLHIDO] ${perfilEscolhido.perfil}: ${perfilEscolhido.nome}`, perfilEscolhido);
+                
+                    // Simular tempo de processamento
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    
+                    // Auto-preencher todas as perguntas com valores do perfil
+                    const respostasRapidas: any = {};
+                    let totalRespostas = 0;
+                    
+                    perguntas.forEach((pergunta) => {
+                      let valor: any = null;
+                      const textoPergunta = pergunta.texto.toLowerCase();
+                      const tipoNormalizado = (pergunta.tipo || 'text').toLowerCase();
+                      
+                      globalLogger.log(`🔍 [PROCESSANDO PERGUNTA] ${pergunta.id}`, { 
+                        id: pergunta.id, 
+                        tipo: pergunta.tipo, 
+                        texto: pergunta.texto,
+                        tipoNormalizado,
+                        temOpcoes: !!pergunta.opcoes
+                      });
+                      
+                      try {
+                        switch (tipoNormalizado) {
+                          case 'select':
+                          case 'dropdown':
+                            if (pergunta.opcoes) {
+                              const opcoes = Array.isArray(pergunta.opcoes) ? pergunta.opcoes : JSON.parse(pergunta.opcoes || '[]');
+                              if (opcoes.length > 0) {
+                                const indiceAleatorio = Math.floor(Math.random() * opcoes.length);
+                                const opcaoEscolhida = opcoes[indiceAleatorio];
+                                valor = opcaoEscolhida?.valor || opcaoEscolhida?.value || opcaoEscolhida || 'Opção Padrão';
+                              } else {
+                                valor = 'Opção Padrão';
+                              }
+                            } else {
+                              valor = 'Opção Padrão';
+                            }
+                            break;
+                            
+                          case 'number':
+                          case 'numero':
+                          case 'range':
+                          case 'slider':
+                            if (textoPergunta.includes('renda')) {
+                              valor = perfilEscolhido.renda.toString();
+                            } else if (textoPergunta.includes('idade')) {
+                              valor = perfilEscolhido.idade.toString();
+                            } else if (textoPergunta.includes('valor') || textoPergunta.includes('preço') || textoPergunta.includes('preco')) {
+                              valor = perfilEscolhido.valorMax.toString();
+                            } else if (textoPergunta.includes('quarto')) {
+                              valor = perfilEscolhido.quartos.toString();
+                            } else if (textoPergunta.includes('banheiro')) {
+                              valor = perfilEscolhido.banheiros.toString();
+                            } else if (textoPergunta.includes('entrada') || textoPergunta.includes('entrada')) {
+                              valor = Math.floor(perfilEscolhido.valorMax * 0.2).toString();
+                            } else if (textoPergunta.includes('area') || textoPergunta.includes('área')) {
+                              valor = (Math.floor(Math.random() * 100) + 50).toString();
+                            } else if (textoPergunta.includes('andar') || textoPergunta.includes('piso')) {
+                              valor = (Math.floor(Math.random() * 20) + 1).toString();
+                            } else {
+                              valor = (Math.floor(Math.random() * 900) + 100).toString();
+                            }
+                            break;
+                            
+                          case 'text':
+                          case 'texto':
+                          case 'string':
+                            if (textoPergunta.includes('nome')) {
+                              valor = perfilEscolhido.nome;
+                            } else if (textoPergunta.includes('cidade')) {
+                              valor = perfilEscolhido.cidade;
+                            } else if (textoPergunta.includes('bairro')) {
+                              valor = perfilEscolhido.bairro;
+                            } else if (textoPergunta.includes('endereco') || textoPergunta.includes('endereço')) {
+                              valor = `Rua ${perfilEscolhido.perfil}, ${Math.floor(Math.random() * 999) + 1}`;
+                            } else if (textoPergunta.includes('profissao') || textoPergunta.includes('profissão')) {
+                              valor = `Profissional ${perfilEscolhido.perfil}`;
+                            } else {
+                              valor = `Resposta ${perfilEscolhido.perfil} ${Math.random().toString(36).substr(2, 3)}`;
+                            }
+                            break;
+                            
+                          case 'date':
+                          case 'data':
+                            const anoNascimento = new Date().getFullYear() - perfilEscolhido.idade;
+                            const anoAleatorio = anoNascimento + Math.floor(Math.random() * 3) - 1;
+                            const mesAleatorio = Math.floor(Math.random() * 12) + 1;
+                            const diaAleatorio = Math.floor(Math.random() * 28) + 1;
+                            valor = `${anoAleatorio}-${mesAleatorio.toString().padStart(2, '0')}-${diaAleatorio.toString().padStart(2, '0')}`;
+                            break;
+                            
+                          case 'email':
+                            valor = `${perfilEscolhido.nome.toLowerCase().replace(' ', '.')}@email.com`;
+                            break;
+                            
+                          case 'phone':
+                          case 'tel':
+                          case 'telefone':
+                            valor = perfilEscolhido.telefone;
+                            break;
+                            
+                          case 'radio':
+                          case 'checkbox':
+                            if (pergunta.opcoes) {
+                              const opcoes = Array.isArray(pergunta.opcoes) ? pergunta.opcoes : JSON.parse(pergunta.opcoes || '[]');
+                              if (opcoes.length > 0) {
+                                const indiceAleatorio = Math.floor(Math.random() * opcoes.length);
+                                const opcaoEscolhida = opcoes[indiceAleatorio];
+                                valor = opcaoEscolhida?.valor || opcaoEscolhida?.value || opcaoEscolhida || 'Sim';
+                              } else {
+                                valor = Math.random() > 0.5 ? 'Sim' : 'Não';
+                              }
+                            } else {
+                              valor = Math.random() > 0.5 ? 'Sim' : 'Não';
+                            }
+                            break;
+                            
+                          default:
+                            valor = `Valor padrão ${Math.random().toString(36).substr(2, 5)}`;
+                        }
+
+                        if (valor !== null && valor !== undefined) {
+                          const perguntaId = pergunta.id.toString();
+                          respostasRapidas[perguntaId] = valor;
+                          totalRespostas++;
+                          
+                          globalLogger.log(`✅ [RESPOSTA GERADA] Pergunta ${pergunta.id}: "${valor}"`, { perguntaId, valor });
+                        } else {
+                          globalLogger.log(`⚠️ [VALOR NULL] Pergunta ${pergunta.id} gerou valor nulo`, { pergunta, error: 'valor nulo' });
+                        }
+                      } catch (error) {
+                        const valorPadrao = 'Erro ao gerar';
+                        respostasRapidas[pergunta.id] = valorPadrao;
+                        globalLogger.log(`🚨 [ERRO GERAÇÃO] Pergunta ${pergunta.id}: usando valor padrão`, { pergunta, valorPadrao, error });
+                      }
+                    });
+
+                    globalLogger.log(`📊 [RESPOSTAS PROCESSADAS] Total: ${totalRespostas}`, { ...respostasRapidas });
+
+                    // Aplicar todas as respostas
+                    let fluxoAtual = 'questionario';
+                    
+                    // Salvar perfil para análise
+                    const perfil = {
+                      nome: perfilEscolhido.nome,
+                      email: `${perfilEscolhido.nome.toLowerCase().replace(' ', '.')}@email.com`,
+                      telefone: perfilEscolhido.telefone,
+                      valorMaximo: perfilEscolhido.valorMax,
+                      rendaFamiliar: perfilEscolhido.renda,
+                      cidade: perfilEscolhido.cidade,
+                      bairroPreferencia: perfilEscolhido.bairro,
+                      quartos: perfilEscolhido.quartos,
+                      banheiros: perfilEscolhido.banheiros,
+                      tipoImovel: perfilEscolhido.tipo
+                    };
+
+                    const limiteCredito = Math.min(perfilEscolhido.valorMax, perfilEscolhido.renda * 200);
+
+                    globalLogger.log('💾 [SALVANDO RESPOSTAS] Enviando para API...', { totalRespostas, limiteCredito });
+
+                    // Salvar respostas via API
+                    const apiResponse = await fetch('/api/respostas', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        respostas: Object.entries(respostasRapidas).map(([key, valor]) => ({ key, valor })),
+                        fluxo: 'auto_preenchimento',
+                        limiteCredito
+                      })
+                    });
+
+                    if (!apiResponse.ok) {
+                      const errorText = await apiResponse.text();
+                      throw new Error(`API Error: ${errorText}`);
+                    }
+
+                    const respostasProcessadas = await apiResponse.json();
+                    globalLogger.log('✅ [API SUCESSO] Respostas salvas', { respostasProcessadas });
+
+                    const respostasFinais = respostasProcessadas?.respostas || respostasRapidas;
+                    
+                    globalLogger.log('🎯 [CHAMANDO CALLBACK] Executando onComplete...', { respostasFinais, limiteCredito });
+
+                    // Chamar callback de conclusão
+                    if (onComplete) {
+                      await onComplete(respostasFinais);
+                    }
+
+                  } catch (error: any) {
+                    globalLogger.log('🚨 [ERRO FINALIZAR RÁPIDO]', { 
+                      message: error?.message, 
+                      stack: error?.stack, 
+                      error: error?.toString(),
+                      respostasFinais: error?.respostasFinais || 'Não disponível'
+                    });
+                    console.error('Erro no Finalizar Rápido:', error);
+
+                    // Em caso de erro, ainda tentar completar o fluxo
+                    let fluxoAtual = 'erro_recuperacao';
+                    if (onComplete) {
+                      try {
+                        globalLogger.log('🔄 [TENTATIVA RECUPERAÇÃO] Chamando onComplete mesmo com erro...');
+                        await onComplete({});
+                      } catch (recoveryError) {
+                        globalLogger.log('💥 [ERRO RECUPERAÇÃO] Falha total', { recoveryError });
+                      }
+                    }
+                  }
+
+                  // Export automático de logs
+                  globalLogger.log('📤 [EXPORT AUTOMÁTICO] Finalizando e exportando logs...');
+                  if (globalLogger.exportLogs) {
+                    globalLogger.exportLogs(`finalizar_rapido_${globalLogger.getSessionId()}.txt`);
+                  }
+                }}
+                disabled={processandoRapido}
+                className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded flex items-center gap-2"
+              >
+                {processandoRapido ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                )}
+                Finalizar Rápido
+              </Button>
+            </div>
           </div>
         </motion.div>
       )}
-
-      <MatchesModal
-        isOpen={showMatches}
-        onClose={() => {
-          setShowMatches(false)
-          onComplete(respostas)
-        }}
-        matches={matches.matches}
-        loading={matches.loading}
-        totalAnalizado={matches.totalAnalizado}
-      />
     </div>
   )
 }

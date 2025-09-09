@@ -294,7 +294,7 @@
                       onChange(numericValue)
                     }}
                     placeholder="R$ 500.000"
-                    className="text-lg p-4 border-2 focus:border-orange-500 pl-12"
+                    className="text-lg p-4 border-2 focus:border-orange-500 pl-12 rounded-xl"
                   />
                   <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-500">
                     💰
@@ -318,7 +318,7 @@
                   value={inputValue}
                   onChange={(e) => handleInputChange(e.target.value)}
                   placeholder={maskType ? `Digite ${maskType}...` : "Digite sua resposta..."}
-                  className="text-lg p-4 border-2 focus:border-orange-500 pl-12"
+                  className="text-lg p-4 border-2 focus:border-orange-500 pl-12 rounded-xl"
                 />
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-500">
                   {maskType === 'telefone' ? '📱' : 
@@ -349,7 +349,7 @@
                   value={inputValue}
                   onChange={(e) => handleInputChange(e.target.value)}
                   placeholder="Digite sua resposta detalhada..."
-                  className="text-lg p-4 border-2 focus:border-orange-500 min-h-[120px] resize-none"
+                  className="text-lg p-4 border-2 focus:border-orange-500 min-h-[120px] resize-none rounded-xl"
                 />
                 <div className="absolute top-3 right-3 text-orange-500">
                   ✍️
@@ -373,7 +373,7 @@
                   value={inputValue}
                   onChange={(e) => handleInputChange(Number(e.target.value))}
                   placeholder="Digite um número..."
-                  className="text-lg p-4 border-2 focus:border-orange-500 pl-12"
+                  className="text-lg p-4 border-2 focus:border-orange-500 pl-12 rounded-xl"
                 />
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-500">
                   🔢
@@ -394,7 +394,7 @@
                   value={inputValue}
                   onChange={(e) => handleInputChange(e.target.value)}
                   placeholder="seu@email.com"
-                  className="text-lg p-4 border-2 focus:border-orange-500 pl-12"
+                  className="text-lg p-4 border-2 focus:border-orange-500 pl-12 rounded-xl"
                 />
                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-500">
                   📧
