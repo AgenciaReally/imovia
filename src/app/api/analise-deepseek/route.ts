@@ -175,25 +175,51 @@ Retorne APENAS um JSON válido no formato:
 }
 `
 
-    // 5. Chamar API do Deepseek
-    const deepseekResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "deepseek-reasoner",
-        messages: [
-          {
-            role: "user",
-            content: promptDeepseek
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 2000
+    // 5. Chamar API do Deepseek com timeout
+    console.log('🔄 Iniciando chamada para API Deepseek...')
+    
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 15000) // 15 segundos timeout
+    
+    let deepseekResponse: Response
+    
+    try {
+      deepseekResponse = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "deepseek-reasoner",
+          messages: [
+            {
+              role: "user",
+              content: promptDeepseek
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 2000
+        }),
+        signal: controller.signal
       })
-    })
+      
+      clearTimeout(timeoutId)
+      console.log('✅ Resposta da API Deepseek recebida')
+      
+    } catch (error: any) {
+      clearTimeout(timeoutId)
+      console.error('❌ Erro na chamada Deepseek:', error.message)
+      
+      if (error.name === 'AbortError') {
+        console.log('⏰ Timeout na API Deepseek - usando fallback')
+      } else {
+        console.log('🔄 Erro de conexão Deepseek - usando fallback')
+      }
+      
+      // Usar fallback imediatamente em caso de erro ou timeout
+      return gerarAnaliseSimples(dadosImoveis, perfilUsuario)
+    }
 
     if (!deepseekResponse.ok) {
       console.error('❌ Erro na API Deepseek:', deepseekResponse.statusText)
@@ -202,10 +228,23 @@ Retorne APENAS um JSON válido no formato:
       return gerarAnaliseSimples(dadosImoveis, perfilUsuario)
     }
 
-    const deepseekData = await deepseekResponse.json()
-    const conteudoResposta = deepseekData.choices[0]?.message?.content
-
-    console.log('🤖 Resposta bruta do Deepseek:', conteudoResposta)
+    let deepseekData: any
+    let conteudoResposta: string
+    
+    try {
+      deepseekData = await deepseekResponse.json()
+      conteudoResposta = deepseekData.choices[0]?.message?.content
+      
+      console.log('🤖 Resposta bruta do Deepseek:', conteudoResposta?.substring(0, 500) + '...')
+      
+      if (!conteudoResposta) {
+        throw new Error('Resposta vazia do Deepseek')
+      }
+      
+    } catch (error) {
+      console.error('❌ Erro ao processar resposta do Deepseek:', error)
+      return gerarAnaliseSimples(dadosImoveis, perfilUsuario)
+    }
 
     try {
       // Tentar extrair JSON da resposta

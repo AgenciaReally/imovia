@@ -138,14 +138,8 @@ export default function RelatorioModal({
           </div>
         ) : (
           <div ref={reportRef} className="bg-white p-4 rounded-lg">
-            {/* Header do Relatório */}
+            {/* Localização */}
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Relatório de Imóveis Personalizados
-              </h2>
-              <p className="text-gray-600">
-                Baseado nas suas preferências e necessidades
-              </p>
               {(cidade || bairro) && (
                 <div className="flex items-center justify-center mt-2 text-sm text-gray-500">
                   <IconMap className="h-4 w-4 mr-1" />
@@ -185,17 +179,31 @@ export default function RelatorioModal({
                         displayValue = String(value);
                       }
                       
-                      // Melhorar nome da pergunta
-                      if (key.includes('pergunta')) {
-                        const perguntaMatch = key.match(/pergunta-(\d+)/);
-                        if (perguntaMatch) {
-                          const numero = perguntaMatch[1];
-                          displayKey = `Pergunta ${numero}`;
+                      // Melhorar nome da pergunta - remover caracteres estranhos
+                      if (typeof value === 'object' && value !== null) {
+                        const objValue = value as any;
+                        if (objValue.texto) {
+                          displayKey = objValue.texto;
+                        } else if (objValue.pergunta) {
+                          displayKey = objValue.pergunta;
+                        } else {
+                          displayKey = key;
                         }
                       } else {
-                        displayKey = key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').toLowerCase();
-                        displayKey = displayKey.charAt(0).toUpperCase() + displayKey.slice(1);
+                        displayKey = key;
                       }
+                      
+                      // Limpar caracteres estranhos e formatação
+                      displayKey = displayKey
+                        .replace(/Seed-?\s*/, '') // Remove "Seed-" ou "Seed "
+                        .replace(/[-_]/g, ' ') // Substitui hífens e underscores por espaços
+                        .replace(/\s{2,}/g, ' ') // Remove espaços duplos
+                        .trim() // Remove espaços no início e fim
+                        .replace(/([a-z])([A-Z])/g, '$1 $2') // Separa camelCase
+                        .toLowerCase()
+                        .split(' ')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(' ')
                       
                       return (
                         <div key={key} className="bg-white rounded-lg p-4 shadow-sm border border-orange-100">
@@ -235,24 +243,27 @@ export default function RelatorioModal({
                       <div className="flex flex-col md:flex-row">
                         {/* Imagem */}
                         <div className="md:w-1/3">
-                          {(imovel.thumbnail || imovel.fotoPrincipal) ? (
-                            <div className="relative aspect-video md:aspect-square">
-                              <img 
-                                src={imovel.thumbnail || imovel.fotoPrincipal} 
-                                alt={imovel.titulo}
-                                className="w-full h-full object-cover"
-                              />
-                              {(imovel.matchPercentage || imovel.score) && (
-                                <Badge className="absolute top-2 right-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold">
-                                  #{index + 1} - {imovel.matchPercentage || imovel.score}% Match
-                                </Badge>
-                              )}
-                            </div>
-                          ) : (
-                            <div className="aspect-video md:aspect-square bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                              <Home className="h-12 w-12 text-gray-400" />
-                            </div>
-                          )}
+                          <div className="relative aspect-video md:aspect-square">
+                            <img 
+                              src={
+                                imovel.thumbnail || 
+                                imovel.fotoPrincipal || 
+                                (imovel.galeriaFotos && imovel.galeriaFotos[0]) ||
+                                "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop&ixlib=rb-4.0.3"
+                              }
+                              alt={imovel.titulo}
+                              className="w-full h-full object-cover rounded-l-xl"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop&ixlib=rb-4.0.3";
+                              }}
+                            />
+                            {(imovel.matchPercentage || imovel.score) && (
+                              <Badge className="absolute top-2 right-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold">
+                                #{index + 1} - {Math.round(imovel.matchPercentage || imovel.score)}% Match
+                              </Badge>
+                            )}
+                          </div>
                         </div>
                         
                         {/* Detalhes */}
