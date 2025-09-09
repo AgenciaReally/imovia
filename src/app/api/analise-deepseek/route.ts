@@ -54,13 +54,16 @@ export async function POST(request: Request) {
       console.log('⚠️ Sem limite definido - usando valor conservador: R$ 300.000');
     }
     
-    // Aplicar filtro de cidade se especificada
+    // Aplicar filtro de cidade se especificada - mais rigoroso
     if (cidadeDesejada) {
-      whereClause.cidade = {
-        contains: cidadeDesejada,
-        mode: 'insensitive'
-      };
-      console.log(`🏙️ Filtro de cidade aplicado: ${cidadeDesejada}`);
+      whereClause.OR = [
+        { cidade: { contains: cidadeDesejada, mode: 'insensitive' } },
+        { endereco: { contains: `, ${cidadeDesejada},`, mode: 'insensitive' } },
+        { endereco: { contains: `, ${cidadeDesejada}.`, mode: 'insensitive' } },
+        { endereco: { contains: ` - ${cidadeDesejada}`, mode: 'insensitive' } },
+        { endereco: { endsWith: `, ${cidadeDesejada}`, mode: 'insensitive' } }
+      ];
+      console.log(`🏙️ Filtro de cidade aplicado (rigoroso): ${cidadeDesejada}`);
     }
     
     const imoveis = await prisma.imovel.findMany({
@@ -75,9 +78,21 @@ export async function POST(request: Request) {
     console.log('🏠 Imóveis encontrados no banco:', imoveis.length)
 
     if (imoveis.length === 0) {
+      // Verificar se o problema é falta de imóveis na cidade específica
+      if (cidadeDesejada) {
+        return NextResponse.json({
+          success: false,
+          error: 'cidade_sem_imoveis',
+          message: `Infelizmente, não temos imóveis disponíveis em ${cidadeDesejada} no momento.`,
+          suggestion: 'Por favor, escolha outra cidade ou entre em contato conosco via WhatsApp para mais opções.',
+          cidadeConsultada: cidadeDesejada
+        })
+      }
+      
       return NextResponse.json({
         success: false,
-        error: 'Nenhum imóvel ativo encontrado no banco de dados'
+        error: 'sem_imoveis_disponiveis',
+        message: 'Nenhum imóvel ativo encontrado no banco de dados com os critérios especificados.'
       })
     }
 

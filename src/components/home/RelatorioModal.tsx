@@ -1,19 +1,14 @@
 "use client";
 
-import { useRef } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { X, Download, Printer, Mail, CheckCircle2, MapPin, Loader2, Phone } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
-import { IconMap } from "@tabler/icons-react";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useToast } from "@/components/ui/use-toast";
+import { Download, Home, Loader2, MapPin as IconMap, Phone } from "lucide-react";
+import { useRef, useState } from "react";
+import { X, CheckCircle2, Mail } from 'lucide-react';
 
 // Interface para os imóveis recomendados
 interface Imovel {
@@ -126,11 +121,14 @@ export default function RelatorioModal({
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onOpenChange(false)}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center">
-            Imóveis Recomendados para Você
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="pb-6">
+          <DialogTitle className="text-2xl font-bold text-center text-orange-800">
+            📊 Relatório de Imóveis Personalizados
           </DialogTitle>
+          <p className="text-center text-gray-600 mt-2">
+            Baseado na sua análise IA e preferências informadas
+          </p>
         </DialogHeader>
         
         {loading ? (
@@ -150,7 +148,7 @@ export default function RelatorioModal({
               </p>
               {(cidade || bairro) && (
                 <div className="flex items-center justify-center mt-2 text-sm text-gray-500">
-                  <MapPin className="h-4 w-4 mr-1" />
+                  <IconMap className="h-4 w-4 mr-1" />
                   <span>
                     {bairro && cidade ? `${bairro}, ${cidade}` : bairro || cidade}
                   </span>
@@ -182,52 +180,99 @@ export default function RelatorioModal({
 
             {/* Lista de Imóveis */}
             <div className="mb-6">
-              <h3 className="font-semibold text-gray-800 mb-4">
-                Imóveis Encontrados ({imoveis?.length || 0})
+              <h3 className="font-semibold text-orange-800 mb-4 text-lg flex items-center gap-2">
+                <Home className="h-5 w-5" />
+                Imóveis Selecionados pela IA ({imoveis?.length || 0})
               </h3>
               
               {!imoveis || imoveis.length === 0 ? (
-                <div className="text-center py-8 text-gray-500">
+                <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-lg">
                   <IconMap className="h-12 w-12 mx-auto mb-3 text-gray-300" />
-                  <p>Nenhum imóvel encontrado com os critérios selecionados.</p>
+                  <p className="text-lg font-medium mb-2">Nenhum imóvel encontrado</p>
+                  <p className="text-sm">Ajuste seus critérios ou tente outra cidade.</p>
                 </div>
               ) : (
-                <div className="grid gap-4">
-                  {imoveis.map(imovel => (
-                    <div key={imovel.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                      {(imovel.thumbnail || imovel.fotoPrincipal) ? (
-                        <div className="relative aspect-video">
-                          <img 
-                            src={imovel.thumbnail || imovel.fotoPrincipal} 
-                            alt={imovel.titulo}
-                            className="w-full h-full object-cover"
-                          />
-                          {imovel.matchPercentage && (
-                            <Badge className="absolute top-2 right-2 bg-[#fe4f17]">
-                              {imovel.matchPercentage}% Match
-                            </Badge>
+                <div className="grid gap-6">
+                  {imoveis.map((imovel, index) => (
+                    <div key={imovel.id} className="border-2 border-orange-100 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 hover:border-orange-200">
+                      <div className="flex flex-col md:flex-row">
+                        {/* Imagem */}
+                        <div className="md:w-1/3">
+                          {(imovel.thumbnail || imovel.fotoPrincipal) ? (
+                            <div className="relative aspect-video md:aspect-square">
+                              <img 
+                                src={imovel.thumbnail || imovel.fotoPrincipal} 
+                                alt={imovel.titulo}
+                                className="w-full h-full object-cover"
+                              />
+                              {(imovel.matchPercentage || imovel.score) && (
+                                <Badge className="absolute top-2 right-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-bold">
+                                  #{index + 1} - {imovel.matchPercentage || imovel.score}% Match
+                                </Badge>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="aspect-video md:aspect-square bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                              <Home className="h-12 w-12 text-gray-400" />
+                            </div>
                           )}
                         </div>
-                      ) : (
-                        <div className="aspect-video bg-gray-100 flex items-center justify-center">
-                          <IconMap className="h-12 w-12 text-gray-400" />
-                        </div>
-                      )}
-                      <div className="p-4">
-                        <h3 className="font-bold truncate">{imovel.titulo}</h3>
-                        <p className="text-[#fe4f17] font-bold text-lg mt-1">
-                          {new Intl.NumberFormat('pt-BR', {
-                            style: 'currency',
-                            currency: 'BRL',
-                            maximumFractionDigits: 0
-                          }).format(imovel.preco)}
-                        </p>
                         
-                        {/* Botão WhatsApp padrão igual ao mapa interativo */}
-                        <div className="mt-3 pt-3 border-t">
+                        {/* Detalhes */}
+                        <div className="flex-1 p-6">
+                          <div className="flex justify-between items-start mb-3">
+                            <h4 className="font-bold text-xl text-gray-800 leading-tight">{imovel.titulo}</h4>
+                            <p className="text-orange-600 font-bold text-2xl">
+                              {new Intl.NumberFormat('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL',
+                                maximumFractionDigits: 0
+                              }).format(imovel.preco)}
+                            </p>
+                          </div>
+                          
+                          {/* Características */}
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                            {imovel.quartos && (
+                              <div className="flex items-center gap-1 text-sm text-gray-600">
+                                <span className="font-medium">{imovel.quartos}</span> quartos
+                              </div>
+                            )}
+                            {imovel.banheiros && (
+                              <div className="flex items-center gap-1 text-sm text-gray-600">
+                                <span className="font-medium">{imovel.banheiros}</span> banheiros
+                              </div>
+                            )}
+                            {imovel.area && (
+                              <div className="flex items-center gap-1 text-sm text-gray-600">
+                                <span className="font-medium">{imovel.area}m²</span> área
+                              </div>
+                            )}
+                            {imovel.vagas && (
+                              <div className="flex items-center gap-1 text-sm text-gray-600">
+                                <span className="font-medium">{imovel.vagas}</span> vagas
+                              </div>
+                            )}
+                          </div>
+                          
+                          {/* Motivos da IA */}
+                          {imovel.motivos && imovel.motivos.length > 0 && (
+                            <div className="mb-4">
+                              <p className="text-sm font-semibold text-gray-700 mb-2">Por que a IA escolheu este imóvel:</p>
+                              <div className="flex flex-wrap gap-1">
+                                {imovel.motivos.map((motivo: string, idx: number) => (
+                                  <Badge key={idx} variant="outline" className="text-xs border-orange-300 text-orange-700">
+                                    {motivo}
+                                  </Badge>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          
+                          {/* Botão WhatsApp */}
                           <Button 
                             size="sm"
-                            className="w-full text-sm font-medium bg-green-600 text-white hover:bg-green-700 gap-2 shadow-lg rounded-full py-3 transition-all duration-200 hover:scale-105"
+                            className="w-full bg-green-600 text-white hover:bg-green-700 gap-2 shadow-lg rounded-lg py-3 transition-all duration-200 hover:scale-105"
                             onClick={() => {
                               const detalhes = [
                                 `🏠 Título: ${imovel.titulo}`,
@@ -237,15 +282,15 @@ export default function RelatorioModal({
                                 imovel.banheiros ? `🚿 Banheiros: ${imovel.banheiros}` : '',
                                 imovel.area ? `📐 Área: ${imovel.area}m²` : '',
                                 imovel.vagas ? `🚗 Vagas: ${imovel.vagas}` : '',
-                                (imovel.thumbnail || imovel.fotoPrincipal) ? `📸 Foto: ${imovel.thumbnail || imovel.fotoPrincipal}` : ''
+                                `📍 Endereço: ${imovel.endereco || 'Não informado'}`
                               ].filter(Boolean).join('\n');
                               
-                              const mensagem = `Olá, vim através do app iMovia e gostaria de obter mais informações sobre este imóvel:\n\n${detalhes}`;
+                              const mensagem = `Olá! Vim através do app iMovia e gostaria de mais informações sobre este imóvel selecionado pela nossa IA:\n\n${detalhes}\n\nObrigado!`;
                               window.open(`https://wa.me/554192223032?text=${encodeURIComponent(mensagem)}`, '_blank');
                             }}
                           >
                             <Phone className="h-4 w-4" />
-                            Atendimento direto
+                            Entrar em Contato
                           </Button>
                         </div>
                       </div>

@@ -1685,18 +1685,14 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                       // 1. Analisar e otimizar perguntas com IA
                       await analisarEOtimizarPerguntas(respostas)
                       
-                      // 2. Preparar respostas para análise de compatibilidade
-                      const respostasForAnalise = Object.entries(respostas).map(([perguntaId, resposta]: [string, any]) => ({
-                        perguntaId: perguntaId,
-                        valor: resposta.valor,
-                        tipo: resposta.tipo || 'text'
-                      }))
-
-                      // 3. Executar análise de compatibilidade e buscar imóveis
-                      const resultadoAnalise = await matches.analisarCompatibilidade({ respostasUsuario: respostasForAnalise })
+                      // 2. Finalizar análise com toast
+                      toast({
+                        title: "✅ Análise Concluída!",
+                        description: "Processamento completo realizado com sucesso.",
+                        duration: 3000,
+                      })
                       
-                      // 4. Salvar resultado e mostrar modal com opções
-                      setResultadoAnaliseIA(resultadoAnalise)
+                      // 3. Mostrar modal para próximas ações
                       setMostrarModalAnaliseCompleta(true)
                       
                     } catch (error) {
@@ -1902,7 +1898,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                     router.push('/painel/cliente/respostas')
                   }}
                   variant="outline"
-                  className="border-2 border-orange-300 text-orange-700 hover:bg-orange-50 flex items-center gap-2 p-4 h-auto rounded-xl shadow-sm"
+                  className="border-2 border-orange-300 text-orange-700 hover:bg-orange-100 hover:border-orange-400 hover:text-orange-800 flex items-center gap-2 p-4 h-auto rounded-xl shadow-sm transition-all duration-200"
                 >
                   <FileText className="h-8 w-8" />
                   <div className="text-left">
@@ -1919,7 +1915,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                     setMostrarRelatorioModal(true)
                   }}
                   variant="outline"
-                  className="border-2 border-gray-800 text-gray-800 hover:bg-gray-100 flex items-center gap-2 p-4 h-auto rounded-xl shadow-sm"
+                  className="border-2 border-gray-800 text-gray-800 hover:bg-gray-200 hover:border-gray-900 hover:text-gray-900 flex items-center gap-2 p-4 h-auto rounded-xl shadow-sm transition-all duration-200"
                 >
                   <BarChart3 className="h-8 w-8" />
                   <div className="text-left">
@@ -1936,7 +1932,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                     setStepAtual(1) // Avançar para step 2
                   }}
                   variant="outline"
-                  className="border-2 border-orange-300 text-orange-700 hover:bg-orange-50 flex items-center gap-2 p-4 h-auto rounded-xl shadow-sm"
+                  className="border-2 border-orange-300 text-orange-700 hover:bg-orange-100 hover:border-orange-400 hover:text-orange-800 flex items-center gap-2 p-4 h-auto rounded-xl shadow-sm transition-all duration-200"
                 >
                   <Edit3 className="h-8 w-8" />
                   <div className="text-left">

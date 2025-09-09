@@ -49,6 +49,24 @@ interface MatchAnalysisResponse {
   totalAnalizado: number
   tempoAnalise: number
   insights: string[]
+  imoveis?: Array<{
+    id: string
+    titulo: string
+    preco: number
+    area?: number
+    quartos?: number
+    banheiros?: number
+    vagas?: number
+    endereco?: string
+    cidade?: string
+    bairro?: string
+    construtora?: string
+    thumbnail?: string
+    fotoPrincipal?: string
+    matchPercentage?: number
+    score?: number
+    motivos?: string[]
+  }>
 }
 
 export function useMatches() {
@@ -68,15 +86,21 @@ export function useMatches() {
         imoveis: request.imoveis?.length || 0
       }))
 
-      const response = await fetch('/api/deepseek/otimizar', {
-        method: 'PUT',
+      // Recuperar limite de crédito do localStorage
+      const limiteCredito = localStorage.getItem('limiteCredito');
+      const creditoAprovado = localStorage.getItem('creditoAprovado') === 'true';
+      
+      console.log('💳 [MATCHES] Limit de crédito recuperado:', limiteCredito);
+      
+      const response = await fetch('/api/analise-deepseek', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          respostasUsuario: request.respostasUsuario,
-          imoveis: request.imoveis || [],
-          tipo: 'compatibilidade'
+          userId: 'user-temp',
+          respostas: request.respostasUsuario,
+          limiteCredito: limiteCredito ? parseFloat(limiteCredito) : null
         }),
       })
 
@@ -85,6 +109,56 @@ export function useMatches() {
       }
 
       const data = await response.json() as MatchAnalysisResponse
+
+      // Salvamento automático após análise bem-sucedida
+      if (data && data.imoveis && Array.isArray(data.imoveis) && data.imoveis.length > 0) {
+        try {
+          console.log('💾 [AUTO-SAVE] Salvando', data.imoveis.length, 'imóveis automaticamente')
+          
+          const saveResponse = await fetch('/api/cliente/imoveis-salvos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imoveis: data.imoveis })
+          })
+
+          if (saveResponse.ok) {
+            const saveData = await saveResponse.json()
+            console.log('✅ [AUTO-SAVE] Imóveis salvos:', saveData.message)
+          } else {
+            console.warn('⚠️ [AUTO-SAVE] Falha no salvamento de imóveis:', saveResponse.status)
+          }
+        } catch (saveError) {
+          console.error('❌ [AUTO-SAVE] Erro ao salvar imóveis:', saveError)
+        }
+      }
+
+      // Salvar respostas do usuário automaticamente
+      if (request.respostasUsuario && Array.isArray(request.respostasUsuario) && request.respostasUsuario.length > 0) {
+        try {
+          console.log('💾 [AUTO-SAVE] Salvando', request.respostasUsuario.length, 'respostas automaticamente')
+          
+          const respostasParaSalvar = request.respostasUsuario.map(resposta => ({
+            pergunta: resposta.perguntaId || 'Pergunta não especificada',
+            resposta: String(resposta.valor || ''),
+            score: 0
+          }))
+          
+          const saveResponsesReq = await fetch('/api/cliente/respostas-salvas', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ respostas: respostasParaSalvar })
+          })
+
+          if (saveResponsesReq.ok) {
+            const saveResponsesData = await saveResponsesReq.json()
+            console.log('✅ [AUTO-SAVE] Respostas salvas:', saveResponsesData.message)
+          } else {
+            console.warn('⚠️ [AUTO-SAVE] Falha no salvamento de respostas:', saveResponsesReq.status)
+          }
+        } catch (saveError) {
+          console.error('❌ [AUTO-SAVE] Erro ao salvar respostas:', saveError)
+        }
+      }
 
       // Simular dados se a API retornar vazio (modo fallback)
       if (!data.matches || data.matches.length === 0) {
