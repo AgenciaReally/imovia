@@ -1739,7 +1739,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
           transition={{ delay: 0.5 }}
         >
           {/* Botões de navegação principais */}
-          <div className="flex justify-center items-center gap-4">
+          <div className="flex justify-between items-center gap-4">
             <Button
               variant="outline"
               onClick={stepAnterior}
@@ -1750,33 +1750,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
               Etapa Anterior
             </Button>
 
-            <Button
-              onClick={() => {
-                console.log('🔥 [CLICK] Botão clicado:', {
-                  stepAtual,
-                  totalSteps: stepsDisponiveis.length,
-                  podeAvancar: podeAvancar(),
-                  salvandoResposta,
-                  disabled: !podeAvancar() || salvandoResposta
-                });
-                proximoStep();
-              }}
-              disabled={!podeAvancar() || salvandoResposta}
-              className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200"
-            >
-              {salvandoResposta ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <>
-                  {stepAtual === stepsDisponiveis.length - 1 ? 'Ver Imóveis' : 'Próxima Etapa'}
-                  <ChevronRight className="h-4 w-4" />
-                </>
-              )}
-            </Button>
-          </div>
-
-          {/* Botão WhatsApp centralizado */}
-          <div className="flex justify-center">
+            {/* Botão WhatsApp centralizado */}
             <Button
               onClick={() => {
                 // Coletar dados das respostas para WhatsApp
@@ -1804,10 +1778,34 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                 
                 window.open(`https://wa.me/554192223032?text=${encodeURIComponent(mensagem)}`, '_blank')
               }}
-              className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2 px-6"
+              className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
             >
               <Phone className="h-4 w-4" />
               Orçamento Rápido
+            </Button>
+
+            <Button
+              onClick={() => {
+                console.log('🔥 [CLICK] Botão clicado:', {
+                  stepAtual,
+                  totalSteps: stepsDisponiveis.length,
+                  podeAvancar: podeAvancar(),
+                  salvandoResposta,
+                  disabled: !podeAvancar() || salvandoResposta
+                });
+                proximoStep();
+              }}
+              disabled={!podeAvancar() || salvandoResposta}
+              className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200"
+            >
+              {salvandoResposta ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  {stepAtual === stepsDisponiveis.length - 1 ? 'Ver Imóveis' : 'Próxima Etapa'}
+                  <ChevronRight className="h-4 w-4" />
+                </>
+              )}
             </Button>
           </div>
 
