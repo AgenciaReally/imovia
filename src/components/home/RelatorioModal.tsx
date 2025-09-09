@@ -120,7 +120,7 @@ export default function RelatorioModal({
   };
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onOpenChange(false)}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader className="pb-6">
           <DialogTitle className="text-2xl font-bold text-center text-orange-800">

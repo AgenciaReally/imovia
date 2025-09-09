@@ -45,11 +45,9 @@ interface MatchAnalysisRequest {
 }
 
 interface MatchAnalysisResponse {
-  matches: ImovelMatch[]
-  totalAnalizado: number
-  tempoAnalise: number
-  insights: string[]
-  imoveis?: Array<{
+  success: boolean
+  analise?: string
+  top3?: Array<{
     id: string
     titulo: string
     preco: number
@@ -58,15 +56,24 @@ interface MatchAnalysisResponse {
     banheiros?: number
     vagas?: number
     endereco?: string
-    cidade?: string
-    bairro?: string
-    construtora?: string
-    thumbnail?: string
+    latitude?: number
+    longitude?: number
     fotoPrincipal?: string
-    matchPercentage?: number
+    galeriaFotos?: string[]
+    telefoneContato?: string
+    construtora?: string
     score?: number
     motivos?: string[]
+    caracteristicas?: string[]
+    matchPercentage?: number
+    thumbnail?: string
   }>
+  totalImoveis?: number
+  perfilAnalisado?: number
+  matches?: ImovelMatch[]
+  totalAnalizado?: number
+  tempoAnalise?: number
+  insights?: string[]
 }
 
 export function useMatches() {
@@ -110,25 +117,59 @@ export function useMatches() {
 
       const data = await response.json() as MatchAnalysisResponse
 
-      // Salvamento automático após análise bem-sucedida
-      if (data && data.imoveis && Array.isArray(data.imoveis) && data.imoveis.length > 0) {
-        try {
-          console.log('💾 [AUTO-SAVE] Salvando', data.imoveis.length, 'imóveis automaticamente')
-          
-          const saveResponse = await fetch('/api/cliente/imoveis-salvos', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ imoveis: data.imoveis })
-          })
+      console.log('🔍 [MATCHES] Dados recebidos da API:', data);
 
-          if (saveResponse.ok) {
-            const saveData = await saveResponse.json()
-            console.log('✅ [AUTO-SAVE] Imóveis salvos:', saveData.message)
-          } else {
-            console.warn('⚠️ [AUTO-SAVE] Falha no salvamento de imóveis:', saveResponse.status)
-          }
-        } catch (saveError) {
-          console.error('❌ [AUTO-SAVE] Erro ao salvar imóveis:', saveError)
+      // Verificar se temos dados reais da API
+      if (data && data.success && data.top3 && Array.isArray(data.top3) && data.top3.length > 0) {
+        console.log('✅ [MATCHES] Usando dados REAIS da API Deepseek:', data.top3.length, 'imóveis')
+        
+        // Converter dados da API para formato do hook
+        const realMatches = data.top3.map((imovel, index) => ({
+          id: imovel.id,
+          titulo: imovel.titulo,
+          descricao: `${imovel.quartos} quartos, ${imovel.banheiros} banheiros, ${imovel.area}m²`,
+          preco: imovel.preco,
+          area: imovel.area,
+          quartos: imovel.quartos,
+          banheiros: imovel.banheiros,
+          vagas: imovel.vagas,
+          endereco: imovel.endereco,
+          cidade: '',
+          bairro: '',
+          imagem: imovel.fotoPrincipal || imovel.thumbnail,
+          construtora: imovel.construtora || 'Construtora',
+          score: imovel.score || imovel.matchPercentage || (90 - index * 5),
+          insights: imovel.motivos || [],
+          razoesCombinou: imovel.motivos || [],
+          pontosFracos: []
+        }))
+
+        // Salvar no localStorage para sincronizar com mapa
+        try {
+          const dadosParaMapa = data.top3.map(imovel => ({
+            ...imovel,
+            thumbnail: imovel.fotoPrincipal || imovel.thumbnail || "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=300&fit=crop",
+            matchPercentage: imovel.score || imovel.matchPercentage || 85
+          }))
+          
+          const uniqueId = Date.now().toString()
+          localStorage.setItem(`mapa_imoveis_${uniqueId}`, JSON.stringify(dadosParaMapa))
+          console.log('💾 [SYNC] Dados salvos no localStorage para mapa:', uniqueId)
+        } catch (error) {
+          console.error('❌ [SYNC] Erro ao salvar no localStorage:', error)
+        }
+
+        // Atualizar states com dados reais
+        setMatches(realMatches)
+        setTotalAnalizado(data.totalImoveis || data.top3.length)
+        setInsights([data.analise || 'Análise baseada em IA avançada'])
+        
+        return {
+          success: true,
+          matches: realMatches,
+          totalAnalizado: data.totalImoveis || data.top3.length,
+          tempoAnalise: 2.5,
+          insights: [data.analise || 'Análise baseada em IA avançada']
         }
       }
 
@@ -160,43 +201,31 @@ export function useMatches() {
         }
       }
 
-      // Simular dados se a API retornar vazio (modo fallback)
-      if (!data.matches || data.matches.length === 0) {
-        const mockMatches = generateMockMatches(request.respostasUsuario)
-        const mockResponse: MatchAnalysisResponse = {
-          matches: mockMatches,
-          totalAnalizado: 50,
-          tempoAnalise: 2.3,
-          insights: [
-            "Baseamos a análise em suas preferências de localização e orçamento",
-            "Consideramos seu perfil familiar e necessidades especiais",
-            "Priorizamos imóveis com boa relação custo-benefício"
-          ]
-        }
-        
-        setMatches(mockMatches)
-        setTotalAnalizado(50)
-        setInsights(mockResponse.insights)
-        
-        logger.logDeepseek('match_analysis', 'Usando dados simulados', JSON.stringify({
-          matches: mockMatches.length,
-          totalAnalizado: 50
-        }))
-        
-        return mockResponse
+      // Se não temos dados reais, usar mock apenas como último recurso
+      console.log('⚠️ [MATCHES] API não retornou dados válidos, usando fallback')
+      const mockMatches = generateMockMatches(request.respostasUsuario)
+      const mockResponse: MatchAnalysisResponse = {
+        success: false,
+        matches: mockMatches,
+        totalAnalizado: 50,
+        tempoAnalise: 2.3,
+        insights: [
+          "Baseamos a análise em suas preferências de localização e orçamento",
+          "Consideramos seu perfil familiar e necessidades especiais",
+          "Priorizamos imóveis com boa relação custo-benefício"
+        ]
       }
-
-      setMatches(data.matches)
-      setTotalAnalizado(data.totalAnalizado)
-      setInsights(data.insights)
-
-      logger.logDeepseek('match_analysis', 'Análise concluída com sucesso', JSON.stringify({
-        matches: data.matches.length,
-        totalAnalizado: data.totalAnalizado,
-        tempoAnalise: data.tempoAnalise
+      
+      setMatches(mockMatches)
+      setTotalAnalizado(50)
+      setInsights(mockResponse.insights || [])
+      
+      logger.logDeepseek('match_analysis', 'Usando dados simulados', JSON.stringify({
+        matches: mockMatches.length,
+        totalAnalizado: 50
       }))
-
-      return data
+      
+      return mockResponse
 
     } catch (error) {
       console.error('Erro na análise de compatibilidade:', error)
@@ -205,6 +234,7 @@ export function useMatches() {
       // Fallback para dados simulados em caso de erro
       const mockMatches = generateMockMatches(request.respostasUsuario)
       const mockResponse: MatchAnalysisResponse = {
+        success: false,
         matches: mockMatches,
         totalAnalizado: 25,
         tempoAnalise: 1.5,
@@ -216,7 +246,7 @@ export function useMatches() {
       
       setMatches(mockMatches)
       setTotalAnalizado(25)
-      setInsights(mockResponse.insights)
+      setInsights(mockResponse.insights || [])
       
       logger.logDeepseek('match_analysis', 'Erro na análise, usando fallback', JSON.stringify({
         error: error instanceof Error ? error.message : 'Erro desconhecido'

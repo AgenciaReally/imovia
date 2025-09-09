@@ -1978,8 +1978,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                 {/* Ver Relatórios */}
                 <Button
                   onClick={() => {
-                    setMostrarModalAnaliseCompleta(false)
-                    // Mostrar modal de relatórios com os mesmos imóveis dos matches
+                    // NÃO fechar o modal de análise, apenas abrir o relatório
                     setMostrarRelatorioModal(true)
                   }}
                   variant="outline"
