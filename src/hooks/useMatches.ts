@@ -47,6 +47,7 @@ interface MatchAnalysisRequest {
 interface MatchAnalysisResponse {
   success: boolean
   analise?: string
+  metodo?: string
   top3?: Array<{
     id: string
     titulo: string
@@ -61,7 +62,7 @@ interface MatchAnalysisResponse {
     fotoPrincipal?: string
     galeriaFotos?: string[]
     telefoneContato?: string
-    construtora?: string
+    construtora?: string | { nome: string, telefone?: string, email?: string }
     score?: number
     motivos?: string[]
     caracteristicas?: string[]
@@ -119,15 +120,17 @@ export function useMatches() {
 
       console.log('🔍 [MATCHES] Dados recebidos da API:', data);
 
-      // Verificar se temos dados reais da API
+      // Verificar se temos dados válidos (seja da API Deepseek ou fallback)
       if (data && data.success && data.top3 && Array.isArray(data.top3) && data.top3.length > 0) {
-        console.log('✅ [MATCHES] Usando dados REAIS da API Deepseek:', data.top3.length, 'imóveis')
+        const metodo = data.metodo || 'deepseek'
+        console.log(`✅ [MATCHES] Usando dados REAIS (${metodo}):`, data.top3.length, 'imóveis')
       console.log('📸 [DEBUG] Fotos recebidas no frontend:')
       data.top3.forEach((imovel: any, index: number) => {
         console.log(`   ${index + 1}. ${imovel.titulo}:`)
         console.log(`      - fotoPrincipal: ${imovel.fotoPrincipal || 'null'}`)
         console.log(`      - galeriaFotos: ${JSON.stringify(imovel.galeriaFotos || [])}`)
         console.log(`      - thumbnail: ${imovel.thumbnail || 'null'}`)
+        console.log(`      - TODOS OS CAMPOS:`, JSON.stringify(imovel, null, 2))
       })
         
         // Converter dados da API para formato do hook
@@ -144,7 +147,7 @@ export function useMatches() {
           cidade: '',
           bairro: '',
           imagem: imovel.fotoPrincipal || imovel.thumbnail,
-          construtora: imovel.construtora || 'Construtora',
+          construtora: typeof imovel.construtora === 'string' ? imovel.construtora : imovel.construtora?.nome || 'Construtora',
           score: imovel.score || imovel.matchPercentage || (90 - index * 5),
           insights: imovel.motivos || [],
           razoesCombinou: imovel.motivos || [],
@@ -210,6 +213,8 @@ export function useMatches() {
 
       // Se não temos dados reais, usar mock apenas como último recurso
       console.log('⚠️ [MATCHES] API não retornou dados válidos, usando fallback')
+      console.log('❌ [MATCHES] FALLBACK SENDO USADO - SEM FOTOS REAIS!')
+      console.log('🔍 [DEBUG] Resposta completa da API:', JSON.stringify(data, null, 2))
       const mockMatches = generateMockMatches(request.respostasUsuario)
       const mockResponse: MatchAnalysisResponse = {
         success: false,
@@ -288,7 +293,7 @@ function generateMockMatches(respostas: Array<{ perguntaId: string; valor: any; 
   // Extrair informações das respostas para personalizar os matches
   const orcamento = respostas.find(r => r.tipo === 'range' || r.perguntaId.includes('orcamento'))?.valor || 500000
   const quartos = respostas.find(r => r.perguntaId.includes('quartos'))?.valor || 2
-  const cidade = respostas.find(r => r.perguntaId.includes('cidade'))?.valor || 'São Paulo'
+  const cidade = respostas.find(r => r.perguntaId.includes('cidade'))?.valor || 'Curitiba'
   
   const baseMatches: ImovelMatch[] = [
     {

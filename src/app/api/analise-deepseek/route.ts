@@ -306,6 +306,12 @@ Retorne APENAS um JSON válido no formato:
         console.log(`      - galeriaFotos: ${JSON.stringify(imovel?.galeriaFotos || [])}`)
         console.log(`      - thumbnail: ${imovel?.thumbnail || 'null'}`)
       })
+      
+      console.log('🚀 [API] Enviando resposta final:', {
+        success: true,
+        top3Count: top3Completo.length,
+        hasPhotos: top3Completo.some((i: any) => i?.fotoPrincipal)
+      })
 
       return NextResponse.json({
         success: true,

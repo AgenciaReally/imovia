@@ -949,33 +949,67 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       console.log('🔍 Dados coletados para simulação:', dadosParaSimulacao)
       
       // CORRIGIR: Calcular valor máximo do imóvel baseado na ENTRADA disponível
-      // Se tem R$ 500k de entrada (20% do imóvel), pode comprar imóvel de R$ 2.5M
-      const valorMaximoImovelPorEntrada = Number(dadosParaSimulacao.valorEntrada) / 0.2; // Entrada é 20% do valor total
+      // Se tem R$ 50k de entrada (20% do imóvel), pode comprar imóvel de R$ 250k
+      
+      console.log('🔍 [DEBUG] Valores RAW recebidos:', {
+        valorEntradaRaw: dadosParaSimulacao.valorEntrada,
+        rendaMensalRaw: dadosParaSimulacao.rendaMensalFamiliar,
+        valorEntradaNumber: Number(dadosParaSimulacao.valorEntrada),
+        rendaMensalNumber: Number(dadosParaSimulacao.rendaMensalFamiliar)
+      });
+      
+      const entradaLimpa = Number(String(dadosParaSimulacao.valorEntrada).replace(/[^\d]/g, ''));
+      const rendaLimpa = Number(String(dadosParaSimulacao.rendaMensalFamiliar).replace(/[^\d]/g, ''));
+      
+      console.log('🧹 [DEBUG] Valores LIMPOS:', {
+        entradaLimpa,
+        rendaLimpa
+      });
+      
+      // Validar entrada mínima (R$ 10k) e máxima (R$ 2M)
+      const entradaValida = Math.max(10000, Math.min(entradaLimpa, 2000000));
+      const rendaValida = Math.max(1000, Math.min(rendaLimpa, 100000));
+      
+      console.log('✅ [DEBUG] Valores VALIDADOS:', {
+        entradaValida,
+        rendaValida
+      });
+      
+      const valorMaximoImovelPorEntrada = entradaValida / 0.2; // Entrada é 20% do valor total
       
       // Calcular valor máximo do imóvel baseado na RENDA (120x renda para financiamento + entrada)
-      const valorFinanciamentoPorRenda = Number(dadosParaSimulacao.rendaMensalFamiliar) * 120; // 120x a renda mensal
-      const valorMaximoImovelPorRenda = valorFinanciamentoPorRenda + Number(dadosParaSimulacao.valorEntrada);
+      const valorFinanciamentoPorRenda = rendaValida * 120; // 120x a renda mensal
+      const valorMaximoImovelPorRenda = valorFinanciamentoPorRenda + entradaValida;
       
       // O valor máximo do imóvel é o MENOR entre os dois limitadores
       const valorMaximoImovelFinal = Math.min(valorMaximoImovelPorEntrada, valorMaximoImovelPorRenda);
       
-      // Valor de financiamento necessário (valor do imóvel - entrada)
-      const valorFinanciamento = valorMaximoImovelFinal - Number(dadosParaSimulacao.valorEntrada);
+      // Valor de financiamento necessário (valor do imóvel - entrada) - USAR VALORES VALIDADOS
+      const valorFinanciamento = valorMaximoImovelFinal - entradaValida;
       
-      const entrada = Number(dadosParaSimulacao.valorEntrada) // Entrada informada pelo usuário
-      const parcelaMaxima = Number(dadosParaSimulacao.rendaMensalFamiliar) * 0.3 // 30% da renda
-      const comprometimento = (Number(dadosParaSimulacao.valorParcelaMinima) / Number(dadosParaSimulacao.rendaMensalFamiliar)) * 100
+      const entrada = entradaValida // Entrada validada
+      const parcelaMaxima = rendaValida * 0.3 // 30% da renda validada
+      const comprometimento = (Number(dadosParaSimulacao.valorParcelaMinima) / rendaValida) * 100
       
       // Determinar se foi aprovado
       const aprovado = comprometimento <= 35 && valorFinanciamento > 0 && Number(dadosParaSimulacao.valorEntrada) > 0
       
-      console.log('💰 [SIMULAÇÃO] Cálculos:', {
+      console.log('💰 [SIMULAÇÃO] Cálculos DETALHADOS:', {
         entradaInformada: Number(dadosParaSimulacao.valorEntrada),
+        entradaOriginal: dadosParaSimulacao.valorEntrada,
+        tipoEntrada: typeof dadosParaSimulacao.valorEntrada,
+        entradaLimpa,
+        rendaLimpa,
+        entradaValida,
+        rendaValida,
         valorMaximoImovelPorEntrada,
         valorMaximoImovelPorRenda, 
         valorMaximoImovelFinal: valorMaximoImovelFinal,
         valorFinanciamento,
-        comprometimento: `${comprometimento.toFixed(1)}%`
+        comprometimento: `${comprometimento.toFixed(1)}%`,
+        rendaMensalFamiliar: Number(dadosParaSimulacao.rendaMensalFamiliar),
+        rendaMensalOriginal: dadosParaSimulacao.rendaMensalFamiliar,
+        tipoRenda: typeof dadosParaSimulacao.rendaMensalFamiliar
       });
       
       const simulacao = {
@@ -998,7 +1032,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       
       // Salvar dados da simulação localmente (NÃO finalizar formulário ainda)
       if (aprovado) {
-        // CORRIGIR: Salvar VALOR MÁXIMO DO IMÓVEL, não apenas financiamento
+        // CORRIGIR: Salvar VALOR MÁXIMO DO IMÓVEL usando valores validados
         localStorage.setItem('limiteCredito', valorMaximoImovelFinal.toString());
         localStorage.setItem('creditoAprovado', 'true');
         localStorage.setItem('simulacaoCredito', JSON.stringify(simulacao));
