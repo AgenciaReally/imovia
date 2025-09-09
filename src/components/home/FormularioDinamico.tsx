@@ -34,8 +34,11 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const [perguntasCarregando, setPerguntasCarregando] = useState(false);
   const [salvandoResposta, setSalvandoResposta] = useState(false);
   const [mostrarModal, setMostrarModal] = useState(false);
-  // Estados para IA dinâmica
-  const [analisandoIA, setAnalisandoIA] = useState(false);
+  const [mostrarAnaliseIA, setMostrarAnaliseIA] = useState(false)
+  const [carregandoAnaliseIA, setCarregandoAnaliseIA] = useState(false)
+  const [analisandoIA, setAnalisandoIA] = useState(false)
+  const [cidadeNaoAtendida, setCidadeNaoAtendida] = useState<string | null>(null)
+  const [cidadeComImoveisSuficientes, setCidadeComImoveisSuficientes] = useState<boolean>(true)
   const [perguntasOcultas, setPerguntasOcultas] = useState<Set<string>>(new Set());
   const [perguntasDinamicas, setPerguntasDinamicas] = useState<any[]>([]);
   const [contadorSteps, setContadorSteps] = useState(0);
@@ -57,7 +60,6 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   // Estados para exibição progressiva das perguntas (Step 1)
   const [perguntasVisiveis, setPerguntasVisiveis] = useState<number>(1) // Começar com apenas 1 pergunta
   const [perguntasRespondidas, setPerguntasRespondidas] = useState<Set<string>>(new Set())
-  const [mostrarAnaliseIA, setMostrarAnaliseIA] = useState(false)
   const [ultimaPerguntaClicada, setUltimaPerguntaClicada] = useState<string>('')
   const [mostrarModalAnaliseCompleta, setMostrarModalAnaliseCompleta] = useState(false)
   const [resultadoAnaliseIA, setResultadoAnaliseIA] = useState<any>(null)
@@ -258,23 +260,33 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
     }
   }
 
+  // 🏠 Verificar imóveis na cidade
+  const verificarImoveisNaCidade = async (cidade: string) => {
+    try {
+      const response = await fetch('/api/imoveis/verificar-regiao', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cidade })
+      })
+
+      const data = await response.json()
+      
+      if (data.count > 0) {
+        setCidadeComImoveisSuficientes(true)
+        setCidadeNaoAtendida(null)
+        console.log(`✅ ${data.count} imóveis encontrados em ${cidade}`)
+      } else {
+        setCidadeComImoveisSuficientes(false)
+        setCidadeNaoAtendida(cidade)
+        console.log(`❌ Nenhum imóvel encontrado em ${cidade}`)
+      }
+    } catch (error) {
+      console.error('Erro ao verificar região:', error)
+    }
+  }
+
   // Atualizar resposta
   const atualizarResposta = async (perguntaId: string, valor: any) => {
-    console.log('🔄 Atualizando resposta:', { perguntaId, valor })
-    
-    // Log específico para arquivos
-    if (valor && typeof valor === 'object' && valor.url && valor.filename) {
-      console.log('📁 ARQUIVO SENDO SALVO:', {
-        perguntaId,
-        arquivo: {
-          url: valor.url,
-          filename: valor.filename,
-          size: valor.size,
-          type: valor.type
-        }
-      })
-    }
-    
     // Buscar pergunta em ambas as listas (normal + dinâmicas)
     const pergunta = perguntas.find(p => p.id === perguntaId) || 
                      perguntasDinamicas.find(p => p.id === perguntaId)
@@ -320,42 +332,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                               pergunta.texto.toLowerCase().includes('onde você mora')
       
       if (ehPerguntaCidade && valor.length > 3) {
-        // Fazer verificação de imóveis quando usuário digita cidade
-        try {
-          const response = await fetch('/api/imoveis/verificar-regiao', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              cidadeCompleta: valor.trim()
-            })
-          })
-          
-          if (response.ok) {
-            const { count } = await response.json()
-            
-            // Atualizar estados de validação da cidade
-            setImoveisDisponiveis(count)
-            setCidadeValidada(count > 0)
-            
-            if (count > 0) {
-              toast({
-                title: "🏠 Região verificada!",
-                description: `${count} imóveis encontrados em ${valor}`,
-                variant: "default"
-              })
-            } else {
-              toast({
-                title: "❌ Nenhum imóvel encontrado",
-                description: `Não há imóveis disponíveis em ${valor} no momento.`,
-                variant: "destructive"
-              })
-            }
-            
-            console.log(`🏠 Busca manual: ${count} imóveis em ${valor}`)
-          }
-        } catch (error) {
-          console.error('Erro ao verificar região:', error)
-        }
+        verificarImoveisNaCidade(valor)
       }
     }
   }
@@ -812,8 +789,16 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
 
       matches.analisarCompatibilidade({
         respostasUsuario: respostasForAnalise
-      }).then(() => {
-        // NÃO finalizar formulário - apenas mostrar resultado da IA
+      }).then((resultado) => {
+        // Verificar se há erro de cidade não atendida
+        if (resultado && typeof resultado === 'object' && 'success' in resultado && !(resultado as any).success) {
+          const errorResponse = resultado as any
+          if (errorResponse.error === 'cidade_sem_imoveis') {
+            setCidadeNaoAtendida(errorResponse.cidadeConsultada || 'esta cidade')
+            setMostrarAnaliseIA(false)
+            return
+          }
+        }
         console.log('✅ Análise de compatibilidade concluída (sem finalizar formulário)')
       })
     }, 1500)
@@ -1659,8 +1644,65 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
             }
           })()}
 
+          {/* Mostrar mensagem de cidade não atendida */}
+          {stepAtual === 0 && cidadeNaoAtendida && (
+            <motion.div
+              className="mb-8 p-6 bg-gradient-to-r from-red-50 to-red-100 rounded-xl border border-red-200"
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <div className="text-center">
+                <div className="w-16 h-16 bg-red-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="h-8 w-8 text-red-600" />
+                </div>
+                <h3 className="text-xl font-bold text-red-800 mb-2">
+                  📍 Cidade Não Atendida
+                </h3>
+                <p className="text-red-600 mb-4">
+                  Infelizmente, ainda não temos imóveis disponíveis em <strong>{cidadeNaoAtendida}</strong>.
+                </p>
+                <p className="text-red-500 text-sm mb-6">
+                  Entre em contato conosco via WhatsApp para saber sobre outras opções ou quando estaremos na sua região.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                  <Button
+                    onClick={() => {
+                      const mensagem = `Olá! Tenho interesse em imóveis em ${cidadeNaoAtendida}. Quando vocês terão opções nesta cidade?`
+                      window.open(`https://wa.me/554192223032?text=${encodeURIComponent(mensagem)}`, '_blank')
+                    }}
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                  >
+                    <Phone className="h-4 w-4 mr-2" />
+                    Entrar em Contato
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setCidadeNaoAtendida(null)
+                      setStepAtual(0)
+                      // Limpar resposta da cidade
+                      const perguntaCidade = Object.keys(respostas).find(key => 
+                        respostas[key]?.valor?.toLowerCase().includes(cidadeNaoAtendida.toLowerCase())
+                      )
+                      if (perguntaCidade) {
+                        setRespostas(prev => ({
+                          ...prev,
+                          [perguntaCidade]: { valor: '', tipo: 'text' }
+                        }))
+                      }
+                    }}
+                    variant="outline"
+                    className="border-orange-300 text-orange-700 hover:bg-orange-50"
+                  >
+                    Escolher Outra Cidade
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Mostrar análise IA quando apropriado no step 1 */}
-          {stepAtual === 0 && mostrarAnaliseIA && (
+          {stepAtual === 0 && mostrarAnaliseIA && !cidadeNaoAtendida && cidadeComImoveisSuficientes && (
             <motion.div
               className="mb-8 p-6 bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl border border-purple-200"
               initial={{ opacity: 0, y: 30, scale: 0.95 }}
@@ -1682,37 +1724,63 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
                     setAnalisandoIA(true)
                     
                     try {
-                      // 1. Analisar e otimizar perguntas com IA
-                      await analisarEOtimizarPerguntas(respostas)
+                      // Preparar respostas para análise
+                      const respostasForAnalise = Object.entries(respostas)
+                        .filter(([key, value]) => value !== null && value !== undefined && value !== '')
+                        .map(([key, value]) => ({
+                          perguntaId: key,
+                          valor: value.valor,
+                          tipo: value.tipo || 'text'
+                        }))
+
+                      console.log('🧠 [IA] Enviando para análise:', respostasForAnalise)
                       
-                      // 2. Finalizar análise com toast
-                      toast({
-                        title: "✅ Análise Concluída!",
-                        description: "Processamento completo realizado com sucesso.",
-                        duration: 3000,
-                      })
+                      const resultadoAnalise = await matches.analisarCompatibilidade({ respostasUsuario: respostasForAnalise })
                       
-                      // 3. Mostrar modal para próximas ações
+                      // Verificar se há erro de cidade não atendida
+                      if (resultadoAnalise && typeof resultadoAnalise === 'object' && 'success' in resultadoAnalise && !(resultadoAnalise as any).success) {
+                        const errorResponse = resultadoAnalise as any
+                        if (errorResponse.error === 'cidade_sem_imoveis') {
+                          setCidadeNaoAtendida(errorResponse.cidadeConsultada || 'esta cidade')
+                          setMostrarAnaliseIA(false)
+                          return
+                        } else {
+                          toast({
+                            title: "⚠️ Nenhum imóvel encontrado",
+                            description: errorResponse.message || "Não encontramos imóveis com seus critérios.",
+                            variant: "destructive",
+                            duration: 6000,
+                          })
+                          return
+                        }
+                      }
+                      
+                      setResultadoAnaliseIA(resultadoAnalise)
                       setMostrarModalAnaliseCompleta(true)
                       
                     } catch (error) {
                       console.error('Erro na análise IA:', error)
+                      toast({
+                        title: "⚠️ Erro na análise",
+                        description: "Ocorreu um erro durante a análise. Tente novamente.",
+                        variant: "destructive"
+                      })
                     } finally {
                       setAnalisandoIA(false)
                     }
                   }}
-                  className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-3 px-6 text-lg"
+                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-medium py-2.5 px-4 text-base rounded-lg"
                   disabled={analisandoIA}
                 >
                   {analisandoIA ? (
                     <>
-                      <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                      Analisando com IA...
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Analisando...
                     </>
                   ) : (
                     <>
-                      🎯 Analisar e Ver Matches
-                      <ChevronRight className="h-5 w-5 ml-2" />
+                      <Target className="h-4 w-4 mr-2" />
+                      Analisar e Ver Matches
                     </>
                   )}
                 </Button>

@@ -158,22 +158,59 @@ export default function RelatorioModal({
 
             {/* Resumo das Preferências */}
             {dados && Object.keys(dados).length > 0 && (
-              <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-                <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-                  <CheckCircle2 className="h-5 w-5 mr-2 text-green-600" />
-                  Suas Preferências
+              <div className="mb-6 p-6 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl border border-orange-200">
+                <h3 className="font-semibold text-orange-800 mb-4 text-lg flex items-center">
+                  <CheckCircle2 className="h-6 w-6 mr-3 text-orange-600" />
+                  Suas Preferências Informadas
                 </h3>
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  {Object.entries(dados).map(([key, value]) => (
-                    <div key={key} className="flex justify-between">
-                      <span className="text-gray-600 capitalize">
-                        {key.replace(/([A-Z])/g, ' $1').toLowerCase()}:
-                      </span>
-                      <span className="font-medium text-gray-800">
-                        {typeof value === 'boolean' ? (value ? 'Sim' : 'Não') : String(value)}
-                      </span>
-                    </div>
-                  ))}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {Object.entries(dados)
+                    .filter(([key, value]) => {
+                      // Filtrar apenas dados relevantes
+                      if (typeof value === 'object' && value !== null) {
+                        const objValue = value as any;
+                        return objValue.valor && objValue.valor !== '' && objValue.valor !== null;
+                      }
+                      return value && value !== '' && value !== null;
+                    })
+                    .map(([key, value]) => {
+                      // Processar o valor corretamente
+                      let displayValue = '';
+                      let displayKey = key;
+                      
+                      if (typeof value === 'object' && value !== null) {
+                        const objValue = value as any;
+                        displayValue = String(objValue.valor || objValue.resposta || '');
+                      } else {
+                        displayValue = String(value);
+                      }
+                      
+                      // Melhorar nome da pergunta
+                      if (key.includes('pergunta')) {
+                        const perguntaMatch = key.match(/pergunta-(\d+)/);
+                        if (perguntaMatch) {
+                          const numero = perguntaMatch[1];
+                          displayKey = `Pergunta ${numero}`;
+                        }
+                      } else {
+                        displayKey = key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').toLowerCase();
+                        displayKey = displayKey.charAt(0).toUpperCase() + displayKey.slice(1);
+                      }
+                      
+                      return (
+                        <div key={key} className="bg-white rounded-lg p-4 shadow-sm border border-orange-100">
+                          <div className="text-sm text-orange-700 font-medium mb-1">
+                            {displayKey}
+                          </div>
+                          <div className="text-gray-800 font-semibold">
+                            {typeof displayValue === 'boolean' 
+                              ? (displayValue ? 'Sim' : 'Não') 
+                              : (displayValue || 'Não informado')
+                            }
+                          </div>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             )}
