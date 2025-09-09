@@ -299,6 +299,13 @@ Retorne APENAS um JSON válido no formato:
       }).filter(Boolean)
 
       console.log('🎯 Top 3 imóveis selecionados:', top3Completo.length)
+      console.log('📸 [DEBUG] Fotos dos imóveis:')
+      top3Completo.forEach((imovel: any, index: number) => {
+        console.log(`   ${index + 1}. ${imovel?.titulo}:`)
+        console.log(`      - fotoPrincipal: ${imovel?.fotoPrincipal || 'null'}`)
+        console.log(`      - galeriaFotos: ${JSON.stringify(imovel?.galeriaFotos || [])}`)
+        console.log(`      - thumbnail: ${imovel?.thumbnail || 'null'}`)
+      })
 
       return NextResponse.json({
         success: true,

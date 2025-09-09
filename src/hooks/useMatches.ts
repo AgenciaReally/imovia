@@ -122,6 +122,13 @@ export function useMatches() {
       // Verificar se temos dados reais da API
       if (data && data.success && data.top3 && Array.isArray(data.top3) && data.top3.length > 0) {
         console.log('✅ [MATCHES] Usando dados REAIS da API Deepseek:', data.top3.length, 'imóveis')
+      console.log('📸 [DEBUG] Fotos recebidas no frontend:')
+      data.top3.forEach((imovel: any, index: number) => {
+        console.log(`   ${index + 1}. ${imovel.titulo}:`)
+        console.log(`      - fotoPrincipal: ${imovel.fotoPrincipal || 'null'}`)
+        console.log(`      - galeriaFotos: ${JSON.stringify(imovel.galeriaFotos || [])}`)
+        console.log(`      - thumbnail: ${imovel.thumbnail || 'null'}`)
+      })
         
         // Converter dados da API para formato do hook
         const realMatches = data.top3.map((imovel, index) => ({
