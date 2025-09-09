@@ -872,8 +872,8 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       
       // ANIMAÇÃO: Mostrar análise detalhada dos 7 campos
       // Delay progressivo mostrando cada campo sendo analisado
-      console.log('🔄 [SIMULAÇÃO] Aguardando animação de 4 segundos...')
-      await new Promise(resolve => setTimeout(resolve, 4000))
+      console.log('🔄 [SIMULAÇÃO] Aguardando animação de 2 segundos...')
+      await new Promise(resolve => setTimeout(resolve, 2000))
       console.log('✅ [SIMULAÇÃO] Animação concluída, processando dados...')
       
       // Simular análise IA para gerar simulação de crédito
@@ -1427,7 +1427,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
   const perguntasDoStep = perguntasPorStep[stepReal] || []
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-9xl mx-auto p-6">
       {/* Header com progresso */}
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
@@ -1688,7 +1688,7 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
       {/* Navegação com animação */}
       {!mostrarSimuladorCredito && (
         <motion.div
-          className="flex justify-between items-center"
+          className="flex justify-center items-center gap-4 flex-wrap"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -1703,153 +1703,553 @@ export function FormularioDinamico({ onComplete, userId, sessionId }: Formulario
             Etapa Anterior
           </Button>
 
-          <div className="flex items-center gap-2">
-            <AnimatePresence>
-              {salvandoResposta && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="flex items-center gap-2"
-                >
-                  <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
-                  <span className="text-sm text-gray-500">Salvando...</span>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            
-            {/* Botão WhatsApp para simulação instantânea */}
-            <Button
-              onClick={() => {
-                // Coletar dados das respostas para WhatsApp
-                const respostasTexto = Object.entries(respostas).map(([key, resp]) => {
-                  const pergunta = perguntas.find(p => p.id === key)
-                  const texto = pergunta?.texto || 'Pergunta'
-                  const valor = typeof resp.valor === 'object' ? 'Arquivo enviado' : resp.valor
-                  return `• ${texto}: ${valor}`
-                }).join('\n')
-                
-                const dadosAdicionais = []
-                if (cidadeDetectada) dadosAdicionais.push(`📍 Localização: ${cidadeDetectada}`)
-                
-                const mensagem = [
-                  "🏠 *Simulação Imóvel - Imovia*",
-                  "",
-                  "*Minhas Respostas:*",
-                  respostasTexto,
-                  "",
-                  dadosAdicionais.length > 0 ? "*Dados Detectados:*" : "",
-                  ...dadosAdicionais,
-                  "",
-                  "Gostaria de uma análise personalizada dos imóveis disponíveis!"
-                ].filter(Boolean).join('\n')
-                
-                window.open(`https://wa.me/554192223032?text=${encodeURIComponent(mensagem)}`, '_blank')
-              }}
-              className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
-            >
-              <Phone className="h-4 w-4" />
-              Orçamento Rápidoss
-            </Button>
-
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <Button
-                onClick={() => {
-                  console.log('🔥 [CLICK] Botão clicado:', {
-                    stepAtual,
-                    totalSteps: stepsDisponiveis.length,
-                    podeAvancar: podeAvancar(),
-                    salvandoResposta,
-                    disabled: !podeAvancar() || salvandoResposta
-                  });
-                  proximoStep();
-                }}
-                disabled={!podeAvancar() || salvandoResposta}
-                className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200 ml-3"
+          <AnimatePresence>
+            {salvandoResposta && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="flex items-center gap-2"
               >
-                {salvandoResposta ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <>
-                    {stepAtual === stepsDisponiveis.length - 1 ? 'Ver Imóveis' : 'Próxima Etapa'}
-                    <ChevronRight className="h-4 w-4" />
-                  </>
-                )}
-              </Button>
+                <Loader2 className="h-4 w-4 animate-spin text-gray-400" />
+                <span className="text-sm text-gray-500">Salvando...</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          {/* Botão WhatsApp para simulação instantânea */}
+          <Button
+            onClick={() => {
+              // Coletar dados das respostas para WhatsApp
+              const respostasTexto = Object.entries(respostas).map(([key, resp]) => {
+                const pergunta = perguntas.find(p => p.id === key)
+                const texto = pergunta?.texto || 'Pergunta'
+                const valor = typeof resp.valor === 'object' ? 'Arquivo enviado' : resp.valor
+                return `• ${texto}: ${valor}`
+              }).join('\n')
+              
+              const dadosAdicionais = []
+              if (cidadeDetectada) dadosAdicionais.push(`📍 Localização: ${cidadeDetectada}`)
+              
+              const mensagem = [
+                "🏠 *Simulação Imóvel - Imovia*",
+                "",
+                "*Minhas Respostas:*",
+                respostasTexto,
+                "",
+                dadosAdicionais.length > 0 ? "*Dados Detectados:*" : "",
+                ...dadosAdicionais,
+                "",
+                "Gostaria de uma análise personalizada dos imóveis disponíveis!"
+              ].filter(Boolean).join('\n')
+              
+              window.open(`https://wa.me/554192223032?text=${encodeURIComponent(mensagem)}`, '_blank')
+            }}
+            className="bg-green-600 hover:bg-green-700 text-white flex items-center gap-2"
+          >
+            <Phone className="h-4 w-4" />
+            Orçamento Rápido
+          </Button>
 
-              {/* Botão Finalizar Rápido */}
-              <Button
-                onClick={() => {
-                  console.log('🚀 [FINALIZAR RÁPIDO] Auto-preenchendo formulário');
-                  
-                  // Auto-preencher todas as perguntas com valores de teste
-                  const respostasRapidas: any = {};
-                  
-                  perguntas.forEach((pergunta) => {
-                    switch (pergunta.tipo) {
-                      case 'select':
-                        if (pergunta.opcoes && pergunta.opcoes.length > 0) {
-                          respostasRapidas[pergunta.id] = pergunta.opcoes[0].valor;
+          <Button
+            onClick={() => {
+              console.log('🔥 [CLICK] Botão clicado:', {
+                stepAtual,
+                totalSteps: stepsDisponiveis.length,
+                podeAvancar: podeAvancar(),
+                salvandoResposta,
+                disabled: !podeAvancar() || salvandoResposta
+              });
+              proximoStep();
+            }}
+            disabled={!podeAvancar() || salvandoResposta}
+            className="flex items-center gap-2 bg-orange-500 hover:bg-orange-600 transition-all duration-200"
+          >
+            {salvandoResposta ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <>
+                {stepAtual === stepsDisponiveis.length - 1 ? 'Ver Imóveis' : 'Próxima Etapa'}
+                <ChevronRight className="h-4 w-4" />
+              </>
+            )}
+          </Button>
+
+          {/* Botão para Exportar Logs Manualmente */}
+          <Button
+            onClick={() => {
+              const globalLogger = (window as any).globalLogger;
+              if (globalLogger) {
+                globalLogger.log('🔽 [EXPORT MANUAL] Usuário solicitou export manual de logs');
+                globalLogger.exportLogs(`debug_manual_${globalLogger.getSessionId()}.txt`);
+              }
+            }}
+            variant="outline"
+            className="flex items-center gap-2 border-blue-500 text-blue-600 hover:bg-blue-50"
+          >
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Baixar Logs Debug
+          </Button>
+
+          {/* Botão Finalizar Rápido */}
+          <Button
+            onClick={async () => {
+              // Usar logger global ao invés de local
+              const globalLogger = (window as any).globalLogger;
+              if (!globalLogger) {
+                console.error('❌ Logger global não encontrado!');
+                return;
+              }
+
+              const timestamp = new Date().toISOString();
+              
+              globalLogger.log('🚀 [FINALIZAR RÁPIDO] 🚀 INÍCIO DO BOTÃO FINALIZAR RÁPIDO 🚀', { 
+                timestamp,
+                perguntasDisponiveis: perguntas.length,
+                respostasAtuais: Object.keys(respostas).length,
+                stepAtual,
+                totalSteps: stepsDisponiveis.length,
+                fluxoAtivo: respostas.fluxoAtual || 'indefinido'
+              });
+              
+              setAnalisandoIA(true); // Ativar loading
+              
+              // Gerar perfil aleatório
+              const perfis = [
+                {
+                  nome: 'Ana Rodrigues', email: 'ana@email.com', telefone: '11987654321',
+                  idade: 28, renda: 12000, valorMax: 800000, quartos: 2, banheiros: 2,
+                  cidade: 'São Paulo', bairro: 'Vila Madalena', tipo: 'apartamento', perfil: 'jovem_profissional'
+                },
+                {
+                  nome: 'Carlos Santos', email: 'carlos@email.com', telefone: '11876543210', 
+                  idade: 42, renda: 25000, valorMax: 1500000, quartos: 4, banheiros: 3,
+                  cidade: 'São Paulo', bairro: 'Morumbi', tipo: 'casa', perfil: 'familia_executiva'
+                },
+                {
+                  nome: 'Maria Oliveira', email: 'maria@email.com', telefone: '11765432109',
+                  idade: 35, renda: 8500, valorMax: 600000, quartos: 3, banheiros: 2,
+                  cidade: 'São Paulo', bairro: 'Tatuapé', tipo: 'apartamento', perfil: 'familia_media'
+                },
+                {
+                  nome: 'João Costa', email: 'joao@email.com', telefone: '11654321098',
+                  idade: 25, renda: 6000, valorMax: 400000, quartos: 2, banheiros: 1,
+                  cidade: 'São Paulo', bairro: 'Liberdade', tipo: 'studio', perfil: 'jovem_iniciante'
+                },
+                {
+                  nome: 'Patricia Lima', email: 'patricia@email.com', telefone: '11543210987',
+                  idade: 50, renda: 35000, valorMax: 2000000, quartos: 4, banheiros: 4,
+                  cidade: 'São Paulo', bairro: 'Jardins', tipo: 'cobertura', perfil: 'executivo_senior'
+                }
+              ];
+              
+              const perfilEscolhido = perfis[Math.floor(Math.random() * perfis.length)];
+              globalLogger.log(`🎭 [PERFIL ESCOLHIDO] ${perfilEscolhido.perfil}: ${perfilEscolhido.nome}`, perfilEscolhido);
+              
+              // Simular tempo de processamento
+              await new Promise(resolve => setTimeout(resolve, 1500));
+              
+              // Auto-preencher todas as perguntas com valores do perfil
+              const respostasRapidas: any = {};
+              
+              perguntas.forEach((pergunta) => {
+                let valor: any = null;
+                const textoPergunta = pergunta.texto.toLowerCase();
+                const tipoNormalizado = (pergunta.tipo || 'text').toLowerCase();
+                
+                globalLogger.log(`🔍 [PROCESSANDO PERGUNTA] ${pergunta.id}`, { 
+                  id: pergunta.id, 
+                  tipo: pergunta.tipo, 
+                  texto: pergunta.texto,
+                  tipoNormalizado,
+                  temOpcoes: !!pergunta.opcoes
+                });
+                
+                try {
+                  switch (tipoNormalizado) {
+                    case 'select':
+                    case 'dropdown':
+                      if (pergunta.opcoes) {
+                        const opcoes = Array.isArray(pergunta.opcoes) ? pergunta.opcoes : JSON.parse(pergunta.opcoes || '[]');
+                        if (opcoes.length > 0) {
+                          const indiceAleatorio = Math.floor(Math.random() * opcoes.length);
+                          const opcaoEscolhida = opcoes[indiceAleatorio];
+                          valor = opcaoEscolhida?.valor || opcaoEscolhida?.value || opcaoEscolhida || 'Opção Padrão';
+                        } else {
+                          valor = 'Opção Padrão';
                         }
-                        break;
-                      case 'numero':
-                        respostasRapidas[pergunta.id] = pergunta.id.includes('renda') ? 8000 :
-                                                      pergunta.id.includes('idade') ? 35 :
-                                                      pergunta.id.includes('valor') ? 500000 : 100;
-                        break;
-                      case 'texto':
-                        respostasRapidas[pergunta.id] = pergunta.id.includes('nome') ? 'João Silva' :
-                                                       pergunta.id.includes('email') ? 'joao@teste.com' :
-                                                       pergunta.id.includes('telefone') ? '11999999999' :
-                                                       'Teste rápido';
-                        break;
-                      case 'checkbox':
-                        respostasRapidas[pergunta.id] = true;
-                        break;
-                      case 'radio':
-                        if (pergunta.opcoes && pergunta.opcoes.length > 0) {
-                          respostasRapidas[pergunta.id] = pergunta.opcoes[0].valor;
+                      } else {
+                        valor = 'Opção Padrão';
+                      }
+                      break;
+                      
+                    case 'number':
+                    case 'numero':
+                    case 'range':
+                    case 'slider':
+                      if (textoPergunta.includes('renda')) {
+                        valor = perfilEscolhido.renda.toString();
+                      } else if (textoPergunta.includes('idade')) {
+                        valor = perfilEscolhido.idade.toString();
+                      } else if (textoPergunta.includes('valor') || textoPergunta.includes('preço') || textoPergunta.includes('preco')) {
+                        valor = perfilEscolhido.valorMax.toString();
+                      } else if (textoPergunta.includes('quarto')) {
+                        valor = perfilEscolhido.quartos.toString();
+                      } else if (textoPergunta.includes('banheiro')) {
+                        valor = perfilEscolhido.banheiros.toString();
+                      } else if (textoPergunta.includes('entrada') || textoPergunta.includes('entrada')) {
+                        valor = Math.floor(perfilEscolhido.valorMax * 0.2).toString();
+                      } else if (textoPergunta.includes('area') || textoPergunta.includes('área')) {
+                        valor = (Math.floor(Math.random() * 100) + 50).toString(); // 50-150m²
+                      } else if (textoPergunta.includes('andar') || textoPergunta.includes('piso')) {
+                        valor = (Math.floor(Math.random() * 20) + 1).toString(); // 1-20 andar
+                      } else {
+                        valor = (Math.floor(Math.random() * 900) + 100).toString(); // Valor genérico 100-999
+                      }
+                      break;
+                      
+                    case 'text':
+                    case 'texto':
+                    case 'string':
+                      if (textoPergunta.includes('nome')) {
+                        valor = perfilEscolhido.nome;
+                      } else if (textoPergunta.includes('cidade')) {
+                        valor = perfilEscolhido.cidade;
+                      } else if (textoPergunta.includes('bairro')) {
+                        valor = perfilEscolhido.bairro;
+                      } else if (textoPergunta.includes('endereco') || textoPergunta.includes('endereço')) {
+                        valor = `Rua ${perfilEscolhido.perfil}, ${Math.floor(Math.random() * 999) + 1}`;
+                      } else if (textoPergunta.includes('profissao') || textoPergunta.includes('profissão')) {
+                        valor = `Profissional ${perfilEscolhido.perfil}`;
+                      } else {
+                        valor = `Resposta ${perfilEscolhido.perfil} ${Math.random().toString(36).substr(2, 3)}`;
+                      }
+                      break;
+                      
+                    case 'email':
+                      valor = perfilEscolhido.email;
+                      break;
+                      
+                    case 'phone':
+                    case 'telefone':
+                    case 'tel':
+                      valor = perfilEscolhido.telefone;
+                      break;
+                      
+                    case 'checkbox':
+                    case 'boolean':
+                      // 70% chance de ser true
+                      valor = Math.random() > 0.3;
+                      break;
+                      
+                    case 'radio':
+                    case 'option':
+                      if (pergunta.opcoes) {
+                        const opcoes = Array.isArray(pergunta.opcoes) ? pergunta.opcoes : JSON.parse(pergunta.opcoes || '[]');
+                        if (opcoes.length > 0) {
+                          const indiceAleatorio = Math.floor(Math.random() * opcoes.length);
+                          const opcaoEscolhida = opcoes[indiceAleatorio];
+                          valor = opcaoEscolhida?.valor || opcaoEscolhida?.value || opcaoEscolhida || 'Sim';
+                        } else {
+                          const opcoesPadrao = ['Sim', 'Não', 'Talvez'];
+                          valor = opcoesPadrao[Math.floor(Math.random() * opcoesPadrao.length)];
                         }
-                        break;
-                      default:
-                        respostasRapidas[pergunta.id] = 'Teste';
+                      } else {
+                        const opcoesPadrao = ['Sim', 'Não', 'Talvez'];
+                        valor = opcoesPadrao[Math.floor(Math.random() * opcoesPadrao.length)];
+                      }
+                      break;
+                      
+                    case 'date':
+                    case 'data':
+                      if (textoPergunta.includes('nascimento') || textoPergunta.includes('nasc')) {
+                        const anoNascimento = new Date().getFullYear() - perfilEscolhido.idade;
+                        valor = `${anoNascimento}-06-15`; // Data fixa de nascimento
+                      } else {
+                        // Data aleatória nos últimos 5 anos
+                        const anoAleatorio = new Date().getFullYear() - Math.floor(Math.random() * 5);
+                        const mesAleatorio = 1 + Math.floor(Math.random() * 12);
+                        const diaAleatorio = 1 + Math.floor(Math.random() * 28);
+                        valor = `${anoAleatorio}-${mesAleatorio.toString().padStart(2, '0')}-${diaAleatorio.toString().padStart(2, '0')}`;
+                      }
+                      break;
+                      
+                    case 'textarea':
+                    case 'longtext':
+                      valor = `Esta é uma resposta detalhada gerada automaticamente pelo perfil ${perfilEscolhido.perfil}. ` +
+                             `O usuário ${perfilEscolhido.nome} está interessado em imóveis do tipo ${perfilEscolhido.tipo} ` +
+                             `na região de ${perfilEscolhido.bairro}, ${perfilEscolhido.cidade}.`;
+                      break;
+                      
+                    case 'url':
+                    case 'website':
+                      valor = `https://www.${perfilEscolhido.perfil.replace('_', '')}.com.br`;
+                      break;
+                      
+                    default:
+                      // Para tipos não reconhecidos, gerar valor baseado no contexto da pergunta
+                      if (textoPergunta.includes('numero') || textoPergunta.includes('número')) {
+                        valor = (Math.floor(Math.random() * 900) + 100).toString();
+                      } else if (textoPergunta.includes('sim') || textoPergunta.includes('não')) {
+                        valor = Math.random() > 0.5 ? 'Sim' : 'Não';
+                      } else {
+                        valor = `Resposta_${perfilEscolhido.perfil}_${Math.random().toString(36).substr(2, 5)}`;
+                      }
+                      globalLogger.log(`⚠️ [TIPO DESCONHECIDO] Pergunta com tipo não mapeado: ${tipoNormalizado}`, { 
+                        perguntaId: pergunta.id, 
+                        tipo: pergunta.tipo,
+                        valorGerado: valor 
+                      });
+                  }
+                } catch (error) {
+                  // Em caso de erro, gerar valor padrão
+                  valor = `Erro_${perfilEscolhido.perfil}_${Math.random().toString(36).substr(2, 5)}`;
+                  globalLogger.log(`❌ [ERRO PROCESSAMENTO] Erro ao processar pergunta ${pergunta.id}`, { 
+                    error: error instanceof Error ? error.message : String(error),
+                    valorPadrao: valor
+                  });
+                }
+                
+                // Garantir que sempre temos um valor válido
+                if (valor === null || valor === undefined || valor === '') {
+                  if (tipoNormalizado.includes('number') || tipoNormalizado === 'range') {
+                    valor = '0';
+                  } else if (tipoNormalizado === 'checkbox' || tipoNormalizado === 'boolean') {
+                    valor = false;
+                  } else {
+                    valor = `Valor_Padrão_${Math.random().toString(36).substr(2, 3)}`;
+                  }
+                  globalLogger.log(`🔧 [VALOR PADRÃO] Aplicando valor padrão para pergunta ${pergunta.id}`, { 
+                    valorPadrao: valor,
+                    tipoOriginal: pergunta.tipo
+                  });
+                }
+                
+                // Converter valor final para string se necessário
+                const valorFinal = typeof valor === 'boolean' ? valor : String(valor);
+                
+                respostasRapidas[pergunta.id] = valorFinal;
+                globalLogger.log(`✅ [VALOR DEFINIDO] ${pergunta.id}: ${valorFinal}`, { 
+                  perguntaId: pergunta.id, 
+                  tipo: pergunta.tipo, 
+                  valorFinal,
+                  tipoValor: typeof valorFinal
+                });
+              });
+              
+              globalLogger.log('📝 [RESPOSTAS GERADAS] Total de respostas criadas', { 
+                totalRespostas: Object.keys(respostasRapidas).length,
+                respostasKeys: Object.keys(respostasRapidas)
+              });
+
+              // Adicionar dados específicos importantes baseados no perfil
+              const respostasFinais = {
+                ...respostasRapidas,
+                // IMPORTANTE: Definir fluxoAtual como PROXIMIDADES para finalizar completamente
+                fluxoAtual: "PROXIMIDADES",
+                fluxo: "PROXIMIDADES",
+                limiteCredito: perfilEscolhido.valorMax,
+                creditoAprovado: true,
+                finalizacaoRapida: true,
+                dataFinalizacao: new Date().toISOString(),
+                perfilGerado: perfilEscolhido.perfil,
+                // Dados do perfil escolhido
+                nome: perfilEscolhido.nome,
+                email: perfilEscolhido.email,
+                telefone: perfilEscolhido.telefone,
+                renda: perfilEscolhido.renda,
+                idade: perfilEscolhido.idade,
+                valorMaximo: perfilEscolhido.valorMax,
+                valorMaximoImovel: perfilEscolhido.valorMax,
+                tipoImovel: perfilEscolhido.tipo,
+                quartos: perfilEscolhido.quartos,
+                banheiros: perfilEscolhido.banheiros,
+                cidade: perfilEscolhido.cidade,
+                bairro: perfilEscolhido.bairro
+              };
+
+              globalLogger.log(`🎭 [${perfilEscolhido.perfil.toUpperCase()}] Finalizando com perfil: ${perfilEscolhido.nome}`, {
+                perfil: perfilEscolhido.perfil,
+                nome: perfilEscolhido.nome,
+                limiteCredito: perfilEscolhido.valorMax,
+                totalRespostasFinais: Object.keys(respostasFinais).length
+              });
+              
+              // Salvar no localStorage para a análise usando dados do perfil
+              localStorage.setItem('limiteCredito', perfilEscolhido.valorMax.toString());
+              localStorage.setItem('creditoAprovado', 'true');
+              localStorage.setItem('finalizacaoRapida', 'true');
+              localStorage.setItem('perfilGerado', perfilEscolhido.perfil);
+              
+              globalLogger.log('💾 [LOCALSTORAGE] Dados salvos no localStorage', {
+                limiteCredito: localStorage.getItem('limiteCredito'),
+                creditoAprovado: localStorage.getItem('creditoAprovado'),
+                finalizacaoRapida: localStorage.getItem('finalizacaoRapida'),
+                perfilGerado: localStorage.getItem('perfilGerado')
+              });
+              
+              globalLogger.log('✅ [RESPOSTAS FINAIS] Formulário sendo finalizado', {
+                totalRespostas: Object.keys(respostasFinais).length,
+                fluxoAtual: respostasFinais.fluxoAtual,
+                limiteCredito: respostasFinais.limiteCredito,
+                creditoAprovado: respostasFinais.creditoAprovado,
+                respostasCompletas: respostasFinais
+              });
+              
+              // Atualizar respostas no estado local primeiro
+              setRespostas(respostasFinais);
+
+              // IMPORTANTE: Salvar respostas válidas no banco ANTES de chamar onComplete
+              try {
+                globalLogger.log('💾 [API RESPOSTAS] Preparando para salvar respostas no banco...');
+                
+                // Função para validar se um valor é válido
+                const isValidValue = (valor: any): boolean => {
+                  if (valor === null || valor === undefined) return false;
+                  if (typeof valor === 'string' && (valor === '' || valor === 'undefined' || valor === 'null')) return false;
+                  return true;
+                };
+                
+                // Filtrar apenas respostas que correspondem a perguntas válidas
+                const perguntasIds = new Set(perguntas.map(p => p.id.toString()));
+                
+                const respostasParaAPI = Object.entries(respostasFinais)
+                  .filter(([key, valor]) => {
+                    // Verificar se é uma resposta válida para uma pergunta existente
+                    const isValidKey = perguntasIds.has(key) || key.startsWith('pergunta_') || !isNaN(Number(key));
+                    const isValidVal = isValidValue(valor);
+                    
+                    if (!isValidKey) {
+                      globalLogger.log(`🚫 [FILTRO] Removendo chave não relacionada a pergunta: ${key}`, { key, valor });
                     }
+                    if (!isValidVal) {
+                      globalLogger.log(`🚫 [FILTRO] Removendo valor inválido para ${key}: ${valor}`, { key, valor, tipo: typeof valor });
+                    }
+                    
+                    return isValidKey && isValidVal;
+                  })
+                  .map(([perguntaId, valor]) => {
+                    // Garantir que o valor seja uma string válida
+                    let valorFinal: string;
+                    if (typeof valor === 'boolean') {
+                      valorFinal = valor ? 'true' : 'false';
+                    } else if (typeof valor === 'number') {
+                      valorFinal = valor.toString();
+                    } else {
+                      valorFinal = String(valor);
+                    }
+                    
+                    return {
+                      perguntaId: perguntaId.toString(),
+                      valor: valorFinal,
+                      usuarioId: 1 // ID fixo para teste
+                    };
                   });
 
-                  // Adicionar dados específicos importantes
-                  const respostasFinais = {
-                    ...respostasRapidas,
-                    limiteCredito: 600000,
-                    creditoAprovado: true,
-                    finalizacaoRapida: true,
-                    dataFinalizacao: new Date().toISOString(),
-                    // Dados básicos para análise
-                    renda: 8000,
-                    idade: 35,
-                    valorMaximo: 600000,
-                    tipoImovel: 'apartamento',
-                    quartos: 3,
-                    cidade: 'São Paulo'
-                  };
+                globalLogger.log('💾 [API RESPOSTAS] Respostas filtradas para API', {
+                  totalOriginal: Object.keys(respostasFinais).length,
+                  totalFiltrado: respostasParaAPI.length,
+                  perguntasDisponiveis: perguntas.length,
+                  respostasParaAPIPreview: respostasParaAPI.slice(0, 3).map(r => ({
+                    perguntaId: r.perguntaId,
+                    valor: r.valor.substring(0, 50) + (r.valor.length > 50 ? '...' : ''),
+                    tipoValor: typeof r.valor
+                  }))
+                });
 
-                  console.log('🚀 Finalizando rapidamente com:', respostasFinais);
+                if (respostasParaAPI.length > 0) {
+                  globalLogger.log('🚀 [API RESPOSTAS] Enviando dados para API...');
                   
-                  // Salvar no localStorage para análise
-                  localStorage.setItem('limiteCredito', '600000');
-                  localStorage.setItem('creditoAprovado', 'true');
-                  
-                  // Finalizar formulário
-                  onComplete(respostasFinais);
-                }}
-                className="flex items-center gap-2 bg-green-500 hover:bg-green-600 transition-all duration-200 ml-2"
-              >
-                🚀 Finalizar Rápido
-              </Button>
-            </motion.div>
-          </div>
+                  const apiResponse = await fetch('/api/respostas', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(respostasParaAPI)
+                  });
+
+                  globalLogger.log('📡 [API RESPOSTAS] Resposta da API recebida', {
+                    status: apiResponse.status,
+                    ok: apiResponse.ok,
+                    statusText: apiResponse.statusText,
+                    headers: Object.fromEntries(apiResponse.headers.entries())
+                  });
+
+                  if (!apiResponse.ok) {
+                    const errorText = await apiResponse.text();
+                    globalLogger.log('❌ [API RESPOSTAS] Erro na resposta da API', { 
+                      status: apiResponse.status,
+                      statusText: apiResponse.statusText,
+                      errorText: errorText.substring(0, 500) // Limitar tamanho do erro
+                    });
+                    throw new Error(`API Error: ${apiResponse.status} - ${errorText}`);
+                  } else {
+                    const responseData = await apiResponse.json();
+                    globalLogger.log('✅ [API RESPOSTAS] Respostas salvas com sucesso no banco!', {
+                      respostasProcessadas: responseData?.count || respostasParaAPI.length,
+                      responsePreview: responseData
+                    });
+                  }
+                } else {
+                  globalLogger.log('⚠️ [API RESPOSTAS] Nenhuma resposta válida para salvar', {
+                    totalOriginal: Object.keys(respostasFinais).length,
+                    perguntasDisponiveis: perguntas.length,
+                    chavesOriginais: Object.keys(respostasFinais).slice(0, 10)
+                  });
+                  throw new Error('Nenhuma resposta válida foi gerada para salvar no banco');
+                }
+              } catch (error) {
+                globalLogger.log('❌ [API RESPOSTAS] Erro ao salvar respostas', { 
+                  error: error instanceof Error ? error.message : String(error), 
+                  stack: error instanceof Error ? error.stack : undefined,
+                  totalRespostasGeradas: Object.keys(respostasFinais).length
+                });
+                // Não bloquear o fluxo por conta de erro na API
+                globalLogger.log('⚠️ [API RESPOSTAS] Continuando fluxo apesar do erro na API...');
+              }
+              
+              // Finalizar formulário chamando onComplete
+              try {
+                globalLogger.log('🎯 [ONCOMPLETE] Chamando função onComplete...');
+                globalLogger.log('🎯 [ONCOMPLETE] Dados enviados para onComplete:', {
+                  fluxoAtual: respostasFinais.fluxoAtual,
+                  totalRespostas: Object.keys(respostasFinais).length,
+                  limiteCredito: respostasFinais.limiteCredito,
+                  finalizacaoRapida: respostasFinais.finalizacaoRapida
+                });
+                
+                await onComplete(respostasFinais);
+                globalLogger.log('✅ [ONCOMPLETE] onComplete executado com sucesso!');
+              } catch (error) {
+                globalLogger.log('❌ [ONCOMPLETE] Erro no onComplete', { 
+                  error: error instanceof Error ? error.message : String(error), 
+                  stack: error instanceof Error ? error.stack : undefined 
+                });
+              } finally {
+                setAnalisandoIA(false); // Resetar loading
+                globalLogger.log('🏁 [FIM] PROCESSO FINALIZAR RÁPIDO CONCLUÍDO - exportando logs...');
+                
+                // Exportar logs automaticamente
+                setTimeout(() => {
+                  globalLogger.exportLogs(`finalizar_rapido_completo_${globalLogger.getSessionId()}.txt`);
+                  globalLogger.log('📁 [EXPORT] Arquivo de log exportado automaticamente!');
+                }, 1000);
+              }
+            }}
+            disabled={analisandoIA}
+            className="bg-gray-900 hover:bg-black text-white px-6 py-2 rounded-lg shadow-lg transition-all duration-200 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {analisandoIA ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Gerando cenário...
+              </>
+            ) : (
+              '🎲 Finalizar rápido'
+            )}
+          </Button>
         </motion.div>
       )}
 

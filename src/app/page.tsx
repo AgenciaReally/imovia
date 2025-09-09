@@ -19,6 +19,90 @@ import { ModalAutenticacao } from "@/components/auth/ModalAutenticacao";
 import { getUserSession } from "@/lib/auth-client";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
+// 🚀 SISTEMA DE LOGGING GLOBAL EM TEMPO REAL
+class GlobalLogger {
+  private logs: string[] = [];
+  private sessionId: string;
+  private startTime: number;
+  
+  constructor() {
+    this.sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    this.startTime = Date.now();
+    this.log('🟢 [INÍCIO] Sistema de logging iniciado');
+    this.log('🌐 [PÁGINA] Página carregando...');
+    
+    // Capturar erros globais
+    window.addEventListener('error', (event) => {
+      this.log('❌ [ERRO GLOBAL]', {
+        message: event.error?.message || event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        stack: event.error?.stack
+      });
+    });
+    
+    // Capturar erros de promise rejeitadas
+    window.addEventListener('unhandledrejection', (event) => {
+      this.log('❌ [PROMISE REJEITADA]', {
+        reason: event.reason,
+        stack: event.reason?.stack
+      });
+    });
+  }
+  
+  log(message: string, data?: any) {
+    const timestamp = new Date().toISOString();
+    const elapsed = Date.now() - this.startTime;
+    const logEntry = `[${timestamp}] (+${elapsed}ms) ${message}`;
+    
+    console.log(logEntry, data || '');
+    
+    const fullLog = data ? `${logEntry} - ${JSON.stringify(data, null, 2)}` : logEntry;
+    this.logs.push(fullLog);
+    
+    // Salvar em tempo real no localStorage para não perder
+    localStorage.setItem(`debug_logs_${this.sessionId}`, JSON.stringify(this.logs));
+  }
+  
+  exportLogs(filename?: string) {
+    const logContent = [
+      `=== LOGS DA SESSÃO ${this.sessionId} ===`,
+      `Início: ${new Date(this.startTime).toISOString()}`,
+      `Duração: ${Date.now() - this.startTime}ms`,
+      `Total de logs: ${this.logs.length}`,
+      '=====================================',
+      '',
+      ...this.logs
+    ].join('\n');
+    
+    const blob = new Blob([logContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename || `debug_complete_${this.sessionId}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    this.log('💾 [EXPORT] Logs exportados', { filename: a.download, totalLogs: this.logs.length });
+  }
+  
+  getLogs() {
+    return this.logs;
+  }
+  
+  getSessionId() {
+    return this.sessionId;
+  }
+}
+
+// Instância global do logger
+const globalLogger = new GlobalLogger();
+
+// Exportar para uso em outros componentes
+(window as any).globalLogger = globalLogger;
+
 // Carregar fonte Poppins
 const poppins = Poppins({
   subsets: ['latin'],
@@ -27,6 +111,17 @@ const poppins = Poppins({
 });
 
 export default function Home() {
+  // 🚀 LOGGING - Inicializar logs da página
+  useEffect(() => {
+    globalLogger.log('🏠 [COMPONENTE HOME] Componente Home inicializado');
+    globalLogger.log('🔄 [ESTADOS] Estados iniciais definidos');
+    
+    // Log ao desmontar componente
+    return () => {
+      globalLogger.log('🛑 [COMPONENTE HOME] Componente Home desmontado');
+    };
+  }, []);
+
   // Estado para dados do usuário vindos de parâmetros
   const [dadosUsuario, setDadosUsuario] = useState<{
     nome?: string;
@@ -49,6 +144,7 @@ export default function Home() {
   const [progresso, setProgresso] = useState(0);
   const [questionarioConcluido, setQuestionarioConcluido] = useState(false);
   const [perguntaRespondida, setPerguntaRespondida] = useState<string | null>(null);
+  const [processandoAnalise, setProcessandoAnalise] = useState(false);
   const [relatorioLoading, setRelatorioLoading] = useState(false);
   const [relatorioSolicitado, setRelatorioSolicitado] = useState(false);
   const [novoModalRelatorioAberto, setNovoModalRelatorioAberto] = useState(false);
@@ -300,10 +396,21 @@ export default function Home() {
   }, [dadosUsuario.nome, dadosUsuario.email, dadosUsuario.telefone, dadosUsuario.userId, toast]);
   
   // Manipular a resposta do formulário de crédito
-  const handleQuestionarioConcluido = async (respostasFinais: Record<string, any>) => {
-    console.log("🎯 [DEBUG] handleQuestionarioConcluido chamado:", {
+  const handleQuestionarioConcluido = async (respostasFinais: any) => {
+    globalLogger.log('🎯 [HANDLE QUESTIONÁRIO] Função handleQuestionarioConcluido chamada', {
+      respostasFinais,
+      fluxoAtual: respostasFinais.fluxo,
+      fluxoAtivo,
+      questionarioConcluido: questionarioConcluido,
       totalRespostas: Object.keys(respostasFinais).length,
-      fluxoAtual: respostasFinais.fluxoAtual,
+      temLimiteCredito: !!respostasFinais.limiteCredito,
+      finalizacaoRapida: !!respostasFinais.finalizacaoRapida
+    });
+    
+    console.log('🎯 [handleQuestionarioConcluido] Função chamada', {
+      respostasFinais,
+      fluxoAtual: respostasFinais.fluxo,
+      fluxoAtivo,
       questionarioConcluido: questionarioConcluido
     });
     
@@ -438,6 +545,15 @@ export default function Home() {
       setFluxoAtivo("PROXIMIDADES");
     } else if (respostasFinais.fluxoAtual === "PROXIMIDADES") {
       // Quando terminar o fluxo de proximidades, concluir todo o processo
+      console.log("🏁 [DEBUG] FINALIZANDO FORMULÁRIO PROXIMIDADES - executando análise");
+      
+      // IMPORTANTE: Mostrar loading ANTES de esconder o formulário
+      setProcessandoAnalise(true);
+      
+      // IMPORTANTE: Executar análise Deepseek para popular imoveisDoMatch
+      console.log("🚀 [DEBUG] Executando análise Deepseek para PROXIMIDADES...");
+      await executarAnaliseDeepseek(respostasFinais);
+      
       setProgresso(100);
       
       toast({
@@ -446,22 +562,27 @@ export default function Home() {
         variant: "default",
       });
       
-      // Marcar como concluído e ativar os pins no mapa
+      // SÓ DEPOIS da análise, finalizar o processo
       setFluxoAtivo("CONCLUIDO");
       setQuestionarioConcluido(true);
       setPinsVisiveis(true);
+      setProcessandoAnalise(false);
     } else {
       // Se for outro fluxo ou o último, finalizar o processo
       console.log("🏁 [DEBUG] FINALIZANDO FORMULÁRIO - executando análise e mostrando resultados");
       
-      setQuestionarioConcluido(true);
-      // Forçar progresso a 100% quando o formulário for concluído
-      setProgresso(100);
-      setPinsVisiveis(true);
+      // IMPORTANTE: Mostrar loading ANTES de esconder o formulário
+      setProcessandoAnalise(true);
       
       // IMPORTANTE: Executar análise Deepseek para popular imoveisDoMatch
       console.log("🚀 [DEBUG] Executando análise Deepseek...");
       await executarAnaliseDeepseek(respostasFinais);
+      
+      // SÓ DEPOIS da análise, finalizar o processo
+      setQuestionarioConcluido(true);
+      setProgresso(100);
+      setPinsVisiveis(true);
+      setProcessandoAnalise(false);
       
       console.log("✅ [DEBUG] Formulário finalizado com sucesso!");
     }
@@ -1090,19 +1211,57 @@ export default function Home() {
   
   // Função para executar análise RÁPIDA e popular imoveisDoMatch
   const executarAnaliseDeepseek = async (respostasParaAnalise?: Record<string, any>) => {
-    console.log("🔬 [DEBUG] executarAnaliseDeepseek iniciado");
+    globalLogger.log("🔬 [ANÁLISE DEEPSEEK] Função executarAnaliseDeepseek iniciada", {
+      temRespostasCustomizadas: !!respostasParaAnalise,
+      totalRespostasEstado: Object.keys(respostas).length
+    });
+    
+    console.log("🔬 [ANÁLISE] executarAnaliseDeepseek iniciado");
+    console.log("🔬 [ANÁLISE] respostasParaAnalise:", respostasParaAnalise ? 'fornecidas' : 'usando estado');
+    
     try {
       // Usar respostas fornecidas ou as do estado atual
       const respostasSource = respostasParaAnalise || respostas;
-      console.log("📊 [DEBUG] Respostas para análise:", Object.keys(respostasSource).length);
+      
+      globalLogger.log("📊 [ANÁLISE DADOS] Preparando dados para análise", {
+        totalRespostas: Object.keys(respostasSource).length,
+        limiteCredito: respostasSource.limiteCredito,
+        fluxoAtual: respostasSource.fluxoAtual,
+        finalizacaoRapida: respostasSource.finalizacaoRapida,
+        dadosPrincipais: {
+          cidade: respostasSource.cidade || respostasSource['seed-PREFERENCIAS-1'],
+          valorMax: respostasSource.valorMaximo || respostasSource.limiteCredito,
+          tipoImovel: respostasSource.tipoImovel,
+          quartos: respostasSource.quartos
+        }
+      });
+      
+      console.log("📊 [ANÁLISE] Total respostas para análise:", Object.keys(respostasSource).length);
+      console.log("📊 [ANÁLISE] Limite crédito:", respostasSource.limiteCredito);
+      console.log("📊 [ANÁLISE] Dados principais:", {
+        fluxoAtual: respostasSource.fluxoAtual,
+        cidade: respostasSource.cidade || respostasSource['seed-PREFERENCIAS-1'],
+        valorMax: respostasSource.valorMaximo || respostasSource.limiteCredito,
+        tipoImovel: respostasSource.tipoImovel,
+        quartos: respostasSource.quartos
+      });
       
       const respostasForAnalise = Object.entries(respostasSource).map(([key, value]) => ({
         pergunta: { texto: key, categoria: 'geral' },
         resposta: typeof value === 'object' ? JSON.stringify(value) : String(value)
       }));
       
-      console.log('🚀 Executando análise RÁPIDA com', respostasForAnalise.length, 'respostas');
+      console.log('🚀 [ANÁLISE] Executando análise RÁPIDA com', respostasForAnalise.length, 'respostas');
+      console.log('🚀 [ANÁLISE] Primeiras 5 respostas:', respostasForAnalise.slice(0, 5));
       
+      globalLogger.log('🚀 [API ANÁLISE] Enviando requisição para análise simples', {
+        url: '/api/analise-simples',
+        userId: dadosUsuario.userId || 'relatorio-user',
+        totalRespostas: respostasForAnalise.length,
+        limiteCredito: respostasSource.limiteCredito || null,
+        payloadPreview: respostasForAnalise.slice(0, 3)
+      });
+
       // Usar análise simples ao invés do Deepseek (muito mais rápido)
       const response = await fetch('/api/analise-simples', {
         method: 'POST',
@@ -1116,9 +1275,39 @@ export default function Home() {
         })
       });
       
+      globalLogger.log('📡 [API ANÁLISE] Resposta recebida da API', {
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.ok,
+        headers: Object.fromEntries(response.headers.entries())
+      });
+      
+      console.log('📡 [ANÁLISE] Response status:', response.status, response.statusText);
+      
       if (response.ok) {
         const data = await response.json();
+        
+        globalLogger.log('📋 [API ANÁLISE] Dados recebidos da API de análise', {
+          success: data.success,
+          hasTop3: !!data.top3,
+          totalTop3: data.top3?.length || 0,
+          top3Preview: data.top3?.slice(0, 2).map((imovel: any) => ({
+            id: imovel.id,
+            titulo: imovel.titulo,
+            valor: imovel.valor,
+            matchPercentage: imovel.matchPercentage
+          })) || []
+        });
+        
+        console.log('📋 [ANÁLISE] Resposta da API:', {
+          success: data.success,
+          hasTop3: !!data.top3,
+          totalTop3: data.top3?.length || 0,
+          data: data
+        });
+        
         if (data.success && data.top3) {
+          console.log('✅ [ANÁLISE] TOP3 imóveis encontrados:', data.top3);
           setImoveisDoMatch(data.top3);
           
           // 🎯 SALVAR NO PAINEL DO CLIENTE (BANCO DE DADOS)
@@ -1161,18 +1350,21 @@ export default function Home() {
         
         return true;
       } else {
-        console.error('❌ Erro na análise:', data.message);
-        return false;
+        console.log('❌ [ANÁLISE] Resposta inválida da API:', data);
+        console.log('❌ [ANÁLISE] data.success:', data.success);
+        console.log('❌ [ANÁLISE] data.top3:', data.top3);
+        console.log('❌ [ANÁLISE] Objeto data completo:', JSON.stringify(data, null, 2));
       }
     } else {
-      console.error('❌ Erro na requisição de análise');
-      return false;
+      const errorText = await response.text();
+      console.error('❌ [ANÁLISE] Erro na API:', response.status, errorText);
     }
   } catch (error) {
-    console.error('❌ Erro na análise Deepseek:', error);
-    return false;
+    console.error('❌ [ANÁLISE] Erro na execução:', error);
+    console.error('❌ [ANÁLISE] Stack trace:', error instanceof Error ? error.stack : 'N/A');
   }
-  };
+  return false;
+};
 
   return (
     <div className={`min-h-screen overflow-hidden relative bg-gradient-to-b from-white to-gray-50 ${poppins.variable}`}>
@@ -1237,18 +1429,32 @@ export default function Home() {
             {!questionarioConcluido ? (
               <motion.div
                 key="formulario"
-                className="relative max-w-2xl min-h-[600px]"
+                className="relative max-w-6xl min-h-[600px]"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.5 }}
               >
                 <div className="backdrop-blur-md bg-white/60 rounded-3xl shadow-2xl border border-white/30 overflow-hidden">
-                  <FormularioDinamico
-                    onComplete={handleQuestionarioConcluido}
-                    userId={dadosUsuario?.userId}
-                    sessionId={`session-${Date.now()}`}
-                  />
+                  {processandoAnalise ? (
+                    <div className="flex flex-col items-center justify-center py-16 px-8">
+                      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-orange-500 mb-6"></div>
+                      <h3 className="text-2xl font-bold text-gray-800 mb-4">Analisando suas respostas...</h3>
+                      <p className="text-lg text-gray-600 text-center mb-4">
+                        Estamos processando suas preferências e buscando os imóveis ideais para você.
+                      </p>
+                      <div className="w-full max-w-md bg-gray-200 rounded-full h-2 mb-4">
+                        <div className="bg-orange-500 h-2 rounded-full animate-pulse" style={{width: '75%'}}></div>
+                      </div>
+                      <p className="text-sm text-gray-500">Isso pode levar alguns segundos...</p>
+                    </div>
+                  ) : (
+                    <FormularioDinamico
+                      onComplete={handleQuestionarioConcluido}
+                      userId={dadosUsuario?.userId}
+                      sessionId={`session-${Date.now()}`}
+                    />
+                  )}
                 </div>
               </motion.div>
             ) : (
